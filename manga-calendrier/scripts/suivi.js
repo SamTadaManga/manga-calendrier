@@ -42,13 +42,18 @@
     if (window.mcRender) window.mcRender();
   });
   paint();
+  // une couverture introuvable laisse place à la trame de points
+  document.addEventListener('error', function (e) {
+    var t = e.target;
+    if (t && t.tagName === 'IMG' && t.classList.contains('cover-img')) t.hidden = true;
+  }, true);
 
   /* ------------------------------------------------ page « Mon planning » */
   var root = document.getElementById('suivi-app');
   if (!root) return;
 
   var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(new Date());
-  var rows = [], bySlug = {}, names = {};
+  var rows = [], bySlug = {}, names = {}, covers = false;
 
   function h(tag, attrs, kids) {
     var el = document.createElement(tag);
@@ -146,7 +151,13 @@
         else if (r.st === 'reporte') meta.push(h('span', { class: 'badge s-reporte', text: 'Reporté' }));
         if (r.st === 'confirme') meta.push(h('span', { class: 'badge s-confirme', text: 'Date confirmée' }));
         if (/^https?:\/\//.test(r.u || '')) meta.push(h('a', { href: r.u, rel: 'noopener nofollow', text: 'Fiche éditeur' }));
-        ul.appendChild(h('li', { class: 'rel p-' + pubClass(r.e) }, [h('div', { class: 'rel-title' }, title), h('div', { class: 'meta' }, meta)]));
+        var kids = [h('div', { class: 'rel-main' }, [h('div', { class: 'rel-title' }, title), h('div', { class: 'meta' }, meta)])];
+        if (covers) {
+          var box = h('div', { class: 'cover', 'aria-hidden': r.c ? 'false' : 'true' });
+          if (/^https:\/\//.test(r.c || '')) box.appendChild(h('img', { class: 'cover-img', src: r.c, alt: 'Couverture de ' + r.s + (r.t ? ' tome ' + r.t : ''), width: '60', height: '90', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' }));
+          kids.unshift(box);
+        }
+        ul.appendChild(h('li', { class: 'rel p-' + pubClass(r.e) + (covers ? ' has-cover' : '') }, kids));
       });
       root.appendChild(ul);
     });
@@ -225,6 +236,7 @@
   root.textContent = 'Chargement…';
   fetch('/data/manga.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
     rows = j.rows || [];
+    covers = j.covers === true;
     rows.forEach(function (r) { bySlug[r.k] = true; if (!names[r.k]) names[r.k] = r.s; });
     render();
   }).catch(function () {

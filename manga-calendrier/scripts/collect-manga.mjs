@@ -119,7 +119,7 @@ const SOURCES = [
 /* ------------------------------------------------------------- exécution */
 const file = path.join(P.dataDir, 'manga-auto.csv');
 const previous = existsSync(file) ? loadManga(file) : [];
-const HEADER = ['Date de sortie', 'Éditeur', 'Série', 'Tome', 'Titre du tome (facultatif)', 'ISBN-13', 'Prix (€)', 'Statut', 'Source officielle (lien)', 'Vérifié le', 'Notes'];
+const HEADER = ['Date de sortie', 'Éditeur', 'Série', 'Tome', 'Titre du tome (facultatif)', 'ISBN-13', 'Prix (€)', 'Statut', 'Source officielle (lien)', 'Vérifié le', 'Couverture (lien)', 'Notes'];
 const cell = (v) => {
   const s = String(v ?? '');
   return /[",\n\r;]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
@@ -162,7 +162,7 @@ for (const r of sorted) {
   lines.push([
     r.date, r.editeur, r.serie, r.tome, r.titre, r.isbn,
     r.prix != null ? String(r.prix).replace('.', ',') : '',
-    r.date < today ? 'Paru' : 'Annoncé', r.source, today, 'Collecte automatique',
+    r.date < today ? 'Paru' : 'Annoncé', r.source, today, r.cover || '', 'Collecte automatique',
   ].map(cell).join(','));
 }
 mkdirSync(P.dataDir, { recursive: true });

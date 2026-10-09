@@ -17,6 +17,8 @@ const siteUrlOk = /^https?:\/\//.test(config.siteUrl || '') && !/REMPLACE/i.test
 const base = siteUrlOk ? config.siteUrl.replace(/\/+$/, '') : '';
 const host = siteUrlOk ? new URL(base).hostname : 'manga-calendrier.local';
 
+const showCovers = config.showCovers === true;
+const isPrivate = config.launched === false; // site privé : non indexé tant que « launched » n'est pas passé à true
 const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
 const eps = anime.episodes
@@ -55,7 +57,7 @@ function layout({ title, description, pathname, body, noindex = false, extraHead
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 ${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
-${noindex ? '<meta name="robots" content="noindex">' : ''}
+${noindex || isPrivate ? `<meta name="robots" content="noindex${isPrivate ? ', nofollow' : ''}">` : ''}
 <meta property="og:title" content="${esc(fullTitle)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:type" content="website">
@@ -135,8 +137,10 @@ function releaseItem(r, showDate = false) {
     r.source ? `<a href="${esc(r.source)}" rel="noopener nofollow">Fiche éditeur</a>` : '',
   ].filter(Boolean).join('');
   const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
-  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}" data-pub="${pk}" data-q="${esc(q)}"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
-    + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</li>`;
+  const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
+  const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}">${cover}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+    + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
 function episodeItem(e) {
@@ -267,9 +271,10 @@ ${rows.length ? FILTER_JS : ''}`;
 {
   const rows = manga.map((r) => ({
     d: r.date, e: r.editeur, s: r.serie, t: r.tome, k: slugify(r.serie), p: r.prix, st: r.statut, u: r.source, i: r.isbn || undefined,
+    c: showCovers && r.cover ? r.cover : undefined,
     mv: (() => { const m = moves.get(keyOf(r)); return m && m.to === r.date ? m.from : undefined; })(),
   }));
-  write('data/manga.json', JSON.stringify({ generated: today, rows }));
+  write('data/manga.json', JSON.stringify({ generated: today, covers: showCovers, rows }));
   write('suivi.js', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'suivi.js'), 'utf8'));
   page('/mon-planning/', {
     title: 'Mon planning manga',
@@ -357,7 +362,7 @@ const L = config.legal;
 <h2>Données et contenus</h2>
 <p>Les horaires des épisodes d'anime proviennent de l'API AniList. Les dates de sortie des mangas sont relevées auprès des sources officielles des éditeurs et peuvent évoluer. Les titres, marques et visuels cités appartiennent à leurs propriétaires respectifs. Ce site n'est affilié à aucun éditeur ni à aucune plateforme.</p>
 <h2>Cookies et données personnelles</h2>
-<p>Ce site ne dépose pas de cookies et ne collecte pas de données personnelles.</p>`,
+<p>Ce site ne dépose pas de cookies et ne collecte pas de données personnelles.${showCovers ? ' Les couvertures des tomes sont affichées depuis les serveurs des éditeurs ou de leurs diffuseurs : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>`,
   });
 }
 
@@ -390,8 +395,8 @@ write('404.html', layout({
   title: 'Page introuvable', description: 'Page introuvable.', pathname: '/404.html', noindex: true,
   body: '<h1>Page introuvable</h1><p>Cette page n\'existe pas. <a href="/">Retour à l\'accueil</a>.</p>',
 }));
-write('robots.txt', `User-agent: *\nAllow: /\n${siteUrlOk ? `Sitemap: ${base}/sitemap.xml\n` : ''}`);
-if (siteUrlOk) {
+write('robots.txt', isPrivate ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n${siteUrlOk ? `Sitemap: ${base}/sitemap.xml\n` : ''}`);
+if (siteUrlOk && !isPrivate) {
   const urls = ['/', '/anime/', '/manga/', '/changements/', '/articles/', '/mentions-legales/', ...articles.map((a) => `/articles/${a.slug}/`)];
   const lastmod = (u) => (u.startsWith('/articles/') && u !== '/articles/' ? articles.find((a) => `/articles/${a.slug}/` === u)?.date : today);
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
@@ -402,6 +407,8 @@ write('style.css', readFileSync(path.join(path.dirname(fileURLToPath(import.meta
 
 /* ---------------------------------------------------------- avertissements */
 console.log(`Site généré dans ${path.relative(process.cwd(), P.outDir) || '.'} : ${written.length} fichiers, ${articles.length} articles, ${manga.length} sorties manga, ${eps.length} épisodes anime.`);
+if (isPrivate) console.warn('⚠ Site privé (launched: false) : non indexé par Google. Passe "launched" à true au lancement.');
+if (showCovers) console.warn('⚠ Couvertures activées : vérifie l\'autorisation des éditeurs avant le lancement public.');
 if (!siteUrlOk) console.warn('⚠ siteUrl dans site.config.json est encore à remplacer : pas de sitemap ni d\'adresse canonique.');
 const todo = Object.entries(L).filter(([, val]) => !val || /compl[ée]ter/i.test(val)).map(([k]) => k);
 if (todo.length) console.warn(`⚠ Mentions légales à compléter dans site.config.json : ${todo.join(', ')}`);

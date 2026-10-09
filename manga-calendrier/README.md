@@ -53,6 +53,11 @@ Chaque jour : épisodes d'anime du jour, sorties manga du jour, et le lundi les 
 - `data/changes.json` : mémoire des sorties déjà vues. Chaque nuit, la collecte la compare aux plannings des éditeurs et note les reports, avancées, nouvelles annonces et retraits (un tome n'est dit « retiré » qu'après 3 nuits d'absence). Le premier passage ne signale rien. Ne modifie pas ce fichier à la main. Page publique : `/changements/`, et un article automatique est créé les jours où quelque chose bouge.
 - `/mon-planning/` : chaque lecteur suit ses séries ; la liste reste dans son navigateur (`scripts/suivi.js`).
 
+## Couvertures et mode privé
+
+- `"showCovers": true` dans `site.config.json` affiche les couvertures. Elles ne sont **pas copiées** : le navigateur les charge depuis les serveurs des éditeurs. Passe-le à `false` (ou supprime la ligne) pour les retirer instantanément.
+- `"launched": false` rend le site invisible pour Google (noindex, robots.txt fermé, pas de sitemap). Passe-le à `true` seulement après l'autorisation des éditeurs et la vérification des mentions légales.
+
 ## Limites à connaître
 
 - Les épisodes d'anime sont ceux de la **diffusion japonaise** (heures converties à Paris). La disponibilité en France dépend des plateformes.

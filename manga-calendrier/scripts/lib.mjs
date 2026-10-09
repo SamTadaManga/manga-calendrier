@@ -132,7 +132,7 @@ const normHeader = (s) =>
   String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]/g, '');
 const FIELDS = [
   ['date', 'date'], ['editeur', 'editeur'], ['serie', 'serie'], ['tome', 'tome'], ['titre', 'titre'],
-  ['isbn', 'isbn'], ['prix', 'prix'], ['statut', 'statut'], ['source', 'source'], ['notes', 'notes'],
+  ['isbn', 'isbn'], ['prix', 'prix'], ['statut', 'statut'], ['source', 'source'], ['couv', 'cover'], ['notes', 'notes'],
 ];
 
 export const STATUT_LABEL = { annonce: 'Annoncé', confirme: 'Confirmé', paru: 'Paru', reporte: 'Reporté', annule: 'Annulé' };
@@ -176,6 +176,7 @@ export function parseMangaCSV(text) {
       prix: Number.isFinite(prixNum) ? prixNum : null,
       statut: normStatut(get('statut')),
       source: safeHttp(get('source')),
+      cover: /^https:\/\//i.test(get('cover')) ? get('cover') : '',
       notes: get('notes'),
     });
   }
@@ -190,6 +191,9 @@ export function loadAllManga(dir) {
   const auto = loadManga(path.join(dir, 'manga-auto.csv'));
   const taken = new Set(manual.flatMap((r) => (r.tome ? [keyOf(r), altKey(r)] : [keyOf(r)])));
   const seen = new Set();
+  const autoCover = new Map();
+  for (const r of auto) if (r.cover) for (const k of [keyOf(r), altKey(r)]) autoCover.set(k, r.cover);
+  for (const r of manual) if (!r.cover) r.cover = autoCover.get(keyOf(r)) || (r.tome ? autoCover.get(altKey(r)) : '') || '';
   const kept = auto.filter((r) => {
     const ks = [keyOf(r), ...(r.tome && !r.titre ? [altKey(r)] : [])];
     if (ks.some((k) => taken.has(k) || seen.has(k))) return false;

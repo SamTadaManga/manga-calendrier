@@ -33,6 +33,14 @@ const dmy = (s) => {
 
 /* Glénat et Pika utilisent la même plateforme : des cartes <a href=".../ISBN/"> contenant .InnerCard,
    le titre dans l'attribut aria-label de la couverture et la date JJ/MM/AAAA dans le texte. */
+// Couvertures : l'adresse de l'image est dans les données JSON de la page (année et collection variables), repérée par ISBN
+const hachetteCover = (html, isbn) => {
+  if (!isbn) return '';
+  const m = html.match(new RegExp(`imgArticle(?:\\\\*/)([A-Za-z]+)(?:\\\\*/)(\\d{4})(?:\\\\*/)${isbn}-001-X\\.jpe?g`));
+  return m ? `https://media.hachette.fr/fit-in/214x346/imgArticle/${m[1]}/${m[2]}/${isbn}-001-X.jpeg` : '';
+};
+const httpsOnly = (u) => (/^https:\/\//i.test(String(u || '').trim()) ? String(u).trim() : '');
+
 export function parseHachette(html, { editeur, base, hrefPrefix }) {
   const out = [];
   const re = /<a\b[^>]*\bhref="([^"]+)"[^>]*>((?:(?!<\/a>)[\s\S])*?InnerCard[\s\S]*?)<\/a>/g;
@@ -45,7 +53,8 @@ export function parseHachette(html, { editeur, base, hrefPrefix }) {
     const date = dmy(text);
     if (!label || !date) continue;
     const { serie, tome, titre } = splitTitle(label);
-    out.push({ date, editeur, serie, tome, titre, isbn: isbnOf(href), prix: null, source: new URL(href, base).href });
+    const isbn = isbnOf(href);
+    out.push({ date, editeur, serie, tome, titre, isbn, prix: null, source: new URL(href, base).href, cover: hachetteCover(html, isbn) });
   }
   return out;
 }
@@ -71,6 +80,7 @@ export function parseKana(html, { year, base = 'https://www.kana.fr/' }) {
         date, editeur: 'Kana', serie, tome: tm ? String(Number(tm[1])) : '',
         titre: tm || !small ? '' : `${serie} ${strip(small)}`,
         isbn: isbnOf(item), prix: null, source: new URL(decode(href), base).href,
+        cover: httpsOnly(decode((item.match(/<img[^>]*\bsrc="([^"]+)"/) || [])[1])),
       });
     }
   }
@@ -91,6 +101,7 @@ export function parseKioon(json) {
       date, editeur: 'Ki-oon', serie: decode(v.serie_title), tome: Number.isInteger(num) && num > 0 ? String(num) : '',
       titre: '', isbn: isbnOf(v.ean), prix: Number.isFinite(prix) && prix > 0 ? prix : null,
       source: link ? `https://ki-oon.com/${link}` : 'https://ki-oon.com/planning',
+      cover: /^https:\/\/api\.ki-oon\.com\//.test(v.poster_url || '') ? v.poster_url : '',
     });
   }
   return out;

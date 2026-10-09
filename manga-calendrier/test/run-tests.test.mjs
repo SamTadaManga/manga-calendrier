@@ -263,3 +263,38 @@ test('changements : chaîne complète (collecte, articles du jour, pages)', () =
   assert.ok(/Reporté \(avant : /.test(mangaPage), 'badge de report sur la page manga');
   assert.ok(readFileSync(path.join(dirs.OUT_DIR, 'index.html'), 'utf8').includes('Derniers changements de date'));
 });
+
+/* ------------------------------------------------------------ couvertures */
+test('couvertures : collecte, interrupteur et mode site privé', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = {
+    DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'articles'), AUTO_DIR: path.join(tmp, 'auto'),
+    OUT_DIR: path.join(tmp, 'dist'), CONFIG_FILE: path.join(tmp, 'config.json'),
+    COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/publishers'), NOW: '2026-10-12T07:00:00Z',
+  };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  const env = { ...process.env, ...dirs };
+  const run = (script) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', script)], { env, encoding: 'utf8' });
+  run('collect-manga.mjs');
+  const csv = read(dirs.DATA_DIR, 'manga-auto.csv');
+  assert.ok(csv.includes('https://media.hachette.fr/fit-in/214x346/imgArticle/GLENAT/2026/9782344077573-001-X.jpeg'), 'couverture Glénat');
+  assert.ok(csv.includes('https://media.hachette.fr/fit-in/214x346/imgArticle/PIKA/2026/9791043310812-001-X.jpeg'), 'couverture Pika');
+  assert.ok(csv.includes('https://bdi.dlpdomain.com/album/9782505140535-couv-M300x425.jpg'), 'couverture Kana');
+  assert.ok(csv.includes('https://api.ki-oon.com/images/volumes/9791032723425.jpg'), 'couverture Ki-oon');
+  assert.ok(!csv.includes('evil.example'), 'une couverture hors https ou hors serveur éditeur est refusée');
+  const cfg = JSON.parse(read(ROOT, 'test/fixtures/site.config.json'));
+  const build = (extra) => { writeFileSync(dirs.CONFIG_FILE, JSON.stringify({ ...cfg, ...extra })); run('build.mjs'); };
+
+  build({});
+  assert.ok(!read(dirs.OUT_DIR, 'manga/index.html').includes('cover-img'), 'couvertures absentes par défaut');
+  assert.ok(read(dirs.OUT_DIR, 'robots.txt').includes('Allow: /') && existsSync(path.join(dirs.OUT_DIR, 'sitemap.xml')));
+
+  build({ showCovers: true, launched: false });
+  const page = read(dirs.OUT_DIR, 'manga/index.html');
+  assert.ok(page.includes('class="cover-img"') && page.includes('referrerpolicy="no-referrer"') && page.includes('loading="lazy"'));
+  assert.ok(page.includes('noindex, nofollow'), 'site privé : noindex');
+  assert.equal(read(dirs.OUT_DIR, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
+  assert.ok(!existsSync(path.join(dirs.OUT_DIR, 'sitemap.xml')), 'site privé : pas de sitemap');
+  assert.equal(JSON.parse(read(dirs.OUT_DIR, 'data/manga.json')).covers, true);
+  assert.ok(read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('adresse IP'));
+});
