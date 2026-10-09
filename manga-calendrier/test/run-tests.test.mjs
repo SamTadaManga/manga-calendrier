@@ -313,6 +313,7 @@ test('couvertures : collecte, interrupteur et mode site privé', () => {
   build({ showCovers: true, launched: false });
   const page = read(dirs.OUT_DIR, 'manga/index.html');
   assert.ok(page.includes('class="cover-img"') && page.includes('referrerpolicy="no-referrer"') && page.includes('loading="lazy"'));
+  assert.ok(/<a class="rel-cover" href="\/serie\/[a-z0-9-]+\/"/.test(page), "jaquette cliquable vers la série");
   assert.ok(page.includes('noindex, nofollow'), 'site privé : noindex');
   assert.equal(read(dirs.OUT_DIR, 'robots.txt'), 'User-agent: *\nDisallow: /\n');
   assert.ok(!existsSync(path.join(dirs.OUT_DIR, 'sitemap.xml')), 'site privé : pas de sitemap');

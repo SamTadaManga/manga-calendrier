@@ -272,7 +272,7 @@
       if (covers) {
         var box = h('div', { class: 'cover', 'aria-hidden': r.c ? 'false' : 'true' });
         if (/^https:\/\//.test(r.c || '')) box.appendChild(h('img', { class: 'cover-img', src: r.c, alt: 'Couverture de ' + r.s + (r.t ? ' tome ' + r.t : ''), width: '60', height: '90', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' }));
-        kids.unshift(box);
+        kids.unshift(r.k ? h('a', { class: 'rel-cover', href: '/serie/' + r.k + '/', 'aria-label': r.s + ' : page de la série', tabindex: '-1' }, [box]) : box);
       }
       return h('li', { class: 'rel p-' + pubClass(r.e) + (covers ? ' has-cover' : '') }, kids);
   }

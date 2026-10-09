@@ -227,7 +227,8 @@ function releaseItem(r, showDate = false) {
   const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
-  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${cover}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+  const coverLink = cover && slugify(r.serie) ? `<a class="rel-cover" href="/serie/${slugify(r.serie)}/" aria-label="${esc(r.serie)} : page de la série" tabindex="-1">${cover}</a>` : cover;
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
     + `<div class="meta">${meta}</div>${adaptLine(r.serie)}${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
