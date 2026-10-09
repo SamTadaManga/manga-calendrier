@@ -43,7 +43,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .mark{width:24px;height:24px;border:3px solid #111;background:#fff radial-gradient(circle,#111 0 4px,transparent 4.5px);flex:none;transform:rotate(-6deg)}
 nav{display:flex;flex-wrap:wrap;gap:4px}
 nav a{padding:6px 12px;border:2px solid transparent;border-radius:2px;color:#111;text-decoration:none;font-weight:750}
-nav a:hover{border-color:#111}
 nav a[aria-current]{background:#111;color:var(--brand)}
 main.wrap{padding-top:36px;padding-bottom:72px}
 
@@ -107,13 +106,19 @@ a.d-line:hover{text-decoration:underline}
 /* Suivre */
 .follow{position:absolute;z-index:1;right:10px;top:10px;min-height:32px;padding:2px 12px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit;font-size:.85rem;font-weight:750;cursor:pointer}
 .follow[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.follow{transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease}
+/* Tous les boutons : même geste, l'autocollant qui se décolle */
+.follow,.chip,nav a,.jump{transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease,color .12s ease}
 @media (hover:hover){
-  .follow:hover{background:var(--brand);color:#111;border-color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
-  .follow[aria-pressed=true]:hover{background:var(--panel);color:var(--ink);border-color:var(--ink)}
+  .follow:hover,.chip:hover{background:var(--brand);color:#111;border-color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+  .follow:hover .n,.chip:hover .n{color:#111}
+  .follow[aria-pressed=true]:hover,.chip[aria-pressed=true]:hover{background:var(--panel);color:var(--ink);border-color:var(--ink)}
+  .chip[aria-pressed=true]:hover .n{color:var(--ink)}
+  nav a:not([aria-current]):hover{background:#fff;border-color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 #111}
+  .jump:not(.today):hover{background:var(--brand);color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+  .jump.today:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--shadow)}
 }
-.follow:active{transform:translate(1px,1px);box-shadow:none}
-@media (prefers-reduced-motion:reduce){.follow{transition:none}}
+.follow:active,.chip:active,nav a:active,.jump:active{transform:translate(1px,1px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){.follow,.chip,nav a,.jump{transition:none}}
 .rel .rel-title,.rel .meta{padding-right:84px}
 .follow-chips{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .follow-chips .n{margin-left:8px}
@@ -164,7 +169,7 @@ input[type=search]{flex:1 1 220px;max-width:340px;min-height:42px;padding:8px 12
 .jump .d-num{font-size:1.6rem}
 .jump .cnt{font-size:.82rem;font-weight:700}
 .jump.today{background:var(--brand);color:#111;border-color:#111;box-shadow:4px 4px 0 var(--shadow)}
-.jump:hover{background:var(--mark)}
+.jump:focus-visible{background:var(--mark)}
 .day{scroll-margin-top:16px}
 
 /* Couvertures : étagère de l'accueil et lignes de liste */
