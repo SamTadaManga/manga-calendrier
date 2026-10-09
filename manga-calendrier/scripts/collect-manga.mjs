@@ -7,6 +7,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { paths, now, parisKey, addDays, loadManga } from './lib.mjs';
+import { readChanges, updateChanges, serializeChanges } from './changes.mjs';
 import { parseHachette, parseKana, parseKioon, robotsAllows } from './collectors.mjs';
 
 const P = paths();
@@ -125,6 +126,8 @@ const cell = (v) => {
 };
 
 const result = [];
+const fresh = [];
+const okPublishers = new Set();
 const report = [];
 for (const src of SOURCES) {
   let rows = [];
@@ -143,6 +146,8 @@ for (const src of SOURCES) {
   });
   if (rows.length) {
     result.push(...rows);
+    fresh.push(...rows);
+    okPublishers.add(src.editeur);
     report.push(`${src.editeur} : ${rows.length}`);
   } else {
     const old = previous.filter((r) => r.editeur === src.editeur && r.date >= addDays(today, -30));
@@ -163,4 +168,11 @@ for (const r of sorted) {
 mkdirSync(P.dataDir, { recursive: true });
 const out = lines.join('\n') + '\n';
 if (!existsSync(file) || readFileSync(file, 'utf8') !== out) writeFileSync(file, out);
+const chFile = path.join(P.dataDir, 'changes.json');
+const before = readChanges(chFile);
+const after = updateChanges(before, fresh, okPublishers, today);
+const chOut = serializeChanges(after);
+if (!existsSync(chFile) || readFileSync(chFile, 'utf8') !== chOut) writeFileSync(chFile, chOut);
+const news = after.events.length - before.events.length;
 console.log(`Collecte terminée (${sorted.length} sorties) — ${report.join(' | ')}`);
+if (news > 0) console.log(`${news} changement(s) détecté(s) dans les plannings.`);

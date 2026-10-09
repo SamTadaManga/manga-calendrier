@@ -11,6 +11,7 @@ import {
   parseFrontmatter,
 } from '../scripts/lib.mjs';
 import { splitTitle, robotsAllows, parseKioon } from '../scripts/collectors.mjs';
+import { updateChanges, emptyState } from '../scripts/changes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (...p) => readFileSync(path.join(...p), 'utf8');
@@ -198,4 +199,67 @@ test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () =
   const code = `import {loadAllManga} from ${JSON.stringify(path.join(ROOT, 'scripts/lib.mjs'))};const r=loadAllManga(process.env.DATA_DIR).filter(x=>x.serie==='Slam Dunk Deluxe');console.log(JSON.stringify(r.map(x=>x.statut)));`;
   const merged = execFileSync(process.execPath, ['--input-type=module', '-e', code], { env, encoding: 'utf8' });
   assert.equal(merged.trim(), '["confirme"]');
+});
+
+/* ------------------------------------------------- changements de date */
+const row = (o) => ({ editeur: 'Kana', serie: 'Serie', tome: '1', titre: '', isbn: '9782505000001', date: '2026-11-10', source: '', ...o });
+
+test('changements : premier passage silencieux, puis report, nouveauté et retrait', () => {
+  const ok = new Set(['Kana']);
+  const base = [row({}), row({ tome: '2', isbn: '9782505000002', date: '2026-12-10' })];
+  let st = updateChanges(emptyState(), base, ok, '2026-10-12');
+  assert.equal(st.events.length, 0, 'rien à annoncer au premier passage');
+  st = updateChanges(st, base, ok, '2026-10-13');
+  assert.equal(st.events.length, 0, 'aucun changement = aucun événement');
+  // report du tome 1, nouveau tome 3 dans un mois déjà connu, nouveau tome 4 dans un mois jamais vu
+  const next = [row({ date: '2026-11-24' }), base[1],
+    row({ tome: '3', isbn: '9782505000003', date: '2026-11-30' }), row({ tome: '4', isbn: '9782505000004', date: '2027-01-15' })];
+  st = updateChanges(st, next, ok, '2026-10-14');
+  const types = st.events.map((e) => `${e.type}:${e.t}`).sort();
+  assert.deepEqual(types, ['date:1', 'nouveau:3']);
+  assert.equal(st.events.find((e) => e.type === 'date').from, '2026-11-10');
+  // un éditeur muet ne provoque ni retrait ni nouveauté
+  st = updateChanges(st, [], new Set(), '2026-10-15');
+  assert.equal(st.events.length, 2);
+  // retrait : seulement après 3 collectes d'affilée sans le tome 2
+  const without = next.filter((r) => r.tome !== '2');
+  for (const d of ['2026-10-16', '2026-10-17']) st = updateChanges(st, without, ok, d);
+  assert.equal(st.events.filter((e) => e.type === 'retire').length, 0);
+  st = updateChanges(st, without, ok, '2026-10-18');
+  assert.equal(st.events.filter((e) => e.type === 'retire').length, 1);
+  st = updateChanges(st, without, ok, '2026-10-19');
+  assert.equal(st.events.filter((e) => e.type === 'retire').length, 1, 'retrait annoncé une seule fois');
+});
+
+test('changements : chaîne complète (collecte, articles du jour, pages)', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const fx = path.join(tmp, 'fixtures');
+  cpSync(path.join(ROOT, 'test/fixtures/publishers'), fx, { recursive: true });
+  const dirs = {
+    DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'articles'), AUTO_DIR: path.join(tmp, 'auto'),
+    OUT_DIR: path.join(tmp, 'dist'), CONFIG_FILE: path.join(ROOT, 'test/fixtures/site.config.json'), COLLECT_FIXTURES: fx,
+  };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  const run = (script, now) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', script)], { env: { ...process.env, ...dirs, NOW: now }, encoding: 'utf8' });
+  const first = run('collect-manga.mjs', '2026-10-12T07:00:00Z');
+  assert.ok(!/changement\(s\)/.test(first), 'premier passage silencieux');
+  // l'éditeur déplace un tome et en ajoute un autre
+  const f = path.join(fx, 'api_ki_oon_com_planning_year_2026_month_10.json');
+  const j = JSON.parse(readFileSync(f, 'utf8'));
+  j.volumes.find((v) => v.serie_title.startsWith('Übel')).date = '2026-10-29';
+  j.volumes.push({ serie_title: 'Nouvelle Série', ean: '9791032729999', link: '9791032729999-nouvelle-serie', number: 1, date: '2026-10-21', prix: '7,95 €' });
+  writeFileSync(f, JSON.stringify(j));
+  const second = run('collect-manga.mjs', '2026-10-13T07:00:00Z');
+  assert.ok(/2 changement\(s\)/.test(second), second);
+  const ch = JSON.parse(readFileSync(path.join(dirs.DATA_DIR, 'changes.json'), 'utf8'));
+  assert.deepEqual(ch.events.map((e) => e.type).sort(), ['date', 'nouveau']);
+  run('daily-articles.mjs', '2026-10-13T07:00:00Z');
+  const art = readFileSync(path.join(dirs.AUTO_DIR, 'manga-changements-2026-10-13.md'), 'utf8');
+  assert.ok(art.includes('## Reportés') && art.includes('Übel Blatt II') && art.includes('## Nouvelles sorties annoncées') && art.includes('Nouvelle Série'));
+  run('build.mjs', '2026-10-13T07:00:00Z');
+  const page = readFileSync(path.join(dirs.OUT_DIR, 'changements/index.html'), 'utf8');
+  assert.ok(page.includes('Reporté') && page.includes('Übel Blatt II') && page.includes('Annoncé') && page.includes('Nouvelle Série'));
+  const mangaPage = readFileSync(path.join(dirs.OUT_DIR, 'manga/index.html'), 'utf8');
+  assert.ok(/Reporté \(avant : /.test(mangaPage), 'badge de report sur la page manga');
+  assert.ok(readFileSync(path.join(dirs.OUT_DIR, 'index.html'), 'utf8').includes('Derniers changements de date'));
 });

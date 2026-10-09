@@ -4,9 +4,10 @@
 //   - content/auto/manga-semaine-AAAA-MM-JJ.md : sorties de la semaine (le lundi)
 // Les fichiers sont réécrits à chaque exécution : ne les modifie pas à la main (écris tes articles dans content/articles).
 import { writeFileSync, mkdirSync } from 'node:fs';
+import { readChanges } from './changes.mjs';
 import path from 'node:path';
 import {
-  paths, now, parisKey, parisHM, frDate, frDayMonth, ucfirst, addDays, weekdayOfKey,
+  paths, now, parisKey, parisHM, frDate, frShort, frDayMonth, ucfirst, addDays, weekdayOfKey,
   loadConfig, loadAllManga, readAnime, displayTitle, mangaLabel, euro,
 } from './lib.mjs';
 
@@ -107,6 +108,31 @@ if (weekdayOfKey(today) === 1) {
     writeArticle(`manga-semaine-${today}`, {
       title: `Manga : les sorties de la semaine du ${frDate(today)}`,
       description: `${week.length} sortie${week.length > 1 ? 's' : ''} manga attendue${week.length > 1 ? 's' : ''} cette semaine en France.`,
+    }, body);
+  }
+}
+
+/* ------------------------------------------------------ changements de date */
+{
+  const evs = readChanges(path.join(P.dataDir, 'changes.json')).events.filter((e) => e.day === today);
+  const name = (e) => `**${e.s}${e.t ? ` tome ${e.t}` : ''}** (${e.e})`;
+  const src = (e) => (/^https?:\/\//.test(e.u || '') ? ` ([fiche éditeur](${e.u}))` : '');
+  const groups = [
+    ['Reportés', evs.filter((e) => e.type === 'date' && e.to > e.from), (e) => `- ${name(e)} : du ${frShort(e.from)} au ${frShort(e.to)}${src(e)}`],
+    ['Avancés', evs.filter((e) => e.type === 'date' && e.to < e.from), (e) => `- ${name(e)} : du ${frShort(e.from)} au ${frShort(e.to)}${src(e)}`],
+    ['Nouvelles sorties annoncées', evs.filter((e) => e.type === 'nouveau'), (e) => `- ${name(e)} : sortie le ${frShort(e.to)}${src(e)}`],
+    ['Retirés du planning', evs.filter((e) => e.type === 'retire'), (e) => `- ${name(e)} : n'apparaît plus au planning de l'éditeur (était prévu le ${frShort(e.from)})${src(e)}`],
+  ].filter(([, list]) => list.length);
+  if (groups.length) {
+    const body = [
+      `Voici ce qui a bougé dans les plannings manga des éditeurs le ${frDate(today)}, relevé en comparant leurs pages avec celles de la veille.`,
+      '',
+      ...groups.flatMap(([title, list, fmt]) => [`## ${title}`, '', ...list.map(fmt), '']),
+      'Les éditeurs peuvent corriger leurs dates à tout moment : la fiche de chaque tome fait foi.',
+    ].join('\n');
+    writeArticle(`manga-changements-${today}`, {
+      title: `Manga : ${evs.length} changement${evs.length > 1 ? 's' : ''} dans les plannings du ${frDate(today)}`,
+      description: `${evs.length} tome${evs.length > 1 ? 's' : ''} reporté${evs.length > 1 ? 's' : ''}, avancé${evs.length > 1 ? 's' : ''}, annoncé${evs.length > 1 ? 's' : ''} ou retiré${evs.length > 1 ? 's' : ''} des plannings le ${frDate(today)}.`,
     }, body);
   }
 }

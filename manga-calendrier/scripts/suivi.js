@@ -142,7 +142,8 @@
         if (r.t) title.push(h('span', { class: 'tome', text: ' tome ' + r.t }));
         var meta = [h('time', { datetime: r.d, text: dateFr(r.d) }), h('span', { class: 'pub', text: pubName(r.e) })];
         if (typeof r.p === 'number') meta.push(h('span', { text: euro(r.p) }));
-        if (r.st === 'reporte') meta.push(h('span', { class: 'badge s-reporte', text: 'Reporté' }));
+        if (r.mv) meta.push(h('span', { class: 'badge ' + (r.d > r.mv ? 's-reporte' : 's-confirme'), text: (r.d > r.mv ? 'Reporté' : 'Avancé') + ' (avant : ' + dateFr(r.mv) + ')' }));
+        else if (r.st === 'reporte') meta.push(h('span', { class: 'badge s-reporte', text: 'Reporté' }));
         if (r.st === 'confirme') meta.push(h('span', { class: 'badge s-confirme', text: 'Date confirmée' }));
         if (/^https?:\/\//.test(r.u || '')) meta.push(h('a', { href: r.u, rel: 'noopener nofollow', text: 'Fiche éditeur' }));
         ul.appendChild(h('li', { class: 'rel p-' + pubClass(r.e) }, [h('div', { class: 'rel-title' }, title), h('div', { class: 'meta' }, meta)]));

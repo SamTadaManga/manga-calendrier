@@ -3,6 +3,7 @@
 import { mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { readChanges, keyOf } from './changes.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
@@ -35,7 +36,7 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/mon-planning/', 'Mon planning'], ['/articles/', 'Articles']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/mon-planning/', 'Mon planning'], ['/changements/', 'Changements'], ['/articles/', 'Articles']];
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 function layout({ title, description, pathname, body, noindex = false, extraHead = '' }) {
@@ -96,11 +97,36 @@ function editionOf(r) {
   return t;
 }
 
+const changes = readChanges(path.join(P.dataDir, 'changes.json'));
+const events = [...changes.events].sort((a, b) => (a.day < b.day ? 1 : a.day > b.day ? -1 : 0));
+const moves = new Map(); // tome -> dernier changement de date récent
+for (const ev of [...changes.events].sort((a, b) => (a.day < b.day ? -1 : 1))) {
+  if (ev.type === 'date' && ev.day >= addDays(today, -30)) moves.set(ev.k, ev);
+}
+
+function changeItem(ev) {
+  const pk = pubKey(ev.e);
+  let cls, label, text;
+  if (ev.type === 'date') {
+    const later = ev.to > ev.from;
+    [cls, label] = later ? ['s-reporte', 'Reporté'] : ['s-confirme', 'Avancé'];
+    text = `du ${frShort(ev.from)} au ${frShort(ev.to)}`;
+  } else if (ev.type === 'nouveau') {
+    [cls, label, text] = ['s-confirme', 'Annoncé', `sortie le ${frShort(ev.to)}`];
+  } else {
+    [cls, label, text] = ['s-annule', 'Retiré du planning', `était prévu le ${frShort(ev.from)}`];
+  }
+  return `<li class="rel p-${pk}"><div class="rel-title"><strong>${esc(ev.s)}</strong>${ev.t ? ` <span class="tome">tome ${esc(ev.t)}</span>` : ''}</div>`
+    + `<div class="meta"><span class="badge ${cls}">${label}</span><span>${esc(text)}</span><span class="pub">${esc(ev.e)}</span>${/^https?:\/\//.test(ev.u || '') ? `<a href="${esc(ev.u)}" rel="noopener nofollow">Fiche éditeur</a>` : ''}</div></li>`;
+}
+
 const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
 function releaseItem(r, showDate = false) {
   const pk = pubKey(r.editeur);
   const ed = editionOf(r);
-  const badge = BADGE_TXT[r.statut] ? `<span class="badge s-${r.statut}">${BADGE_TXT[r.statut]}</span>` : '';
+  const mv = moves.get(keyOf(r));
+  const moved = mv && mv.to === r.date ? `<span class="badge ${mv.to > mv.from ? 's-reporte' : 's-confirme'}">${mv.to > mv.from ? 'Reporté' : 'Avancé'} (avant : ${esc(frShort(mv.from))})</span>` : '';
+  const badge = moved || (BADGE_TXT[r.statut] ? `<span class="badge s-${r.statut}">${BADGE_TXT[r.statut]}</span>` : '');
   const meta = [
     showDate ? `<time datetime="${r.date}">${esc(frShort(r.date))}</time>` : '',
     `<span class="pub">${esc(r.editeur || 'Éditeur inconnu')}</span>`,
@@ -133,6 +159,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const live = manga.filter((r) => r.statut !== 'annule');
   const mangaToday = live.filter((r) => r.date === today);
   const mangaNext = live.filter((r) => r.date > today && r.date <= addDays(today, 30)).slice(0, 10);
+  const recent = events.filter((e) => e.day >= addDays(today, -14)).slice(0, 5);
   const strip = Array.from({ length: 7 }, (_, i) => addDays(today, i)).map((d) => {
     const m = live.filter((r) => r.date === d);
     const a = eps.filter((e) => e.key === d);
@@ -162,6 +189,7 @@ ${todayEps.length
 </div>
 </section>
 ${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2><ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul><p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
+${recent.length ? `<section><h2>Derniers changements de date</h2><ul class="list panel">${recent.map(changeItem).join('')}</ul><p class="more"><a href="/changements/">Tous les changements</a></p></section>` : ''}
 <section>
 <h2>Derniers articles</h2>
 ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p class="more"><a href="/articles/">Tous les articles</a></p>` : '<p class="empty">Les premiers articles arrivent bientôt.</p>'}
@@ -239,6 +267,7 @@ ${rows.length ? FILTER_JS : ''}`;
 {
   const rows = manga.map((r) => ({
     d: r.date, e: r.editeur, s: r.serie, t: r.tome, k: slugify(r.serie), p: r.prix, st: r.statut, u: r.source, i: r.isbn || undefined,
+    mv: (() => { const m = moves.get(keyOf(r)); return m && m.to === r.date ? m.from : undefined; })(),
   }));
   write('data/manga.json', JSON.stringify({ generated: today, rows }));
   write('suivi.js', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'suivi.js'), 'utf8'));
@@ -249,6 +278,21 @@ ${rows.length ? FILTER_JS : ''}`;
     body: `<h1>Mon planning</h1>
 <p class="lead">Choisis les séries que tu collectionnes : tu vois leurs prochains tomes, ce que ça coûte chaque mois, et tu peux les ajouter à ton agenda. Ta liste reste dans ton navigateur, rien n'est envoyé.</p>
 <div id="suivi-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ton planning.</p></div>`,
+  });
+}
+
+/* -------------------------------------------------------------- changements */
+{
+  const days = [...new Set(events.map((e) => e.day))];
+  const content = days.map((d) => `<section class="daygroup"><h2>${esc(ucfirst(frDayMonth(d)))}</h2><ul class="list panel">${events.filter((e) => e.day === d).map(changeItem).join('')}</ul></section>`).join('\n');
+  const since = changes.since ? `Suivi commencé le ${frDate(changes.since)}.` : '';
+  page('/changements/', {
+    title: 'Changements de date des sorties manga',
+    description: 'Tomes reportés, avancés, nouvellement annoncés ou retirés des plannings des éditeurs, relevés chaque jour.',
+    body: `<h1>Changements de date</h1>
+<p class="lead">Chaque nuit, le site compare les plannings de Glénat, Kana, Pika et Ki-oon avec ceux de la veille. Quand un tome est reporté, avancé, annoncé ou disparaît, c'est ici.</p>
+${events.length ? content : `<p class="empty">Aucun changement détecté pour le moment. ${esc(since)} Cette page se remplit quand un éditeur modifie son planning.</p>`}
+<p class="more muted">${events.length ? esc(since) : ''}</p>`,
   });
 }
 
@@ -348,7 +392,7 @@ write('404.html', layout({
 }));
 write('robots.txt', `User-agent: *\nAllow: /\n${siteUrlOk ? `Sitemap: ${base}/sitemap.xml\n` : ''}`);
 if (siteUrlOk) {
-  const urls = ['/', '/anime/', '/manga/', '/articles/', '/mentions-legales/', ...articles.map((a) => `/articles/${a.slug}/`)];
+  const urls = ['/', '/anime/', '/manga/', '/changements/', '/articles/', '/mentions-legales/', ...articles.map((a) => `/articles/${a.slug}/`)];
   const lastmod = (u) => (u.startsWith('/articles/') && u !== '/articles/' ? articles.find((a) => `/articles/${a.slug}/` === u)?.date : today);
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
     urls.map((u) => `<url><loc>${esc(base + u)}</loc><lastmod>${lastmod(u)}</lastmod></url>`).join('\n')}\n</urlset>\n`);
