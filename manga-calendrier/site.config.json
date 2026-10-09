@@ -1,5 +1,6 @@
 {
-  "siteName": "Calendrier Manga et Anime",
+  "siteName": "Prochain Tome",
+  "tagline": "Quand sort le prochain tome ? Les sorties manga en France (Glénat, Kana, Pika, Ki-oon) et les épisodes d'anime de la semaine, jour par jour.",
   "siteUrl": "https://manga-calendrier.tada-ebook.workers.dev",
   "description": "Les sorties manga en France et les épisodes d'anime de la semaine, jour par jour.",
   "autoPublish": true,
