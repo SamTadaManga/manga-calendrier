@@ -167,8 +167,17 @@ function episodeItem(e) {
   const url = safeUrl(e.url);
   const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
   const hasCover = showCovers && /^https:\/\//.test(e.cover || '');
-  const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="56" height="80" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
+  const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="96" height="144" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
   return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}</span></li>`;
+}
+
+function animeCard(e) {
+  const t = esc(displayTitle(e.title));
+  const url = safeUrl(e.url);
+  const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
+  const frame = `<div class="cover">${img}</div>`;
+  return `<li class="acard" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" rel="noopener nofollow" aria-label="${t} : fiche AniList">${frame}</a>` : frame}`
+    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span></div></li>`;
 }
 
 const articleItem = (a) =>
@@ -361,7 +370,7 @@ ${events.length ? content : `<p class="empty">Aucun changement détecté pour le
   const sections = days.map((d) => {
     const list = eps.filter((e) => e.key === d);
     return `<section class="day" id="j-${d}" data-group><h2 class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2>${
-      list.length ? `<ul class="list panel eps">${list.map(episodeItem).join('')}</ul>` : '<p class="empty">Aucun épisode enregistré ce jour-là.</p>'}</section>`;
+      list.length ? (showCovers ? `<ul class="acards">${list.map(animeCard).join('')}</ul>` : `<ul class="list panel eps">${list.map(episodeItem).join('')}</ul>`) : '<p class="empty">Aucun épisode enregistré ce jour-là.</p>'}</section>`;
   }).join('\n');
   const body = `
 <h1>Épisodes d'anime de la semaine</h1>
