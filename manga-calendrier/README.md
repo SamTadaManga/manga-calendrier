@@ -11,7 +11,7 @@ API AniList (épisodes d'anime) ────┘
 ```
 
 - `data/manga.csv` : tes sorties manga saisies à la main (copie de ton Google Sheets). **Elles priment toujours.**
-- `data/manga-auto.csv` : sorties collectées automatiquement chaque jour sur les plannings de Glénat, Kana, Pika et Ki-oon (statut « Annoncé »). Ne le modifie pas : il est réécrit. Pour corriger une ligne, ajoute-la dans ton Google Sheets (même ISBN, ou même série + tome) : la tienne remplace l'automatique.
+- `data/manga-auto.csv` : sorties collectées automatiquement chaque jour sur les plannings de Glénat, Kana, Pika, Ki-oon et Akata (statut « Annoncé »). Ne le modifie pas : il est réécrit. Pour corriger une ligne, ajoute-la dans ton Google Sheets (même ISBN, ou même série + tome) : la tienne remplace l'automatique.
 - `data/anime.json` : le programme anime des 8 prochains jours, mis à jour chaque jour.
 - `content/articles/` : **tes** articles (fichiers `.md`). Voir `_modele-article.md`.
 - `content/auto/` : les articles générés automatiquement. Ne les modifie pas : ils sont réécrits à chaque mise à jour.
@@ -43,7 +43,7 @@ Chaque jour : épisodes d'anime du jour, sorties manga du jour, et le lundi les 
 
 ## Collecte automatique des éditeurs
 
-`scripts/collect-manga.mjs` lit chaque jour (≈ 15 requêtes, 2 s d'intervalle, robots.txt respecté) le mois en cours et les 2 suivants sur : le planning Glénat Manga, le planning Kana, le planning Pika, et l'API du planning de Ki-oon. Il n'enregistre que des faits (titre, tome, date, ISBN, prix si disponible, lien) : aucune image ni texte éditorial.
+`scripts/collect-manga.mjs` lit chaque jour (≈ 15 requêtes, 2 s d'intervalle, robots.txt respecté) le mois en cours et les 2 suivants sur : le planning Glénat Manga, le planning Kana, le planning Pika, l'API du planning de Ki-oon et le planning Akata. Il n'enregistre que des faits (titre, tome, date, ISBN, prix si disponible, lien) : aucune image ni texte éditorial.
 - Si un éditeur change sa page et que plus rien n'est trouvé, ses anciennes lignes sont conservées et la mise à jour continue (le journal de l'onglet *Actions* l'indique : « 0 trouvée »). Il faudra alors corriger le fichier `scripts/collectors.mjs`.
 - Les dates des plannings d'éditeurs peuvent bouger : mentionne-les comme « annoncées ». Vérifie les conditions d'utilisation de chaque site si ton site devient commercial.
 - Test hors ligne : `npm test`.
@@ -92,3 +92,6 @@ Bouton « Je l'ai » sur chaque tome numéroté, et « Je possède les tomes 1 �
 - « ★ Nouvelle série » : tome 1 annoncé dans les 14 derniers jours ou à venir (les rééditions, collectors, deluxe, intégrales, coffrets, artbooks sont exclus).
 - « ★ Épisode 1 » : premier épisode d'un anime (hors films).
 - Page `/nouveautes/` et section « Nouvelles séries à découvrir » sur l'accueil.
+
+## Où regarder (streaming)
+`fetch-anime.mjs` garde les liens de streaming fournis par AniList pour quelques plateformes reconnues (Crunchyroll, ADN, Netflix, Prime Video, Disney+, Wakanim). Ils apparaissent comme petits boutons sur les cartes anime. AniList ne distingue pas les pays : ces liens ne garantissent pas la disponibilité en France.

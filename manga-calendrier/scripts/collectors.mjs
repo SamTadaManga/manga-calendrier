@@ -116,6 +116,37 @@ export function parseKioon(json) {
 }
 
 /* robots.txt minimal : groupe « User-agent: * », règles Allow/Disallow, la plus longue gagne. */
+/* Akata : une page par mois ; chaque sortie est un lien /publications/<slug> précédé d'une date JJ/MM/AAAA.
+   Analyse tolérante : on parcourt la page dans l'ordre, chaque lien reçoit la dernière date vue. */
+export function parseAkata(html, { base = 'https://www.akata.fr/' } = {}) {
+  const out = [];
+  const seen = new Set();
+  let date = null;
+  const re = /(\d{2}\/\d{2}\/\d{4})|<a\b[^>]*\bhref="([^"]*\/publications\/[^"#?]+)"[^>]*>((?:(?!<\/a>)[\s\S])*?)<\/a>/g;
+  let m;
+  const pending = new Map();
+  while ((m = re.exec(html))) {
+    if (m[1]) { date = dmy(m[1]); continue; }
+    if (!date) continue;
+    const href = new URL(decode(m[2]), base).href;
+    const inner = m[3];
+    const alt = (inner.match(/\balt="([^"]+)"/) || [])[1];
+    const src = (inner.match(/\bsrc="([^"]+)"/) || [])[1];
+    const text = strip(inner);
+    let e = pending.get(href);
+    if (!e) { e = { date, href, title: '', cover: '' }; pending.set(href, e); }
+    if (!e.title) e.title = text || (alt ? decode(alt) : '');
+    if (!e.cover && src) { const c = httpsOnly(new URL(decode(src), base).href); if (/^https:\/\/(www\.)?akata\.fr\//.test(c)) e.cover = c; }
+  }
+  for (const e of pending.values()) {
+    if (!e.title || seen.has(e.href)) continue;
+    seen.add(e.href);
+    const { serie, tome, titre } = splitTitle(e.title);
+    out.push({ date: e.date, editeur: 'Akata', serie, tome, titre, isbn: isbnOf(e.cover), prix: null, source: e.href, cover: e.cover });
+  }
+  return out;
+}
+
 export function robotsAllows(robotsTxt, pathname) {
   if (!robotsTxt || /^\s*<(!doctype|html)/i.test(robotsTxt)) return true;
   let inStar = false, rules = [], seenAgent = false;

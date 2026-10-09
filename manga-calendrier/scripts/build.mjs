@@ -92,7 +92,7 @@ const page = (pathname, opts) => write(`${pathname.replace(/^\//, '')}index.html
 
 /* ------------------------------------------------------------- composants */
 const SEO_URLS = [];
-const PUBS = { glenat: 'Glénat', kana: 'Kana', pika: 'Pika', 'ki-oon': 'Ki-oon' };
+const PUBS = { glenat: 'Glénat', kana: 'Kana', pika: 'Pika', 'ki-oon': 'Ki-oon', akata: 'Akata' };
 const pubKey = (e) => { const k = slugify(e || ''); return k in PUBS ? k : 'autre'; };
 const weekday = (k) => new Intl.DateTimeFormat('fr-FR', { weekday: 'short', timeZone: 'UTC' }).format(new Date(`${k}T12:00:00Z`)).replace('.', '');
 const dayNum = (k) => String(Number(k.slice(8)));
@@ -194,13 +194,17 @@ function releaseItem(r, showDate = false) {
     + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
+const streamChips = (e) => (Array.isArray(e.stream) ? e.stream : [])
+  .filter((s) => s && /^https:\/\//.test(s.u || '')).slice(0, 3)
+  .map((s) => `<a class="stream" href="${esc(s.u)}" rel="noopener nofollow" target="_blank">${esc(s.n)}</a>`).join('');
+
 function episodeItem(e) {
   const t = esc(displayTitle(e.title));
   const url = safeUrl(e.url);
   const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
   const hasCover = showCovers && /^https:\/\//.test(e.cover || '');
   const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="96" height="144" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
-  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}</span></li>`;
+  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}</span></li>`;
 }
 
 function animeCard(e) {
@@ -209,7 +213,7 @@ function animeCard(e) {
   const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
   const frame = `<div class="cover">${img}</div>`;
   return `<li class="acard" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" rel="noopener nofollow" aria-label="${t} : fiche AniList">${frame}</a>` : frame}`
-    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}</div></li>`;
+    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}</div></li>`;
 }
 
 const articleItem = (a) =>
@@ -239,7 +243,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const body = `
 <section class="week" aria-labelledby="t-week">
 <div class="week-head"><h1 id="t-week">Les sorties de la semaine</h1>
-<p class="lead">Mangas en France chez Glénat, Kana, Pika et Ki-oon. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
+<p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon et Akata. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
 <div class="since panel" id="since" hidden></div>
 <ul class="strip">${strip}</ul>
@@ -357,7 +361,7 @@ ${content}` : '<p class="empty">Le calendrier manga sera bientôt alimenté.</p>
 <p class="more"><a href="/sorties-manga/">Sorties par mois</a> · <a href="/series/">Toutes les séries</a></p>
 <p class="more"><a href="/manga.ics">Ajouter à mon agenda (manga.ics)</a>${siteUrlOk ? `<span class="muted"> Adresse à coller dans l'agenda : <code>${esc(base)}/manga.ics</code></span>` : ''}</p>
 ${rows.length ? FILTER_JS : ''}`;
-  page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs (Glénat, Kana, Pika, Ki-oon), prix et statut de chaque tome.', body });
+  page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs (Glénat, Kana, Pika, Ki-oon, Akata), prix et statut de chaque tome.', body });
 }
 
 
@@ -395,7 +399,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   }
   page('/sorties-manga/', {
     title: 'Sorties manga par mois',
-    description: 'Les sorties manga en France mois par mois : tous les tomes annoncés par Glénat, Kana, Pika et Ki-oon.',
+    description: 'Les sorties manga en France mois par mois : tous les tomes annoncés par Glénat, Kana, Pika, Ki-oon et Akata.',
     body: `<h1>Sorties manga par mois</h1>
 <p class="lead">Choisis un mois pour voir tous les tomes annoncés.</p>
 <p class="chiprow">${months.map((mk) => `<a class="chip" href="/sorties-manga/${monthSlug(mk)}/">${esc(ucfirst(frMonth(`${mk}-01`)))} <span class="n">${byMonth.get(mk).length}</span></a>`).join('')}</p>
@@ -424,7 +428,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const n = S.next;
     const lead = n
       ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? '' : ' La date peut encore bouger.'}`
-      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika et Ki-oon. Suis la série pour la retrouver dans Mon planning.`;
+      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata. Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
     page(`/serie/${S.k}/`, {
@@ -452,7 +456,7 @@ ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map(volTile).join
   const az = letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="sgrid">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L).map(card).join('')}</ul></section>`).join('');
   page('/series/', {
     title: 'Toutes les séries manga : prochain tome',
-    description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika et Ki-oon.`,
+    description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika, Ki-oon et Akata.`,
     body: `<h1>Séries manga</h1>
 <p class="lead">${esc(plural(seriesList.length, 'série suivie', 'séries suivies'))} dans les plannings des éditeurs. Clique sur une série pour voir la date de son prochain tome.</p>
 ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série"></div>
@@ -513,7 +517,7 @@ ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="sea
     title: 'Changements de date des sorties manga',
     description: 'Tomes reportés, avancés, nouvellement annoncés ou retirés des plannings des éditeurs, relevés chaque jour.',
     body: `<h1>Changements de date</h1>
-<p class="lead">Chaque nuit, le site compare les plannings de Glénat, Kana, Pika et Ki-oon avec ceux de la veille. Quand un tome est reporté, avancé, annoncé ou disparaît, c'est ici.</p>
+<p class="lead">Chaque nuit, le site compare les plannings de Glénat, Kana, Pika, Ki-oon et Akata avec ceux de la veille. Quand un tome est reporté, avancé, annoncé ou disparaît, c'est ici.</p>
 ${events.length ? content : `<p class="empty">Aucun changement détecté pour le moment. ${esc(since)} Cette page se remplit quand un éditeur modifie son planning.</p>`}
 <p class="more muted">${events.length ? esc(since) : ''}</p>`,
   });

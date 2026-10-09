@@ -1,15 +1,15 @@
 /* Calendrier manga et anime
    Règle : une couleur = un sens.
    - Encre (noir) et jaune d'imprimerie : la structure et la marque (en-tête, aujourd'hui, surlignages).
-   - Une couleur par éditeur (bleu Glénat, rouge Kana, vert Pika, violet Ki-oon) : uniquement pour reconnaître l'éditeur.
+   - Une couleur par éditeur (bleu Glénat, rouge Kana, vert Pika, violet Ki-oon, magenta Akata) : uniquement pour reconnaître l'éditeur.
    - Les jours de la semaine n'ont pas de couleur.
    Polices du système : aucune requête vers un tiers. */
 :root{
   --paper:#fbfaf6;--panel:#fff;--ink:#111;--edge:#111;--muted:#5b5b5b;--line:#e6e3da;
   --brand:#ffd21f;--on-brand:#111;--mark:rgba(255,210,31,.7);
   --link:#111;--dot:rgba(17,17,17,.2);--shadow:#111;
-  --c-glenat:#0a4fd6;--c-kana:#d93a0b;--c-pika:#08804a;--c-ki-oon:#7a24c9;--c-autre:#5f6672;
-  --t-glenat:#0a4fd6;--t-kana:#d93a0b;--t-pika:#08804a;--t-ki-oon:#7a24c9;--t-autre:#5f6672;
+  --c-glenat:#0a4fd6;--c-kana:#d93a0b;--c-pika:#08804a;--c-ki-oon:#7a24c9;--c-akata:#c4177d;--c-autre:#5f6672;
+  --t-glenat:#0a4fd6;--t-kana:#d93a0b;--t-pika:#08804a;--t-ki-oon:#7a24c9;--t-akata:#c4177d;--t-autre:#5f6672;
   --foot:#111;--on-foot:#d8d8d8;
   --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;
@@ -17,7 +17,7 @@
 @media (prefers-color-scheme:dark){:root{
   --paper:#0f0f10;--panel:#19191b;--ink:#f6f4ee;--edge:#f6f4ee;--muted:#a8a8a8;--line:#2c2c2f;
   --mark:rgba(255,210,31,.35);--link:#f6f4ee;--dot:rgba(17,17,17,.25);--shadow:#000;
-  --t-glenat:#6c9bff;--t-kana:#ff8059;--t-pika:#3fd18a;--t-ki-oon:#b987f5;--t-autre:#a9b0bc;
+  --t-glenat:#6c9bff;--t-kana:#ff8059;--t-pika:#3fd18a;--t-ki-oon:#b987f5;--t-akata:#ff7ac2;--t-autre:#a9b0bc;
   --foot:#070708;--on-foot:#c8c8c8;
 }}
 *{box-sizing:border-box}
@@ -81,7 +81,7 @@ a.d-line:hover{text-decoration:underline}
 .chip .dot{margin-right:2px;border-color:transparent}
 
 /* Éditeurs */
-.p-glenat{--pc:var(--c-glenat);--pt:var(--t-glenat)}.p-kana{--pc:var(--c-kana);--pt:var(--t-kana)}.p-pika{--pc:var(--c-pika);--pt:var(--t-pika)}.p-ki-oon{--pc:var(--c-ki-oon);--pt:var(--t-ki-oon)}.p-autre{--pc:var(--c-autre);--pt:var(--t-autre)}
+.p-glenat{--pc:var(--c-glenat);--pt:var(--t-glenat)}.p-kana{--pc:var(--c-kana);--pt:var(--t-kana)}.p-pika{--pc:var(--c-pika);--pt:var(--t-pika)}.p-ki-oon{--pc:var(--c-ki-oon);--pt:var(--t-ki-oon)}.p-akata{--pc:var(--c-akata);--pt:var(--t-akata)}.p-autre{--pc:var(--c-autre);--pt:var(--t-autre)}
 
 /* Deux colonnes */
 .two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;align-items:start}
@@ -316,3 +316,8 @@ ul.vgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 .vol .ed::before{content:""}
 .vol .own{margin-top:2px}
 .azlist{display:none}
+
+.streams{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.ep-row .streams{margin:0 0 0 .5rem;display:inline-flex}
+a.stream{padding:0 7px;border:1.5px solid var(--ink);border-radius:2px;font-size:.78rem;font-weight:700;text-decoration:none;color:var(--ink);background:var(--paper)}
+@media (hover:hover){a.stream:hover{background:var(--brand);box-shadow:2px 2px 0 var(--shadow)}}

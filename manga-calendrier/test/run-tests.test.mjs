@@ -136,6 +136,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
 
   const animePage = read(dist('anime/index.html'));
   assert.ok(animePage.includes('Test Series One') && animePage.includes('Shiken Ni'));
+  assert.ok(animePage.includes('class="stream"') && animePage.includes('Crunchyroll') && !animePage.includes('evil.example'), 'plateformes de streaming');
   assert.ok(!animePage.includes('<script>alert(1)'), 'titre piégé non échappé');
   assert.ok(animePage.includes('&lt;script&gt;alert(1)&lt;/script&gt; Hacker &amp; Co'));
   const mangaPage = read(dist('manga/index.html'));
@@ -184,7 +185,7 @@ test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () =
   const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
   const env = { ...process.env, DATA_DIR: tmp, NOW: '2026-10-12T07:00:00Z', COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/publishers') };
   const out = execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-manga.mjs')], { env, encoding: 'utf8' });
-  assert.ok(/Glénat : 3/.test(out) && /Kana : 3/.test(out) && /Pika : 4/.test(out) && /Ki-oon : 3/.test(out), out);
+  assert.ok(/Glénat : 3/.test(out) && /Kana : 3/.test(out) && /Pika : 4/.test(out) && /Ki-oon : 3/.test(out) && !/Akata/.test(out), out);
   const csv = readFileSync(path.join(tmp, 'manga-auto.csv'), 'utf8');
   assert.ok(!csv.includes('Lou ! Sonata'), 'la BD Glénat est exclue');
   assert.ok(!csv.includes('Vieux Titre') && !csv.includes('2026-05-20'), 'dates hors fenêtre exclues');

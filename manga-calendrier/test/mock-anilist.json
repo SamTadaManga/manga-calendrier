@@ -1,199 +1,215 @@
 {
- "data": {
-  "Page": {
-   "pageInfo": {
-    "hasNextPage": false
-   },
-   "airingSchedules": [
-    {
-     "airingAt": 1791765000,
-     "episode": 3,
-     "media": {
-      "id": 1,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 500,
-      "siteUrl": "https://anilist.co/anime/1",
-      "coverImage": { "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1-test.jpg" },
-      "title": {
-       "romaji": "Shiken Ichi",
-       "english": "Test Series One",
-       "native": "テスト1"
-      }
-     }
-    },
-    {
-     "airingAt": 1791817200,
-     "episode": 7,
-     "media": {
-      "id": 2,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 9000,
-      "siteUrl": "https://anilist.co/anime/2",
-      "title": {
-       "romaji": "Shiken Ni",
-       "english": null,
-       "native": "テスト2"
-      }
-     }
-    },
-    {
-     "airingAt": 1791840600,
-     "episode": 1,
-     "media": {
-      "id": 3,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 100,
-      "siteUrl": "https://anilist.co/anime/3",
-      "title": {
-       "romaji": "Shiken San",
-       "english": "<script>alert(1)</script> Hacker & Co",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1791844200,
-     "episode": 12,
-     "media": {
-      "id": 4,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 300,
-      "siteUrl": "https://anilist.co/anime/4",
-      "title": {
-       "romaji": "Shiken Yon",
-       "english": "Test Series Four",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1791885600,
-     "episode": 2,
-     "media": {
-      "id": 5,
-      "format": "MOVIE",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 2000,
-      "siteUrl": "https://anilist.co/anime/5",
-      "title": {
-       "romaji": "Shiken Go",
-       "english": "Test Movie",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1792443600,
-     "episode": 9,
-     "media": {
-      "id": 6,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 1000,
-      "siteUrl": "https://anilist.co/anime/6",
-      "title": {
-       "romaji": "Shiken Roku",
-       "english": "Last Day Series",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1792449000,
-     "episode": 1,
-     "media": {
-      "id": 7,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 1000,
-      "siteUrl": "https://anilist.co/anime/7",
-      "title": {
-       "romaji": "Hors fenetre",
-       "english": "Out of window",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1791720000,
-     "episode": 1,
-     "media": {
-      "id": 8,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 1000,
-      "siteUrl": "https://anilist.co/anime/8",
-      "title": {
-       "romaji": "Hier",
-       "english": "Yesterday",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1791806400,
-     "episode": 1,
-     "media": {
-      "id": 9,
-      "format": "TV",
-      "countryOfOrigin": "JP",
-      "isAdult": true,
-      "popularity": 1000,
-      "siteUrl": "https://anilist.co/anime/9",
-      "title": {
-       "romaji": "Adulte",
-       "english": "Adult",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1791810000,
-     "episode": 1,
-     "media": {
-      "id": 10,
-      "format": "TV",
-      "countryOfOrigin": "CN",
-      "isAdult": false,
-      "popularity": 1000,
-      "siteUrl": "https://anilist.co/anime/10",
-      "title": {
-       "romaji": "Chine",
-       "english": "Chinese Series",
-       "native": ""
-      }
-     }
-    },
-    {
-     "airingAt": 1791813600,
-     "episode": 1,
-     "media": {
-      "id": 11,
-      "format": "MUSIC",
-      "countryOfOrigin": "JP",
-      "isAdult": false,
-      "popularity": 1000,
-      "siteUrl": "https://anilist.co/anime/11",
-      "title": {
-       "romaji": "Musique",
-       "english": "Music Clip",
-       "native": ""
-      }
-     }
+  "data": {
+    "Page": {
+      "pageInfo": {
+        "hasNextPage": false
+      },
+      "airingSchedules": [
+        {
+          "airingAt": 1791765000,
+          "episode": 3,
+          "media": {
+            "id": 1,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 500,
+            "siteUrl": "https://anilist.co/anime/1",
+            "coverImage": {
+              "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1-test.jpg"
+            },
+            "title": {
+              "romaji": "Shiken Ichi",
+              "english": "Test Series One",
+              "native": "テスト1"
+            },
+            "externalLinks": [
+              {
+                "site": "Crunchyroll",
+                "url": "https://www.crunchyroll.com/series/X",
+                "type": "STREAMING",
+                "isDisabled": false
+              },
+              {
+                "site": "Evil",
+                "url": "http://evil.example/x",
+                "type": "STREAMING",
+                "isDisabled": false
+              }
+            ]
+          }
+        },
+        {
+          "airingAt": 1791817200,
+          "episode": 7,
+          "media": {
+            "id": 2,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 9000,
+            "siteUrl": "https://anilist.co/anime/2",
+            "title": {
+              "romaji": "Shiken Ni",
+              "english": null,
+              "native": "テスト2"
+            }
+          }
+        },
+        {
+          "airingAt": 1791840600,
+          "episode": 1,
+          "media": {
+            "id": 3,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 100,
+            "siteUrl": "https://anilist.co/anime/3",
+            "title": {
+              "romaji": "Shiken San",
+              "english": "<script>alert(1)</script> Hacker & Co",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1791844200,
+          "episode": 12,
+          "media": {
+            "id": 4,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 300,
+            "siteUrl": "https://anilist.co/anime/4",
+            "title": {
+              "romaji": "Shiken Yon",
+              "english": "Test Series Four",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1791885600,
+          "episode": 2,
+          "media": {
+            "id": 5,
+            "format": "MOVIE",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 2000,
+            "siteUrl": "https://anilist.co/anime/5",
+            "title": {
+              "romaji": "Shiken Go",
+              "english": "Test Movie",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1792443600,
+          "episode": 9,
+          "media": {
+            "id": 6,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 1000,
+            "siteUrl": "https://anilist.co/anime/6",
+            "title": {
+              "romaji": "Shiken Roku",
+              "english": "Last Day Series",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1792449000,
+          "episode": 1,
+          "media": {
+            "id": 7,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 1000,
+            "siteUrl": "https://anilist.co/anime/7",
+            "title": {
+              "romaji": "Hors fenetre",
+              "english": "Out of window",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1791720000,
+          "episode": 1,
+          "media": {
+            "id": 8,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 1000,
+            "siteUrl": "https://anilist.co/anime/8",
+            "title": {
+              "romaji": "Hier",
+              "english": "Yesterday",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1791806400,
+          "episode": 1,
+          "media": {
+            "id": 9,
+            "format": "TV",
+            "countryOfOrigin": "JP",
+            "isAdult": true,
+            "popularity": 1000,
+            "siteUrl": "https://anilist.co/anime/9",
+            "title": {
+              "romaji": "Adulte",
+              "english": "Adult",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1791810000,
+          "episode": 1,
+          "media": {
+            "id": 10,
+            "format": "TV",
+            "countryOfOrigin": "CN",
+            "isAdult": false,
+            "popularity": 1000,
+            "siteUrl": "https://anilist.co/anime/10",
+            "title": {
+              "romaji": "Chine",
+              "english": "Chinese Series",
+              "native": ""
+            }
+          }
+        },
+        {
+          "airingAt": 1791813600,
+          "episode": 1,
+          "media": {
+            "id": 11,
+            "format": "MUSIC",
+            "countryOfOrigin": "JP",
+            "isAdult": false,
+            "popularity": 1000,
+            "siteUrl": "https://anilist.co/anime/11",
+            "title": {
+              "romaji": "Musique",
+              "english": "Music Clip",
+              "native": ""
+            }
+          }
+        }
+      ]
     }
-   ]
   }
- }
 }

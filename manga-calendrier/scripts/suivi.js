@@ -184,7 +184,7 @@
   }
   var pubClass = function (e) {
     var k = (e || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z-]/g, '');
-    return ['glenat', 'kana', 'pika', 'ki-oon'].indexOf(k) > -1 ? k : 'autre';
+    return ['glenat', 'kana', 'pika', 'ki-oon', 'akata'].indexOf(k) > -1 ? k : 'autre';
   };
   var pubName = function (e) { return e || 'Éditeur inconnu'; };
 

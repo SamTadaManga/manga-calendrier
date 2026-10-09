@@ -1,4 +1,4 @@
-// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon) -> data/manga-auto.csv
+// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon, Akata) -> data/manga-auto.csv
 // Politesse : User-Agent qui s'identifie, robots.txt respecté, ~15 requêtes par jour, 2 s entre deux requêtes.
 // Si un éditeur ne répond pas ou change sa page, ses anciennes lignes sont conservées et le reste continue.
 //
@@ -8,7 +8,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { paths, now, parisKey, addDays, loadManga } from './lib.mjs';
 import { readChanges, updateChanges, serializeChanges } from './changes.mjs';
-import { parseHachette, parseKana, parseKioon, robotsAllows } from './collectors.mjs';
+import { parseHachette, parseKana, parseKioon, parseAkata, robotsAllows } from './collectors.mjs';
 
 const P = paths();
 const today = parisKey(now());
@@ -114,6 +114,18 @@ const SOURCES = [
       return rows;
     },
   },
+  // Akata : désactivé pour l'instant. Pour le réactiver, déplace ce bloc dans SOURCES.
+  //   {
+  //     editeur: 'Akata',
+  //     async run() {
+  //       const rows = [];
+  //       for (const { ym } of months) {
+  //         const html = await get(`https://www.akata.fr/planning?date=${ym}`);
+  //         if (html) rows.push(...parseAkata(html));
+  //       }
+  //       return rows;
+  //     },
+  //   },
 ];
 
 /* ------------------------------------------------------------- exécution */

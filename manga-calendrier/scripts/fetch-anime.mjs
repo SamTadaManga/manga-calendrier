@@ -18,10 +18,28 @@ const QUERY = `query ($page: Int, $from: Int, $to: Int) {
     airingSchedules(airingAt_greater: $from, airingAt_lesser: $to, sort: TIME) {
       airingAt
       episode
-      media { id format countryOfOrigin isAdult popularity siteUrl coverImage { large } title { romaji english native } }
+      media { id format countryOfOrigin isAdult popularity siteUrl externalLinks { site url type isDisabled } coverImage { large } title { romaji english native } }
     }
   }
 }`;
+
+// Plateformes de streaming reconnues (nom affiché -> domaine). Seuls les liens https vers ces domaines sont gardés.
+const PLATFORMS = [
+  ['Crunchyroll', /(^|\.)crunchyroll\.com$/i], ['ADN', /(^|\.)animationdigitalnetwork\.(com|fr)$/i],
+  ['Netflix', /(^|\.)netflix\.com$/i], ['Prime Video', /(^|\.)(primevideo|amazon)\.com$/i],
+  ['Disney+', /(^|\.)disneyplus\.com$/i], ['Wakanim', /(^|\.)wakanim\.tv$/i],
+];
+export function streams(links) {
+  const out = [];
+  for (const l of Array.isArray(links) ? links : []) {
+    if (!l || l.isDisabled || l.type !== 'STREAMING') continue;
+    let u; try { u = new URL(l.url); } catch { continue; }
+    if (u.protocol !== 'https:') continue;
+    const p = PLATFORMS.find(([, rx]) => rx.test(u.hostname));
+    if (p && !out.some((o) => o.n === p[0])) out.push({ n: p[0], u: u.href });
+  }
+  return out;
+}
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -74,6 +92,7 @@ const episodes = raw
     format: x.media.format || '',
     popularity: x.media.popularity ?? 0,
     url: x.media.siteUrl || '',
+    stream: streams(x.media.externalLinks),
     cover: /^https:\/\/[a-z0-9.-]*anilist\.co\//i.test(x.media.coverImage?.large || '') ? x.media.coverImage.large : '',
   }))
   .filter((e) => {
