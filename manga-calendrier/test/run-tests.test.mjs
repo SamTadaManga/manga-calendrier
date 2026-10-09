@@ -136,7 +136,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
 
   const animePage = read(dist('anime/index.html'));
   assert.ok(animePage.includes('Test Series One') && animePage.includes('Shiken Ni'));
-  assert.ok(animePage.includes('class="stream"') && animePage.includes('Crunchyroll') && !animePage.includes('evil.example'), 'plateformes de streaming');
+  assert.ok(animePage.includes('class="stream s-crunchyroll"') && animePage.includes('Crunchyroll') && !animePage.includes('evil.example'), 'plateformes de streaming');
   assert.ok(!animePage.includes('<script>alert(1)'), 'titre piégé non échappé');
   assert.ok(animePage.includes('&lt;script&gt;alert(1)&lt;/script&gt; Hacker &amp; Co'));
   const mangaPage = read(dist('manga/index.html'));

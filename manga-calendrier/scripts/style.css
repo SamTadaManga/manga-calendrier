@@ -321,3 +321,11 @@ ul.vgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 .ep-row .streams{margin:0 0 0 .5rem;display:inline-flex}
 a.stream{padding:0 7px;border:1.5px solid var(--ink);border-radius:2px;font-size:.78rem;font-weight:700;text-decoration:none;color:var(--ink);background:var(--paper)}
 @media (hover:hover){a.stream:hover{background:var(--brand);box-shadow:2px 2px 0 var(--shadow)}}
+
+.jump-today{margin-left:auto;background:var(--brand)}
+.chip-day.flash{animation:flash 1.4s ease-out}
+@keyframes flash{0%,35%{outline:4px solid var(--brand);outline-offset:3px}100%{outline:4px solid transparent;outline-offset:3px}}
+@media (prefers-reduced-motion:reduce){.chip-day.flash{animation:none;outline:4px solid var(--brand);outline-offset:3px}}
+
+a.stream{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:34px;height:26px;padding:0 7px;border:2px solid var(--ink);border-radius:4px;font-size:.78rem;font-weight:800;line-height:1;letter-spacing:.02em}
+a.stream svg{flex:none}

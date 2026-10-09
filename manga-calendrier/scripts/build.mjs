@@ -194,9 +194,10 @@ function releaseItem(r, showDate = false) {
     + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
+const STREAM_ICON = { Crunchyroll: 'CR', ADN: 'ADN', Netflix: 'N', 'Prime Video': 'P', 'Disney+': 'D+', Wakanim: 'W' };
 const streamChips = (e) => (Array.isArray(e.stream) ? e.stream : [])
   .filter((s) => s && /^https:\/\//.test(s.u || '')).slice(0, 3)
-  .map((s) => `<a class="stream" href="${esc(s.u)}" rel="noopener nofollow" target="_blank">${esc(s.n)}</a>`).join('');
+  .map((s) => `<a class="stream s-${esc(slugify(s.n))}" href="${esc(s.u)}" rel="noopener nofollow" target="_blank" title="Regarder sur ${esc(s.n)}" aria-label="Regarder sur ${esc(s.n)}"><svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>${esc(STREAM_ICON[s.n] || s.n.slice(0, 2))}</a>`).join('');
 
 function episodeItem(e) {
   const t = esc(displayTitle(e.title));
@@ -304,7 +305,16 @@ try{localStorage.setItem('mc-vue',v);}catch(e){}
 apply();}
 if(vb){vb.hidden=false;[].forEach.call(vb.querySelectorAll('[data-view]'),function(b){b.addEventListener('click',function(){show(b.dataset.view);});});
 var sv='jour';try{sv=localStorage.getItem('mc-vue')||'jour';}catch(e){}
-if(sv!=='jour'&&/^(editeur|serie)$/.test(sv))show(sv);}
+if(sv!=='jour'&&/^(editeur|serie)$/.test(sv))show(sv);
+var aj=document.getElementById('auj');
+if(aj)aj.addEventListener('click',function(){
+if(document.body.classList.contains('view-alt'))show('jour');
+var t=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Paris'}).format(new Date()),target=null,hs=document.querySelectorAll('.month h3[id^="j-"]');
+for(var i=0;i<hs.length;i++){var g=hs[i].closest('[data-group]');if(hs[i].id.slice(2)>=t&&!(g&&g.hidden)){target=hs[i];break;}}
+if(!target){aj.textContent='Rien à venir';setTimeout(function(){aj.textContent="Aujourd'hui";},2000);return;}
+var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+target.scrollIntoView({behavior:rm?'auto':'smooth',block:'start'});
+target.classList.remove('flash');void target.offsetWidth;target.classList.add('flash');});}
 })();
 </script>`;
 
@@ -355,7 +365,7 @@ if(sv!=='jour'&&/^(editeur|serie)$/.test(sv))show(sv);}
 <p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.</p>
 ${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}</div>
 <div class="views" id="vues" role="group" aria-label="Affichage" hidden><span class="muted">Affichage :</span>
-<button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button></div>
+<button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button><button type="button" class="chip jump-today" id="auj">Aujourd'hui</button></div>
 <p class="empty" id="aucun" hidden>Aucune sortie ne correspond à ce filtre.</p>
 ${content}` : '<p class="empty">Le calendrier manga sera bientôt alimenté.</p>'}
 <p class="more"><a href="/sorties-manga/">Sorties par mois</a> · <a href="/series/">Toutes les séries</a></p>
