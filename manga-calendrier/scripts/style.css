@@ -96,7 +96,7 @@ a.d-line:hover{text-decoration:underline}
 
 /* Suivre */
 .rel{position:relative}
-.follow{position:absolute;right:10px;top:9px;min-height:32px;padding:2px 12px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit;font-size:.85rem;font-weight:650;cursor:pointer}
+.follow{position:absolute;z-index:1;right:10px;top:9px;min-height:32px;padding:2px 12px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit;font-size:.85rem;font-weight:650;cursor:pointer}
 .follow[aria-pressed=true]{background:var(--ink);color:var(--paper)}
 .rel .rel-title,.rel .meta{padding-right:84px}
 .follow-chips{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
