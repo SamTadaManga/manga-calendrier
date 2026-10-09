@@ -129,7 +129,9 @@ a.d-line:hover{text-decoration:underline}
 
 /* Épisodes */
 .eps li.ep-row{display:grid;grid-template-columns:4.6rem minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:10px 14px;border-bottom:1px solid var(--line)}
-.ep-row time{font-weight:800;font-variant-numeric:tabular-nums}
+.eps li.ep-row.has-thumb{grid-template-columns:56px 4.2rem minmax(0,1fr) auto;align-items:center}
+.ep-cover{display:block;width:56px;height:80px;box-shadow:2px 2px 0 var(--shadow)}
+.ep-row time{white-space:nowrap;font-weight:800;font-variant-numeric:tabular-nums}
 .ep-row .ep{font-size:.88rem;color:var(--muted);white-space:nowrap}
 .ep-row a{color:var(--ink);text-decoration-color:var(--line)}
 .ep-row a:hover{color:var(--ink)}
@@ -223,6 +225,9 @@ code{background:var(--line);padding:1px 5px;font-size:.9em}
   .shelf{margin-right:-16px}
   .eps li.ep-row{grid-template-columns:3.8rem minmax(0,1fr)}
   .ep-row .ep{grid-column:2}
+  .eps li.ep-row.has-thumb{grid-template-columns:48px 3.9rem minmax(0,1fr);gap:4px 10px;align-items:start}
+  .eps li.ep-row.has-thumb .ep{grid-column:3}
+  .ep-cover{width:48px;height:68px}
   .articles li{grid-template-columns:minmax(0,1fr);gap:0}
   .cal{border-spacing:2px;margin-left:-2px}
   .cal td{height:54px}

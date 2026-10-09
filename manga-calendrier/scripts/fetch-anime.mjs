@@ -18,7 +18,7 @@ const QUERY = `query ($page: Int, $from: Int, $to: Int) {
     airingSchedules(airingAt_greater: $from, airingAt_lesser: $to, sort: TIME) {
       airingAt
       episode
-      media { id format countryOfOrigin isAdult popularity siteUrl title { romaji english native } }
+      media { id format countryOfOrigin isAdult popularity siteUrl coverImage { large } title { romaji english native } }
     }
   }
 }`;
@@ -74,6 +74,7 @@ const episodes = raw
     format: x.media.format || '',
     popularity: x.media.popularity ?? 0,
     url: x.media.siteUrl || '',
+    cover: /^https:\/\/[a-z0-9.-]*anilist\.co\//i.test(x.media.coverImage?.large || '') ? x.media.coverImage.large : '',
   }))
   .filter((e) => {
     const k = `${e.mediaId}-${e.episode}-${e.airingAt}`;

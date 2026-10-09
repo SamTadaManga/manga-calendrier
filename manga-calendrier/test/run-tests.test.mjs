@@ -305,3 +305,19 @@ test('décodage HTML : apostrophes, accents et double encodage', () => {
   assert.equal(decode('A&nbsp;&nbsp;B &#233; &#x41;'), 'A B é A');
   assert.equal(decode('&inconnu; reste'), '&inconnu; reste');
 });
+
+test('affiches d\'anime : collectées, affichées seulement si showCovers', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), NOW: '2026-10-12T07:00:00Z' };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const cfg = (extra, name) => { const f = path.join(tmp, name); writeFileSync(f, JSON.stringify({ ...base, ...extra })); return f; };
+  const run = (script, env, ...args) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', script), ...args], { env: { ...process.env, ...dirs, ...env }, encoding: 'utf8' });
+  run('fetch-anime.mjs', {}, '--from-file', path.join(ROOT, 'test/mock-anilist.json'));
+  const json = JSON.parse(readFileSync(path.join(dirs.DATA_DIR, 'anime.json'), 'utf8'));
+  assert.ok(json.episodes.some((e) => e.cover === 'https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1-test.jpg'));
+  run('build.mjs', { CONFIG_FILE: cfg({ showCovers: true }, 'on.json'), OUT_DIR: path.join(tmp, 'on') });
+  run('build.mjs', { CONFIG_FILE: cfg({}, 'off.json'), OUT_DIR: path.join(tmp, 'off') });
+  assert.ok(readFileSync(path.join(tmp, 'on/anime/index.html'), 'utf8').includes('bx1-test.jpg'));
+  assert.ok(!readFileSync(path.join(tmp, 'off/anime/index.html'), 'utf8').includes('bx1-test.jpg'));
+});

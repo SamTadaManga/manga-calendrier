@@ -166,7 +166,9 @@ function episodeItem(e) {
   const t = esc(displayTitle(e.title));
   const url = safeUrl(e.url);
   const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
-  return `<li class="ep-row" data-q="${esc(displayTitle(e.title).toLowerCase())}"><time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}</span></li>`;
+  const hasCover = showCovers && /^https:\/\//.test(e.cover || '');
+  const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="56" height="80" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
+  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}</span></li>`;
 }
 
 const articleItem = (a) =>
@@ -409,7 +411,7 @@ const L = config.legal;
 <h2>Données et contenus</h2>
 <p>Les horaires des épisodes d'anime proviennent de l'API AniList. Les dates de sortie des mangas sont relevées auprès des sources officielles des éditeurs et peuvent évoluer. Les titres, marques et visuels cités appartiennent à leurs propriétaires respectifs. Ce site n'est affilié à aucun éditeur ni à aucune plateforme.</p>
 <h2>Cookies et données personnelles</h2>
-<p>Ce site ne dépose pas de cookies et ne collecte pas de données personnelles.${showCovers ? ' Les couvertures des tomes sont affichées depuis les serveurs des éditeurs ou de leurs diffuseurs : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>`,
+<p>Ce site ne dépose pas de cookies et ne collecte pas de données personnelles.${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>`,
   });
 }
 

@@ -15,6 +15,7 @@
       "isAdult": false,
       "popularity": 500,
       "siteUrl": "https://anilist.co/anime/1",
+      "coverImage": { "large": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx1-test.jpg" },
       "title": {
        "romaji": "Shiken Ichi",
        "english": "Test Series One",
