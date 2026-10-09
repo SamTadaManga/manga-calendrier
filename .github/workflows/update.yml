@@ -1,53 +1,41 @@
 name: Mise à jour quotidienne
-
 on:
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
-
 permissions:
   contents: write
-
 concurrency:
-  group: mise-a-jour
+  group: update
   cancel-in-progress: false
-
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
     defaults:
       run:
         working-directory: manga-calendrier
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-
-      - name: Récupérer le calendrier manga
+      - name: Sorties manga saisies à la main (Google Sheets)
         run: node scripts/fetch-manga.mjs
         env:
           MANGA_CSV_URL: ${{ secrets.MANGA_CSV_URL }}
-
-      - name: Récupérer le programme anime
+      - name: Sorties manga des éditeurs (Glénat, Kana, Pika, Ki-oon)
+        run: node scripts/collect-manga.mjs
+        continue-on-error: true
+      - name: Épisodes d'anime
         run: node scripts/fetch-anime.mjs
-
-      - name: Générer les articles du jour
+      - name: Articles du jour
         run: node scripts/daily-articles.mjs
-
-      - name: Vérifier que le site se construit
+      - name: Vérification de la construction
         run: node scripts/build.mjs
-
       - name: Enregistrer les changements
+        working-directory: .
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A data content
-          if git diff --cached --quiet; then
-            echo "Aucun changement."
-          else
-            git commit -m "Mise à jour automatique des données et des articles"
-            git push
-          fi
+          git add -A manga-calendrier/data manga-calendrier/content
+          git diff --cached --quiet || (git commit -m "Mise à jour automatique des données" && git push)
