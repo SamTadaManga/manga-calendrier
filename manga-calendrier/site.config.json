@@ -8,8 +8,8 @@
     "contactEmail": "tada.ebook@gmail.com",
     "publicationDirector": "Sam Tada",
     "hostName": "Cloudflare, Inc.",
-    "hostAddress": "101 Townsend Street, San Francisco, CA 94107, États-Unis",
-    "showCovers": true,
-    "launched": false,
+    "hostAddress": "101 Townsend Street, San Francisco, CA 94107, États-Unis"
+       "showCovers": true,
+   "launched": false,
   }
 }
