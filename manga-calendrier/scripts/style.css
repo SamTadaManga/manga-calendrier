@@ -329,3 +329,12 @@ a.stream{padding:0 7px;border:1.5px solid var(--ink);border-radius:2px;font-size
 
 a.stream{display:inline-flex;align-items:center;justify-content:center;gap:4px;min-width:34px;height:26px;padding:0 7px;border:2px solid var(--ink);border-radius:4px;font-size:.78rem;font-weight:800;line-height:1;letter-spacing:.02em}
 a.stream svg{flex:none}
+/* Couleurs des plateformes (fond + texte lisible) */
+a.stream{border-color:var(--ink)}
+a.stream.s-crunchyroll{background:#f47521;color:#111}
+a.stream.s-adn{background:#0b78d0;color:#fff}
+a.stream.s-netflix{background:#e50914;color:#fff}
+a.stream.s-prime-video{background:#00a8e1;color:#111}
+a.stream.s-disney{background:#113ccf;color:#fff}
+a.stream.s-wakanim{background:#e5194f;color:#fff}
+@media (hover:hover){a.stream[class*="s-"]:hover{filter:brightness(1.1);box-shadow:2px 2px 0 var(--shadow);transform:translate(-1px,-1px)}}
