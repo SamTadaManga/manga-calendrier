@@ -49,7 +49,8 @@ const reportLink = (label = 'Signaler une erreur') => reportUrl
   : reportEmail ? `<a href="mailto:${esc(reportEmail)}" data-report="${esc(reportEmail)}">${esc(label)}</a>` : '';
 const THEME_BOOT = `<script>try{var t=localStorage.getItem('mc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>`;
 
-function layout({ title, description, pathname, body, noindex = false, extraHead = '' }) {
+function layout({ title, description, pathname, body, noindex = false, extraHead = '', image = '' }) {
+  const ogImage = /^https:\/\//.test(image) ? image : (siteUrlOk ? `${base}/og.png` : '/og.png');
   const fullTitle = pathname === '/' ? `${config.siteName} : ${config.tagline}` : `${title} | ${config.siteName}`;
   const canonical = siteUrlOk ? `${base}${pathname}` : '';
   const nav = NAV.map(([href, label]) => {
@@ -72,6 +73,11 @@ ${noindex || isPrivate ? `<meta name="robots" content="noindex${isPrivate ? ', n
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${esc(config.siteName)}">
+${canonical ? `<meta property="og:url" content="${esc(canonical)}">` : ''}
+<meta property="og:image" content="${esc(ogImage)}">
+${image ? '' : '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'}
+${image ? '' : `<meta property="og:image:alt" content="${esc(config.siteName)} : ${esc(config.tagline)}">`}
+<meta name="twitter:card" content="${image ? 'summary' : 'summary_large_image'}">
 <link rel="icon" href="${FAVICON}">
 <link rel="stylesheet" href="/style.css">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -463,6 +469,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       description: n
         ? `${n.tome ? `Tome ${n.tome}` : 'Prochain volume'} de ${S.name} : sortie le ${frShort(n.date)}${n.editeur ? ` chez ${n.editeur}` : ''}. Tous les tomes annoncés et la date de chaque sortie.`
         : `Date du prochain tome de ${S.name} en France : tomes parus et annonces des éditeurs.`,
+      image: showCovers ? ([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover : '',
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
@@ -681,7 +688,7 @@ write('data/recent.json', JSON.stringify({
   }));
 }
 for (const f of ['visite.js', 'recherche.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
-for (const f of ['icon-192.png', 'icon-512.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
+for (const f of ['icon-192.png', 'icon-512.png', 'og.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
   start_url: '/', scope: '/', display: 'standalone', background_color: '#f4f1ff', theme_color: '#ffd21f',

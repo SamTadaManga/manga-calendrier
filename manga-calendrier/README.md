@@ -108,3 +108,6 @@ Touche `/` ou loupe dans l'en-tête : séries manga, animes de la semaine et art
 
 ## Articles récapitulatifs automatiques
 En plus des articles du jour : le lundi, « Manga : les sorties de la semaine » (avec les nouvelles séries et le rappel des changements de la semaine passée) et « Anime : la semaine » (premiers épisodes, séries les plus suivies) ; le 1er du mois, « Manga : les sorties d'<mois> » (tomes par éditeur, nouvelles séries, lien vers la page du mois).
+
+## Image de partage (Open Graph)
+Quand un lien est collé sur Discord, X, WhatsApp, etc., l'aperçu utilise `og.png` (1200×630 : nom du site, slogan, éditeurs). Les pages série utilisent la couverture du tome si `showCovers` est activé. Pour changer le nom ou le slogan sur l'image : `pip install playwright` puis `python3 scripts/make-og.py "Nom" "slogan"` (ça réécrit `scripts/assets/og.png`). Les réseaux gardent les aperçus en cache : après un changement, retester le lien avec leurs outils de débogage.

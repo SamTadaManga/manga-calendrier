@@ -137,6 +137,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
     assert.ok(existsSync(dist(f)), `fichier manquant : ${f}`);
   }
   assert.ok(!existsSync(dist('articles/brouillon/index.html')), 'un brouillon ne doit pas être publié');
+  assert.ok(existsSync(dist('og.png')) && read(dirs.OUT_DIR, 'index.html').includes('property="og:image" content="https://test.example.org/og.png"'), 'image de partage');
   assert.ok(!existsSync(dist('articles/futur/index.html')), 'un article daté du futur ne doit pas être publié');
   assert.ok(!existsSync(dist('articles/modele/index.html')) && !existsSync(dist('articles/_modele/index.html')));
 
