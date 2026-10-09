@@ -200,6 +200,7 @@
       if (typeof r.p === 'number') meta.push(h('span', { text: euro(r.p) }));
       if (r.mv) meta.push(h('span', { class: 'badge ' + (r.d > r.mv ? 's-reporte' : 's-confirme'), text: (r.d > r.mv ? 'Reporté' : 'Avancé') + ' (avant : ' + dateFr(r.mv) + ')' }));
       else if (r.st === 'reporte') meta.push(h('span', { class: 'badge s-reporte', text: 'Reporté' }));
+      if (r.nw) meta.push(h('span', { class: 'badge s-new', text: '\u2605 Nouvelle série' }));
       if (r.st === 'confirme') meta.push(h('span', { class: 'badge s-confirme', text: 'Date confirmée' }));
       if (/^https?:\/\//.test(r.u || '')) meta.push(h('a', { href: r.u, rel: 'noopener nofollow', text: 'Fiche éditeur' }));
       if (tnum(r.t) !== null) meta.push(h('button', { type: 'button', class: 'own', 'data-s': r.k, 'data-t': r.t || '', 'aria-pressed': 'false', hidden: 'hidden', text: 'Je l’ai' }));

@@ -101,6 +101,7 @@ a.d-line:hover{text-decoration:underline}
 .badge{padding:0 7px;font-size:.78rem;font-weight:800;border-radius:2px}
 .s-confirme{border:1.5px solid var(--edge);color:var(--ink)}
 .s-reporte{background:var(--brand);color:#111;border:1.5px solid #111}
+.s-new{background:#111;color:var(--brand);border:1.5px solid #111;white-space:nowrap}
 .s-annule{background:var(--ink);color:var(--paper);text-decoration:line-through}
 
 /* Suivre */

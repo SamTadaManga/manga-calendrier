@@ -87,3 +87,8 @@ Générées automatiquement à chaque build : `/sorties-manga/` (index) et `/sor
 
 ## Ma collection
 Bouton « Je l'ai » sur chaque tome numéroté, et « Je possède les tomes 1 à N » sur chaque page de série et dans Mon planning. Mon planning affiche les tomes déjà parus qu'il reste à acheter (pour les séries dont la collection est renseignée) et exclut les tomes possédés du budget du mois. Tout est gardé dans le navigateur (`mc-own`) ; une sauvegarde texte permet de transférer la collection d'un appareil à l'autre.
+
+## Badges « nouveautés »
+- « ★ Nouvelle série » : tome 1 annoncé dans les 14 derniers jours ou à venir (les rééditions, collectors, deluxe, intégrales, coffrets, artbooks sont exclus).
+- « ★ Épisode 1 » : premier épisode d'un anime (hors films).
+- Page `/nouveautes/` et section « Nouvelles séries à découvrir » sur l'accueil.

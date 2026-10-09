@@ -345,3 +345,29 @@ test('pages par mois, par série et index : générées, liées et dans le sitem
   const sm = rd('sitemap.xml');
   assert.ok(sm.includes(`/serie/${links[0]}/`) && sm.includes('/sorties-manga/'));
 });
+
+test('badges : nouvelle série (tome 1 hors éditions spéciales) et premier épisode', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), NOW: '2026-10-12T07:00:00Z', CONFIG_FILE: path.join(ROOT, 'test/fixtures/site.config.json') };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  const H = 'Date de sortie,Éditeur,Série,Tome,Titre du tome (facultatif),ISBN-13,Prix (€),Statut,Source officielle (lien),Vérifié le,Notes';
+  const line = (d, s, t, titre = '') => `${d},Kana,${s},${t},${titre},,7.5,Annoncé,https://exemple.test/,2026-10-12,`;
+  writeFileSync(path.join(dirs.DATA_DIR, 'manga.csv'), [H,
+    line('2026-10-20', 'Série Neuve', '1'),
+    line('2026-10-21', 'Vieille Série', '1', 'Vieille Série tome 1 édition collector'),
+    line('2026-10-22', 'Série Neuve', '2'),
+    line('2026-10-23', 'Kickboxer Story', '1'),
+    line('2026-10-24', 'Coffret Machin', '1')].join('\n'));
+  writeFileSync(path.join(dirs.DATA_DIR, 'anime.json'), JSON.stringify({ generatedAt: '2026-10-12T05:00:00.000Z', episodes: [
+    { airingAt: 1792000000, episode: 1, mediaId: 1, title: { romaji: 'Premier Anime', english: '', native: '' }, format: 'TV', popularity: 10, url: '', cover: '' },
+    { airingAt: 1792003600, episode: 7, mediaId: 2, title: { romaji: 'Suite Anime', english: '', native: '' }, format: 'TV', popularity: 9, url: '', cover: '' }] }));
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, ...dirs }, encoding: 'utf8' });
+  const page = readFileSync(path.join(tmp, 'dist/nouveautes/index.html'), 'utf8');
+  assert.ok(page.includes('Série Neuve'));
+  assert.ok(!page.includes('Vieille Série'), 'une édition collector n\'est pas une nouvelle série');
+  assert.ok(!page.includes('Coffret Machin'));
+  assert.ok(page.includes('Kickboxer Story'), 'box dans un mot ne doit pas exclure');
+  assert.ok(page.includes('Premier Anime') && !page.includes('Suite Anime'));
+  const m = JSON.parse(readFileSync(path.join(tmp, 'dist/data/manga.json'), 'utf8')).rows;
+  assert.equal(m.filter((r) => r.nw).length, 2);
+});
