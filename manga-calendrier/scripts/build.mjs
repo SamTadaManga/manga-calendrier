@@ -4,7 +4,7 @@ import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
-  loadConfig, loadManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
+  loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
   esc, markdown, buildICS,
 } from './lib.mjs';
 
@@ -15,7 +15,7 @@ const siteUrlOk = /^https?:\/\//.test(config.siteUrl || '') && !/REMPLACE/i.test
 const base = siteUrlOk ? config.siteUrl.replace(/\/+$/, '') : '';
 const host = siteUrlOk ? new URL(base).hostname : 'manga-calendrier.local';
 
-const manga = loadManga(path.join(P.dataDir, 'manga.csv'));
+const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
 const eps = anime.episodes
   .map((e) => ({ ...e, date: new Date(e.airingAt * 1000) }))

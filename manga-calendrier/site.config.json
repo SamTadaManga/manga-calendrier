@@ -1,12 +1,12 @@
 {
   "siteName": "Calendrier Manga et Anime",
-  "siteUrl": "https://manga-calendrier.tada-ebook.workers.dev",
+  "siteUrl": "https://REMPLACE-MOI.pages.dev",
   "description": "Les sorties manga en France et les épisodes d'anime de la semaine, jour par jour.",
   "autoPublish": true,
   "legal": {
-    "editorName": "Sam Tada",
-    "contactEmail": "tada.ebook@gmail.com",
-    "publicationDirector": "Sam Tada",
+    "editorName": "À compléter",
+    "contactEmail": "À compléter",
+    "publicationDirector": "À compléter",
     "hostName": "Cloudflare, Inc.",
     "hostAddress": "101 Townsend Street, San Francisco, CA 94107, États-Unis"
   }

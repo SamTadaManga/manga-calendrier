@@ -7,7 +7,7 @@
   "engines": { "node": ">=20" },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "update": "node scripts/fetch-manga.mjs && node scripts/fetch-anime.mjs && node scripts/daily-articles.mjs",
+    "update": "node scripts/fetch-manga.mjs && node scripts/collect-manga.mjs && node scripts/fetch-anime.mjs && node scripts/daily-articles.mjs",
     "test": "node --test test/*.test.mjs"
   }
 }

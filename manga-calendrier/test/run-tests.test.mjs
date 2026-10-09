@@ -10,6 +10,7 @@ import {
   parseDate, parseCSV, parseMangaCSV, markdown, foldLine, parisMidnight, parisKey, parisHM, addDays, weekdayOfKey,
   parseFrontmatter,
 } from '../scripts/lib.mjs';
+import { splitTitle, robotsAllows, parseKioon } from '../scripts/collectors.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (...p) => readFileSync(path.join(...p), 'utf8');
@@ -155,4 +156,42 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.equal((read(dist('anime.ics')).match(/BEGIN:VEVENT/g) || []).length, 6);
   assert.ok(read(dist('manga.ics')).includes('DTSTART;VALUE=DATE:20261012'));
   assert.ok(read(dist('anime.ics')).includes('DTSTART:20261012T150000Z'));
+});
+
+/* ------------------------------------------------------------ collecteurs */
+test('splitTitle sépare série, tome et édition spéciale', () => {
+  assert.deepEqual(splitTitle('Ryukyu Buccaneer - Tome 01'), { serie: 'Ryukyu Buccaneer', tome: '1', titre: '' });
+  assert.equal(splitTitle('Toilet-bound Hanako-kun T25 - Collector').tome, '25');
+  assert.equal(splitTitle('Toilet-bound Hanako-kun T25 - Collector').titre, 'Toilet-bound Hanako-kun T25 - Collector');
+  assert.deepEqual(splitTitle("Dreamland L&#039;Artbook"), { serie: "Dreamland L'Artbook", tome: '', titre: '' });
+});
+
+test('robots.txt : Disallow, Allow plus précis, page HTML = autorisé', () => {
+  const r = 'User-agent: *\nDisallow: /api/\nAllow: /api/public\nUser-agent: Bot\nDisallow: /';
+  assert.equal(robotsAllows(r, '/api/x'), false);
+  assert.equal(robotsAllows(r, '/api/public/x'), true);
+  assert.equal(robotsAllows(r, '/manga/planning/'), true);
+  assert.equal(robotsAllows('<!DOCTYPE html><html>', '/x'), true);
+  assert.equal(parseKioon({ volumes: [{ serie_title: 'X', date: 'pas une date' }] }).length, 0);
+});
+
+test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const env = { ...process.env, DATA_DIR: tmp, NOW: '2026-10-12T07:00:00Z', COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/publishers') };
+  const out = execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-manga.mjs')], { env, encoding: 'utf8' });
+  assert.ok(/Glénat : 3/.test(out) && /Kana : 3/.test(out) && /Pika : 4/.test(out) && /Ki-oon : 3/.test(out), out);
+  const csv = readFileSync(path.join(tmp, 'manga-auto.csv'), 'utf8');
+  assert.ok(!csv.includes('Lou ! Sonata'), 'la BD Glénat est exclue');
+  assert.ok(!csv.includes('Vieux Titre') && !csv.includes('2026-05-20'), 'dates hors fenêtre exclues');
+  assert.equal((csv.match(/,9782344077573,/g) || []).length, 1, 'doublon fusionné');
+  assert.ok(csv.includes('Wind Breaker,24') && csv.includes('Übel Blatt II,4,,9791032723999,"8,45"'));
+  assert.ok(csv.includes('Paru') && csv.includes('Annoncé'));
+  // 2e passage identique : rien ne change
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-manga.mjs')], { env, encoding: 'utf8' });
+  assert.equal(readFileSync(path.join(tmp, 'manga-auto.csv'), 'utf8'), csv);
+  // fusion : une ligne manuelle (même ISBN) remplace la ligne automatique
+  writeFileSync(path.join(tmp, 'manga.csv'), 'Date de sortie,Éditeur,Série,Tome,ISBN-13,Statut\n2026-10-30,Kana,Slam Dunk Deluxe,17,9782505000002,Confirmé\n');
+  const code = `import {loadAllManga} from ${JSON.stringify(path.join(ROOT, 'scripts/lib.mjs'))};const r=loadAllManga(process.env.DATA_DIR).filter(x=>x.serie==='Slam Dunk Deluxe');console.log(JSON.stringify(r.map(x=>x.statut)));`;
+  const merged = execFileSync(process.execPath, ['--input-type=module', '-e', code], { env, encoding: 'utf8' });
+  assert.equal(merged.trim(), '["confirme"]');
 });

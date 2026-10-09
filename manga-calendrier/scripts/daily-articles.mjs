@@ -7,7 +7,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import {
   paths, now, parisKey, parisHM, frDate, frDayMonth, ucfirst, addDays, weekdayOfKey,
-  loadConfig, loadManga, readAnime, displayTitle, mangaLabel, euro,
+  loadConfig, loadAllManga, readAnime, displayTitle, mangaLabel, euro,
 } from './lib.mjs';
 
 const P = paths();
@@ -56,7 +56,7 @@ if (eps.length) {
 }
 
 /* ------------------------------------------------------------------ manga */
-const manga = loadManga(path.join(P.dataDir, 'manga.csv')).filter((r) => r.statut !== 'annule');
+const manga = loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule');
 const STATUT_TXT = {
   confirme: 'date confirmée', annonce: 'date annoncée, non confirmée', paru: 'déjà paru', reporte: 'date modifiée',
 };

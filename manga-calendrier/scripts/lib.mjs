@@ -182,7 +182,24 @@ export function parseMangaCSV(text) {
   const cmp = (a, b) => String(a).localeCompare(String(b), 'fr', { numeric: true });
   return out.sort((a, b) => cmp(a.date, b.date) || cmp(a.editeur, b.editeur) || cmp(a.serie, b.serie) || cmp(a.tome, b.tome));
 }
-export const mangaLabel = (r) => `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
+// Fusionne la saisie manuelle (manga.csv) et la collecte automatique (manga-auto.csv) : la saisie manuelle gagne.
+const keyOf = (r) => (r.isbn.length >= 10 ? `i:${r.isbn}` : `s:${slugify(r.serie)}|${r.tome}`);
+const altKey = (r) => `s:${slugify(r.serie)}|${r.tome}`;
+export function loadAllManga(dir) {
+  const manual = loadManga(path.join(dir, 'manga.csv'));
+  const auto = loadManga(path.join(dir, 'manga-auto.csv'));
+  const taken = new Set(manual.flatMap((r) => (r.tome ? [keyOf(r), altKey(r)] : [keyOf(r)])));
+  const seen = new Set();
+  const kept = auto.filter((r) => {
+    const ks = [keyOf(r), ...(r.tome && !r.titre ? [altKey(r)] : [])];
+    if (ks.some((k) => taken.has(k) || seen.has(k))) return false;
+    ks.forEach((k) => seen.add(k));
+    return true;
+  });
+  const cmp = (a, b) => String(a).localeCompare(String(b), 'fr', { numeric: true });
+  return [...manual, ...kept].sort((a, b) => cmp(a.date, b.date) || cmp(a.editeur, b.editeur) || cmp(a.serie, b.serie) || cmp(a.tome, b.tome));
+}
+export const mangaLabel =(r) => `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
 export const euro = (n) => `${n.toFixed(2).replace('.', ',')} €`;
 
 /* ------------------------------------------------------------------ anime */
