@@ -264,3 +264,22 @@ ul.acards{list-style:none;margin:0;padding:0 6px 6px 0;display:grid;grid-templat
 .acard-body strong{font-weight:800;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .acard-time{padding:1px 8px;background:var(--ink);color:var(--paper);border-radius:2px;font-size:.85rem;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
 @media (max-width:520px){ul.acards{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}}
+
+/* pages par mois et par série */
+.slink{color:inherit;text-decoration:none}
+.slink:hover{text-decoration:underline;text-decoration-color:var(--brand);text-decoration-thickness:3px;background:none}
+a.chip{display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--ink)}
+a.chip:hover{background:var(--brand)}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 0}
+.legendrow{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 4px;font-size:.92rem;font-weight:700}
+.legend{display:inline-flex;align-items:center;gap:6px}
+.series-head{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap}
+.series-head>div:not(.cover){flex:1 1 320px;min-width:0}
+.series-cover{width:160px;height:240px;flex:none;box-shadow:5px 5px 0 var(--shadow)}
+.follow-static{position:static}
+.azgroup h2{margin-top:28px}
+ul.azlist{list-style:none;margin:0;padding:0;columns:2 260px;column-gap:32px}
+.azlist li{break-inside:avoid;padding:5px 0;border-bottom:1px solid var(--line);display:flex;align-items:baseline;gap:8px}
+.azlist a{font-weight:700;color:var(--ink)}
+.azlist .dot{flex:none;transform:translateY(1px)}
+@media (max-width:520px){.series-cover{width:120px;height:180px}}

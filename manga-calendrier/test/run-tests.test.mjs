@@ -321,3 +321,25 @@ test('affiches d\'anime : collectées, affichées seulement si showCovers', () =
   assert.ok(readFileSync(path.join(tmp, 'on/anime/index.html'), 'utf8').includes('bx1-test.jpg'));
   assert.ok(!readFileSync(path.join(tmp, 'off/anime/index.html'), 'utf8').includes('bx1-test.jpg'));
 });
+
+test('pages par mois, par série et index : générées, liées et dans le sitemap', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), NOW: '2026-10-12T07:00:00Z' };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(dirs.DATA_DIR, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json');
+  writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.test', launched: true }));
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, ...dirs, CONFIG_FILE: cfg }, encoding: 'utf8' });
+  const rd = (f) => readFileSync(path.join(tmp, 'dist', f), 'utf8');
+  const idx = rd('series/index.html');
+  const links = [...idx.matchAll(/href="\/serie\/([a-z0-9-]+)\/"/g)].map((m) => m[1]);
+  assert.ok(links.length > 0, 'index des séries');
+  for (const k of links) assert.ok(existsSync(path.join(tmp, 'dist/serie', k, 'index.html')), `page série ${k}`);
+  assert.match(rd(`serie/${links[0]}/index.html`), /Prochain tome de/);
+  const monthLinks = [...rd('sorties-manga/index.html').matchAll(/href="\/sorties-manga\/([a-z]+-\d{4})\/"/g)].map((m) => m[1]);
+  assert.ok(monthLinks.length > 0);
+  assert.match(rd(`sorties-manga/${monthLinks[0]}/index.html`), /Sorties manga de/);
+  const sm = rd('sitemap.xml');
+  assert.ok(sm.includes(`/serie/${links[0]}/`) && sm.includes('/sorties-manga/'));
+});

@@ -81,3 +81,6 @@ Avec Node 20 ou plus : `npm test` lance les tests, `npm run build` construit le 
 
 ## Vues de la page Manga
 Boutons « Par jour / Par éditeur / Par série » au-dessus de la liste. Le choix est mémorisé dans le navigateur ; la recherche et les filtres d'éditeur fonctionnent dans les trois vues.
+
+## Pages pour le référencement
+Générées automatiquement à chaque build : `/sorties-manga/` (index) et `/sorties-manga/novembre-2026/` (une page par mois), `/series/` (index A à Z avec recherche) et `/serie/<nom>/` (« Prochain tome de … », avec date du prochain tome, tomes à venir et déjà parus). Toutes sont dans le sitemap et liées depuis les listes de sorties.
