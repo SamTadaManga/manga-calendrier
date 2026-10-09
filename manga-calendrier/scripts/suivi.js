@@ -42,6 +42,7 @@
     if (window.mcRender) window.mcRender();
   });
   paint();
+  window.mcPaint = paint;
   // une couverture introuvable laisse place à la trame de points
   document.addEventListener('error', function (e) {
     var t = e.target;

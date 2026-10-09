@@ -78,3 +78,6 @@ Avec Node 20 ou plus : `npm test` lance les tests, `npm run build` construit le 
 - Page d'accueil : un bandeau rose « Nouveau depuis ta dernière visite » apparaît quand des changements de planning ou des articles sont parus depuis la visite précédente (la date de visite est gardée dans le navigateur, rien n'est envoyé). « Mis à jour il y a… » indique la fraîcheur des données.
 - `/feed.xml` : flux RSS des articles (généré dès que `siteUrl` est renseigné).
 - `manifest.webmanifest` + `sw.js` + icônes : le site peut s'installer sur l'écran d'accueil du téléphone et reste consultable hors ligne (dernière version vue).
+
+## Vues de la page Manga
+Boutons « Par jour / Par éditeur / Par série » au-dessus de la liste. Le choix est mémorisé dans le navigateur ; la recherche et les filtres d'éditeur fonctionnent dans les trois vues.

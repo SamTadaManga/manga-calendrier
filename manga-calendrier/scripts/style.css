@@ -232,3 +232,9 @@ code{background:var(--line);padding:1px 5px;font-size:.9em}
 .since ul{margin:.4rem 0;padding-left:1.1rem}
 .since a{color:#fff;font-weight:700}
 .since[hidden]{display:none}
+
+/* vues : par jour / par éditeur / par série */
+.views{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 20px}
+.view-alt .month{display:none}
+.altview .chip-day .now{background:#15112b;color:#fff;padding:0 8px;margin-left:8px;border-radius:2px;font-size:.8rem}
+.altview .chip-day.p-glenat{--dc:#6fd8c0}.altview .chip-day.p-kana{--dc:#b9a2ff}.altview .chip-day.p-pika{--dc:#ff8fc0}.altview .chip-day.p-ki-oon{--dc:#ffa36b}.altview .chip-day.p-autre{--dc:#d9d4f0}

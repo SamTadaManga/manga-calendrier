@@ -158,7 +158,7 @@ function releaseItem(r, showDate = false) {
   const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
-  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}">${cover}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${cover}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
     + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
@@ -233,7 +233,30 @@ function apply(){var t=(q.value||'').toLowerCase().trim(),any=Object.keys(act).l
 chips.forEach(function(c){var k=c.dataset.chip;c.setAttribute('aria-pressed',k==='tous'?String(!any):String(!!act[k]));});
 if(none)none.hidden=shown>0;}
 chips.forEach(function(c){c.addEventListener('click',function(){var k=c.dataset.chip;if(k==='tous')act={};else if(act[k])delete act[k];else act[k]=1;apply();});});
-q.addEventListener('input',apply);})();
+q.addEventListener('input',apply);
+var vb=document.getElementById('vues'),alt=null,NAMES=${JSON.stringify(PUBS)};
+function mk(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt)e.textContent=txt;return e;}
+function group(title,cls,items,span){var g=mk('section','daygroup');g.setAttribute('data-group','');var h=mk('h3','chip-day '+cls,title);if(span)h.appendChild(mk('span','now',span));g.appendChild(h);var ul=mk('ul','list panel');items.forEach(function(li){var c=li.cloneNode(true);c.hidden=false;var m=c.querySelector('.meta');if(m&&c.dataset.df){var t=mk('time','',c.dataset.df);t.setAttribute('datetime',c.dataset.d);m.insertBefore(t,m.firstChild);}ul.appendChild(c);});g.appendChild(ul);return g;}
+function show(v){
+if(alt){alt.remove();alt=null;}
+document.body.classList.toggle('view-alt',v!=='jour');
+if(v!=='jour'){
+var src=[].slice.call(document.querySelectorAll('.month [data-q]')).sort(function(a,b){return a.dataset.d<b.dataset.d?-1:a.dataset.d>b.dataset.d?1:0;});
+alt=mk('div','altview');var by={};
+if(v==='editeur'){src.forEach(function(li){(by[li.dataset.pub]=by[li.dataset.pub]||[]).push(li);});
+Object.keys(NAMES).concat(['autre']).forEach(function(k){if(by[k])alt.appendChild(group(NAMES[k]||'Autres éditeurs','p-'+k,by[k],' '+by[k].length));});}
+else{src.forEach(function(li){(by[li.dataset.s]=by[li.dataset.s]||[]).push(li);});
+Object.keys(by).sort(function(a,b){return a.localeCompare(b,'fr');}).forEach(function(n){alt.appendChild(group(n,'wd-4',by[n],' '+by[n].length));});}
+vb.insertAdjacentElement('afterend',alt);
+if(window.mcPaint)window.mcPaint();
+}
+[].forEach.call(vb.querySelectorAll('[data-view]'),function(b){b.setAttribute('aria-pressed',String(b.dataset.view===v));});
+try{localStorage.setItem('mc-vue',v);}catch(e){}
+apply();}
+if(vb){vb.hidden=false;[].forEach.call(vb.querySelectorAll('[data-view]'),function(b){b.addEventListener('click',function(){show(b.dataset.view);});});
+var sv='jour';try{sv=localStorage.getItem('mc-vue')||'jour';}catch(e){}
+if(sv!=='jour'&&/^(editeur|serie)$/.test(sv))show(sv);}
+})();
 </script>`;
 
 /* -------------------------------------------------------------------- manga */
@@ -282,6 +305,8 @@ q.addEventListener('input',apply);})();
 <h1>Calendrier des sorties manga</h1>
 <p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.</p>
 ${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}</div>
+<div class="views" id="vues" role="group" aria-label="Affichage" hidden><span class="muted">Affichage :</span>
+<button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button></div>
 <p class="empty" id="aucun" hidden>Aucune sortie ne correspond à ce filtre.</p>
 ${content}` : '<p class="empty">Le calendrier manga sera bientôt alimenté.</p>'}
 <p class="more"><a href="/manga.ics">Ajouter à mon agenda (manga.ics)</a>${siteUrlOk ? `<span class="muted"> Adresse à coller dans l'agenda : <code>${esc(base)}/manga.ics</code></span>` : ''}</p>
