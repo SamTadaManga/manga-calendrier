@@ -242,7 +242,7 @@ code{background:var(--line);padding:1px 5px;font-size:.9em}
   .chip{padding:6px 10px}
   .has-cover{grid-template-columns:72px minmax(0,1fr);gap:0 12px}
   .has-cover .cover{width:72px;height:108px}
-  .bar{padding-top:6px;padding-bottom:6px}
+  .hbar{padding-top:6px;padding-bottom:6px}
   nav a{padding:5px 9px}
 }
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
