@@ -1,0 +1,61 @@
+name: Mise à jour quotidienne
+on:
+  schedule:
+    - cron: '17 3 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'manga-calendrier/scripts/**'
+      - 'manga-calendrier/site.config.json'
+permissions:
+  contents: write
+concurrency:
+  group: update
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Sorties manga saisies à la main (Google Sheets)
+        run: node scripts/fetch-manga.mjs
+        env:
+          MANGA_CSV_URL: ${{ secrets.MANGA_CSV_URL }}
+      - name: Sorties manga des éditeurs (Glénat, Kana, Pika, Ki-oon)
+        run: node scripts/collect-manga.mjs
+        continue-on-error: true
+      - name: Épisodes d'anime
+        run: node scripts/fetch-anime.mjs
+      - name: Articles du jour
+        run: node scripts/daily-articles.mjs
+      - name: Vérification de la construction
+        run: node scripts/build.mjs
+      - name: Enregistrer les changements
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/keep"
+          rm -rf "$KEEP"; mkdir -p "$KEEP/content-auto"
+          cp -r manga-calendrier/data "$KEEP/data"
+          cp -r manga-calendrier/content/auto/. "$KEEP/content-auto/"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p manga-calendrier/data manga-calendrier/content/auto
+            cp -r "$KEEP/data/." manga-calendrier/data/
+            cp -r "$KEEP/content-auto/." manga-calendrier/content/auto/
+            git add -A manga-calendrier/data manga-calendrier/content
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Mise à jour automatique des données"
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push refusé (essai $i), nouvel essai…"; sleep 5
+          done
+          exit 1

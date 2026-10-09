@@ -10,7 +10,7 @@ import {
   parseDate, parseCSV, parseMangaCSV, markdown, foldLine, parisMidnight, parisKey, parisHM, addDays, weekdayOfKey,
   parseFrontmatter,
 } from '../scripts/lib.mjs';
-import { splitTitle, robotsAllows, parseKioon } from '../scripts/collectors.mjs';
+import { splitTitle, robotsAllows, parseKioon, decode } from '../scripts/collectors.mjs';
 import { updateChanges, emptyState } from '../scripts/changes.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -297,4 +297,11 @@ test('couvertures : collecte, interrupteur et mode site privé', () => {
   assert.ok(!existsSync(path.join(dirs.OUT_DIR, 'sitemap.xml')), 'site privé : pas de sitemap');
   assert.equal(JSON.parse(read(dirs.OUT_DIR, 'data/manga.json')).covers, true);
   assert.ok(read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('adresse IP'));
+});
+
+test('décodage HTML : apostrophes, accents et double encodage', () => {
+  assert.equal(decode('Mémoire de l&rsquo;Arcadia'), 'Mémoire de l’Arcadia');
+  assert.equal(decode('Caf&eacute; &amp;rsquo;x&amp;rsquo;'), 'Café ’x’');
+  assert.equal(decode('A&nbsp;&nbsp;B &#233; &#x41;'), 'A B é A');
+  assert.equal(decode('&inconnu; reste'), '&inconnu; reste');
 });

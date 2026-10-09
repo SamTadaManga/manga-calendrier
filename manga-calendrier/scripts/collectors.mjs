@@ -2,18 +2,26 @@
 // Chaque sortie : { date:'AAAA-MM-JJ', editeur, serie, tome, titre, isbn, prix, source }.
 // On ne lit que des faits (titre, tome, date, prix, ISBN) : ni images, ni résumés.
 
-const ENT = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', '#39': "'", '#x27': "'" };
-export const decode = (s) =>
-  String(s ?? '')
-    .replace(/&(#x[0-9a-f]+|#\d+|[a-z]+);/gi, (m, e) => {
-      if (e[0] === '#') {
-        const code = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
-        return Number.isFinite(code) && code > 0 && code < 0x110000 ? String.fromCodePoint(code) : m;
-      }
-      return ENT[e.toLowerCase()] ?? m;
-    })
-    .replace(/\s+/g, ' ')
-    .trim();
+const ENT = {
+  amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', '#39': "'", '#x27': "'",
+  rsquo: '’', lsquo: '‘', rdquo: '”', ldquo: '“', sbquo: '‚', bdquo: '„', hellip: '…', ndash: '–', mdash: '—',
+  laquo: '«', raquo: '»', middot: '·', times: '×', deg: '°', euro: '€', oelig: 'œ', OElig: 'Œ', szlig: 'ß',
+  agrave: 'à', aacute: 'á', acirc: 'â', atilde: 'ã', auml: 'ä', aring: 'å', aelig: 'æ', ccedil: 'ç',
+  egrave: 'è', eacute: 'é', ecirc: 'ê', euml: 'ë', igrave: 'ì', iacute: 'í', icirc: 'î', iuml: 'ï', ntilde: 'ñ',
+  ograve: 'ò', oacute: 'ó', ocirc: 'ô', otilde: 'õ', ouml: 'ö', ugrave: 'ù', uacute: 'ú', ucirc: 'û', uuml: 'ü', yuml: 'ÿ',
+  Agrave: 'À', Acirc: 'Â', Auml: 'Ä', Ccedil: 'Ç', Egrave: 'È', Eacute: 'É', Ecirc: 'Ê', Euml: 'Ë', Icirc: 'Î', Iuml: 'Ï',
+  Ocirc: 'Ô', Ouml: 'Ö', Ugrave: 'Ù', Ucirc: 'Û', Uuml: 'Ü',
+};
+const decodeOnce = (s) =>
+  String(s ?? '').replace(/&(#x[0-9a-f]+|#\d+|[a-z][a-z0-9]*);/gi, (m, e) => {
+    if (e[0] === '#') {
+      const code = e[1].toLowerCase() === 'x' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      return Number.isFinite(code) && code > 0 && code < 0x110000 ? String.fromCodePoint(code) : m;
+    }
+    return ENT[e] ?? ENT[e.toLowerCase()] ?? m;
+  });
+// deux passes : certaines pages encodent deux fois (&amp;rsquo;)
+export const decode = (s) => decodeOnce(decodeOnce(s)).replace(/\s+/g, ' ').trim();
 const strip = (h) => decode(String(h).replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, ' '));
 const isbnOf = (s) => (String(s).match(/97[89]\d{10}/) || [''])[0];
 
