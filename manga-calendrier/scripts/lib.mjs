@@ -349,3 +349,7 @@ export function buildICS({ name, events }) {
   L.push('END:VCALENDAR');
   return L.map(foldLine).join('\r\n') + '\r\n';
 }
+
+// Tome 1 hors rééditions et éditions spéciales : sert aux badges « Nouvelle série » et aux articles récapitulatifs
+export const NOT_NEW = /nouvelle [ée]dition|r[ée][ée]dition|collector|int[ée]grale|deluxe|perfect|coffret|[ée]dition|artbook|fanbook|anthologie|\b(guide|pack|box)\b/i;
+export const isFirstVolume = (r) => String(r.tome) === '1' && r.statut !== 'annule' && !NOT_NEW.test(`${r.serie} ${r.titre || ''}`);

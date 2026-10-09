@@ -117,6 +117,12 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(animeMd.includes('02 h 30') && animeMd.includes('17 h 00') && animeMd.includes('23 h 30'));
   assert.ok(!animeMd.includes('Test Series Four'), 'un épisode à 00 h 30 le 13 appartient au jour suivant');
   assert.ok(animeMd.includes('Programme complet (3 épisodes)'));
+  const weekAnime = read(dirs.AUTO_DIR, 'anime-semaine-2026-10-12.md');
+  assert.ok(weekAnime.includes('Les séries les plus suivies') && weekAnime.includes('Test Series One'), 'récap anime du lundi');
+  assert.ok(existsSync(path.join(dirs.AUTO_DIR, 'manga-semaine-2026-10-12.md')));
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/daily-articles.mjs')], { env: { ...env, DATE: '2026-10-01' }, encoding: 'utf8' });
+  const monthMd = read(dirs.AUTO_DIR, 'manga-mois-2026-10.md');
+  assert.ok(monthMd.includes('## Par éditeur') && monthMd.includes('/sorties-manga/octobre-2026/'), 'récap manga du 1er du mois');
   const mangaMd = read(dirs.AUTO_DIR, 'manga-2026-10-12.md');
   assert.ok(mangaMd.includes('Série Fictive Alpha tome 5') && mangaMd.includes('7,20 €') && mangaMd.includes('date confirmée'));
   assert.ok(!/javascript:/.test(mangaMd) && !/Exemple/.test(mangaMd));

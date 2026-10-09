@@ -105,3 +105,6 @@ Touche `/` ou loupe dans l'en-tête : séries manga, animes de la semaine et art
 - « Signaler une erreur » (pied de page et pages série) : utilise `legal.contactEmail` si c'est une vraie adresse (le lien prérempli contient la page concernée). Tu peux aussi mettre `"reportUrl": "https://…"` (formulaire, page GitHub Issues) dans `site.config.json`, qui a la priorité. Sans l'un ni l'autre, le lien n'apparaît pas.
 - Bouton clair/sombre dans l'en-tête : le choix est gardé dans le navigateur, sinon on suit le réglage de l'appareil.
 - Mon planning : quand aucune série n'est suivie, des suggestions s'affichent.
+
+## Articles récapitulatifs automatiques
+En plus des articles du jour : le lundi, « Manga : les sorties de la semaine » (avec les nouvelles séries et le rappel des changements de la semaine passée) et « Anime : la semaine » (premiers épisodes, séries les plus suivies) ; le 1er du mois, « Manga : les sorties d'<mois> » (tomes par éditeur, nouvelles séries, lien vers la page du mois).

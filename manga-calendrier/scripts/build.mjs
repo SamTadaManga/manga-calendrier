@@ -7,7 +7,7 @@ import { readChanges, keyOf } from './changes.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
-  esc, slugify, weekdayOfKey, markdown, buildICS,
+  esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume,
 } from './lib.mjs';
 
 const P = paths();
@@ -155,9 +155,8 @@ function tile(r) {
 }
 
 
-const NOT_NEW = /nouvelle [ée]dition|r[ée][ée]dition|collector|int[ée]grale|deluxe|perfect|coffret|[ée]dition|artbook|fanbook|anthologie|\b(guide|pack|box)\b/i;
 // « Nouvelle série » : tome 1 d'une série, hors rééditions et éditions spéciales, annoncé ou sorti depuis moins de 15 jours
-const isNewSeries = (r) => String(r.tome) === '1' && r.statut !== 'annule' && !NOT_NEW.test(`${r.serie} ${r.titre || ''}`) && r.date >= addDays(today, -14);
+const isNewSeries = (r) => isFirstVolume(r) && r.date >= addDays(today, -14);
 const NEW_BADGE = '<span class="badge s-new">★ Nouvelle série</span>';
 const PREMIERE_BADGE = '<span class="badge s-new">★ Épisode 1</span>';
 const isPremiere = (e) => Number(e.episode) === 1 && e.format !== 'MOVIE';
