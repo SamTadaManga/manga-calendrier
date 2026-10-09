@@ -1,0 +1,176 @@
+/* Calendrier manga et anime
+   Idée : le site se lit comme une planche de manga. Cases à bords nets, encre sur papier froid,
+   un bleu d'imprimerie comme seule couleur d'accent, une trame de points pour « aujourd'hui ».
+   Une couleur par éditeur sert de repère. Polices du système : aucune requête vers un tiers. */
+:root{
+  --paper:#f1f3f8;--panel:#fff;--ink:#12131a;--edge:#12131a;--muted:#555b6e;--line:#dde0ea;
+  --accent:#2540e8;--on-accent:#fff;--dot:rgba(255,255,255,.2);
+  --c-glenat:#0b7a70;--c-kana:#6a3bd0;--c-pika:#c01c78;--c-ki-oon:#a3560a;--c-autre:#556072;
+  --ok:#14663a;--okbg:#dcf5e5;--warn:#8f3a0c;--warnbg:#ffe9d6;--bad:#9b1c1c;--badbg:#fde0e0;
+  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#0d0f16;--panel:#151826;--ink:#e3e5f0;--edge:#5d6593;--muted:#a0a7bf;--line:#2a2f45;
+  --accent:#93a5ff;--on-accent:#0d0f16;--dot:rgba(13,15,22,.28);
+  --c-glenat:#3fcabb;--c-kana:#ac90ff;--c-pika:#ff80bd;--c-ki-oon:#f3a650;--c-autre:#a0a9be;
+  --ok:#8be0ac;--okbg:#14301f;--warn:#ffbe8a;--warnbg:#3a2412;--bad:#ffaaaa;--badbg:#3a1616;
+}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+a{color:var(--accent);text-underline-offset:.15em}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sr,.skip:not(:focus){position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:8px;top:8px;z-index:20;background:var(--panel);padding:8px 12px;border:2px solid var(--edge)}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
+
+/* En-tête */
+.site-header{background:var(--panel);border-bottom:2px solid var(--edge)}
+.bar{display:flex;flex-wrap:wrap;gap:4px 24px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;padding:14px 0;font-weight:800;letter-spacing:-.02em;font-size:1.1rem;color:var(--ink);text-decoration:none}
+.mark{width:20px;height:20px;border:3px solid var(--ink);background:radial-gradient(circle at 50% 50%,var(--accent) 0 3.5px,transparent 4px);flex:none}
+nav{display:flex;gap:4px}
+nav a{padding:16px 10px 13px;color:var(--muted);text-decoration:none;font-weight:600;border-bottom:3px solid transparent}
+nav a:hover{color:var(--ink)}
+nav a[aria-current]{color:var(--ink);border-bottom-color:var(--accent)}
+main.wrap{padding-top:36px;padding-bottom:72px}
+
+/* Typographie */
+h1{font-size:clamp(1.9rem,4.6vw,2.7rem);line-height:1.08;letter-spacing:-.035em;font-weight:850;margin:0 0 12px}
+h2{font-size:1.35rem;line-height:1.2;letter-spacing:-.02em;font-weight:800;margin:40px 0 12px}
+h3{font-size:1.05rem;font-weight:750;margin:24px 0 8px}
+.lead{font-size:1.1rem;color:var(--muted);max-width:42rem;margin:0 0 24px}
+.muted{color:var(--muted)}
+.more{margin:12px 0 0}
+.empty{margin:0;padding:16px;border:2px dashed var(--line);color:var(--muted);max-width:40rem}
+.now{margin-left:8px;padding:2px 8px;background:var(--accent);color:var(--on-accent);font-size:.8rem;font-weight:700;vertical-align:.12em}
+
+/* Cases */
+.panel{background:var(--panel);border:2px solid var(--edge);border-radius:2px}
+ul.list,ul.strip,ul.articles{list-style:none;margin:0;padding:0}
+
+/* Semaine (accueil) */
+.week-head{max-width:46rem}
+.strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px}
+.day-panel{display:flex;flex-direction:column;gap:6px;padding:12px;background:var(--panel);border:2px solid var(--edge);border-radius:2px;min-height:136px}
+.d-head{display:flex;flex-direction:column;margin:-12px -12px 4px;padding:10px 12px 6px}
+.d-wd{font-size:.85rem;color:var(--muted);font-weight:600}
+.d-num{font-size:2.3rem;line-height:1;font-weight:850;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.d-line{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:.92rem;color:var(--ink);text-decoration:none}
+.d-line b{font-size:1.15rem;font-variant-numeric:tabular-nums}
+a.d-line:hover{text-decoration:underline}
+.d-line.none{color:var(--muted)}
+.day-panel.today{background:var(--accent);color:var(--on-accent);border-color:var(--ink)}
+.today .d-head{background-image:radial-gradient(var(--dot) 1.3px,transparent 1.8px);background-size:7px 7px}
+.today .d-wd,.today .d-line,.today .d-line.none{color:var(--on-accent)}
+.today .d-line.none{opacity:.8}
+.dots{display:inline-flex;gap:3px;margin-left:auto}
+.dot{display:inline-block;width:9px;height:9px;background:var(--pc,var(--c-autre));border:1px solid var(--panel)}
+.today .dot{border-color:var(--on-accent)}
+.chip .dot{margin-right:2px}
+
+/* Éditeurs */
+.p-glenat{--pc:var(--c-glenat)}.p-kana{--pc:var(--c-kana)}.p-pika{--pc:var(--c-pika)}.p-ki-oon{--pc:var(--c-ki-oon)}.p-autre{--pc:var(--c-autre)}
+
+/* Deux colonnes */
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;align-items:start}
+
+/* Listes de sorties */
+.rel{padding:10px 14px 10px 12px;border-left:6px solid var(--pc,var(--c-autre));border-bottom:1px solid var(--line)}
+.list>li:last-child{border-bottom:0}
+.rel-title strong{font-weight:750}
+.tome{font-weight:600}
+.ed{color:var(--muted);font-size:.92em}
+.ed::before{content:"· "}
+.meta{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:center;margin-top:2px;font-size:.88rem;color:var(--muted)}
+.meta .pub{color:var(--pc,var(--muted));font-weight:700;filter:brightness(.95)}
+.meta time{color:var(--ink);font-weight:650;font-variant-numeric:tabular-nums}
+.notes{margin:4px 0 0;font-size:.9rem;color:var(--muted)}
+.rel.past .rel-title{opacity:.62}
+.badge{padding:0 7px;font-size:.78rem;font-weight:700;border-radius:2px}
+.s-confirme{background:var(--okbg);color:var(--ok)}
+.s-reporte{background:var(--warnbg);color:var(--warn)}
+.s-annule{background:var(--badbg);color:var(--bad)}
+
+/* Épisodes */
+.eps li.ep-row{display:grid;grid-template-columns:4.6rem minmax(0,1fr) auto;gap:12px;align-items:baseline;padding:9px 14px;border-bottom:1px solid var(--line)}
+.ep-row time{font-weight:750;font-variant-numeric:tabular-nums}
+.ep-row .ep{font-size:.88rem;color:var(--muted);white-space:nowrap}
+.ep-row a{color:var(--ink);text-decoration-color:var(--line)}
+.ep-row a:hover{color:var(--accent)}
+
+/* Filtres */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+input[type=search]{flex:1 1 220px;max-width:340px;min-height:42px;padding:8px 12px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit}
+.chip{min-height:42px;padding:6px 14px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit;font-weight:650;cursor:pointer}
+.chip .n{color:var(--muted);font-weight:500;font-variant-numeric:tabular-nums}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--paper)}
+.chip[aria-pressed=true] .n{color:inherit;opacity:.75}
+.chip[aria-pressed=true] .dot{border-color:var(--paper)}
+
+/* Calendrier du mois */
+.cal{width:100%;max-width:560px;table-layout:fixed;border-collapse:separate;border-spacing:4px;margin:0 0 8px -4px}
+.cal th{font-size:.82rem;font-weight:600;color:var(--muted);padding:2px 0;text-align:left}
+.cal td{height:62px;vertical-align:top;padding:0;background:var(--panel);border:2px solid var(--line);border-radius:2px;font-variant-numeric:tabular-nums}
+.cal td.blank{background:transparent;border-color:transparent}
+.cal td>.dn,.cal td>a{display:block;height:100%;padding:4px 6px}
+.cal td>.dn{color:var(--muted);font-size:.9rem}
+.cal td>a{color:var(--ink);text-decoration:none;position:relative}
+.cal td:has(>a){border-color:var(--edge)}
+.cal td>a:hover{background:var(--paper)}
+.cal .dn{font-weight:700}
+.cal .cnt{position:absolute;right:6px;top:4px;font-size:.8rem;font-weight:700;color:var(--muted)}
+.cal .dots{position:absolute;left:6px;bottom:6px;margin:0;flex-wrap:wrap;max-width:calc(100% - 12px)}
+.cal td.past>a,.cal td.past>.dn{opacity:.6}
+.cal td.today{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.month h2{margin-top:44px}
+.daygroup h3{scroll-margin-top:16px}
+.daygroup{margin-top:4px}
+
+/* Navigation par jour (anime) */
+.jumps{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;margin:0 0 20px}
+.jump{display:flex;flex-direction:column;padding:8px 10px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);text-decoration:none}
+.jump .d-num{font-size:1.5rem}
+.jump .cnt{font-size:.82rem;color:var(--muted)}
+.jump.today{background:var(--accent);color:var(--on-accent)}
+.jump.today .d-wd,.jump.today .cnt{color:var(--on-accent)}
+.day{scroll-margin-top:16px}
+
+/* Articles */
+.articles li{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.articles time{font-variant-numeric:tabular-nums;font-size:.92rem;padding-top:2px}
+.articles a{font-weight:700;font-size:1.05rem;color:var(--ink);text-decoration-color:var(--line)}
+.articles a:hover{color:var(--accent)}
+.post{max-width:40rem;font-family:var(--serif);font-size:1.12rem;line-height:1.7}
+.post h1{font-family:var(--sans)}
+.post h2,.post h3{font-family:var(--sans)}
+.post li{margin:.35em 0}
+.post ul{padding-left:1.2em}
+code{background:var(--line);padding:1px 5px;font-size:.9em}
+
+/* Pied de page */
+.site-footer{border-top:2px solid var(--edge);background:var(--panel);padding:20px 0 28px;font-size:.9rem;color:var(--muted)}
+.site-footer p{margin:6px 0}
+.site-footer p+p a{margin-right:18px}
+
+/* Écrans étroits */
+@media (max-width:860px){
+  .strip{display:grid;grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(132px,38vw);overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:8px;margin-right:-20px;padding-right:20px}
+  .day-panel{scroll-snap-align:start}
+  .two{grid-template-columns:minmax(0,1fr)}
+  .jumps{grid-auto-flow:column;grid-template-columns:none;grid-auto-columns:minmax(64px,1fr);overflow-x:auto}
+}
+@media (max-width:520px){
+  .wrap{padding:0 16px}
+  main.wrap{padding-top:24px}
+  .eps li.ep-row{grid-template-columns:3.8rem minmax(0,1fr)}
+  .ep-row .ep{grid-column:2}
+  .articles li{grid-template-columns:minmax(0,1fr);gap:0}
+  .cal{border-spacing:2px;margin-left:-2px}
+  .cal td{height:54px}
+  .cal .dots{display:none}
+  .chip{padding:6px 10px}
+}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}

@@ -1,11 +1,12 @@
 // Génère le site statique dans dist/ à partir de data/, content/ et site.config.json.
 // Commande : node scripts/build.mjs   (aucune dépendance à installer)
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
-  esc, markdown, buildICS,
+  esc, slugify, weekdayOfKey, markdown, buildICS,
 } from './lib.mjs';
 
 const P = paths();
@@ -34,7 +35,8 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/anime/', 'Anime'], ['/manga/', 'Manga'], ['/articles/', 'Articles']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/articles/', 'Articles']];
+const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 function layout({ title, description, pathname, body, noindex = false, extraHead = '' }) {
   const fullTitle = pathname === '/' ? config.siteName : `${title} | ${config.siteName}`;
@@ -48,6 +50,7 @@ function layout({ title, description, pathname, body, noindex = false, extraHead
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 ${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
@@ -57,17 +60,19 @@ ${noindex ? '<meta name="robots" content="noindex">' : ''}
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="${esc(config.siteName)}">
+<link rel="icon" href="${FAVICON}">
 <link rel="stylesheet" href="/style.css">
 ${extraHead}
 </head>
 <body>
-<header class="site-header"><div class="wrap bar"><a class="brand" href="/">${esc(config.siteName)}</a><nav>${nav}</nav></div></header>
-<main class="wrap">
+<a class="skip" href="#contenu">Aller au contenu</a>
+<header class="site-header"><div class="wrap bar"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>${esc(config.siteName)}</a><nav aria-label="Navigation principale">${nav}</nav></div></header>
+<main class="wrap" id="contenu">
 ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
-<p>Horaires des épisodes d'anime : données <a href="https://anilist.co" rel="noopener">AniList</a>. Dates de sortie manga : relevées auprès des sources officielles des éditeurs, susceptibles de changer.</p>
-<p>Calendriers à importer : <a href="/manga.ics">manga.ics</a> · <a href="/anime.ics">anime.ics</a> · <a href="/mentions-legales/">Mentions légales</a></p>
+<p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 </body>
 </html>
@@ -76,113 +81,182 @@ ${body}
 const page = (pathname, opts) => write(`${pathname.replace(/^\//, '')}index.html`, layout({ ...opts, pathname }));
 
 /* ------------------------------------------------------------- composants */
-const badge = (s) => `<span class="badge s-${s}">${STATUT_LABEL[s]}</span>`;
+const PUBS = { glenat: 'Glénat', kana: 'Kana', pika: 'Pika', 'ki-oon': 'Ki-oon' };
+const pubKey = (e) => { const k = slugify(e || ''); return k in PUBS ? k : 'autre'; };
+const weekday = (k) => new Intl.DateTimeFormat('fr-FR', { weekday: 'short', timeZone: 'UTC' }).format(new Date(`${k}T12:00:00Z`)).replace('.', '');
+const dayNum = (k) => String(Number(k.slice(8)));
+const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
 
+// « Ryukyu Buccaneer - Tome 01 - Édition collector » -> « Édition collector »
+function editionOf(r) {
+  if (!r.titre) return '';
+  let t = r.titre.replace(r.serie, '').replace(/^[\s,–-]*(?:tome|t\.?|vol\.?)\s*0*\d+\b/i, '').replace(/^[\s,–:-]+/, '').trim();
+  if (t === r.titre.trim() && t.length > 60) t = '';
+  return t;
+}
+
+const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
 function releaseItem(r, showDate = false) {
+  const pk = pubKey(r.editeur);
+  const ed = editionOf(r);
+  const badge = BADGE_TXT[r.statut] ? `<span class="badge s-${r.statut}">${BADGE_TXT[r.statut]}</span>` : '';
   const meta = [
-    showDate ? `<span>${esc(frShort(r.date))}</span>` : '',
-    r.editeur ? `<span class="pub">${esc(r.editeur)}</span>` : '',
+    showDate ? `<time datetime="${r.date}">${esc(frShort(r.date))}</time>` : '',
+    `<span class="pub">${esc(r.editeur || 'Éditeur inconnu')}</span>`,
     r.prix != null ? `<span>${euro(r.prix)}</span>` : '',
-    badge(r.statut),
-    r.source ? `<a href="${esc(r.source)}" rel="noopener nofollow">Source</a>` : '',
+    badge,
+    r.source ? `<a href="${esc(r.source)}" rel="noopener nofollow">Fiche éditeur</a>` : '',
   ].filter(Boolean).join('');
-  return `<li><div><strong>${esc(mangaLabel(r))}</strong>${r.titre ? ` <span class="muted">« ${esc(r.titre)} »</span>` : ''}</div>`
-    + `<div class="meta">${meta}</div>${r.notes ? `<p class="notes">${esc(r.notes)}</p>` : ''}</li>`;
+  const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}" data-pub="${pk}" data-q="${esc(q)}"><div class="rel-title"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+    + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</li>`;
 }
 
 function episodeItem(e) {
   const t = esc(displayTitle(e.title));
   const url = safeUrl(e.url);
   const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
-  return `<li><time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">(film)</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}</span></li>`;
+  return `<li class="ep-row" data-q="${esc(displayTitle(e.title).toLowerCase())}"><time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}</span></li>`;
 }
 
 const articleItem = (a) =>
-  `<li><a href="/articles/${a.slug}/">${esc(a.title)}</a><span class="muted">${esc(frDate(a.date))}</span>${a.description ? `<p class="notes">${esc(a.description)}</p>` : ''}</li>`;
+  `<li><time class="muted" datetime="${a.date}">${esc(frShort(a.date))}</time><div><a href="/articles/${a.slug}/">${esc(a.title)}</a>${a.description ? `<p class="notes">${esc(a.description)}</p>` : ''}</div></li>`;
+
+const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
+  .map((k) => `<i class="dot p-${k}" title="${esc(PUBS[k] || 'Autres éditeurs')}"></i>`).join('');
 
 /* ------------------------------------------------------------------ accueil */
 {
   const todayEps = eps.filter((e) => e.key === today);
   const topToday = [...todayEps].sort((a, b) => b.popularity - a.popularity).slice(0, 8).sort((a, b) => a.airingAt - b.airingAt);
-  const mangaToday = manga.filter((r) => r.date === today && r.statut !== 'annule');
-  const mangaNext = manga.filter((r) => r.date > today && r.statut !== 'annule').slice(0, 8);
+  const live = manga.filter((r) => r.statut !== 'annule');
+  const mangaToday = live.filter((r) => r.date === today);
+  const mangaNext = live.filter((r) => r.date > today && r.date <= addDays(today, 30)).slice(0, 10);
+  const strip = Array.from({ length: 7 }, (_, i) => addDays(today, i)).map((d) => {
+    const m = live.filter((r) => r.date === d);
+    const a = eps.filter((e) => e.key === d);
+    return `<li class="day-panel${d === today ? ' today' : ''}"><div class="d-head"><span class="d-wd">${esc(d === today ? "aujourd'hui" : weekday(d))}</span><span class="d-num">${dayNum(d)}</span></div>`
+      + (m.length ? `<a class="d-line" href="/manga/#j-${d}"><b>${m.length}</b> ${m.length > 1 ? 'mangas' : 'manga'}<span class="dots">${dots(m)}</span></a>` : '<span class="d-line none">Pas de manga</span>')
+      + (a.length ? `<a class="d-line" href="/anime/#j-${d}"><b>${a.length}</b> ${a.length > 1 ? 'épisodes' : 'épisode'}</a>` : '<span class="d-line none">Pas d\'épisode</span>')
+      + '</li>';
+  }).join('');
   const body = `
-<section class="hero">
-<h1>Sorties manga et anime</h1>
-<p>${esc(config.description)}</p>
+<section class="week" aria-labelledby="t-week">
+<div class="week-head"><h1 id="t-week">Les sorties de la semaine</h1>
+<p class="lead">Mangas en France chez Glénat, Kana, Pika et Ki-oon. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p></div>
+<ul class="strip">${strip}</ul>
 </section>
-<section>
-<h2>Aujourd'hui, ${esc(frDate(today))}</h2>
-<div class="grid">
-<div class="card">
-<h3>Anime à la télévision japonaise</h3>
-${todayEps.length
-    ? `<ul class="eps">${topToday.map(episodeItem).join('')}</ul><p class="muted">Les ${topToday.length} plus populaires sur ${todayEps.length} épisodes · heure de Paris · <a href="/anime/">programme complet</a></p>`
-    : '<p class="muted">Les données apparaîtront après la prochaine mise à jour automatique.</p>'}
-</div>
-<div class="card">
-<h3>Manga en France</h3>
+<section class="two" aria-label="Aujourd'hui">
+<div>
+<h2>Manga du ${esc(frDate(today))}</h2>
 ${mangaToday.length
-    ? `<ul class="releases">${mangaToday.map((r) => releaseItem(r)).join('')}</ul>`
-    : '<p class="muted">Aucune sortie manga enregistrée pour aujourd\'hui.</p>'}
-<p class="muted"><a href="/manga/">Calendrier manga</a></p>
+    ? `<ul class="list panel">${mangaToday.map((r) => releaseItem(r)).join('')}</ul>`
+    : '<p class="empty">Aucune sortie manga enregistrée aujourd\'hui. <a href="/manga/">Voir le calendrier</a></p>'}
 </div>
+<div>
+<h2>Anime du jour</h2>
+${todayEps.length
+    ? `<ul class="list panel eps">${topToday.map(episodeItem).join('')}</ul><p class="muted more">Les ${topToday.length} plus suivis sur ${todayEps.length} épisodes. <a href="/anime/#j-${today}">Programme complet</a></p>`
+    : '<p class="empty">Le programme apparaîtra après la prochaine mise à jour automatique.</p>'}
 </div>
 </section>
-${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2><ul class="releases card">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul></section>` : ''}
+${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2><ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul><p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
 <section>
 <h2>Derniers articles</h2>
-${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p><a href="/articles/">Tous les articles</a></p>` : '<p class="muted">Les premiers articles arrivent bientôt.</p>'}
+${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p class="more"><a href="/articles/">Tous les articles</a></p>` : '<p class="empty">Les premiers articles arrivent bientôt.</p>'}
 </section>`;
   page('/', { title: config.siteName, description: config.description, body });
+}
+
+/* ------------------------------------------------------- filtres (partagés) */
+const FILTER_JS = `<script>
+(function(){var bar=document.getElementById('filtres');if(!bar)return;bar.hidden=false;
+var q=document.getElementById('f'),chips=[].slice.call(bar.querySelectorAll('[data-chip]')),act={},none=document.getElementById('aucun');
+function apply(){var t=(q.value||'').toLowerCase().trim(),any=Object.keys(act).length,shown=0;
+[].forEach.call(document.querySelectorAll('[data-q]'),function(li){var ok=(!any||!li.dataset.pub||act[li.dataset.pub])&&(!t||li.dataset.q.indexOf(t)>-1);li.hidden=!ok;if(ok)shown++;});
+[].forEach.call(document.querySelectorAll('[data-group]'),function(g){g.hidden=![].some.call(g.querySelectorAll('[data-q]'),function(l){return !l.hidden;});});
+chips.forEach(function(c){var k=c.dataset.chip;c.setAttribute('aria-pressed',k==='tous'?String(!any):String(!!act[k]));});
+if(none)none.hidden=shown>0;}
+chips.forEach(function(c){c.addEventListener('click',function(){var k=c.dataset.chip;if(k==='tous')act={};else if(act[k])delete act[k];else act[k]=1;apply();});});
+q.addEventListener('input',apply);})();
+</script>`;
+
+/* -------------------------------------------------------------------- manga */
+{
+  const since = addDays(today, -7);
+  const rows = manga.filter((r) => r.date >= since);
+  const byDate = new Map();
+  for (const r of rows) {
+    if (!byDate.has(r.date)) byDate.set(r.date, []);
+    byDate.get(r.date).push(r);
+  }
+  const monthKeys = [...new Set(rows.map((r) => r.date.slice(0, 7)))];
+
+  const grid = (mk) => {
+    const first = `${mk}-01`;
+    const lead = (weekdayOfKey(first) + 6) % 7; // lundi = 0
+    const cells = Array(lead).fill('<td class="blank"></td>');
+    for (let d = first; d.startsWith(mk); d = addDays(d, 1)) {
+      const list = byDate.get(d) || [];
+      const cls = [d === today ? 'today' : '', d < today ? 'past' : ''].filter(Boolean).join(' ');
+      cells.push(list.length
+        ? `<td class="${cls}"><a href="#j-${d}" aria-label="${esc(ucfirst(frDayMonth(d)))} : ${plural(list.length, 'sortie', 'sorties')}"><span class="dn">${dayNum(d)}</span><span class="cnt">${list.length}</span><span class="dots">${dots(list)}</span></a></td>`
+        : `<td class="${cls}"><span class="dn">${dayNum(d)}</span></td>`);
+    }
+    while (cells.length % 7) cells.push('<td class="blank"></td>');
+    const trs = [];
+    for (let i = 0; i < cells.length; i += 7) trs.push(`<tr>${cells.slice(i, i + 7).join('')}</tr>`);
+    const heads = [['lun.', 'lundi'], ['mar.', 'mardi'], ['mer.', 'mercredi'], ['jeu.', 'jeudi'], ['ven.', 'vendredi'], ['sam.', 'samedi'], ['dim.', 'dimanche']]
+      .map(([s, l]) => `<th scope="col" abbr="${l}">${s}</th>`).join('');
+    return `<table class="cal"><caption class="sr">Calendrier de ${esc(frMonth(first))}</caption><thead><tr>${heads}</tr></thead><tbody>${trs.join('')}</tbody></table>`;
+  };
+
+  const content = monthKeys.map((mk) => {
+    const days = [...byDate.keys()].filter((d) => d.startsWith(mk)).sort();
+    return `<section class="month" data-group><h2>${esc(ucfirst(frMonth(`${mk}-01`)))}</h2>${grid(mk)}${
+      days.map((d) => `<div class="daygroup" data-group><h3 id="j-${d}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h3><ul class="list panel">${byDate.get(d).map((r) => releaseItem(r)).join('')}</ul></div>`).join('')}</section>`;
+  }).join('\n');
+
+  const counts = new Map();
+  for (const r of rows) counts.set(pubKey(r.editeur), (counts.get(pubKey(r.editeur)) || 0) + 1);
+  const order = [...Object.keys(PUBS), 'autre'].filter((k) => counts.has(k));
+  const chips = ['<button type="button" class="chip" data-chip="tous" aria-pressed="true">Tous</button>']
+    .concat(order.map((k) => `<button type="button" class="chip" data-chip="${k}" aria-pressed="false"><i class="dot p-${k}"></i>${esc(PUBS[k] || 'Autres')} <span class="n">${counts.get(k)}</span></button>`)).join('');
+
+  const body = `
+<h1>Calendrier des sorties manga</h1>
+<p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.</p>
+${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}</div>
+<p class="empty" id="aucun" hidden>Aucune sortie ne correspond à ce filtre.</p>
+${content}` : '<p class="empty">Le calendrier manga sera bientôt alimenté.</p>'}
+<p class="more"><a href="/manga.ics">Ajouter à mon agenda (manga.ics)</a>${siteUrlOk ? `<span class="muted"> Adresse à coller dans l'agenda : <code>${esc(base)}/manga.ics</code></span>` : ''}</p>
+${rows.length ? FILTER_JS : ''}`;
+  page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs (Glénat, Kana, Pika, Ki-oon), prix et statut de chaque tome.', body });
 }
 
 /* -------------------------------------------------------------------- anime */
 {
   const days = Array.from({ length: 7 }, (_, i) => addDays(today, i));
   const updated = anime.generatedAt ? `${frDate(parisKey(new Date(anime.generatedAt)))} à ${parisHM(new Date(anime.generatedAt))}` : null;
+  const jump = days.map((d) => {
+    const n = eps.filter((e) => e.key === d).length;
+    return `<a class="jump${d === today ? ' today' : ''}" href="#j-${d}"><span class="d-wd">${esc(weekday(d))}</span><span class="d-num">${dayNum(d)}</span><span class="cnt">${n}</span></a>`;
+  }).join('');
   const sections = days.map((d) => {
     const list = eps.filter((e) => e.key === d);
-    return `<section class="day" id="j-${d}"><h2>${esc(ucfirst(frDayMonth(d)))}</h2>${
-      list.length ? `<ul class="eps">${list.map(episodeItem).join('')}</ul>` : '<p class="muted">Aucun épisode enregistré.</p>'}</section>`;
+    return `<section class="day" id="j-${d}" data-group><h2>${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2>${
+      list.length ? `<ul class="list panel eps">${list.map(episodeItem).join('')}</ul>` : '<p class="empty">Aucun épisode enregistré ce jour-là.</p>'}</section>`;
   }).join('\n');
   const body = `
 <h1>Épisodes d'anime de la semaine</h1>
-<p class="lead">Horaires de diffusion au Japon, convertis en heure de Paris. La disponibilité en France dépend des plateformes de streaming et peut différer.</p>
-${eps.length ? '<p><input type="search" id="f" placeholder="Filtrer par titre…" aria-label="Filtrer par titre"></p>' : ''}
-${eps.length ? sections : '<p class="muted">Les données apparaîtront après la première mise à jour automatique.</p>'}
-<p class="muted">${updated ? `Dernière mise à jour : ${esc(updated)}. ` : ''}<a href="/anime.ics">Ajouter à mon agenda (anime.ics)</a></p>
-<script>
-(function(){var f=document.getElementById('f');if(!f)return;f.addEventListener('input',function(){
-var q=f.value.toLowerCase().trim();
-document.querySelectorAll('.eps li').forEach(function(li){li.hidden=!!q&&li.textContent.toLowerCase().indexOf(q)<0;});
-document.querySelectorAll('.day').forEach(function(s){s.hidden=!!q&&!Array.prototype.some.call(s.querySelectorAll('li'),function(li){return !li.hidden;});});
-});})();
-</script>`;
+<p class="lead">Horaires de diffusion au Japon, convertis en heure de Paris. La disponibilité en France dépend des plateformes de streaming.</p>
+${eps.length ? `<nav class="jumps" aria-label="Aller à un jour">${jump}</nav>
+<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher un anime" aria-label="Chercher un anime"></div>
+<p class="empty" id="aucun" hidden>Aucun épisode ne correspond à cette recherche.</p>
+${sections}` : '<p class="empty">Les données apparaîtront après la première mise à jour automatique.</p>'}
+<p class="more muted">${updated ? `Mis à jour le ${esc(updated)}. ` : ''}<a href="/anime.ics">Ajouter à mon agenda (anime.ics)</a></p>
+${eps.length ? FILTER_JS : ''}`;
   page('/anime/', { title: "Épisodes d'anime de la semaine", description: "Programme des épisodes d'anime de la semaine, horaires à l'heure de Paris.", body });
-}
-
-/* -------------------------------------------------------------------- manga */
-{
-  const since = addDays(today, -7);
-  const rows = manga.filter((r) => r.date >= since);
-  const months = [];
-  for (const r of rows) {
-    const mk = r.date.slice(0, 7);
-    let m = months.find((x) => x.key === mk);
-    if (!m) { m = { key: mk, days: [] }; months.push(m); }
-    let d = m.days.find((x) => x.date === r.date);
-    if (!d) { d = { date: r.date, items: [] }; m.days.push(d); }
-    d.items.push(r);
-  }
-  const content = months.map((m) => `<section><h2>${esc(ucfirst(frMonth(`${m.key}-01`)))}</h2>${
-    m.days.map((d) => `<h3 id="j-${d.date}">${esc(ucfirst(frDayMonth(d.date)))}</h3><ul class="releases card">${d.items.map((r) => releaseItem(r)).join('')}</ul>`).join('')}</section>`).join('\n');
-  const body = `
-<h1>Calendrier des sorties manga en France</h1>
-<p class="lead">Les dates sont relevées auprès des éditeurs. Un statut « annoncé » signale une date pas encore confirmée officiellement.</p>
-${rows.length ? content : '<p class="muted">Le calendrier manga sera bientôt alimenté.</p>'}
-<p class="muted"><a href="/manga.ics">Ajouter à mon agenda (manga.ics)</a>${siteUrlOk ? ` · adresse à coller dans votre agenda : <code>${esc(base)}/manga.ics</code>` : ''}</p>`;
-  page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs, prix et statut de chaque tome.', body });
 }
 
 /* ----------------------------------------------------------------- articles */
@@ -190,7 +264,7 @@ ${rows.length ? content : '<p class="muted">Le calendrier manga sera bientôt al
   page('/articles/', {
     title: 'Articles',
     description: 'Les actualités et programmes du jour : sorties manga, épisodes d\'anime.',
-    body: `<h1>Articles</h1>${articles.length ? `<ul class="articles">${articles.map(articleItem).join('')}</ul>` : '<p class="muted">Aucun article pour le moment.</p>'}`,
+    body: `<h1>Articles</h1>${articles.length ? `<ul class="articles">${articles.map(articleItem).join('')}</ul>` : '<p class="empty">Aucun article pour le moment.</p>'}`,
   });
   for (const a of articles) {
     const ld = JSON.stringify({
@@ -200,7 +274,7 @@ ${rows.length ? content : '<p class="muted">Le calendrier manga sera bientôt al
     page(`/articles/${a.slug}/`, {
       title: a.title,
       description: a.description || a.title,
-      body: `<article><p class="muted">${esc(frDate(a.date))}</p><h1>${esc(a.title)}</h1>\n${markdown(a.body)}</article>\n<p><a href="/articles/">← Tous les articles</a></p>`,
+      body: `<article class="post"><p class="muted"><time datetime="${a.date}">${esc(frDate(a.date))}</time></p><h1>${esc(a.title)}</h1>\n${markdown(a.body)}</article>\n<p class="more"><a href="/articles/">Tous les articles</a></p>`,
       extraHead: `<script type="application/ld+json">${ld}</script>`,
     });
   }
@@ -262,54 +336,7 @@ if (siteUrlOk) {
     urls.map((u) => `<url><loc>${esc(base + u)}</loc><lastmod>${lastmod(u)}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 }
 write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n');
-write('style.css', `:root{--bg:#fafafa;--fg:#1f2937;--muted:#6b7280;--card:#fff;--line:#e5e7eb;--accent:#4338ca;--ok:#166534;--okbg:#dcfce7;--warn:#9a3412;--warnbg:#ffedd5;--bad:#991b1b;--badbg:#fee2e2;--info:#1e40af;--infobg:#dbeafe;--grey:#374151;--greybg:#f3f4f6}
-@media (prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#e5e7eb;--muted:#9ca3af;--card:#171a21;--line:#2a2f3a;--accent:#a5b4fc;--ok:#86efac;--okbg:#14301f;--warn:#fdba74;--warnbg:#3a2412;--bad:#fca5a5;--badbg:#3a1616;--info:#93c5fd;--infobg:#17274a;--grey:#d1d5db;--greybg:#1f232c}}
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-a{color:var(--accent)}
-.wrap{max-width:920px;margin:0 auto;padding:0 16px}
-.site-header{border-bottom:1px solid var(--line);background:var(--card);position:sticky;top:0;z-index:5}
-.bar{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:center;justify-content:space-between;padding-top:10px;padding-bottom:10px}
-.brand{font-weight:700;text-decoration:none;color:var(--fg)}
-nav a{margin-right:14px;text-decoration:none;color:var(--muted)}
-nav a[aria-current]{color:var(--accent);font-weight:600}
-main{padding-top:20px;padding-bottom:40px}
-h1{font-size:1.7rem;line-height:1.25;margin:.4em 0 .5em}
-h2{font-size:1.25rem;margin:1.6em 0 .5em}
-h3{font-size:1.05rem;margin:1.2em 0 .4em}
-.lead{color:var(--muted);margin-top:0}
-.muted{color:var(--muted);font-size:.92em}
-.hero{padding:14px 0 4px}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
-.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
-.card h3{margin-top:.2em}
-ul.releases,ul.eps,ul.articles{list-style:none;margin:0;padding:0}
-ul.releases.card{padding:4px 16px}
-.releases li{padding:10px 0;border-bottom:1px solid var(--line)}
-.releases li:last-child,.eps li:last-child,.articles li:last-child{border-bottom:0}
-.meta{display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center;font-size:.9em;color:var(--muted)}
-.notes{margin:.3em 0 0;font-size:.92em;color:var(--muted)}
-.eps li{display:flex;gap:12px;align-items:baseline;padding:6px 0;border-bottom:1px solid var(--line)}
-.eps time{min-width:4.6em;font-variant-numeric:tabular-nums;color:var(--muted)}
-.eps .t{flex:1}
-.eps .ep{color:var(--muted);font-size:.9em;white-space:nowrap}
-.day{margin-bottom:8px}
-.articles li{padding:10px 0;border-bottom:1px solid var(--line)}
-.articles li a{font-weight:600;margin-right:10px}
-.badge{display:inline-block;padding:0 8px;border-radius:999px;font-size:.78rem;font-weight:600}
-.s-confirme,.s-paru{background:var(--okbg);color:var(--ok)}
-.s-annonce{background:var(--infobg);color:var(--info)}
-.s-reporte{background:var(--warnbg);color:var(--warn)}
-.s-annule{background:var(--badbg);color:var(--bad)}
-.s-paru{background:var(--greybg);color:var(--grey)}
-input[type=search]{width:100%;max-width:420px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);font:inherit}
-article{max-width:720px}
-article li{margin:.3em 0}
-code{background:var(--greybg);padding:1px 5px;border-radius:4px;font-size:.9em}
-.site-footer{border-top:1px solid var(--line);padding:18px 0;font-size:.88rem;color:var(--muted)}
-@media (max-width:520px){.eps li{flex-wrap:wrap}.eps .ep{width:100%;padding-left:calc(4.6em + 12px)}}
-`);
+write('style.css', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'style.css'), 'utf8'));
 
 /* ---------------------------------------------------------- avertissements */
 console.log(`Site généré dans ${path.relative(process.cwd(), P.outDir) || '.'} : ${written.length} fichiers, ${articles.length} articles, ${manga.length} sorties manga, ${eps.length} épisodes anime.`);
