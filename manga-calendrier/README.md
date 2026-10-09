@@ -118,3 +118,5 @@ Quand un lien est collé sur Discord, X, WhatsApp, etc., l'aperçu utilise `og.p
 - Sur la page Anime : lien « Lire le manga » quand l'anime correspond à une série du calendrier.
 - Une série dont le titre français ne figure pas parmi les titres ou synonymes AniList n'est pas reliée.
 - Le fichier `update.yml` contient une étape de plus (« Adaptations animées des séries manga ») : pense à le remplacer dans `.github/workflows/`.
+
+Dans les articles automatiques, chaque manga et chaque anime est suivi d'une ligne de liens (« Calendrier manga · Page de la série », « Page Anime · Lire le manga »). Les liens vers un jour du calendrier ne retombent sur le bon jour que pour les dates récentes (la page Manga garde 7 jours d'historique, la page Anime la semaine en cours).

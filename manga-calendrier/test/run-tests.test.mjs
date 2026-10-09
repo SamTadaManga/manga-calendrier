@@ -118,6 +118,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(animeMd.includes('02 h 30') && animeMd.includes('17 h 00') && animeMd.includes('23 h 30'));
   assert.ok(!animeMd.includes('Test Series Four'), 'un épisode à 00 h 30 le 13 appartient au jour suivant');
   assert.ok(animeMd.includes('Programme complet (3 épisodes)'));
+  assert.ok(animeMd.includes('→ [Page Anime](/anime/#j-2026-10-12)') && animeMd.includes('[Lire le manga](/serie/serie-fictive-alpha/)') === false || animeMd.includes('[Page Anime]'), 'liens sous les animes');
   const weekAnime = read(dirs.AUTO_DIR, 'anime-semaine-2026-10-12.md');
   assert.ok(weekAnime.includes('Les séries les plus suivies') && weekAnime.includes('Test Series One'), 'récap anime du lundi');
   assert.ok(existsSync(path.join(dirs.AUTO_DIR, 'manga-semaine-2026-10-12.md')));
@@ -126,6 +127,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(monthMd.includes('## Par éditeur') && monthMd.includes('/sorties-manga/octobre-2026/'), 'récap manga du 1er du mois');
   const mangaMd = read(dirs.AUTO_DIR, 'manga-2026-10-12.md');
   assert.ok(mangaMd.includes('Série Fictive Alpha tome 5') && mangaMd.includes('7,20 €') && mangaMd.includes('date confirmée'));
+  assert.ok(mangaMd.includes('→ [Calendrier manga](/manga/#j-2026-10-12) · [Page de la série](/serie/serie-fictive-alpha/)'), 'liens sous les mangas');
   assert.ok(!/javascript:/.test(mangaMd) && !/Exemple/.test(mangaMd));
   const weekMd = read(dirs.AUTO_DIR, 'manga-semaine-2026-10-12.md');
   assert.ok(weekMd.includes('Série Fictive Gamma') && !weekMd.includes('Série Annulée') && !weekMd.includes('Série Ancienne'));

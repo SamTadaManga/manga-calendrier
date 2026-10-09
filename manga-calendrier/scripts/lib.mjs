@@ -245,7 +245,7 @@ export function markdown(src) {
   let list = null;
   const flushP = () => { if (para.length) { out.push(`<p>${inline(para.join(' '))}</p>`); para = []; } };
   const flushL = () => {
-    if (list) { out.push(`<${list.tag}>${list.items.map((i) => `<li>${inline(i)}</li>`).join('')}</${list.tag}>`); list = null; }
+    if (list) { out.push(`<${list.tag}>${list.items.map((i) => `<li>${inline(i).replace(/\n/g, '<br>')}</li>`).join('')}</${list.tag}>`); list = null; }
   };
   for (const line of String(src).replace(/\r/g, '').split('\n')) {
     let m;
@@ -263,7 +263,8 @@ export function markdown(src) {
       flushP();
       if (!list || list.tag !== 'ol') { flushL(); list = { tag: 'ol', items: [] }; }
       list.items.push(m[1]);
-    } else { flushL(); para.push(line.trim()); }
+    } else if (list && /^\s{2,}\S/.test(line)) { list.items[list.items.length - 1] += `\n${line.trim()}`; }
+    else { flushL(); para.push(line.trim()); }
   }
   flushP(); flushL();
   return out.join('\n');
@@ -353,3 +354,7 @@ export function buildICS({ name, events }) {
 // Tome 1 hors rééditions et éditions spéciales : sert aux badges « Nouvelle série » et aux articles récapitulatifs
 export const NOT_NEW = /nouvelle [ée]dition|r[ée][ée]dition|collector|int[ée]grale|deluxe|perfect|coffret|[ée]dition|artbook|fanbook|anthologie|\b(guide|pack|box)\b/i;
 export const isFirstVolume = (r) => String(r.tome) === '1' && r.statut !== 'annule' && !NOT_NEW.test(`${r.serie} ${r.titre || ''}`);
+
+// Pont anime -> manga : slug de la série du calendrier correspondant à un épisode (titres du manga d'origine, puis titres de l'anime)
+export const mangaSlugOf = (e, slugs) =>
+  [...(Array.isArray(e.manga) ? e.manga : []), e.title?.english, e.title?.romaji].map((t) => slugify(t || '')).find((k) => k && slugs.has(k)) || '';

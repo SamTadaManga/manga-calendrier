@@ -10,7 +10,7 @@ import { readChanges } from './changes.mjs';
 import path from 'node:path';
 import {
   paths, now, parisKey, parisHM, frDate, frShort, frDayMonth, ucfirst, addDays, weekdayOfKey,
-  loadConfig, loadAllManga, readAnime, displayTitle, mangaLabel, euro, frMonth, slugify, isFirstVolume,
+  loadConfig, loadAllManga, readAnime, displayTitle, mangaLabel, euro, frMonth, slugify, isFirstVolume, mangaSlugOf,
 } from './lib.mjs';
 
 const P = paths();
@@ -28,8 +28,13 @@ function writeArticle(name, { title, description }, body) {
   created.push(name);
 }
 
+// Lignes de liens affichées sous chaque sortie (retour à la ligne sous l'élément de liste)
+const mangaLinks = (r) => `\n  → [Calendrier manga](/manga/#j-${r.date}) · [Page de la série](/serie/${slugify(r.serie)}/)`;
+
 /* ------------------------------------------------------------------ anime */
 const anime = readAnime(P.dataDir);
+const mangaSlugs = new Set(loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
+const animeLinks = (e) => { const k = mangaSlugOf(e, mangaSlugs); return `\n  → [Page Anime](/anime/#j-${parisKey(e.date)})${k ? ` · [Lire le manga](/serie/${k}/)` : ''}`; };
 const eps = anime.episodes
   .map((e) => ({ ...e, date: new Date(e.airingAt * 1000) }))
   .filter((e) => parisKey(e.date) === today)
@@ -44,11 +49,11 @@ if (eps.length) {
     '',
     '## Les plus populaires du jour',
     '',
-    ...top.map((e) => `- **${label(e)}** : épisode ${e.episode}, à ${parisHM(e.date)}`),
+    ...top.map((e) => `- **${label(e)}** : épisode ${e.episode}, à ${parisHM(e.date)}${animeLinks(e)}`),
     '',
     `## Programme complet (${eps.length} épisodes)`,
     '',
-    ...eps.map((e) => `- ${parisHM(e.date)} : **${label(e)}** (épisode ${e.episode})`),
+    ...eps.map((e) => `- ${parisHM(e.date)} : **${label(e)}** (épisode ${e.episode})${animeLinks(e)}`),
     '',
     'Données de diffusion : [AniList](https://anilist.co).',
   ].join('\n');
@@ -70,7 +75,7 @@ const line = (r) => {
   let s = `- ${parts.join(' · ')}`;
   if (r.source) s += ` ([source](${r.source}))`;
   if (r.notes) s += `. ${r.notes.replace(/\s+/g, ' ')}`;
-  return s;
+  return s + mangaLinks(r);
 };
 const byPublisher = (rows) => {
   const map = new Map();
@@ -106,7 +111,7 @@ if (weekdayOfKey(today) === 1) {
     const body = [
       `Voici les sorties manga prévues en France du ${frDate(today)} au ${frDate(end)} : ${week.length} tome${week.length > 1 ? 's' : ''} chez ${new Set(week.map((r) => r.editeur)).size} éditeur${new Set(week.map((r) => r.editeur)).size > 1 ? 's' : ''}.`,
       '',
-      ...(fresh.length ? ['## Les nouvelles séries de la semaine', '', ...fresh.map((r) => `- **${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}`), ''] : []),
+      ...(fresh.length ? ['## Les nouvelles séries de la semaine', '', ...fresh.map((r) => `- **${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}${mangaLinks(r)}`), ''] : []),
       ...days.flatMap((d) => [`## ${ucfirst(frDayMonth(d))}`, '', ...week.filter((r) => r.date === d).map((r) => line({ ...r, notes: r.notes })), '']),
       ...(lastWeek.length ? ['## Ce qui a bougé la semaine dernière', '', `${lastWeek.length} changement${lastWeek.length > 1 ? 's' : ''} relevé${lastWeek.length > 1 ? 's' : ''} dans les plannings des éditeurs : [voir le détail](/changements/).`, ''] : []),
       'Les dates peuvent changer : consultez la source indiquée pour chaque sortie. Le calendrier complet est sur la page [Manga](/manga/).',
@@ -132,10 +137,10 @@ if (weekdayOfKey(today) === 1) {
     const body = [
       `Cette semaine, ${week.length} épisode${week.length > 1 ? 's' : ''} d'anime sont diffusés au Japon, répartis sur ${byMedia.size} séries. Les horaires de chaque jour sont sur la page [Anime](/anime/), à l'heure de Paris.`,
       '',
-      ...(firsts.length ? ['## Les premiers épisodes', '', ...firsts.slice(0, 10).map((e) => `- ${lab(e)} : épisode 1 le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}`), ''] : []),
+      ...(firsts.length ? ['## Les premiers épisodes', '', ...firsts.slice(0, 10).map((e) => `- ${lab(e)} : épisode 1 le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}${animeLinks(e)}`), ''] : []),
       '## Les séries les plus suivies',
       '',
-      ...top.map((e) => `- ${lab(e)} : prochain épisode (n° ${e.episode}) le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}`),
+      ...top.map((e) => `- ${lab(e)} : prochain épisode (n° ${e.episode}) le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}${animeLinks(e)}`),
       '',
       'Données de diffusion : [AniList](https://anilist.co). La disponibilité en France dépend des plateformes de streaming.',
     ].join('\n');
@@ -162,7 +167,7 @@ if (today.endsWith('-01')) {
       '',
       ...pubs.map(([pub, rows]) => `- **${pub}** : ${rows.length} tome${rows.length > 1 ? 's' : ''}`),
       '',
-      ...(fresh.length ? ['## Les nouvelles séries du mois', '', ...fresh.map((r) => `- **${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}`), ''] : []),
+      ...(fresh.length ? ['## Les nouvelles séries du mois', '', ...fresh.map((r) => `- **${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}${mangaLinks(r)}`), ''] : []),
       `La liste complète, jour par jour, est sur la page [sorties manga ${deName}](/sorties-manga/${slugify(name)}/).`,
       '',
       'Les dates peuvent changer : consultez la fiche de l\'éditeur pour chaque tome.',
@@ -178,7 +183,7 @@ if (today.endsWith('-01')) {
 {
   const evs = readChanges(path.join(P.dataDir, 'changes.json')).events.filter((e) => e.day === today);
   const name = (e) => `**${e.s}${e.t ? ` tome ${e.t}` : ''}** (${e.e})`;
-  const src = (e) => (/^https?:\/\//.test(e.u || '') ? ` ([fiche éditeur](${e.u}))` : '');
+  const src = (e) => (/^https?:\/\//.test(e.u || '') ? ` ([fiche éditeur](${e.u}))` : '') + (slugify(e.s) ? `\n  → [Page de la série](/serie/${slugify(e.s)}/) · [Calendrier manga](/manga/)` : '');
   const groups = [
     ['Reportés', evs.filter((e) => e.type === 'date' && e.to > e.from), (e) => `- ${name(e)} : du ${frShort(e.from)} au ${frShort(e.to)}${src(e)}`],
     ['Avancés', evs.filter((e) => e.type === 'date' && e.to < e.from), (e) => `- ${name(e)} : du ${frShort(e.from)} au ${frShort(e.to)}${src(e)}`],

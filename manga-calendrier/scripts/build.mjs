@@ -7,7 +7,7 @@ import { readChanges, keyOf } from './changes.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
-  esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume,
+  esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume, mangaSlugOf,
 } from './lib.mjs';
 
 const P = paths();
@@ -24,7 +24,7 @@ const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
 // Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
 const mangaSlugs = new Set(manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
-const mangaOf = (e) => [...(Array.isArray(e.manga) ? e.manga : []), e.title?.english, e.title?.romaji].map((t) => slugify(t || '')).find((k) => k && mangaSlugs.has(k)) || '';
+const mangaOf = (e) => mangaSlugOf(e, mangaSlugs);
 const adaptations = (() => {
   try { return JSON.parse(readFileSync(path.join(P.dataDir, 'adaptations.json'), 'utf8')).series || {}; } catch { return {}; }
 })();
@@ -47,7 +47,7 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/series/', 'Séries'], ['/mon-planning/', 'Mon planning'], ['/changements/', 'Changements'], ['/articles/', 'Articles']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/series/', 'Séries'], ['/articles/', 'Articles'], ['/mon-planning/', 'Mon planning'], ['/changements/', 'Changements']];
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 const reportEmail = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(config.legal?.contactEmail || '') ? config.legal.contactEmail : '';
