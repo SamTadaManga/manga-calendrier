@@ -25,6 +25,11 @@ const anime = readAnime(P.dataDir);
 // Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
 const mangaSlugs = new Set(manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
 const mangaOf = (e) => [...(Array.isArray(e.manga) ? e.manga : []), e.title?.english, e.title?.romaji].map((t) => slugify(t || '')).find((k) => k && mangaSlugs.has(k)) || '';
+const adaptations = (() => {
+  try { return JSON.parse(readFileSync(path.join(P.dataDir, 'adaptations.json'), 'utf8')).series || {}; } catch { return {}; }
+})();
+const ADAPT_ST = { RELEASING: 'en cours de diffusion', NOT_YET_RELEASED: 'à venir', FINISHED: 'terminé' };
+const adaptOf = (name) => (Array.isArray(adaptations[slugify(name)]?.a) ? adaptations[slugify(name)].a : []);
 const eps = anime.episodes
   .map((e) => ({ ...e, date: new Date(e.airingAt * 1000) }))
   .map((e) => ({ ...e, key: parisKey(e.date), time: parisHM(e.date), ms: mangaOf(e) }));
@@ -210,7 +215,7 @@ function releaseItem(r, showDate = false) {
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
   return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${cover}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
-    + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
+    + `<div class="meta">${meta}</div>${adaptLine(r.serie)}${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
 const STREAM_ICON = { Crunchyroll: 'CR', ADN: 'ADN', Netflix: 'N', 'Prime Video': 'P', 'Disney+': 'D+', Wakanim: 'W' };
@@ -222,6 +227,12 @@ const bridgeLink = (e) => (e.ms ? `<a class="bridge" href="/serie/${esc(e.ms)}/"
 const streamChips = (e) => (Array.isArray(e.stream) ? e.stream : [])
   .filter((s) => s && /^https:\/\//.test(s.u || '')).slice(0, 3)
   .map((s) => `<a class="stream s-${esc(slugify(s.n))}" href="${esc(s.u)}" rel="noopener nofollow" target="_blank" title="Regarder sur ${esc(s.n)}" aria-label="Regarder sur ${esc(s.n)}"><svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>${esc(STREAM_ICON[s.n] || s.n.slice(0, 2))}</a>`).join('');
+
+// « Adapté en anime » : titre, état, plateformes (ou fiche AniList à défaut)
+const adaptLine = (name, max = 1) => adaptOf(name).slice(0, max).map((a) => {
+  const links = streamChips({ stream: a.s }) || (/^https:\/\/anilist\.co\//.test(a.u || '') ? `<a class="stream-more" href="${esc(a.u)}" rel="noopener nofollow" target="_blank">fiche AniList</a>` : '');
+  return `<p class="adapt"><strong>Adapté en anime</strong> : ${esc(a.t)}${ADAPT_ST[a.st] ? ` <span class="muted">(${ADAPT_ST[a.st]})</span>` : ''}${links ? `<span class="streams">${links}</span>` : ''}</p>`;
+}).join('');
 
 function episodeItem(e) {
   const t = esc(displayTitle(e.title));
@@ -470,7 +481,9 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
     const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
     const ae = aeps.find((e) => e.date >= now()) || aeps[0];
-    const animeBox = ae ? `<div class="bridge-box panel"><strong>Adapté en anime</strong> : <a href="/anime/#j-${ae.key}">${esc(displayTitle(ae.title))}</a>, épisode ${esc(ae.episode)} diffusé au Japon le ${esc(frShort(ae.key))} à ${esc(ae.time)} (heure de Paris).${streamChips(ae) ? `<span class="streams">${streamChips(ae)}</span>` : ''}</div>` : '';
+    const adaptHtml = adaptLine(S.name, 2);
+    const airing = ae ? `<p class="adapt"><strong>Prochain épisode</strong> : <a href="/anime/#j-${ae.key}">${esc(displayTitle(ae.title))}</a>, épisode ${esc(ae.episode)} diffusé au Japon le ${esc(frShort(ae.key))} à ${esc(ae.time)} (heure de Paris).</p>` : '';
+    const animeBox = adaptHtml || airing ? `<div class="bridge-box panel">${adaptHtml}${airing}</div>` : '';
     page(`/serie/${S.k}/`, {
       title: `Prochain tome de ${S.name} : date de sortie en France`,
       description: n

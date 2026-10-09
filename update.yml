@@ -31,6 +31,9 @@ jobs:
       - name: Sorties manga des éditeurs (Glénat, Kana, Pika, Ki-oon)
         run: node scripts/collect-manga.mjs
         continue-on-error: true
+      - name: Adaptations animées des séries manga
+        run: node scripts/fetch-adaptations.mjs
+        continue-on-error: true
       - name: Épisodes d'anime
         run: node scripts/fetch-anime.mjs
       - name: Articles du jour

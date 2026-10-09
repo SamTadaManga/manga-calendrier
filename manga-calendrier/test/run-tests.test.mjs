@@ -108,6 +108,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   const run = (script, ...args) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', script), ...args], { env, encoding: 'utf8' });
 
   run('fetch-anime.mjs', '--from-file', path.join(ROOT, 'test/mock-anilist.json'));
+  run('fetch-adaptations.mjs', '--from-file', path.join(ROOT, 'test/mock-adaptations.json'));
   const anime = JSON.parse(read(dirs.DATA_DIR, 'anime.json'));
   assert.equal(anime.episodes.length, 6, 'filtre : adulte, Chine, musique, hier et hors fenêtre exclus');
   assert.ok(anime.episodes.every((e) => e.title && typeof e.airingAt === 'number'));
@@ -141,6 +142,10 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(!existsSync(dist('articles/futur/index.html')), 'un article daté du futur ne doit pas être publié');
   assert.ok(!existsSync(dist('articles/modele/index.html')) && !existsSync(dist('articles/_modele/index.html')));
 
+  const mp = read(dist('manga/index.html'));
+  assert.ok(mp.includes('Adapté en anime') && mp.includes('Alpha Season 2') && mp.includes('crunchyroll.com/series/ALPHA') && !mp.includes('evil.example'), 'adaptation sous les tomes');
+  const sp = read(dist('serie/serie-fictive-alpha/index.html'));
+  assert.ok(sp.includes('Alpha Old') && sp.includes('en cours de diffusion') && sp.includes('Prochain épisode'), 'encadré de la page série');
   const animePage = read(dist('anime/index.html'));
   assert.ok(animePage.includes('Test Series One') && animePage.includes('Shiken Ni'));
   assert.ok(animePage.includes('class="bridge" href="/serie/serie-fictive-alpha/"') && read(dirs.OUT_DIR, 'serie/serie-fictive-alpha/index.html').includes('Adapté en anime'), 'pont anime vers manga');
