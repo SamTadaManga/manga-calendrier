@@ -1190,7 +1190,123 @@
   "cosmos": {
    "c": "2026-10-09",
    "a": []
+  },
+  "kindergarten-wars": {
+   "c": "2026-10-09",
+   "a": [
+    {
+     "id": 199597,
+     "t": "Youchien WARS",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/199597",
+     "s": []
+    }
+   ]
+  },
+  "l-anneau-de-gyges": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "la-13e-piste": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "my-dear-detective": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "no-longer-allowed-in-another-world": {
+   "c": "2026-10-09",
+   "a": [
+    {
+     "id": 152137,
+     "t": "No Longer Allowed in Another World",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/152137",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GXJHM3G7X/no-longer-allowed-in-another-world"
+      }
+     ]
+    }
+   ]
+  },
+  "phantom-busters": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "ryukyu-buccaneer": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "sanda": {
+   "c": "2026-10-09",
+   "a": [
+    {
+     "id": 179302,
+     "t": "SANDA",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/179302",
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/dp/B0FNMQ46XJ"
+      }
+     ]
+    }
+   ]
+  },
+  "shy": {
+   "c": "2026-10-09",
+   "a": [
+    {
+     "id": 155389,
+     "t": "SHY",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/155389",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GKEH2G0W9/shy"
+      }
+     ]
+    },
+    {
+     "id": 171748,
+     "t": "SHY Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/171748",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GKEH2G0W9/shy"
+      }
+     ]
+    }
+   ]
+  },
+  "the-bugle-call": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "ubel-blatt-ii": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "valkyrie-apocalypse": {
+   "c": "2026-10-09",
+   "a": []
+  },
+  "whisper-it-in-the-night": {
+   "c": "2026-10-09",
+   "a": []
   }
  },
- "generatedAt": "2026-10-09T16:40:41.800Z"
+ "generatedAt": "2026-10-09T16:48:00.154Z"
 }
