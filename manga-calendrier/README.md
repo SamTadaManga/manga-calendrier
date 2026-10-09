@@ -73,3 +73,8 @@ Chaque jour : épisodes d'anime du jour, sorties manga du jour, et le lundi les 
 ## Tester sur ton ordinateur (facultatif)
 
 Avec Node 20 ou plus : `npm test` lance les tests, `npm run build` construit le site dans `dist/`.
+
+## Nouveautés depuis ta dernière visite, RSS, installation mobile
+- Page d'accueil : un bandeau rose « Nouveau depuis ta dernière visite » apparaît quand des changements de planning ou des articles sont parus depuis la visite précédente (la date de visite est gardée dans le navigateur, rien n'est envoyé). « Mis à jour il y a… » indique la fraîcheur des données.
+- `/feed.xml` : flux RSS des articles (généré dès que `siteUrl` est renseigné).
+- `manifest.webmanifest` + `sw.js` + icônes : le site peut s'installer sur l'écran d'accueil du téléphone et reste consultable hors ligne (dernière version vue).

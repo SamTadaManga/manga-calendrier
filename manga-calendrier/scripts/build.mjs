@@ -11,6 +11,7 @@ import {
 } from './lib.mjs';
 
 const P = paths();
+const SCRIPTS = path.dirname(fileURLToPath(import.meta.url));
 const config = loadConfig(P.config);
 const today = parisKey(now());
 const siteUrlOk = /^https?:\/\//.test(config.siteUrl || '') && !/REMPLACE/i.test(config.siteUrl);
@@ -65,6 +66,10 @@ ${noindex || isPrivate ? `<meta name="robots" content="noindex${isPrivate ? ', n
 <meta property="og:site_name" content="${esc(config.siteName)}">
 <link rel="icon" href="${FAVICON}">
 <link rel="stylesheet" href="/style.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#ffd21f">
+<link rel="apple-touch-icon" href="/icon-192.png">
+${siteUrlOk ? `<link rel="alternate" type="application/rss+xml" title="${esc(config.siteName)}" href="/feed.xml">` : ''}
 ${extraHead}
 </head>
 <body>
@@ -75,9 +80,10 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a><a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="/suivi.js" defer></script>
+<script src="/visite.js" defer></script>
 </body>
 </html>
 `;
@@ -100,6 +106,7 @@ function editionOf(r) {
   return t;
 }
 
+const updatedIso = (anime.generatedAt ? new Date(anime.generatedAt) : now()).toISOString();
 const changes = readChanges(path.join(P.dataDir, 'changes.json'));
 const events = [...changes.events].sort((a, b) => (a.day < b.day ? 1 : a.day > b.day ? -1 : 0));
 const moves = new Map(); // tome -> dernier changement de date récent
@@ -188,7 +195,9 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const body = `
 <section class="week" aria-labelledby="t-week">
 <div class="week-head"><h1 id="t-week">Les sorties de la semaine</h1>
-<p class="lead">Mangas en France chez Glénat, Kana, Pika et Ki-oon. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p></div>
+<p class="lead">Mangas en France chez Glénat, Kana, Pika et Ki-oon. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
+<p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
+<div class="since panel" id="since" hidden></div>
 <ul class="strip">${strip}</ul>
 </section>
 <section class="two" aria-label="Aujourd'hui">
@@ -415,7 +424,22 @@ if (siteUrlOk && !isPrivate) {
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
     urls.map((u) => `<url><loc>${esc(base + u)}</loc><lastmod>${lastmod(u)}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 }
-write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n');
+write('data/recent.json', JSON.stringify({
+  events: events.filter((e) => e.day >= addDays(today, -60)).map((e) => ({ day: e.day, type: e.type, s: e.s, t: e.t, from: e.from, to: e.to })),
+  articles: articles.slice(0, 20).map((a) => ({ date: a.date, title: a.title, slug: a.slug })),
+}));
+for (const f of ['visite.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['icon-192.png', 'icon-512.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
+write('manifest.webmanifest', JSON.stringify({
+  name: config.siteName, short_name: 'Calendrier Manga', description: config.description, lang: 'fr',
+  start_url: '/', scope: '/', display: 'standalone', background_color: '#f4f1ff', theme_color: '#ffd21f',
+  icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }],
+}));
+if (siteUrlOk) {
+  const items = articles.slice(0, 20).map((a) => `<item><title>${esc(a.title)}</title><link>${esc(`${base}/articles/${a.slug}/`)}</link><guid isPermaLink="true">${esc(`${base}/articles/${a.slug}/`)}</guid><pubDate>${new Date(`${a.date}T07:00:00Z`).toUTCString()}</pubDate><description>${esc(a.description || a.title)}</description></item>`).join('\n');
+  write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>${esc(config.siteName)}</title><link>${esc(base + '/')}</link><description>${esc(config.description)}</description><language>fr</language>\n${items}\n</channel></rss>\n`);
+}
+write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/sw.js\n  Cache-Control: no-cache\n');
 write('style.css', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'style.css'), 'utf8'));
 
 /* ---------------------------------------------------------- avertissements */
