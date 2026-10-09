@@ -399,7 +399,7 @@
         if (!maxT[k] || !own[k]) return;
         var n = (own[k] || []).filter(function (x) { return x >= 1 && x <= maxT[k]; }).length;
         var pct = Math.min(100, Math.round(n / maxT[k] * 100));
-        var bar = h('span', { class: 'bar', role: 'img', 'aria-label': n + ' tomes sur ' + maxT[k] }, [h('i', { style: 'width:' + pct + '%' })]);
+        var bar = h('span', { class: 'pbar', role: 'img', 'aria-label': n + ' tomes sur ' + maxT[k] }, [h('i', { style: 'width:' + pct + '%' })]);
         progUl.appendChild(h('li', {}, [h('a', { href: '/serie/' + k + '/', text: names[k] || k }), bar, h('span', { class: 'muted', text: n + ' / ' + maxT[k] })]));
       });
       if (progUl.childNodes.length) {

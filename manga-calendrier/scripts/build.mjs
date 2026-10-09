@@ -109,7 +109,7 @@ ${extraHead}
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
-<header class="site-header"><div class="wrap bar"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>${esc(config.siteName)}</a><div class="tools"></div><nav aria-label="Navigation principale">${nav}</nav></div></header>
+<header class="site-header"><div class="wrap hbar"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>${esc(config.siteName)}</a><div class="tools"></div><nav aria-label="Navigation principale">${nav}</nav></div></header>
 <main class="wrap" id="contenu">
 ${body}
 </main>

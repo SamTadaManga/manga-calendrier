@@ -44,7 +44,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 /* En-tête jaune, trame de points sur la droite */
 .site-header{position:relative;background:var(--brand);color:var(--on-brand);border-bottom:3px solid #111;overflow:hidden}
 .site-header::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(rgba(21,17,43,.2) 1.5px,transparent 2px) 0 0/9px 9px;-webkit-mask-image:linear-gradient(90deg,transparent 35%,#000);mask-image:linear-gradient(90deg,transparent 35%,#000)}
-.bar{position:relative;display:flex;flex-wrap:wrap;gap:6px 24px;align-items:center;justify-content:space-between;padding-top:8px;padding-bottom:8px}
+.hbar{position:relative;display:flex;flex-wrap:wrap;gap:6px 24px;align-items:center;justify-content:space-between;padding-top:8px;padding-bottom:8px}
 .brand{display:flex;align-items:center;gap:10px;padding:6px 0;font-weight:900;font-style:italic;letter-spacing:-.03em;font-size:1.25rem;color:#111;text-decoration:none}
 .mark{width:24px;height:24px;border:3px solid #111;background:#fff radial-gradient(circle,#111 0 4px,transparent 4.5px);flex:none;transform:rotate(-6deg)}
 nav{display:flex;flex-wrap:wrap;gap:4px}
@@ -139,7 +139,8 @@ a.d-line:hover{text-decoration:underline}
 .eps li.ep-row.has-thumb{grid-template-columns:96px 4.4rem minmax(0,1fr) auto;gap:12px 16px;align-items:center}
 .ep-cover{display:block;width:96px;height:144px;box-shadow:3px 3px 0 var(--shadow)}
 .ep-row time{white-space:nowrap;font-weight:800;font-variant-numeric:tabular-nums}
-.ep-row .ep{font-size:.88rem;color:var(--muted);white-space:nowrap}
+.ep-row .ep{font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:flex-end;max-width:19rem}
+.ep-row .t{min-width:12ch}
 .ep-row a{color:var(--ink);text-decoration-color:var(--line)}
 .ep-row a:hover{color:var(--ink)}
 
@@ -324,7 +325,7 @@ ul.vgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
 .azlist{display:none}
 
 .streams{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
-.ep-row .streams{margin:0 0 0 .5rem;display:inline-flex}
+.ep-row .streams{margin:0;display:inline-flex}
 a.stream{padding:0 7px;border:1.5px solid var(--ink);border-radius:2px;font-size:.78rem;font-weight:700;text-decoration:none;color:var(--ink);background:var(--paper)}
 @media (hover:hover){a.stream:hover{background:var(--brand);box-shadow:2px 2px 0 var(--shadow)}}
 
@@ -373,7 +374,7 @@ body.srch-open{overflow:hidden}
 :root[data-theme="dark"] .theme-btn .sun{display:none}:root[data-theme="dark"] .theme-btn .moon{display:inline}
 .suggest{margin:6px 0 18px}.suggest h2{margin-top:0}
 
-.site-header .bar{row-gap:2px}
+.site-header .hbar{row-gap:2px}
 .site-header nav{order:3;flex-basis:100%}
 
 a.bridge{display:inline-block;margin:4px 0 0 .5rem;font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:underline;text-decoration-color:var(--brand);text-decoration-thickness:3px;text-underline-offset:2px}
@@ -408,8 +409,8 @@ a.stream-more{font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:
 ul.prog{list-style:none;margin:0 0 6px;padding:0}
 ul.prog li{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,200px) 4.5rem;gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
 ul.prog a{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.bar{display:block;height:12px;border:2px solid var(--edge);background:var(--panel)}
-.bar i{display:block;height:100%;background:var(--brand)}
+.pbar{display:block;height:12px;border:2px solid var(--edge);background:var(--panel)}
+.pbar i{display:block;height:100%;background:var(--brand)}
 .install{position:fixed;left:12px;right:12px;bottom:12px;z-index:40;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;max-width:560px;margin:0 auto;padding:12px 14px;background:var(--panel);color:var(--ink);border:3px solid var(--edge);box-shadow:6px 6px 0 var(--ink)}
 .install p{flex:1 1 220px;margin:0;font-size:.95rem}
-@media (max-width:520px){ul.prog li{grid-template-columns:minmax(0,1fr) 4.5rem}ul.prog .bar{grid-column:1/-1;order:3}}
+@media (max-width:520px){ul.prog li{grid-template-columns:minmax(0,1fr) 4.5rem}ul.prog .pbar{grid-column:1/-1;order:3}}
