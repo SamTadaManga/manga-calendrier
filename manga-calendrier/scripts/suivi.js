@@ -160,9 +160,41 @@
   });
   paintOwn();
 
-  /* ------------------------------------------------ page « Mon planning » */
-  var root = document.getElementById('suivi-app');
-  if (!root) return;
+  /* ------------------------------------------------ animes suivis (mc-anime : { identifiant : titre }) */
+  var A_KEY = 'mc-anime';
+  function loadA() {
+    try {
+      var v = JSON.parse(localStorage.getItem(A_KEY) || '{}'), o = {};
+      Object.keys(v).forEach(function (k) { if (/^\d{1,9}$/.test(k) && typeof v[k] === 'string') o[k] = v[k].slice(0, 200); });
+      return o;
+    } catch (e) { return {}; }
+  }
+  var anime = loadA();
+  function saveA() { try { localStorage.setItem(A_KEY, JSON.stringify(anime)); } catch (e) { stored = false; } }
+  function paintA() {
+    var bs = document.querySelectorAll('button.afollow');
+    for (var i = 0; i < bs.length; i++) {
+      var b = bs[i], on = !!anime[b.getAttribute('data-a')];
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.textContent = on ? 'Suivi' : 'Suivre';
+      b.setAttribute('aria-label', (on ? 'Ne plus suivre ' : 'Suivre ') + b.getAttribute('data-n'));
+      b.hidden = false;
+    }
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest ? e.target.closest('button.afollow') : null;
+    if (!b) return;
+    var id = b.getAttribute('data-a');
+    if (anime[id]) delete anime[id]; else anime[id] = b.getAttribute('data-n') || id;
+    saveA(); paintA();
+    if (window.mcRender) window.mcRender();
+  });
+  paintA();
+  window.mcPaintA = paintA;
+
+  /* ------------------------------------------------ page « Mon planning » et section « Pour toi » */
+  var root = document.getElementById('suivi-app'), home = document.getElementById('pour-toi');
+  if (!root && !home) return;
 
   var today = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' }).format(new Date());
   var rows = [], bySlug = {}, names = {}, covers = false;
@@ -187,6 +219,38 @@
     return ['glenat', 'kana', 'pika', 'ki-oon', 'akata'].indexOf(k) > -1 ? k : 'autre';
   };
   var pubName = function (e) { return e || 'Éditeur inconnu'; };
+  function addD(d, n) { var dt = new Date(d + 'T12:00:00Z'); dt.setUTCDate(dt.getUTCDate() + n); return dt.toISOString().slice(0, 10); }
+  var aeps = [];
+  var fmtKey = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris' });
+  var fmtHM = new Intl.DateTimeFormat('fr-FR', { timeZone: 'Europe/Paris', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+  var epKey = function (e) { return fmtKey.format(new Date(e.at * 1000)); };
+  var epHM = function (e) { return fmtHM.format(new Date(e.at * 1000)).replace(':', ' h '); };
+  var ICON = { 'Crunchyroll': 'CR', 'ADN': 'ADN', 'Netflix': 'N', 'Prime Video': 'P', 'Disney+': 'D+', 'Wakanim': 'W' };
+  function streamEls(list2) {
+    var box = h('span', { class: 'streams' });
+    (list2 || []).forEach(function (x) {
+      if (!x || !/^https:\/\//.test(x.u || '') || !ICON[x.n]) return;
+      var a = h('a', { class: 'stream s-' + x.n.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''), href: x.u, rel: 'noopener nofollow', target: '_blank', title: 'Regarder sur ' + x.n, 'aria-label': 'Regarder sur ' + x.n });
+      a.innerHTML = '<svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>';
+      a.appendChild(document.createTextNode(ICON[x.n]));
+      box.appendChild(a);
+    });
+    return box.childNodes.length ? box : null;
+  }
+  function animeRowEl(e) {
+    var meta = [h('time', { text: dateFr(epKey(e)) + ' à ' + epHM(e) }), streamEls(e.s)];
+    if (e.p) meta.push(h('span', { class: 'badge s-new', text: '\u2605 Épisode 1' }));
+    meta.push(h('a', { href: '/anime/#j-' + epKey(e), text: 'Voir le jour' }));
+    if (e.ms) meta.push(h('a', { href: '/serie/' + e.ms + '/', text: 'Lire le manga' }));
+    return h('li', { class: 'rel p-anime' }, [h('div', { class: 'rel-main' }, [
+      h('div', { class: 'rel-title' }, [h('strong', { text: e.t }), h('span', { class: 'tome', text: ' épisode ' + e.e })]),
+      h('div', { class: 'meta' }, meta),
+    ])]);
+  }
+  function weekAnime(from, to) {
+    return aeps.filter(function (e) { var k = epKey(e); return anime[e.id] && k >= from && k <= to; }).sort(function (a, b) { return a.at - b.at; });
+  }
+  function getJSON(u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
 
   function upcoming() {
     return rows.filter(function (r) { return has(r.k) && r.d >= today && r.st !== 'annule'; })
@@ -213,9 +277,49 @@
       return h('li', { class: 'rel p-' + pubClass(r.e) + (covers ? ' has-cover' : '') }, kids);
   }
 
+  /* lien de partage : #p=<json encodé> ; rien n'est importé sans clic */
+  function b64u(str) { return btoa(unescape(encodeURIComponent(str))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
+  function unb64u(str) { str = str.replace(/-/g, '+').replace(/_/g, '/'); while (str.length % 4) str += '='; return decodeURIComponent(escape(atob(str))); }
+  function shareUrl(withOwn) {
+    var p = { s: list.slice(0, 300), a: Object.keys(anime).slice(0, 100).map(function (id) { return [id, anime[id]]; }) };
+    if (withOwn) { var o = encodeOwn(); if (o) p.o = o; }
+    return location.origin + '/mon-planning/#p=' + b64u(JSON.stringify(p));
+  }
+  var shared = null;
+  try {
+    var mh = location.hash.match(/^#p=([\w-]+)$/);
+    if (mh) {
+      var sp = JSON.parse(unb64u(mh[1]));
+      shared = {
+        s: (Array.isArray(sp.s) ? sp.s : []).filter(function (k) { return typeof k === 'string' && /^[a-z0-9-]{1,100}$/.test(k); }).slice(0, 300),
+        a: (Array.isArray(sp.a) ? sp.a : []).filter(function (x) { return Array.isArray(x) && /^\d{1,9}$/.test(String(x[0])) && typeof x[1] === 'string'; }).slice(0, 100),
+        o: typeof sp.o === 'string' ? sp.o.slice(0, 20000) : '',
+      };
+    }
+  } catch (e) { shared = null; }
+
   function render() {
     root.textContent = '';
     var up = upcoming();
+
+    if (shared) {
+      var known = shared.s.filter(function (k) { return names[k]; });
+      var okBtn = h('button', { type: 'button', class: 'chip chip-go', text: 'Ajouter à ma liste' });
+      var noBtn = h('button', { type: 'button', class: 'chip', text: 'Ignorer' });
+      okBtn.addEventListener('click', function () {
+        known.forEach(function (k) { if (!has(k)) list.push(k); });
+        shared.a.forEach(function (x) { anime[String(x[0])] = x[1].slice(0, 200); });
+        save(); saveA(); if (shared.o) decodeOwn(shared.o);
+        shared = null; try { history.replaceState(null, '', location.pathname); } catch (e) {}
+        paint(); paintA(); paintOwn(); render();
+      });
+      noBtn.addEventListener('click', function () { shared = null; try { history.replaceState(null, '', location.pathname); } catch (e) {} render(); });
+      root.appendChild(h('div', { class: 'share-in panel' }, [
+        h('strong', { text: 'Quelqu\'un t\'a partagé sa liste : ' }),
+        h('span', { text: known.length + (known.length > 1 ? ' séries' : ' série') + ', ' + shared.a.length + (shared.a.length > 1 ? ' animes' : ' anime') + (shared.o ? ' et sa collection' : '') + '. ' }),
+        okBtn, noBtn,
+      ]));
+    }
 
     /* série suivies */
     var chips = h('ul', { class: 'follow-chips' });
@@ -272,6 +376,57 @@
       root.appendChild(chips);
     }
 
+    /* ma collection : chiffres et progression par série */
+    var maxT = {};
+    rows.forEach(function (r) { var n = tnum(r.t); if (n && r.st !== 'annule' && (!maxT[r.k] || n > maxT[r.k])) maxT[r.k] = n; });
+    var ownKeys = Object.keys(own);
+    if (ownKeys.length) {
+      var totalOwned = 0, upToDate = 0, buyN = 0, buySum = 0;
+      ownKeys.forEach(function (k) { totalOwned += (own[k] || []).filter(function (n) { return n >= 1; }).length; });
+      list.forEach(function (k) { if (maxT[k] && own[k] && upTo(k) >= maxT[k]) upToDate++; });
+      rows.forEach(function (r) {
+        if (has(r.k) && own[r.k] && r.d < today && r.st !== 'annule' && tnum(r.t) !== null && !isOwned(r.k, r.t)) { buyN++; if (typeof r.p === 'number') buySum += r.p; }
+      });
+      var tile = function (big, small) { return h('div', { class: 'stat' }, [h('b', { text: big }), h('span', { text: small })]); };
+      root.appendChild(h('h2', { text: 'Ma collection' }));
+      root.appendChild(h('div', { class: 'stats' }, [
+        tile(String(totalOwned), totalOwned > 1 ? 'tomes possédés' : 'tome possédé'),
+        tile(String(upToDate), upToDate > 1 ? 'séries à jour' : 'série à jour'),
+        tile(String(buyN), buyN > 1 ? 'tomes à rattraper' + (buySum ? ' · ' + euro(buySum) : '') : 'tome à rattraper' + (buySum ? ' · ' + euro(buySum) : '')),
+      ]));
+      var progUl = h('ul', { class: 'prog' });
+      list.slice().sort(function (a, b) { return (names[a] || a).localeCompare(names[b] || b, 'fr'); }).forEach(function (k) {
+        if (!maxT[k] || !own[k]) return;
+        var n = (own[k] || []).filter(function (x) { return x >= 1 && x <= maxT[k]; }).length;
+        var pct = Math.min(100, Math.round(n / maxT[k] * 100));
+        var bar = h('span', { class: 'bar', role: 'img', 'aria-label': n + ' tomes sur ' + maxT[k] }, [h('i', { style: 'width:' + pct + '%' })]);
+        progUl.appendChild(h('li', {}, [h('a', { href: '/serie/' + k + '/', text: names[k] || k }), bar, h('span', { class: 'muted', text: n + ' / ' + maxT[k] })]));
+      });
+      if (progUl.childNodes.length) {
+        root.appendChild(progUl);
+        root.appendChild(h('p', { class: 'muted', text: 'Le total est le dernier tome connu dans le calendrier : il peut grandir quand un éditeur en annonce de nouveaux.' }));
+      }
+    }
+
+    /* animes suivis */
+    var aIds = Object.keys(anime);
+    root.appendChild(h('h2', { text: 'Animes suivis' }));
+    if (!aIds.length) {
+      root.appendChild(h('p', { class: 'muted' }, ['Tu ne suis aucun anime. Clique sur « Suivre » sur la page ', h('a', { href: '/anime/', text: 'Anime' }), ' pour voir ici les prochains épisodes.']));
+    } else {
+      var achips = h('ul', { class: 'follow-chips' });
+      aIds.sort(function (a, b) { return anime[a].localeCompare(anime[b], 'fr'); }).forEach(function (id) {
+        achips.appendChild(h('li', {}, [h('button', { type: 'button', class: 'chip', 'data-arm': id, 'aria-label': 'Ne plus suivre ' + anime[id] }, [h('span', { text: anime[id] }), h('span', { 'aria-hidden': 'true', text: ' ×' })])]));
+      });
+      root.appendChild(achips);
+      var weekEps = weekAnime(today, addD(today, 6));
+      if (weekEps.length) {
+        var aul = h('ul', { class: 'list panel' });
+        weekEps.forEach(function (e) { aul.appendChild(animeRowEl(e)); });
+        root.appendChild(aul);
+      } else root.appendChild(h('p', { class: 'muted', text: 'Aucun épisode de tes animes cette semaine.' }));
+    }
+
     /* à acheter maintenant : tomes parus des séries dont la collection est renseignée */
     if (list.length) {
       var buy = rows.filter(function (r) {
@@ -319,10 +474,11 @@
     });
 
     /* agenda + transfert */
-    if (up.length) {
-      var dl2 = h('button', { type: 'button', class: 'chip', id: 'ics', text: 'Télécharger mon agenda (.ics)' });
-      dl2.addEventListener('click', function () { downloadICS(up); });
-      root.appendChild(h('p', { class: 'more' }, [dl2]));
+    var icsEps = weekAnime(today, addD(today, 6));
+    if (up.length || icsEps.length) {
+      var dl2 = h('button', { type: 'button', class: 'chip', id: 'ics', text: 'Télécharger mon agenda avec rappels (.ics)' });
+      dl2.addEventListener('click', function () { downloadICS(up, icsEps); });
+      root.appendChild(h('p', { class: 'more' }, [dl2, h('span', { class: 'muted', text: ' Rappel la veille à 18 h et le jour même à 9 h pour les tomes, 10 minutes avant pour les épisodes. C\'est une photo du moment : retélécharge-le de temps en temps.' })]));
     }
     var area = h('textarea', { readonly: 'readonly', rows: '2', 'aria-label': 'Ma liste, à copier' });
     area.value = list.join(',');
@@ -345,8 +501,18 @@
       var m = document.getElementById('ajout-msg');
       if (m) m.textContent = n + (n > 1 ? ' tomes ajoutés à ta collection.' : ' tome ajouté à ta collection.');
     });
+    var inclOwn = h('input', { type: 'checkbox', id: 'share-own', checked: 'checked' });
+    var shareBtn = h('button', { type: 'button', class: 'chip', text: 'Copier un lien de partage' });
+    var shareMsg = h('span', { class: 'muted', role: 'status' });
+    shareBtn.addEventListener('click', function () {
+      var url = shareUrl(inclOwn.checked);
+      var done = function () { shareMsg.textContent = ' Lien copié. La personne choisira d\'ajouter ta liste ou non.'; };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { shareMsg.textContent = ' ' + url; });
+      else shareMsg.textContent = ' ' + url;
+    });
     root.appendChild(h('details', { class: 'transfer' }, [
-      h('summary', { text: 'Sauvegarder ou transférer ma liste' }),
+      h('summary', { text: 'Sauvegarder, transférer ou partager ma liste' }),
+      h('p', { class: 'muted' }, ['Partager par lien (tes séries et tes animes suivis) : ', h('label', {}, [inclOwn, ' inclure ma collection']), ' ', shareBtn, shareMsg]),
       h('p', { class: 'muted', text: 'Ta liste est enregistrée dans ce navigateur uniquement. Pour la retrouver sur un autre appareil, copie le texte ci-dessous puis colle-le dans la même page là-bas.' }),
       area, imp, impBtn,
       h('p', { class: 'muted', text: 'Ta collection (tomes possédés), à copier de la même façon :' }), ownArea, ownImp, ownBtn,
@@ -356,7 +522,9 @@
   }
   window.mcRender = render;
 
-  root.addEventListener('click', function (e) {
+  if (root) root.addEventListener('click', function (e) {
+    var ab = e.target.closest ? e.target.closest('[data-arm]') : null;
+    if (ab) { delete anime[ab.getAttribute('data-arm')]; saveA(); paintA(); render(); return; }
     var b = e.target.closest ? e.target.closest('[data-rm]') : null;
     if (!b) return;
     toggle(b.getAttribute('data-rm'));
@@ -380,9 +548,9 @@
     var dt = new Date(d + 'T12:00:00Z'); dt.setUTCDate(dt.getUTCDate() + 1);
     return dt.toISOString().slice(0, 10).replace(/-/g, '');
   }
-  function downloadICS(up) {
+  function downloadICS(up, epsList) {
     var stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
-    var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Calendrier manga//Mon planning//FR', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:Mon planning manga'];
+    var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Calendrier manga//Mon planning//FR', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:Mon planning'];
     up.forEach(function (r) {
       var sum = r.s + (r.t ? ' tome ' + r.t : '') + (r.e ? ' (' + r.e + ')' : '');
       var desc = [typeof r.p === 'number' ? euro(r.p) : '', r.st === 'reporte' ? 'Reporté' : ''].filter(Boolean).join(' · ');
@@ -390,24 +558,67 @@
         'DTSTART;VALUE=DATE:' + r.d.replace(/-/g, ''), 'DTEND;VALUE=DATE:' + nextDay(r.d), 'SUMMARY:' + esc(sum));
       if (desc) lines.push('DESCRIPTION:' + esc(desc));
       if (/^https?:\/\//.test(r.u || '')) lines.push('URL:' + r.u);
+      lines.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + esc(sum + ' sort demain'), 'TRIGGER:-PT6H', 'END:VALARM');
+      lines.push('BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + esc(sum + ' sort aujourd\'hui'), 'TRIGGER:PT9H', 'END:VALARM');
       lines.push('END:VEVENT');
+    });
+    var z = function (t) { return new Date(t * 1000).toISOString().replace(/[-:]/g, '').replace(/\.\d+/, ''); };
+    (epsList || []).forEach(function (e) {
+      var sum = e.t + ' : épisode ' + e.e;
+      lines.push('BEGIN:VEVENT', 'UID:suivi-anime-' + e.id + '-' + e.e + '@calendrier-manga', 'DTSTAMP:' + stamp,
+        'DTSTART:' + z(e.at), 'DTEND:' + z(e.at + 1440), 'SUMMARY:' + esc(sum), 'DESCRIPTION:' + esc('Diffusion japonaise. La disponibilité en France dépend des plateformes.'),
+        'BEGIN:VALARM', 'ACTION:DISPLAY', 'DESCRIPTION:' + esc(sum + ' dans 10 minutes'), 'TRIGGER:-PT10M', 'END:VALARM', 'END:VEVENT');
     });
     lines.push('END:VCALENDAR');
     var blob = new Blob([lines.map(fold).join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' });
     var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob); a.download = 'mon-planning-manga.ics';
+    a.href = URL.createObjectURL(blob); a.download = 'mon-planning.ics';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
 
+  /* ------------------------------------------------ section « Pour toi » (accueil) */
+  function pourToi() {
+    var body = document.getElementById('pt-body');
+    home.hidden = false; body.textContent = '';
+    var end = addD(today, 6);
+    var items = rows.filter(function (r) { return has(r.k) && r.d >= today && r.d <= end && r.st !== 'annule'; })
+      .map(function (r) { return { key: r.d, at: 0, el: rowEl(r) }; })
+      .concat(weekAnime(today, end).map(function (e) { return { key: epKey(e), at: e.at, el: animeRowEl(e) }; }))
+      .sort(function (a, b) { return a.key < b.key ? -1 : a.key > b.key ? 1 : a.at - b.at; });
+    if (items.length) {
+      var ul = h('ul', { class: 'list panel' });
+      items.slice(0, 12).forEach(function (x) { ul.appendChild(x.el); });
+      body.appendChild(ul);
+      if (items.length > 12) body.appendChild(h('p', { class: 'muted', text: '+ ' + (items.length - 12) + ' autres cette semaine.' }));
+    } else {
+      var next = rows.filter(function (r) { return has(r.k) && r.d > end && r.st !== 'annule'; }).sort(function (a, b) { return a.d < b.d ? -1 : 1; })[0];
+      body.appendChild(h('p', { class: 'muted', text: 'Rien cette semaine pour tes séries et tes animes.' + (next ? ' Prochaine sortie : ' + next.s + (next.t ? ' tome ' + next.t : '') + ', ' + dateFr(next.d) + '.' : '') }));
+    }
+    body.appendChild(h('p', { class: 'more' }, [h('a', { href: '/mon-planning/', text: 'Voir tout mon planning' })]));
+    paint(); paintOwn();
+  }
+
   /* ------------------------------------------------ données */
-  root.textContent = 'Chargement…';
-  fetch('/data/manga.json', { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }).then(function (j) {
+  var needM = !!root || list.length > 0, needA = !!root || Object.keys(anime).length > 0;
+  if (root) root.textContent = 'Chargement…';
+  if (home && !needM && !needA) {
+    home.hidden = false;
+    document.getElementById('pt-body').appendChild(h('p', { class: 'muted' }, ['Suis tes séries et tes animes avec les boutons « Suivre » : tes sorties de la semaine s\'afficheront ici. ', h('a', { href: '/mon-planning/', text: 'Voir Mon planning' })]));
+    return;
+  }
+  Promise.all([
+    needM ? getJSON('/data/manga.json') : Promise.resolve({ rows: [] }),
+    needA ? getJSON('/data/anime-week.json').catch(function () { return { eps: [] }; }) : Promise.resolve({ eps: [] }),
+  ]).then(function (res) {
+    var j = res[0];
     rows = j.rows || [];
     covers = j.covers === true;
+    aeps = res[1].eps || [];
     rows.forEach(function (r) { bySlug[r.k] = true; if (!names[r.k]) names[r.k] = r.s; });
-    render();
+    if (root) render();
+    if (home) pourToi();
   }).catch(function () {
-    root.textContent = 'Impossible de charger le calendrier. Recharge la page dans un instant.';
+    if (root) root.textContent = 'Impossible de charger le calendrier. Recharge la page dans un instant.';
   });
 })();

@@ -55,6 +55,19 @@ const reportUrl = /^https:\/\//.test(config.reportUrl || '') ? config.reportUrl 
 const reportLink = (label = 'Signaler une erreur') => reportUrl
   ? `<a href="${esc(reportUrl)}" rel="noopener" target="_blank">${esc(label)}</a>`
   : reportEmail ? `<a href="mailto:${esc(reportEmail)}" data-report="${esc(reportEmail)}">${esc(label)}</a>` : '';
+// Newsletter : le formulaire envoie l'adresse directement au service d'envoi choisi (MailerLite, Brevo, Buttondown…)
+const NL = (() => {
+  const n = config.newsletter || {};
+  const action = /^https:\/\//.test(n.formAction || '') ? n.formAction : '';
+  return { on: !!action, action, field: /^[\w.\[\]-]{1,40}$/.test(n.emailField || '') ? n.emailField : 'email', provider: String(n.provider || '').slice(0, 60), extra: n.hidden && typeof n.hidden === 'object' ? n.hidden : {} };
+})();
+const nlForm = (id = 'nl') => !NL.on ? '' : `<form class="nl-form" method="post" action="${esc(NL.action)}" target="_blank" rel="noopener">
+<label for="${id}-mail" class="sr">Ton adresse e-mail</label>
+<input type="email" id="${id}-mail" name="${esc(NL.field)}" placeholder="ton@email.fr" required autocomplete="email">
+${Object.entries(NL.extra).filter(([k, v]) => /^[\w.\[\]-]{1,60}$/.test(k) && typeof v === 'string').map(([k, v]) => `<input type="hidden" name="${esc(k)}" value="${esc(v)}">`).join('')}
+<button type="submit" class="chip chip-go">Je m'abonne</button>
+<p class="muted nl-legal"><label><input type="checkbox" required> J'accepte de recevoir la newsletter de ${esc(config.siteName)} (un e-mail par semaine). Je peux me désabonner à tout moment depuis chaque e-mail. <a href="/mentions-legales/#newsletter">Données personnelles</a></label></p>
+</form>`;
 const THEME_BOOT = `<script>try{var t=localStorage.getItem('mc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>`;
 
 function layout({ title, description, pathname, body, noindex = false, extraHead = '', image = '' }) {
@@ -102,7 +115,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${reportLink()}<a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="/suivi.js" defer></script>
 <script src="/visite.js" defer></script>
@@ -223,6 +236,7 @@ const streamKeys = (e) => {
   const k = (Array.isArray(e.stream) ? e.stream : []).filter((s) => s && /^https:\/\//.test(s.u || '')).map((s) => slugify(s.n));
   return k.length ? k.join(' ') : 'aucune';
 };
+const afollow = (e) => `<button type="button" class="chip afollow" data-a="${esc(e.mediaId)}" data-n="${esc(displayTitle(e.title))}" aria-pressed="false" hidden>Suivre</button>`;
 const bridgeLink = (e) => (e.ms ? `<a class="bridge" href="/serie/${esc(e.ms)}/">Lire le manga</a>` : '');
 const streamChips = (e) => (Array.isArray(e.stream) ? e.stream : [])
   .filter((s) => s && /^https:\/\//.test(s.u || '')).slice(0, 3)
@@ -240,7 +254,7 @@ function episodeItem(e) {
   const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
   const hasCover = showCovers && /^https:\/\//.test(e.cover || '');
   const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="96" height="144" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
-  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}</span></li>`;
+  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)} ${afollow(e)}</span></li>`;
 }
 
 function animeCard(e) {
@@ -249,7 +263,7 @@ function animeCard(e) {
   const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
   const frame = `<div class="cover">${img}</div>`;
   return `<li class="acard" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" rel="noopener nofollow" aria-label="${t} : fiche AniList">${frame}</a>` : frame}`
-    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}</div></li>`;
+    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}${afollow(e)}</div></li>`;
 }
 
 const articleItem = (a) =>
@@ -281,6 +295,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
 <div class="week-head"><h1 id="t-week">Les sorties de la semaine</h1>
 <p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon et Akata. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
+<section class="pour-toi" id="pour-toi" aria-labelledby="t-pt" hidden><h2 id="t-pt">Pour toi cette semaine</h2><div id="pt-body"></div></section>
 <div class="since panel" id="since" hidden></div>
 <ul class="strip">${strip}</ul>
 </section>
@@ -300,6 +315,7 @@ ${todayEps.length
 </section>
 ${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2>${shelf.length >= 6 ? `<ul class="shelf">${shelf.map(tile).join('')}</ul>` : `<ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
 ${newShelf.length ? `<section><h2>Nouvelles séries à découvrir</h2>${showCovers ? `<ul class="shelf">${newShelf.map(tile).join('')}</ul>` : `<ul class="list panel">${newShelf.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/nouveautes/">Toutes les nouveautés</a></p></section>` : ''}
+${NL.on ? `<section class="nl-home panel"><h2>La newsletter du lundi</h2><p>Les sorties de la semaine dans ta boîte mail : manga, premiers épisodes d'anime, dates qui bougent.</p>${nlForm('nl-home')}</section>` : ''}
 ${recent.length ? `<section><h2>Derniers changements de date</h2><ul class="list panel">${recent.map(changeItem).join('')}</ul><p class="more"><a href="/changements/">Tous les changements</a></p></section>` : ''}
 <section>
 <h2>Derniers articles</h2>
@@ -543,6 +559,53 @@ ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="sea
   SEO_URLS.push('/nouveautes/');
 }
 
+
+/* -------------------------------------------------------------- newsletter */
+{
+  const end = addDays(today, 6);
+  const A = (u) => (siteUrlOk ? `${base}${u}` : u);
+  const wk = manga.filter((r) => r.statut !== 'annule' && r.date >= today && r.date <= end)
+    .sort((a, b) => a.date.localeCompare(b.date) || a.serie.localeCompare(b.serie, 'fr'));
+  const fresh = wk.filter(isFirstVolume);
+  const byMedia = new Map();
+  for (const e of eps) if (e.key >= today && e.key <= end && !byMedia.has(e.mediaId)) byMedia.set(e.mediaId, e);
+  const premieres = [...byMedia.values()].filter(isPremiere).sort((a, b) => b.popularity - a.popularity).slice(0, 6);
+  const topAnime = [...byMedia.values()].sort((a, b) => b.popularity - a.popularity).slice(0, 5);
+  const recentChanges = events.filter((e) => e.day >= addDays(today, -7));
+  const H = 'margin:22px 0 8px;font:800 18px/1.3 Arial,Helvetica,sans-serif;color:#111;border-bottom:3px solid #ffd21f;padding-bottom:4px';
+  const LI = 'margin:0 0 7px;font:15px/1.5 Arial,Helvetica,sans-serif;color:#111';
+  const LK = 'color:#111;font-weight:700';
+  const ul = (items) => `<ul style="margin:0;padding-left:20px">${items.map((i) => `<li style="${LI}">${i}</li>`).join('')}</ul>`;
+  const mItem = (r) => `<a style="${LK}" href="${esc(A(`/serie/${slugify(r.serie)}/`))}">${esc(mangaLabel(r))}</a> <span style="color:#555">(${esc(r.editeur || '')}, ${esc(frShort(r.date))})</span>`;
+  const aItem = (e) => `<a style="${LK}" href="${esc(A(`/anime/#j-${e.key}`))}">${esc(displayTitle(e.title))}</a> <span style="color:#555">(épisode ${esc(e.episode)}, ${esc(frShort(e.key))} à ${esc(e.time)})</span>`;
+  const sections = [];
+  if (fresh.length) sections.push(`<h2 style="${H}">★ Nouvelles séries</h2>${ul(fresh.slice(0, 8).map(mItem))}`);
+  if (wk.length) sections.push(`<h2 style="${H}">Manga : ${wk.length} sortie${wk.length > 1 ? 's' : ''} cette semaine</h2>${ul(wk.slice(0, 15).map(mItem))}${wk.length > 15 ? `<p style="${LI}"><a style="${LK}" href="${esc(A('/manga/'))}">Voir les ${wk.length - 15} autres sur le calendrier</a></p>` : ''}`);
+  if (premieres.length) sections.push(`<h2 style="${H}">★ Anime : les premiers épisodes</h2>${ul(premieres.map(aItem))}`);
+  if (topAnime.length) sections.push(`<h2 style="${H}">Anime : les plus suivis</h2>${ul(topAnime.map(aItem))}`);
+  if (recentChanges.length) sections.push(`<h2 style="${H}">Dates qui ont bougé</h2><p style="${LI}">${recentChanges.length} changement${recentChanges.length > 1 ? 's' : ''} relevé${recentChanges.length > 1 ? 's' : ''} cette semaine dans les plannings des éditeurs : <a style="${LK}" href="${esc(A('/changements/'))}">voir le détail</a>.</p>`);
+  const digest = sections.length
+    ? `<p style="${LI}">Voici ce qui sort du ${esc(frDayMonth(today))} au ${esc(frDayMonth(end))}.</p>${sections.join('')}<p style="${LI};margin-top:22px">Les dates peuvent changer : le calendrier complet est sur <a style="${LK}" href="${esc(A('/'))}">${esc(config.siteName)}</a>.</p>`
+    : '<p>Rien à annoncer pour le moment : le prochain numéro se remplira avec les données de la semaine.</p>';
+  const subject = `${config.siteName} : la semaine du ${frDayMonth(today)}`;
+  const emailDoc = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${esc(subject)}</title></head><body style="margin:0;background:#fbfaf6"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:16px"><table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border:3px solid #111"><tr><td style="background:#ffd21f;padding:18px 22px;border-bottom:3px solid #111;font:italic 900 26px Arial,Helvetica,sans-serif;color:#111">${esc(config.siteName)}</td></tr><tr><td style="padding:8px 22px 22px">${digest}</td></tr></table></td></tr></table></body></html>`;
+  const body = `<h1>Newsletter</h1>
+<p class="lead">Un e-mail par semaine, le lundi : les sorties manga, les premiers épisodes d'anime et les dates qui ont bougé. Gratuit, sans publicité.</p>
+${NL.on ? nlForm('nl-page') : '<p class="empty">L\'inscription n\'est pas encore ouverte. Renseigne <code>newsletter.formAction</code> dans site.config.json (voir le README).</p>'}
+<h2>Aperçu du prochain numéro</h2>
+<div class="panel nl-preview"><p class="muted">Objet : ${esc(subject)}</p>${digest}</div>
+<details class="nl-admin"><summary>Pour l'éditeur du site : récupérer l'e-mail</summary>
+<p class="muted">Copie le code ci-dessous dans un bloc « HTML personnalisé » de ton outil d'envoi (MailerLite, Brevo, Buttondown…), mets l'objet ci-dessus, envoie-toi un test, puis programme l'envoi. Ce numéro est recalculé à chaque mise à jour du site.</p>
+<p><button type="button" class="chip" id="nl-copy">Copier le code de l'e-mail</button> <span class="muted" id="nl-copied" role="status"></span></p>
+<textarea id="nl-code" rows="8" readonly>${esc(emailDoc)}</textarea></details>
+<script>(function(){var b=document.getElementById('nl-copy'),t=document.getElementById('nl-code'),m=document.getElementById('nl-copied');if(!b)return;b.addEventListener('click',function(){t.select();var ok=false;try{ok=document.execCommand('copy');}catch(e){}if(navigator.clipboard&&!ok){navigator.clipboard.writeText(t.value).then(function(){m.textContent='Copié.';},function(){});return;}m.textContent=ok?'Copié.':'Sélectionne le texte et copie-le à la main.';});})();</script>`;
+  page('/newsletter/', {
+    title: 'Newsletter', description: `La newsletter hebdomadaire de ${config.siteName} : sorties manga, premiers épisodes d'anime, dates qui bougent.`,
+    noindex: !NL.on, body,
+  });
+  if (NL.on) SEO_URLS.push('/newsletter/');
+}
+
 /* ------------------------------------------------------------ mon planning */
 {
   const rows = manga.map((r) => ({
@@ -646,7 +709,9 @@ const L = config.legal;
 <h2>Données et contenus</h2>
 <p>Les horaires des épisodes d'anime proviennent de l'API AniList. Les dates de sortie des mangas sont relevées auprès des sources officielles des éditeurs et peuvent évoluer. Les titres, marques et visuels cités appartiennent à leurs propriétaires respectifs. Ce site n'est affilié à aucun éditeur ni à aucune plateforme.</p>
 <h2>Cookies et données personnelles</h2>
-<p>Ce site ne dépose pas de cookies et ne collecte pas de données personnelles.${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>`,
+<p>Ce site ne dépose pas de cookies.${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>${NL.on ? `
+<h2 id="newsletter">Newsletter</h2>
+<p>Si vous vous abonnez à la newsletter, votre adresse e-mail est transmise${NL.provider ? ` à ${esc(NL.provider)}` : ' au service d’envoi'} qui envoie les messages pour le compte de ${v(L.editorName)}. Elle sert uniquement à l’envoi du récapitulatif hebdomadaire et est conservée jusqu’à votre désabonnement, possible à tout moment depuis chaque e-mail. Vous pouvez demander l’accès, la rectification ou la suppression de vos données à ${v(L.contactEmail)}.</p>` : ''}`,
   });
 }
 
@@ -690,6 +755,14 @@ if (siteUrlOk && !isPrivate) {
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
     urls.map((u) => `<url><loc>${esc(base + u)}</loc><lastmod>${lastmod(u)}</lastmod></url>`).join('\n')}\n</urlset>\n`);
 }
+write('data/anime-week.json', JSON.stringify({
+  generated: today,
+  eps: eps.map((e) => ({
+    id: e.mediaId, t: displayTitle(e.title), e: e.episode, at: e.airingAt, f: e.format === 'MOVIE' ? 1 : undefined,
+    p: isPremiere(e) ? 1 : undefined, ms: e.ms || undefined,
+    s: (Array.isArray(e.stream) ? e.stream : []).filter((x) => x && /^https:\/\//.test(x.u || '')).slice(0, 3).map((x) => ({ n: x.n, u: x.u })),
+  })),
+}));
 write('data/recent.json', JSON.stringify({
   events: events.filter((e) => e.day >= addDays(today, -60)).map((e) => ({ day: e.day, type: e.type, s: e.s, t: e.t, from: e.from, to: e.to })),
   articles: articles.slice(0, 20).map((a) => ({ date: a.date, title: a.title, slug: a.slug })),

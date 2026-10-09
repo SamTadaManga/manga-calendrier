@@ -148,6 +148,8 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(mp.includes('Adapté en anime') && mp.includes('Alpha Season 2') && mp.includes('crunchyroll.com/series/ALPHA') && !mp.includes('evil.example'), 'adaptation sous les tomes');
   const sp = read(dist('serie/serie-fictive-alpha/index.html'));
   assert.ok(sp.includes('Alpha Old') && sp.includes('en cours de diffusion') && sp.includes('Prochain épisode'), 'encadré de la page série');
+  assert.ok(read(dirs.OUT_DIR, 'index.html').includes('id="pour-toi"') && existsSync(dist('data/anime-week.json')), 'section Pour toi et données anime');
+  assert.ok(JSON.parse(read(dirs.OUT_DIR, 'data/anime-week.json')).eps.length > 0 && read(dirs.OUT_DIR, 'anime/index.html').includes('class="chip afollow"'), 'suivi des animes');
   const animePage = read(dist('anime/index.html'));
   assert.ok(animePage.includes('Test Series One') && animePage.includes('Shiken Ni'));
   assert.ok(animePage.includes('class="bridge" href="/serie/serie-fictive-alpha/"') && read(dirs.OUT_DIR, 'serie/serie-fictive-alpha/index.html').includes('Adapté en anime'), 'pont anime vers manga');
@@ -389,4 +391,26 @@ test('badges : nouvelle série (tome 1 hors éditions spéciales) et premier ép
   assert.ok(page.includes('Premier Anime') && !page.includes('Suite Anime'));
   const m = JSON.parse(readFileSync(path.join(tmp, 'dist/data/manga.json'), 'utf8')).rows;
   assert.equal(m.filter((r) => r.nw).length, 2);
+});
+
+test('newsletter : formulaire et mentions seulement si formAction est renseigné', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  mkdirSync(path.join(tmp, 'data'));
+  const cfg = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const build = (extra, name) => {
+    const cf = path.join(tmp, `${name}.json`);
+    writeFileSync(cf, JSON.stringify({ ...cfg, ...extra }));
+    const out = path.join(tmp, name);
+    execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'b'), OUT_DIR: out, CONFIG_FILE: cf, NOW: '2026-10-12T07:00:00Z' }, encoding: 'utf8' });
+    return (f) => readFileSync(path.join(out, f), 'utf8');
+  };
+  const off = build({}, 'off');
+  assert.ok(!off('index.html').includes('nl-form') && !off('newsletter/index.html').includes('<form') && off('newsletter/index.html').includes('noindex'));
+  assert.ok(off('mentions-legales/index.html').includes('ne collecte pas de données personnelles'));
+  const on = build({ newsletter: { formAction: 'https://exemple.com/s', emailField: 'fields[email]', provider: 'MailerLite' } }, 'on');
+  assert.ok(on('index.html').includes('nl-form') && on('newsletter/index.html').includes('action="https://exemple.com/s"') && on('newsletter/index.html').includes('name="fields[email]"'));
+  assert.ok(on('mentions-legales/index.html').includes('à MailerLite') && !on('mentions-legales/index.html').includes('ne collecte pas'));
+  assert.ok(on('sitemap.xml').includes('/newsletter/'));
+  const http = build({ newsletter: { formAction: 'http://exemple.com/s' } }, 'http');
+  assert.ok(!http('index.html').includes('nl-form'), 'une adresse hors https est refusée');
 });

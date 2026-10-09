@@ -120,3 +120,24 @@ Quand un lien est collé sur Discord, X, WhatsApp, etc., l'aperçu utilise `og.p
 - Le fichier `update.yml` contient une étape de plus (« Adaptations animées des séries manga ») : pense à le remplacer dans `.github/workflows/`.
 
 Dans les articles automatiques, chaque manga et chaque anime est suivi d'une ligne de liens (« Calendrier manga · Page de la série », « Page Anime · Lire le manga »). Les liens vers un jour du calendrier ne retombent sur le bon jour que pour les dates récentes (la page Manga garde 7 jours d'historique, la page Anime la semaine en cours).
+
+## Newsletter
+Le site fournit : un formulaire d'inscription (page `/newsletter/`, accueil, pied de page), une case de consentement, les mentions de données personnelles, et chaque semaine un **numéro prêt à envoyer** (page `/newsletter/`, bloc « Pour l'éditeur du site » : bouton « Copier le code de l'e-mail »). L'envoi lui-même est fait par un service tiers de ton choix : il stocke les adresses, envoie, gère le désabonnement.
+
+1. Crée un compte chez le service (à vérifier avant de choisir : le gratuit de MailerLite couvre 250 abonnés et 2 500 e-mails par mois, celui de Buttondown 100 abonnés ; l'envoi automatique depuis un flux RSS est payant chez Buttondown, donc ici le numéro se copie à la main chaque lundi).
+2. Active la **double confirmation** (l'abonné clique sur un lien reçu par e-mail) et un pied de page avec lien de désabonnement : c'est obligatoire.
+3. Crée un formulaire d'inscription « HTML intégré » : dans son code, relève l'adresse `action="https://…"` et le nom du champ e-mail (`name="…"`, souvent `email` ou `fields[email]`).
+4. Dans `site.config.json` :
+```
+"newsletter": { "formAction": "https://…adresse du formulaire…", "emailField": "email", "provider": "Nom du service" }
+```
+   (`"hidden": { "nom": "valeur" }` ajoute des champs cachés si le service en demande.)
+5. Lance « Run workflow » : le formulaire apparaît partout et `/newsletter/` devient indexable. Tant que `formAction` est vide, rien n'est affiché (sauf la page `/newsletter/`, non indexée, utile pour préparer le numéro).
+
+## Fidélisation (tout reste dans le navigateur)
+- **Pour toi** (accueil) : les sorties de la semaine des séries et animes suivis ; sans rien suivi, une invitation à le faire.
+- **Animes suivis** : bouton « Suivre » sur les épisodes ; liste dans Mon planning avec les épisodes de la semaine et les plateformes. Données : `data/anime-week.json`.
+- **Agenda avec rappels** (Mon planning) : fichier .ics avec rappel la veille à 18 h et le jour même à 9 h pour les tomes, 10 minutes avant pour les épisodes. Les agendas publics (`manga.ics`, `anime.ics`, `agenda/*.ics`) n'ont pas de rappels, pour ne pas inonder d'alertes. Un agenda personnel qui se met à jour tout seul demanderait un petit serveur (Cloudflare Worker).
+- **Ma collection** : tomes possédés, séries à jour, tomes à rattraper (avec le coût) et barre de progression par série.
+- **Installation** : à la 3e journée de visite, une invitation à installer le site (Android/Chrome : bouton ; iPhone : explication), refusable (pas de nouvelle invitation avant 60 jours).
+- **Partage par lien** : Mon planning > « Sauvegarder, transférer ou partager » : lien contenant les séries, les animes et (au choix) la collection. Le destinataire voit un encadré et choisit d'ajouter ou d'ignorer ; rien n'est importé sans son clic.

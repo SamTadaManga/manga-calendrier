@@ -71,6 +71,45 @@
     rep[ri].href = 'mailto:' + rep[ri].getAttribute('data-report') + '?subject=' + encodeURIComponent('Erreur signalée') + '&body=' + encodeURIComponent('Page : ' + location.href + '\n\nCe qui est faux (série, tome, date attendue) :\n');
   }
 
+  /* invitation à installer le site : à la 3e journée de visite, une fois, puis pas avant 60 jours si on la ferme */
+  (function () {
+    var standalone = (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone;
+    if (standalone) return;
+    var n = 0, until = 0;
+    try {
+      n = parseInt(localStorage.getItem('mc-visits') || '0', 10) || 0;
+      until = parseInt(localStorage.getItem('mc-install-no') || '0', 10) || 0;
+      var day = new Date().toISOString().slice(0, 10);
+      if (localStorage.getItem('mc-visit-day') !== day) { n++; localStorage.setItem('mc-visits', String(n)); localStorage.setItem('mc-visit-day', day); }
+    } catch (e) { return; }
+    if (n < 3 || Date.now() < until) return;
+    var deferred = null, bar = null;
+    var ios = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+    function hide(remember) {
+      if (bar) { bar.remove(); bar = null; }
+      if (remember) { try { localStorage.setItem('mc-install-no', String(Date.now() + 60 * 86400000)); } catch (e) {} }
+    }
+    function show() {
+      if (bar) return;
+      bar = document.createElement('div'); bar.className = 'install'; bar.setAttribute('role', 'region'); bar.setAttribute('aria-label', 'Installer le site');
+      var t = document.createElement('p');
+      t.textContent = deferred ? 'Installe le site sur ton appareil : un accès direct, comme une application.' : 'Pour l’avoir sous la main : touche le bouton Partager de ton navigateur, puis « Sur l’écran d’accueil ».';
+      bar.appendChild(t);
+      if (deferred) {
+        var go = document.createElement('button'); go.type = 'button'; go.className = 'chip chip-go'; go.textContent = 'Installer';
+        go.addEventListener('click', function () { var d = deferred; deferred = null; d.prompt(); d.userChoice.then(function () { hide(true); }, function () { hide(true); }); });
+        bar.appendChild(go);
+      }
+      var no = document.createElement('button'); no.type = 'button'; no.className = 'chip'; no.textContent = 'Plus tard';
+      no.addEventListener('click', function () { hide(true); });
+      bar.appendChild(no);
+      document.body.appendChild(bar);
+    }
+    window.addEventListener('beforeinstallprompt', function (e) { e.preventDefault(); deferred = e; show(); });
+    window.addEventListener('appinstalled', function () { hide(true); });
+    if (ios) show();
+  })();
+
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
   }
