@@ -84,10 +84,12 @@ ${body}
 </div></footer>
 <script src="/suivi.js" defer></script>
 <script src="/visite.js" defer></script>
+<script src="/recherche.js" defer></script>
 </body>
 </html>
 `;
 }
+let searchSeries = [];
 const page = (pathname, opts) => write(`${pathname.replace(/^\//, '')}index.html`, layout({ ...opts, pathname }));
 
 /* ------------------------------------------------------------- composants */
@@ -437,6 +439,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     return { k, name, rows: sorted, next: sorted.find((r) => r.date >= today) || null, editeur: sorted[sorted.length - 1].editeur };
   }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
+  searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: S.editeur || '' }));
   for (const S of seriesList) {
     const upcoming = S.rows.filter((r) => r.date >= today);
     const past = S.rows.filter((r) => r.date < today).reverse();
@@ -650,7 +653,21 @@ write('data/recent.json', JSON.stringify({
   events: events.filter((e) => e.day >= addDays(today, -60)).map((e) => ({ day: e.day, type: e.type, s: e.s, t: e.t, from: e.from, to: e.to })),
   articles: articles.slice(0, 20).map((a) => ({ date: a.date, title: a.title, slug: a.slug })),
 }));
-for (const f of ['visite.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+{
+  const seenA = new Set(), animeIdx = [];
+  for (const e of eps) {
+    if (seenA.has(e.mediaId)) continue;
+    seenA.add(e.mediaId);
+    const names = [e.title?.english, e.title?.romaji, e.title?.native].filter(Boolean);
+    animeIdx.push({ n: displayTitle(e.title), u: `/anime/#j-${e.key}`, d: `${frShort(e.key)} · ${e.time}`, a: names.join(' ') });
+  }
+  write('data/search.json', JSON.stringify({
+    series: searchSeries,
+    anime: animeIdx,
+    articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date) })),
+  }));
+}
+for (const f of ['visite.js', 'recherche.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
