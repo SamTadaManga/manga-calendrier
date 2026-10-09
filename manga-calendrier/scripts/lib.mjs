@@ -25,6 +25,7 @@ export const now = () => (process.env.NOW ? new Date(process.env.NOW) : new Date
 export function loadConfig(file) {
   const c = JSON.parse(readFileSync(file, 'utf8'));
   c.legal = c.legal || {};
+  c.tagline = c.tagline || 'le calendrier des sorties manga et anime';
   return c;
 }
 

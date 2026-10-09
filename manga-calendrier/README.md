@@ -1,4 +1,4 @@
-# Calendrier manga et anime
+# Prochain Tome : calendrier manga et anime
 
 Site statique gratuit : calendrier des sorties manga (France) et des épisodes d'anime de la semaine, avec des articles générés chaque jour à partir des données. Aucune dépendance à installer.
 

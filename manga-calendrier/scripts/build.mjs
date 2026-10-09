@@ -43,7 +43,7 @@ const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/mo
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 function layout({ title, description, pathname, body, noindex = false, extraHead = '' }) {
-  const fullTitle = pathname === '/' ? config.siteName : `${title} | ${config.siteName}`;
+  const fullTitle = pathname === '/' ? `${config.siteName} : ${config.tagline}` : `${title} | ${config.siteName}`;
   const canonical = siteUrlOk ? `${base}${pathname}` : '';
   const nav = NAV.map(([href, label]) => {
     const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
@@ -456,7 +456,7 @@ write('data/recent.json', JSON.stringify({
 for (const f of ['visite.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
-  name: config.siteName, short_name: 'Calendrier Manga', description: config.description, lang: 'fr',
+  name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
   start_url: '/', scope: '/', display: 'standalone', background_color: '#f4f1ff', theme_color: '#ffd21f',
   icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }],
 }));
