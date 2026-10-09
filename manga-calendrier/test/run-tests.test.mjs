@@ -277,8 +277,8 @@ test('couvertures : collecte, interrupteur et mode site privé', () => {
   const run = (script) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', script)], { env, encoding: 'utf8' });
   run('collect-manga.mjs');
   const csv = read(dirs.DATA_DIR, 'manga-auto.csv');
-  assert.ok(csv.includes('https://media.hachette.fr/fit-in/214x346/imgArticle/GLENAT/2026/9782344077573-001-X.jpeg'), 'couverture Glénat');
-  assert.ok(csv.includes('https://media.hachette.fr/fit-in/214x346/imgArticle/PIKA/2026/9791043310812-001-X.jpeg'), 'couverture Pika');
+  assert.ok(csv.includes('https://media.hachette.fr/fit-in/320x480/imgArticle/GLENAT/2026/9782344077573-001-X.jpeg?source=web'), 'couverture Glénat');
+  assert.ok(csv.includes('https://media.hachette.fr/fit-in/320x480/imgArticle/PIKA/2026/9791043310812-001-X.jpeg?source=web'), 'couverture Pika');
   assert.ok(csv.includes('https://bdi.dlpdomain.com/album/9782505140535-couv-M300x425.jpg'), 'couverture Kana');
   assert.ok(csv.includes('https://api.ki-oon.com/images/volumes/9791032723425.jpg'), 'couverture Ki-oon');
   assert.ok(!csv.includes('evil.example'), 'une couverture hors https ou hors serveur éditeur est refusée');

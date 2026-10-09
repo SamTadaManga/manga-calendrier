@@ -37,7 +37,7 @@ const dmy = (s) => {
 const hachetteCover = (html, isbn) => {
   if (!isbn) return '';
   const m = html.match(new RegExp(`imgArticle(?:\\\\*/)([A-Za-z]+)(?:\\\\*/)(\\d{4})(?:\\\\*/)${isbn}-001-X\\.jpe?g`));
-  return m ? `https://media.hachette.fr/fit-in/214x346/imgArticle/${m[1]}/${m[2]}/${isbn}-001-X.jpeg` : '';
+  return m ? `https://media.hachette.fr/fit-in/320x480/imgArticle/${m[1]}/${m[2]}/${isbn}-001-X.jpeg?source=web` : '';
 };
 const httpsOnly = (u) => (/^https:\/\//i.test(String(u || '').trim()) ? String(u).trim() : '');
 

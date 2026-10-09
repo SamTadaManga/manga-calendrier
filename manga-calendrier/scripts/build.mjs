@@ -89,6 +89,7 @@ const PUBS = { glenat: 'Glénat', kana: 'Kana', pika: 'Pika', 'ki-oon': 'Ki-oon'
 const pubKey = (e) => { const k = slugify(e || ''); return k in PUBS ? k : 'autre'; };
 const weekday = (k) => new Intl.DateTimeFormat('fr-FR', { weekday: 'short', timeZone: 'UTC' }).format(new Date(`${k}T12:00:00Z`)).replace('.', '');
 const dayNum = (k) => String(Number(k.slice(8)));
+const wdc = (k) => `wd-${((weekdayOfKey(k) + 6) % 7) + 1}`; // 1 = lundi … 7 = dimanche : une couleur par jour de la semaine
 const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
 
 // « Ryukyu Buccaneer - Tome 01 - Édition collector » -> « Édition collector »
@@ -120,6 +121,17 @@ function changeItem(ev) {
   }
   return `<li class="rel p-${pk}"><div class="rel-title"><strong>${esc(ev.s)}</strong>${ev.t ? ` <span class="tome">tome ${esc(ev.t)}</span>` : ''}</div>`
     + `<div class="meta"><span class="badge ${cls}">${label}</span><span>${esc(text)}</span><span class="pub">${esc(ev.e)}</span>${/^https?:\/\//.test(ev.u || '') ? `<a href="${esc(ev.u)}" rel="noopener nofollow">Fiche éditeur</a>` : ''}</div></li>`;
+}
+
+function tile(r) {
+  const pk = pubKey(r.editeur);
+  const label = `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
+  const img = `<img class="cover-img" src="${esc(r.cover)}" alt="Couverture de ${esc(label)}" width="160" height="240" loading="lazy" decoding="async" referrerpolicy="no-referrer">`;
+  const frame = `<div class="cover">${img}</div>`;
+  return `<li class="tile p-${pk}"><a class="tile-cover" href="${esc(r.source || '/manga/')}" ${r.source ? 'rel="noopener nofollow"' : ''} aria-label="${esc(label)} : fiche éditeur">${frame}</a>`
+    + `<div class="tile-body"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}`
+    + `<div class="tile-date ${wdc(r.date)}"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div><span class="pub">${esc(r.editeur || '')}</span>`
+    + `<button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button></div></li>`;
 }
 
 const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
@@ -163,11 +175,12 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const live = manga.filter((r) => r.statut !== 'annule');
   const mangaToday = live.filter((r) => r.date === today);
   const mangaNext = live.filter((r) => r.date > today && r.date <= addDays(today, 30)).slice(0, 10);
+  const shelf = showCovers ? live.filter((r) => r.date > today && r.cover).slice(0, 12) : [];
   const recent = events.filter((e) => e.day >= addDays(today, -14)).slice(0, 5);
   const strip = Array.from({ length: 7 }, (_, i) => addDays(today, i)).map((d) => {
     const m = live.filter((r) => r.date === d);
     const a = eps.filter((e) => e.key === d);
-    return `<li class="day-panel${d === today ? ' today' : ''}"><div class="d-head"><span class="d-wd">${esc(d === today ? "aujourd'hui" : weekday(d))}</span><span class="d-num">${dayNum(d)}</span></div>`
+    return `<li class="day-panel ${wdc(d)}${d === today ? ' today' : ''}"><div class="d-head"><span class="d-wd">${esc(d === today ? "aujourd'hui" : weekday(d))}</span><span class="d-num">${dayNum(d)}</span></div>`
       + (m.length ? `<a class="d-line" href="/manga/#j-${d}"><b>${m.length}</b> ${m.length > 1 ? 'mangas' : 'manga'}<span class="dots">${dots(m)}</span></a>` : '<span class="d-line none">Pas de manga</span>')
       + (a.length ? `<a class="d-line" href="/anime/#j-${d}"><b>${a.length}</b> ${a.length > 1 ? 'épisodes' : 'épisode'}</a>` : '<span class="d-line none">Pas d\'épisode</span>')
       + '</li>';
@@ -192,7 +205,7 @@ ${todayEps.length
     : '<p class="empty">Le programme apparaîtra après la prochaine mise à jour automatique.</p>'}
 </div>
 </section>
-${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2><ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul><p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
+${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2>${shelf.length >= 6 ? `<ul class="shelf">${shelf.map(tile).join('')}</ul>` : `<ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
 ${recent.length ? `<section><h2>Derniers changements de date</h2><ul class="list panel">${recent.map(changeItem).join('')}</ul><p class="more"><a href="/changements/">Tous les changements</a></p></section>` : ''}
 <section>
 <h2>Derniers articles</h2>
@@ -231,7 +244,7 @@ q.addEventListener('input',apply);})();
     const cells = Array(lead).fill('<td class="blank"></td>');
     for (let d = first; d.startsWith(mk); d = addDays(d, 1)) {
       const list = byDate.get(d) || [];
-      const cls = [d === today ? 'today' : '', d < today ? 'past' : ''].filter(Boolean).join(' ');
+      const cls = [wdc(d), d === today ? 'today' : '', d < today ? 'past' : ''].filter(Boolean).join(' ');
       cells.push(list.length
         ? `<td class="${cls}"><a href="#j-${d}" aria-label="${esc(ucfirst(frDayMonth(d)))} : ${plural(list.length, 'sortie', 'sorties')}"><span class="dn">${dayNum(d)}</span><span class="cnt">${list.length}</span><span class="dots">${dots(list)}</span></a></td>`
         : `<td class="${cls}"><span class="dn">${dayNum(d)}</span></td>`);
@@ -240,14 +253,14 @@ q.addEventListener('input',apply);})();
     const trs = [];
     for (let i = 0; i < cells.length; i += 7) trs.push(`<tr>${cells.slice(i, i + 7).join('')}</tr>`);
     const heads = [['lun.', 'lundi'], ['mar.', 'mardi'], ['mer.', 'mercredi'], ['jeu.', 'jeudi'], ['ven.', 'vendredi'], ['sam.', 'samedi'], ['dim.', 'dimanche']]
-      .map(([s, l]) => `<th scope="col" abbr="${l}">${s}</th>`).join('');
+      .map(([s, l], i) => `<th scope="col" abbr="${l}" class="wd-${i + 1}">${s}</th>`).join('');
     return `<table class="cal"><caption class="sr">Calendrier de ${esc(frMonth(first))}</caption><thead><tr>${heads}</tr></thead><tbody>${trs.join('')}</tbody></table>`;
   };
 
   const content = monthKeys.map((mk) => {
     const days = [...byDate.keys()].filter((d) => d.startsWith(mk)).sort();
     return `<section class="month" data-group><h2>${esc(ucfirst(frMonth(`${mk}-01`)))}</h2>${grid(mk)}${
-      days.map((d) => `<div class="daygroup" data-group><h3 id="j-${d}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h3><ul class="list panel">${byDate.get(d).map((r) => releaseItem(r)).join('')}</ul></div>`).join('')}</section>`;
+      days.map((d) => `<div class="daygroup" data-group><h3 id="j-${d}" class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h3><ul class="list panel">${byDate.get(d).map((r) => releaseItem(r)).join('')}</ul></div>`).join('')}</section>`;
   }).join('\n');
 
   const counts = new Map();
@@ -307,11 +320,11 @@ ${events.length ? content : `<p class="empty">Aucun changement détecté pour le
   const updated = anime.generatedAt ? `${frDate(parisKey(new Date(anime.generatedAt)))} à ${parisHM(new Date(anime.generatedAt))}` : null;
   const jump = days.map((d) => {
     const n = eps.filter((e) => e.key === d).length;
-    return `<a class="jump${d === today ? ' today' : ''}" href="#j-${d}"><span class="d-wd">${esc(weekday(d))}</span><span class="d-num">${dayNum(d)}</span><span class="cnt">${n}</span></a>`;
+    return `<a class="jump ${wdc(d)}${d === today ? ' today' : ''}" href="#j-${d}"><span class="d-wd">${esc(weekday(d))}</span><span class="d-num">${dayNum(d)}</span><span class="cnt">${n}</span></a>`;
   }).join('');
   const sections = days.map((d) => {
     const list = eps.filter((e) => e.key === d);
-    return `<section class="day" id="j-${d}" data-group><h2>${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2>${
+    return `<section class="day" id="j-${d}" data-group><h2 class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2>${
       list.length ? `<ul class="list panel eps">${list.map(episodeItem).join('')}</ul>` : '<p class="empty">Aucun épisode enregistré ce jour-là.</p>'}</section>`;
   }).join('\n');
   const body = `
