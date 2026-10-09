@@ -1,0 +1,9 @@
+﻿Date de sortie;Éditeur;Série;Tome;Titre du tome (facultatif);ISBN-13;Prix (€);Statut;Source officielle (lien);Vérifié le;Notes (auteur, adaptation animée...);Article publié ?;ISBN OK ? (auto);Dans (jours) (auto)
+12/10/2026;Glénat;Série Fictive Alpha;5;;9782000000013;7,20;Confirmé;https://exemple.fr/alpha-5;09/10/2026;"Adaptation animée annoncée; suite attendue";Non;OK;3
+12/10/2026;Kana;Série Fictive Beta;1;Le début;;6,95;Annoncé;javascript:alert(1);;;Non;;
+2026-10-14;Glénat;Série Fictive Gamma;10;;;7,50;Reporté;https://exemple.fr/gamma-10;;;Non;;
+15/10/2026;Pika;Exemple : Ma Série Fictive;12;;9782000000006;7,20;Annoncé;https://exemple.fr/x;;EXEMPLE FICTIF;Non;;
+16/10/2026;Pika;Série Annulée;3;;;7,00;Annulé;https://exemple.fr/annule;;;Non;;
+17/10/2026;Ki-oon;Série <b>Piégée</b>;2;;;;Confirmé;https://exemple.fr/piege;;;Non;;
+date invalide;Kana;Série Sans Date;1;;;;Annoncé;;;;Non;;
+05/09/2026;Kurokawa;Série Ancienne;7;;;7,00;Paru;https://exemple.fr/ancienne;;;Oui;;

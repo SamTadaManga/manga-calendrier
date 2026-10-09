@@ -1,0 +1,143 @@
+# Prochain Tome : calendrier manga et anime
+
+Site statique gratuit : calendrier des sorties manga (France) et des épisodes d'anime de la semaine, avec des articles générés chaque jour à partir des données. Aucune dépendance à installer.
+
+## Comment ça marche
+
+```
+Google Sheets (tes sorties manga) ─┐
+                                   ├─> GitHub Actions (chaque jour) ─> articles du jour ─> GitHub ─> Cloudflare Pages ─> site en ligne
+API AniList (épisodes d'anime) ────┘
+```
+
+- `data/manga.csv` : tes sorties manga saisies à la main (copie de ton Google Sheets). **Elles priment toujours.**
+- `data/manga-auto.csv` : sorties collectées automatiquement chaque jour sur les plannings de Glénat, Kana, Pika, Ki-oon et Akata (statut « Annoncé »). Ne le modifie pas : il est réécrit. Pour corriger une ligne, ajoute-la dans ton Google Sheets (même ISBN, ou même série + tome) : la tienne remplace l'automatique.
+- `data/anime.json` : le programme anime des 8 prochains jours, mis à jour chaque jour.
+- `content/articles/` : **tes** articles (fichiers `.md`). Voir `_modele-article.md`.
+- `content/auto/` : les articles générés automatiquement. Ne les modifie pas : ils sont réécrits à chaque mise à jour.
+- `site.config.json` : nom du site, adresse, mentions légales.
+- `scripts/` : le code (récupération des données, articles du jour, construction du site).
+
+## Mise en ligne (une seule fois)
+
+1. **Cloudflare Pages** : dashboard Cloudflare → *Workers & Pages* → *Create* → onglet *Pages* → *Connect to Git* → choisis ce dépôt.
+   - Framework preset : *None*
+   - Build command : `npm run build`
+   - Build output directory : `dist`
+2. Une fois le site créé, note son adresse (`https://xxx.pages.dev`) et mets-la dans `site.config.json` (`siteUrl`). Le site refait une construction tout seul.
+3. Complète les **mentions légales** dans `site.config.json` (nom, e-mail, directeur de publication). Vérifie aussi l'adresse de l'hébergeur sur le site de Cloudflare.
+4. Onglet **Actions** de ce dépôt → *Mise à jour quotidienne* → *Run workflow* : cela remplit le calendrier anime et crée les premiers articles.
+
+## Utilisation au quotidien
+
+- **Sorties manga** : remplis le Google Sheets (modèle fourni). Pour une mise à jour automatique :
+  1. Google Sheets → *Fichier* → *Partager* → *Publier sur le Web* → onglet *Sorties*, format *Valeurs séparées par des virgules (.csv)* → *Publier*, puis copie le lien.
+  2. GitHub → *Settings* → *Secrets and variables* → *Actions* → *New repository secret* : nom `MANGA_CSV_URL`, valeur = le lien.
+  Sans cela, remplace à la main le fichier `data/manga.csv` (bouton *Add file* → *Upload files*).
+- **Articles** : *Add file* → *Create new file* → nom `content/articles/mon-article.md`, en copiant le modèle. `draft: false` publie ; une date future programme la publication.
+- **Brouillons assistés par IA** : colle les lignes du jour et le prompt du classeur dans ton assistant, relis, puis crée le fichier.
+
+## Articles automatiques
+
+Chaque jour : épisodes d'anime du jour, sorties manga du jour, et le lundi les sorties de la semaine. Ils sont rédigés par modèle à partir des données, sans IA. Pour les relire avant publication, mets `"autoPublish": false` dans `site.config.json` (ils restent alors en brouillon).
+
+## Collecte automatique des éditeurs
+
+`scripts/collect-manga.mjs` lit chaque jour (≈ 15 requêtes, 2 s d'intervalle, robots.txt respecté) le mois en cours et les 2 suivants sur : le planning Glénat Manga, le planning Kana, le planning Pika, l'API du planning de Ki-oon et le planning Akata. Il n'enregistre que des faits (titre, tome, date, ISBN, prix si disponible, lien) : aucune image ni texte éditorial.
+- Si un éditeur change sa page et que plus rien n'est trouvé, ses anciennes lignes sont conservées et la mise à jour continue (le journal de l'onglet *Actions* l'indique : « 0 trouvée »). Il faudra alors corriger le fichier `scripts/collectors.mjs`.
+- Les dates des plannings d'éditeurs peuvent bouger : mentionne-les comme « annoncées ». Vérifie les conditions d'utilisation de chaque site si ton site devient commercial.
+- Test hors ligne : `npm test`.
+
+## Changements de date et Mon planning
+
+- `data/changes.json` : mémoire des sorties déjà vues. Chaque nuit, la collecte la compare aux plannings des éditeurs et note les reports, avancées, nouvelles annonces et retraits (un tome n'est dit « retiré » qu'après 3 nuits d'absence). Le premier passage ne signale rien. Ne modifie pas ce fichier à la main. Page publique : `/changements/`, et un article automatique est créé les jours où quelque chose bouge.
+- `/mon-planning/` : chaque lecteur suit ses séries ; la liste reste dans son navigateur (`scripts/suivi.js`).
+
+## Couvertures et mode privé
+
+- `"showCovers": true` dans `site.config.json` affiche les couvertures. Elles ne sont **pas copiées** : le navigateur les charge depuis les serveurs des éditeurs. Passe-le à `false` (ou supprime la ligne) pour les retirer instantanément.
+- `"launched": false` rend le site invisible pour Google (noindex, robots.txt fermé, pas de sitemap). Passe-le à `true` seulement après l'autorisation des éditeurs et la vérification des mentions légales.
+
+## Limites à connaître
+
+- Les épisodes d'anime sont ceux de la **diffusion japonaise** (heures converties à Paris). La disponibilité en France dépend des plateformes.
+- AniList : gratuit en usage non commercial, et en usage commercial sous 150 $ de revenu par mois. Au-delà, il faut une licence (voir les conditions d'utilisation d'AniList). Ne stocke pas de données en masse.
+- Visuels : aucune image n'est affichée. N'ajoute que des visuels que les éditeurs t'autorisent à utiliser.
+- Si la mise à jour quotidienne s'arrête (GitHub peut désactiver les tâches planifiées d'un dépôt inactif), réactive-la dans l'onglet *Actions*.
+
+## Dépannage
+
+- Croix rouge dans *Actions* : ouvre l'exécution pour lire le message. Le plus courant : le lien `MANGA_CSV_URL` n'est plus valide, ou AniList est momentanément indisponible. Relance avec *Run workflow*.
+- Le site n'a pas changé : vérifie dans Cloudflare Pages que le dernier déploiement a réussi.
+
+## Tester sur ton ordinateur (facultatif)
+
+Avec Node 20 ou plus : `npm test` lance les tests, `npm run build` construit le site dans `dist/`.
+
+## Nouveautés depuis ta dernière visite, RSS, installation mobile
+- Page d'accueil : un bandeau rose « Nouveau depuis ta dernière visite » apparaît quand des changements de planning ou des articles sont parus depuis la visite précédente (la date de visite est gardée dans le navigateur, rien n'est envoyé). « Mis à jour il y a… » indique la fraîcheur des données.
+- `/feed.xml` : flux RSS des articles (généré dès que `siteUrl` est renseigné).
+- `manifest.webmanifest` + `sw.js` + icônes : le site peut s'installer sur l'écran d'accueil du téléphone et reste consultable hors ligne (dernière version vue).
+
+## Vues de la page Manga
+Boutons « Par jour / Par éditeur / Par série » au-dessus de la liste. Le choix est mémorisé dans le navigateur ; la recherche et les filtres d'éditeur fonctionnent dans les trois vues.
+
+## Pages pour le référencement
+Générées automatiquement à chaque build : `/sorties-manga/` (index) et `/sorties-manga/novembre-2026/` (une page par mois), `/series/` (index A à Z avec recherche) et `/serie/<nom>/` (« Prochain tome de … », avec date du prochain tome, tomes à venir et déjà parus). Toutes sont dans le sitemap et liées depuis les listes de sorties.
+
+## Ma collection
+Bouton « Je l'ai » sur chaque tome numéroté, et « Je possède les tomes 1 à N » sur chaque page de série et dans Mon planning. Mon planning affiche les tomes déjà parus qu'il reste à acheter (pour les séries dont la collection est renseignée) et exclut les tomes possédés du budget du mois. Tout est gardé dans le navigateur (`mc-own`) ; une sauvegarde texte permet de transférer la collection d'un appareil à l'autre.
+
+## Badges « nouveautés »
+- « ★ Nouvelle série » : tome 1 annoncé dans les 14 derniers jours ou à venir (les rééditions, collectors, deluxe, intégrales, coffrets, artbooks sont exclus).
+- « ★ Épisode 1 » : premier épisode d'un anime (hors films).
+- Page `/nouveautes/` et section « Nouvelles séries à découvrir » sur l'accueil.
+
+## Où regarder (streaming)
+`fetch-anime.mjs` garde les liens de streaming fournis par AniList pour quelques plateformes reconnues (Crunchyroll, ADN, Netflix, Prime Video, Disney+, Wakanim). Ils apparaissent comme petits boutons sur les cartes anime. AniList ne distingue pas les pays : ces liens ne garantissent pas la disponibilité en France.
+La page Anime propose aussi un filtre par plateforme (boutons colorés au-dessus de la liste, cumulables avec la recherche par titre).
+
+## Recherche globale
+Touche `/` ou loupe dans l'en-tête : séries manga, animes de la semaine et articles. L'index est `data/search.json`, généré à chaque build ; le script est `recherche.js`.
+
+## Agenda par éditeur, signalement d'erreur, thème
+- `/agenda/<editeur>.ics` : un fichier d'agenda par éditeur (liens sur la page Manga).
+- « Signaler une erreur » (pied de page et pages série) : utilise `legal.contactEmail` si c'est une vraie adresse (le lien prérempli contient la page concernée). Tu peux aussi mettre `"reportUrl": "https://…"` (formulaire, page GitHub Issues) dans `site.config.json`, qui a la priorité. Sans l'un ni l'autre, le lien n'apparaît pas.
+- Bouton clair/sombre dans l'en-tête : le choix est gardé dans le navigateur, sinon on suit le réglage de l'appareil.
+- Mon planning : quand aucune série n'est suivie, des suggestions s'affichent.
+
+## Articles récapitulatifs automatiques
+En plus des articles du jour : le lundi, « Manga : les sorties de la semaine » (avec les nouvelles séries et le rappel des changements de la semaine passée) et « Anime : la semaine » (premiers épisodes, séries les plus suivies) ; le 1er du mois, « Manga : les sorties d'<mois> » (tomes par éditeur, nouvelles séries, lien vers la page du mois).
+
+## Image de partage (Open Graph)
+Quand un lien est collé sur Discord, X, WhatsApp, etc., l'aperçu utilise `og.png` (1200×630 : nom du site, slogan, éditeurs). Les pages série utilisent la couverture du tome si `showCovers` est activé. Pour changer le nom ou le slogan sur l'image : `pip install playwright` puis `python3 scripts/make-og.py "Nom" "slogan"` (ça réécrit `scripts/assets/og.png`). Les réseaux gardent les aperçus en cache : après un changement, retester le lien avec leurs outils de débogage.
+
+## Pont anime → manga
+- `fetch-adaptations.mjs` cherche sur AniList, pour chaque série du calendrier, une adaptation animée (relation « adaptation », titre du manga identique, accents et ponctuation ignorés) et ses plateformes de streaming. Il vérifie au plus 120 séries par exécution (celles qui ont une sortie à venir d'abord) et mémorise tout dans `data/adaptations.json` : la première fois, il faut donc quelques jours pour couvrir tout le calendrier. Une série sans adaptation est revérifiée au bout de 3 semaines, une adaptation en cours ou à venir au bout d'une semaine.
+- Sous les tomes (listes) et sur la page de la série : « Adapté en anime : titre (état) » avec les boutons de plateformes, ou un lien vers la fiche AniList s'il n'y en a pas. La page de la série ajoute le prochain épisode quand il est diffusé cette semaine.
+- Sur la page Anime : lien « Lire le manga » quand l'anime correspond à une série du calendrier.
+- Une série dont le titre français ne figure pas parmi les titres ou synonymes AniList n'est pas reliée.
+- Le fichier `update.yml` contient une étape de plus (« Adaptations animées des séries manga ») : pense à le remplacer dans `.github/workflows/`.
+
+Dans les articles automatiques, chaque manga et chaque anime est suivi d'une ligne de liens (« Calendrier manga · Page de la série », « Page Anime · Lire le manga »). Les liens vers un jour du calendrier ne retombent sur le bon jour que pour les dates récentes (la page Manga garde 7 jours d'historique, la page Anime la semaine en cours).
+
+## Newsletter
+Le site fournit : un formulaire d'inscription (page `/newsletter/`, accueil, pied de page), une case de consentement, les mentions de données personnelles, et chaque semaine un **numéro prêt à envoyer** (page `/newsletter/`, bloc « Pour l'éditeur du site » : bouton « Copier le code de l'e-mail »). L'envoi lui-même est fait par un service tiers de ton choix : il stocke les adresses, envoie, gère le désabonnement.
+
+1. Crée un compte chez le service (à vérifier avant de choisir : le gratuit de MailerLite couvre 250 abonnés et 2 500 e-mails par mois, celui de Buttondown 100 abonnés ; l'envoi automatique depuis un flux RSS est payant chez Buttondown, donc ici le numéro se copie à la main chaque lundi).
+2. Active la **double confirmation** (l'abonné clique sur un lien reçu par e-mail) et un pied de page avec lien de désabonnement : c'est obligatoire.
+3. Crée un formulaire d'inscription « HTML intégré » : dans son code, relève l'adresse `action="https://…"` et le nom du champ e-mail (`name="…"`, souvent `email` ou `fields[email]`).
+4. Dans `site.config.json` :
+```
+"newsletter": { "formAction": "https://…adresse du formulaire…", "emailField": "email", "provider": "Nom du service" }
+```
+   (`"hidden": { "nom": "valeur" }` ajoute des champs cachés si le service en demande.)
+5. Lance « Run workflow » : le formulaire apparaît partout et `/newsletter/` devient indexable. Tant que `formAction` est vide, rien n'est affiché (sauf la page `/newsletter/`, non indexée, utile pour préparer le numéro).
+
+## Fidélisation (tout reste dans le navigateur)
+- **Pour toi** (accueil) : les sorties de la semaine des séries et animes suivis ; sans rien suivi, une invitation à le faire.
+- **Animes suivis** : bouton « Suivre » sur les épisodes ; liste dans Mon planning avec les épisodes de la semaine et les plateformes. Données : `data/anime-week.json`.
+- **Agenda avec rappels** (Mon planning) : fichier .ics avec rappel la veille à 18 h et le jour même à 9 h pour les tomes, 10 minutes avant pour les épisodes. Les agendas publics (`manga.ics`, `anime.ics`, `agenda/*.ics`) n'ont pas de rappels, pour ne pas inonder d'alertes. Un agenda personnel qui se met à jour tout seul demanderait un petit serveur (Cloudflare Worker).
+- **Ma collection** : tomes possédés, séries à jour, tomes à rattraper (avec le coût) et barre de progression par série.
+- **Installation** : à la 3e journée de visite, une invitation à installer le site (Android/Chrome : bouton ; iPhone : explication), refusable (pas de nouvelle invitation avant 60 jours).
+- **Partage par lien** : Mon planning > « Sauvegarder, transférer ou partager » : lien contenant les séries, les animes et (au choix) la collection. Le destinataire voit un encadré et choisit d'ajouter ou d'ignorer ; rien n'est importé sans son clic.

@@ -1,0 +1,13 @@
+{ "responses": {
+  "serie-fictive-alpha": [
+    { "title": { "romaji": "Shiken Manga", "english": null, "native": "" }, "synonyms": ["Série Fictive Alpha"],
+      "relations": { "edges": [
+        { "relationType": "ADAPTATION", "node": { "id": 101, "type": "ANIME", "format": "TV", "status": "FINISHED", "siteUrl": "https://anilist.co/anime/101", "title": { "romaji": "Alpha Old", "english": "Alpha Old", "native": "" }, "externalLinks": [] } },
+        { "relationType": "ADAPTATION", "node": { "id": 102, "type": "ANIME", "format": "TV", "status": "RELEASING", "siteUrl": "https://anilist.co/anime/102", "title": { "romaji": "Alpha S2", "english": "Alpha Season 2", "native": "" }, "externalLinks": [ { "site": "Crunchyroll", "url": "https://www.crunchyroll.com/series/ALPHA", "type": "STREAMING", "isDisabled": false }, { "site": "Evil", "url": "http://evil.example", "type": "STREAMING", "isDisabled": false } ] } },
+        { "relationType": "SIDE_STORY", "node": { "id": 103, "type": "ANIME", "format": "TV", "status": "FINISHED", "title": {}, "externalLinks": [] } }
+      ] } }
+  ],
+  "serie-fictive-beta": [
+    { "title": { "romaji": "Autre chose", "english": "Other", "native": "" }, "synonyms": [], "relations": { "edges": [] } }
+  ]
+} }
