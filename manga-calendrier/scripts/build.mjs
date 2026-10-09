@@ -42,6 +42,13 @@ const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
 const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/series/', 'Séries'], ['/mon-planning/', 'Mon planning'], ['/changements/', 'Changements'], ['/articles/', 'Articles']];
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
+const reportEmail = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(config.legal?.contactEmail || '') ? config.legal.contactEmail : '';
+const reportUrl = /^https:\/\//.test(config.reportUrl || '') ? config.reportUrl : '';
+const reportLink = (label = 'Signaler une erreur') => reportUrl
+  ? `<a href="${esc(reportUrl)}" rel="noopener" target="_blank">${esc(label)}</a>`
+  : reportEmail ? `<a href="mailto:${esc(reportEmail)}" data-report="${esc(reportEmail)}">${esc(label)}</a>` : '';
+const THEME_BOOT = `<script>try{var t=localStorage.getItem('mc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>`;
+
 function layout({ title, description, pathname, body, noindex = false, extraHead = '' }) {
   const fullTitle = pathname === '/' ? `${config.siteName} : ${config.tagline}` : `${title} | ${config.siteName}`;
   const canonical = siteUrlOk ? `${base}${pathname}` : '';
@@ -55,6 +62,7 @@ function layout({ title, description, pathname, body, noindex = false, extraHead
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
+${THEME_BOOT}
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">
 ${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
@@ -74,17 +82,18 @@ ${extraHead}
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
-<header class="site-header"><div class="wrap bar"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>${esc(config.siteName)}</a><nav aria-label="Navigation principale">${nav}</nav></div></header>
+<header class="site-header"><div class="wrap bar"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>${esc(config.siteName)}</a><div class="tools"></div><nav aria-label="Navigation principale">${nav}</nav></div></header>
 <main class="wrap" id="contenu">
 ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a><a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${reportLink()}<a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="/suivi.js" defer></script>
 <script src="/visite.js" defer></script>
 <script src="/recherche.js" defer></script>
+<script src="/theme.js" defer></script>
 </body>
 </html>
 `;
@@ -377,6 +386,7 @@ ${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" i
 ${content}` : '<p class="empty">Le calendrier manga sera bientôt alimenté.</p>'}
 <p class="more"><a href="/sorties-manga/">Sorties par mois</a> · <a href="/series/">Toutes les séries</a></p>
 <p class="more"><a href="/manga.ics">Ajouter à mon agenda (manga.ics)</a>${siteUrlOk ? `<span class="muted"> Adresse à coller dans l'agenda : <code>${esc(base)}/manga.ics</code></span>` : ''}</p>
+<p class="more muted">Un agenda par éditeur : ${order.map((k) => `<a href="/agenda/${k}.ics">${esc(PUBS[k] || 'Autres')}</a>`).filter((_, i) => order[i] in PUBS).join(' · ')}</p>
 ${rows.length ? FILTER_JS : ''}`;
   page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs (Glénat, Kana, Pika, Ki-oon, Akata), prix et statut de chaque tome.', body });
 }
@@ -462,7 +472,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
 </div></div>
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map(volTile).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map(volTile).join('')}</ul>` : ''}
-<p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a></p>`,
+<p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
   }
   const letters = [...new Set(seriesList.map((S) => (slugify(S.name)[0] || '#').toUpperCase()))].sort();
@@ -615,8 +625,8 @@ const L = config.legal;
 
 /* ------------------------------------------------------------ fichiers .ics */
 {
-  const mangaEvents = manga
-    .filter((r) => r.date >= addDays(today, -30) && r.statut !== 'annule')
+  const icsRows = manga.filter((r) => r.date >= addDays(today, -30) && r.statut !== 'annule');
+  const mangaEvents = icsRows
     .map((r) => ({
       uid: `manga-${r.isbn || `${r.date}-${r.serie}-${r.tome}`.replace(/[^A-Za-z0-9-]/g, '')}@${host}`,
       start: r.date,
@@ -625,6 +635,10 @@ const L = config.legal;
       url: r.source || undefined,
     }));
   write('manga.ics', buildICS({ name: `${config.siteName} : manga`, events: mangaEvents }));
+  for (const [k, label] of Object.entries(PUBS)) {
+    const evs = mangaEvents.filter((_, i) => pubKey(icsRows[i].editeur) === k);
+    if (evs.length) write(`agenda/${k}.ics`, buildICS({ name: `${config.siteName} : ${label}`, events: evs }));
+  }
 
   const animeEvents = eps.map((e) => ({
     uid: `anime-${e.mediaId}-${e.episode}@${host}`,
@@ -667,7 +681,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date) })),
   }));
 }
-for (const f of ['visite.js', 'recherche.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['visite.js', 'recherche.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',

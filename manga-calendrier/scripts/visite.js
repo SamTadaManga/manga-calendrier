@@ -66,6 +66,11 @@
     }
   }
 
+  var rep = document.querySelectorAll('a[data-report]');
+  for (var ri = 0; ri < rep.length; ri++) {
+    rep[ri].href = 'mailto:' + rep[ri].getAttribute('data-report') + '?subject=' + encodeURIComponent('Erreur signalée') + '&body=' + encodeURIComponent('Page : ' + location.href + '\n\nCe qui est faux (série, tome, date attendue) :\n');
+  }
+
   if ('serviceWorker' in navigator && location.protocol === 'https:') {
     window.addEventListener('load', function () { navigator.serviceWorker.register('/sw.js').catch(function () {}); });
   }

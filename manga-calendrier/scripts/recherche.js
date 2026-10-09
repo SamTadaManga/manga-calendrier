@@ -72,7 +72,7 @@
   function close() { if (!box) return; box.hidden = true; document.body.classList.remove('srch-open'); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
 
   function init() {
-    var bar = document.querySelector('.site-header .bar');
+    var bar = document.querySelector('.site-header .tools');
     if (bar) {
       btn = h('button', 'srch-btn'); btn.type = 'button'; btn.setAttribute('aria-label', 'Rechercher (touche /)'); btn.title = 'Rechercher (touche /)';
       btn.innerHTML = '<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';

@@ -137,6 +137,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   const animePage = read(dist('anime/index.html'));
   assert.ok(animePage.includes('Test Series One') && animePage.includes('Shiken Ni'));
   assert.ok(animePage.includes('class="stream s-crunchyroll"') && animePage.includes('Crunchyroll') && !animePage.includes('evil.example'), 'plateformes de streaming');
+  assert.ok(dist('theme.js') && existsSync(dist('theme.js')) && existsSync(dist('agenda/kana.ics')), 'thème et agendas par éditeur');
   assert.ok(existsSync(dist('data/search.json')) && existsSync(dist('recherche.js')), 'index de recherche');
   assert.ok(animePage.includes('data-chip="crunchyroll"') && animePage.includes('data-pub="crunchyroll"'), 'filtre par plateforme');
   assert.ok(!animePage.includes('<script>alert(1)'), 'titre piégé non échappé');

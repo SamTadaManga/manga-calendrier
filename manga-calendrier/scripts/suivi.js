@@ -252,6 +252,21 @@
 
     if (!list.length) {
       root.appendChild(h('p', { class: 'empty', text: 'Tu ne suis aucune série. Ajoute-en une ci-dessus, ou clique sur « Suivre » à côté d\'une sortie du calendrier.' }));
+      /* suggestions pour démarrer : séries avec le plus de tomes annoncés ou parus, tome 1 à venir en tête */
+      var score = {};
+      rows.forEach(function (r) { if (r.k) score[r.k] = (score[r.k] || 0) + (r.d >= today ? 2 : 1) + (r.nw ? 3 : 0); });
+      var sug = Object.keys(score).filter(function (k) { return names[k]; }).sort(function (a, b) { return score[b] - score[a] || names[a].localeCompare(names[b], 'fr'); }).slice(0, 10);
+      if (sug.length) {
+        var box = h('section', { class: 'suggest' }, [h('h2', { text: 'Pour commencer' }), h('p', { class: 'muted', text: 'Quelques séries très présentes dans le calendrier. Un clic pour suivre.' })]);
+        var ul = h('ul', { class: 'follow-chips' });
+        sug.forEach(function (k) {
+          var b = h('button', { type: 'button', class: 'chip', 'aria-label': 'Suivre ' + names[k] }, [h('span', { text: '+ ' + names[k] })]);
+          b.addEventListener('click', function () { if (!has(k)) { list.push(k); save(); paint(); } render(); });
+          ul.appendChild(h('li', {}, [b]));
+        });
+        box.appendChild(ul);
+        root.appendChild(box);
+      }
     } else {
       root.appendChild(h('h2', { text: 'Séries suivies' }));
       root.appendChild(chips);

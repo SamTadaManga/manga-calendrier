@@ -99,3 +99,9 @@ La page Anime propose aussi un filtre par plateforme (boutons colorés au-dessus
 
 ## Recherche globale
 Touche `/` ou loupe dans l'en-tête : séries manga, animes de la semaine et articles. L'index est `data/search.json`, généré à chaque build ; le script est `recherche.js`.
+
+## Agenda par éditeur, signalement d'erreur, thème
+- `/agenda/<editeur>.ics` : un fichier d'agenda par éditeur (liens sur la page Manga).
+- « Signaler une erreur » (pied de page et pages série) : utilise `legal.contactEmail` si c'est une vraie adresse (le lien prérempli contient la page concernée). Tu peux aussi mettre `"reportUrl": "https://…"` (formulaire, page GitHub Issues) dans `site.config.json`, qui a la priorité. Sans l'un ni l'autre, le lien n'apparaît pas.
+- Bouton clair/sombre dans l'en-tête : le choix est gardé dans le navigateur, sinon on suit le réglage de l'appareil.
+- Mon planning : quand aucune série n'est suivie, des suggestions s'affichent.
