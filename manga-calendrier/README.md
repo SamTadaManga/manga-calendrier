@@ -111,3 +111,6 @@ En plus des articles du jour : le lundi, « Manga : les sorties de la semaine »
 
 ## Image de partage (Open Graph)
 Quand un lien est collé sur Discord, X, WhatsApp, etc., l'aperçu utilise `og.png` (1200×630 : nom du site, slogan, éditeurs). Les pages série utilisent la couverture du tome si `showCovers` est activé. Pour changer le nom ou le slogan sur l'image : `pip install playwright` puis `python3 scripts/make-og.py "Nom" "slogan"` (ça réécrit `scripts/assets/og.png`). Les réseaux gardent les aperçus en cache : après un changement, retester le lien avec leurs outils de débogage.
+
+## Pont anime → manga
+`fetch-anime.mjs` enregistre le titre du manga d'origine (relation « adaptation » d'AniList). Le site relie un anime à une série du calendrier quand l'un des titres correspond exactement (accents et ponctuation ignorés) : lien « Lire le manga » sur les épisodes, et encadré « Adapté en anime » (prochain épisode, plateformes) sur la page de la série. Un anime dont le titre français du manga est différent du titre anglais ou romaji d'AniList n'est pas relié.

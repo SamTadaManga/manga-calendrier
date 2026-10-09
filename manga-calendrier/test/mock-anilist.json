@@ -36,7 +36,33 @@
                 "type": "STREAMING",
                 "isDisabled": false
               }
-            ]
+            ],
+            "relations": {
+              "edges": [
+                {
+                  "relationType": "ADAPTATION",
+                  "node": {
+                    "type": "MANGA",
+                    "title": {
+                      "romaji": "Shiken Manga",
+                      "english": "Série Fictive Alpha",
+                      "native": ""
+                    }
+                  }
+                },
+                {
+                  "relationType": "SEQUEL",
+                  "node": {
+                    "type": "ANIME",
+                    "title": {
+                      "romaji": "X",
+                      "english": "Y",
+                      "native": ""
+                    }
+                  }
+                }
+              ]
+            }
           }
         },
         {

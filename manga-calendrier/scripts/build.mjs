@@ -22,9 +22,12 @@ const showCovers = config.showCovers === true;
 const isPrivate = config.launched === false; // site privé : non indexé tant que « launched » n'est pas passé à true
 const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
+// Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
+const mangaSlugs = new Set(manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
+const mangaOf = (e) => [...(Array.isArray(e.manga) ? e.manga : []), e.title?.english, e.title?.romaji].map((t) => slugify(t || '')).find((k) => k && mangaSlugs.has(k)) || '';
 const eps = anime.episodes
   .map((e) => ({ ...e, date: new Date(e.airingAt * 1000) }))
-  .map((e) => ({ ...e, key: parisKey(e.date), time: parisHM(e.date) }));
+  .map((e) => ({ ...e, key: parisKey(e.date), time: parisHM(e.date), ms: mangaOf(e) }));
 const articles = loadArticles([P.articlesDir, P.autoDir], { includeDrafts: process.env.INCLUDE_DRAFTS === '1' })
   .filter((a) => a.date <= today); // un article daté du futur sera publié le jour venu (programmation)
 
@@ -215,6 +218,7 @@ const streamKeys = (e) => {
   const k = (Array.isArray(e.stream) ? e.stream : []).filter((s) => s && /^https:\/\//.test(s.u || '')).map((s) => slugify(s.n));
   return k.length ? k.join(' ') : 'aucune';
 };
+const bridgeLink = (e) => (e.ms ? `<a class="bridge" href="/serie/${esc(e.ms)}/">Lire le manga</a>` : '');
 const streamChips = (e) => (Array.isArray(e.stream) ? e.stream : [])
   .filter((s) => s && /^https:\/\//.test(s.u || '')).slice(0, 3)
   .map((s) => `<a class="stream s-${esc(slugify(s.n))}" href="${esc(s.u)}" rel="noopener nofollow" target="_blank" title="Regarder sur ${esc(s.n)}" aria-label="Regarder sur ${esc(s.n)}"><svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>${esc(STREAM_ICON[s.n] || s.n.slice(0, 2))}</a>`).join('');
@@ -225,7 +229,7 @@ function episodeItem(e) {
   const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
   const hasCover = showCovers && /^https:\/\//.test(e.cover || '');
   const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="96" height="144" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
-  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}</span></li>`;
+  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}</span></li>`;
 }
 
 function animeCard(e) {
@@ -234,7 +238,7 @@ function animeCard(e) {
   const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
   const frame = `<div class="cover">${img}</div>`;
   return `<li class="acard" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" rel="noopener nofollow" aria-label="${t} : fiche AniList">${frame}</a>` : frame}`
-    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}</div></li>`;
+    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}</div></li>`;
 }
 
 const articleItem = (a) =>
@@ -464,6 +468,9 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata. Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
+    const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
+    const ae = aeps.find((e) => e.date >= now()) || aeps[0];
+    const animeBox = ae ? `<div class="bridge-box panel"><strong>Adapté en anime</strong> : <a href="/anime/#j-${ae.key}">${esc(displayTitle(ae.title))}</a>, épisode ${esc(ae.episode)} diffusé au Japon le ${esc(frShort(ae.key))} à ${esc(ae.time)} (heure de Paris).${streamChips(ae) ? `<span class="streams">${streamChips(ae)}</span>` : ''}</div>` : '';
     page(`/serie/${S.k}/`, {
       title: `Prochain tome de ${S.name} : date de sortie en France`,
       description: n
@@ -473,6 +480,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
+${animeBox}
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
 <div class="coll panel" data-coll data-s="${esc(S.k)}" hidden></div>
 </div></div>
