@@ -144,6 +144,27 @@ function tile(r) {
     + `<button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button></div></li>`;
 }
 
+
+function coverBox(src, alt, w = 200, h = 300) {
+  const img = /^https:\/\//.test(src || '') ? `<img class="cover-img" src="${esc(src)}" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
+  return `<div class="cover" aria-hidden="${img ? 'false' : 'true'}">${img}</div>`;
+}
+// tuile d'un tome (page de série)
+function volTile(r) {
+  const pk = pubKey(r.editeur);
+  const label = mangaLabel(r);
+  const cover = showCovers ? coverBox(r.cover, `Couverture de ${label}`) : '';
+  const own = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` : '';
+  const ed = editionOf(r);
+  const mv = moves.get(keyOf(r));
+  const moved = mv && mv.to === r.date ? `<span class="badge ${mv.to > mv.from ? 's-reporte' : 's-confirme'}">${mv.to > mv.from ? 'Reporté' : 'Avancé'}</span>` : '';
+  return `<li class="tile rel vol p-${pk}${r.date < today ? ' past' : ''}">`
+    + `${r.source ? `<a class="tile-cover" href="${esc(r.source)}" rel="noopener nofollow" aria-label="${esc(label)} : fiche éditeur">${cover}</a>` : cover}`
+    + `<div class="tile-body"><strong>${r.tome ? `Tome ${esc(r.tome)}` : esc(r.serie)}</strong>${ed ? `<span class="ed">${esc(ed)}</span>` : ''}`
+    + `<div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div>`
+    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${moved}${own}</div></li>`;
+}
+
 const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
 function releaseItem(r, showDate = false) {
   const pk = pubKey(r.editeur);
@@ -157,6 +178,7 @@ function releaseItem(r, showDate = false) {
     r.prix != null ? `<span>${euro(r.prix)}</span>` : '',
     badge,
     r.source ? `<a href="${esc(r.source)}" rel="noopener nofollow">Fiche éditeur</a>` : '',
+    /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` : '',
   ].filter(Boolean).join('');
   const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
@@ -393,7 +415,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const n = S.next;
     const lead = n
       ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? '' : ' La date peut encore bouger.'}`
-      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika et Ki-oon. Suis la série pour être prévenu à la prochaine annonce.`;
+      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika et Ki-oon. Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
     page(`/serie/${S.k}/`, {
@@ -405,15 +427,20 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
+<div class="coll panel" data-coll data-s="${esc(S.k)}" hidden></div>
 </div></div>
-${upcoming.length ? `<h2>À venir</h2><ul class="list panel">${upcoming.map((r) => releaseItem(r, true)).join('')}</ul>` : ''}
-${past.length ? `<h2>Déjà parus</h2><ul class="list panel">${past.map((r) => releaseItem(r, true)).join('')}</ul>` : ''}
+${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map(volTile).join('')}</ul>` : ''}
+${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map(volTile).join('')}</ul>` : ''}
 <p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a></p>`,
     });
   }
   const letters = [...new Set(seriesList.map((S) => (slugify(S.name)[0] || '#').toUpperCase()))].sort();
-  const az = letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="azlist">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L)
-    .map((S) => `<li class="p-${pubKey(S.editeur)}" data-q="${esc(S.name.toLowerCase())}"><i class="dot"></i><a href="/serie/${S.k}/">${esc(S.name)}</a>${S.next ? ` <span class="muted">${esc(frShort(S.next.date))}</span>` : ''}</li>`).join('')}</ul></section>`).join('');
+  const card = (S) => {
+    const cr = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
+    return `<li class="scard p-${pubKey(S.editeur)}" data-q="${esc(S.name.toLowerCase())}"><a class="scard-link" href="/serie/${S.k}/">${showCovers ? coverBox(cr && cr.cover, `Couverture de ${S.name}`) : ''}`
+      + `<strong>${esc(S.name)}</strong><span class="muted">${S.next ? `${S.next.tome ? `T${esc(S.next.tome)} · ` : ''}${esc(frShort(S.next.date))}` : 'rien d\'annoncé'}</span></a></li>`;
+  };
+  const az = letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="sgrid">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L).map(card).join('')}</ul></section>`).join('');
   page('/series/', {
     title: 'Toutes les séries manga : prochain tome',
     description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika et Ki-oon.`,
@@ -439,7 +466,7 @@ ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="sea
     description: 'Suis tes séries manga préférées : prochains tomes, budget du mois et agenda personnel.',
     noindex: true,
     body: `<h1>Mon planning</h1>
-<p class="lead">Choisis les séries que tu collectionnes : tu vois leurs prochains tomes, ce que ça coûte chaque mois, et tu peux les ajouter à ton agenda. Ta liste reste dans ton navigateur, rien n'est envoyé.</p>
+<p class="lead">Choisis les séries que tu collectionnes : tu vois leurs prochains tomes, ce que ça coûte chaque mois, ce qu'il te reste à acheter, et tu peux les ajouter à ton agenda. Ta liste et ta collection restent dans ton navigateur, rien n'est envoyé.</p>
 <div id="suivi-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ton planning.</p></div>`,
   });
 }

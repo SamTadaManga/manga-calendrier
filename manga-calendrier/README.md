@@ -84,3 +84,6 @@ Boutons « Par jour / Par éditeur / Par série » au-dessus de la liste. Le cho
 
 ## Pages pour le référencement
 Générées automatiquement à chaque build : `/sorties-manga/` (index) et `/sorties-manga/novembre-2026/` (une page par mois), `/series/` (index A à Z avec recherche) et `/serie/<nom>/` (« Prochain tome de … », avec date du prochain tome, tomes à venir et déjà parus). Toutes sont dans le sitemap et liées depuis les listes de sorties.
+
+## Ma collection
+Bouton « Je l'ai » sur chaque tome numéroté, et « Je possède les tomes 1 à N » sur chaque page de série et dans Mon planning. Mon planning affiche les tomes déjà parus qu'il reste à acheter (pour les séries dont la collection est renseignée) et exclut les tomes possédés du budget du mois. Tout est gardé dans le navigateur (`mc-own`) ; une sauvegarde texte permet de transférer la collection d'un appareil à l'autre.

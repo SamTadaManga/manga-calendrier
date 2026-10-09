@@ -107,18 +107,18 @@ a.d-line:hover{text-decoration:underline}
 .follow{position:absolute;z-index:1;right:10px;top:10px;min-height:32px;padding:2px 12px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit;font-size:.85rem;font-weight:750;cursor:pointer}
 .follow[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 /* Tous les boutons : même geste, l'autocollant qui se décolle */
-.follow,.chip,nav a,.jump{transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease,color .12s ease}
+.follow,.chip,.own,nav a,.jump{transition:transform .12s ease,box-shadow .12s ease,background-color .12s ease,color .12s ease}
 @media (hover:hover){
-  .follow:hover,.chip:hover{background:var(--brand);color:#111;border-color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
+  .follow:hover,.chip:hover,.own:hover{background:var(--brand);color:#111;border-color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
   .follow:hover .n,.chip:hover .n{color:#111}
-  .follow[aria-pressed=true]:hover,.chip[aria-pressed=true]:hover{background:var(--panel);color:var(--ink);border-color:var(--ink)}
+  .follow[aria-pressed=true]:hover,.chip[aria-pressed=true]:hover,.own[aria-pressed=true]:hover{background:var(--panel);color:var(--ink);border-color:var(--ink)}
   .chip[aria-pressed=true]:hover .n{color:var(--ink)}
   nav a:not([aria-current]):hover{background:#fff;border-color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 #111}
   .jump:not(.today):hover{background:var(--brand);color:#111;transform:translate(-2px,-2px);box-shadow:3px 3px 0 var(--ink)}
   .jump.today:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--shadow)}
 }
-.follow:active,.chip:active,nav a:active,.jump:active{transform:translate(1px,1px);box-shadow:none}
-@media (prefers-reduced-motion:reduce){.follow,.chip,nav a,.jump{transition:none}}
+.follow:active,.chip:active,.own:active,nav a:active,.jump:active{transform:translate(1px,1px);box-shadow:none}
+@media (prefers-reduced-motion:reduce){.follow,.chip,.own,nav a,.jump{transition:none}}
 .rel .rel-title,.rel .meta{padding-right:84px}
 .follow-chips{list-style:none;margin:0 0 8px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .follow-chips .n{margin-left:8px}
@@ -283,3 +283,35 @@ ul.azlist{list-style:none;margin:0;padding:0;columns:2 260px;column-gap:32px}
 .azlist a{font-weight:700;color:var(--ink)}
 .azlist .dot{flex:none;transform:translateY(1px)}
 @media (max-width:520px){.series-cover{width:120px;height:180px}}
+
+/* ma collection */
+.own{min-height:26px;padding:0 10px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit;font-size:.8rem;font-weight:750;cursor:pointer}
+.own[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.rel.is-owned .rel-title{opacity:.55}
+.coll{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:10px 14px;max-width:34rem}
+.coll[hidden]{display:none}
+.coll-l{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.coll input{width:5.2rem;min-height:38px;padding:4px 10px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit}
+.coll-msg{color:var(--muted);font-size:.92rem}
+.coll-edit .coll-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;padding:8px 0;border-bottom:1px solid var(--line)}
+.coll-edit .coll{padding:0;max-width:none}
+.coll-row>strong{min-width:12rem}
+
+/* grilles : index des séries et tomes d'une série */
+ul.sgrid,ul.vgrid{list-style:none;margin:0;padding:0 6px 6px 0;display:grid;gap:24px 16px}
+ul.sgrid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+ul.vgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+.scard{min-width:0}
+.scard-link{display:flex;flex-direction:column;gap:8px;color:var(--ink);text-decoration:none;font-size:.92rem;line-height:1.25}
+.scard-link:hover{background:none}
+.scard-link strong{font-weight:800;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.scard .cover{aspect-ratio:2/3;width:100%;box-shadow:4px 4px 0 var(--shadow);border-bottom:5px solid var(--pc,var(--edge))}
+.scard-link:hover .cover{outline:3px solid var(--brand);outline-offset:2px}
+.scard:not(:has(.cover)){border:2px solid var(--edge);border-left:7px solid var(--pc,var(--edge));padding:10px}
+.vol{border:0;padding:0;position:static}
+.vol.past .tile-body strong{opacity:.7}
+.vol .cover{aspect-ratio:2/3;width:100%;box-shadow:4px 4px 0 var(--shadow);border-bottom:5px solid var(--pc,var(--edge))}
+.vol .ed{margin:0;font-size:.85rem}
+.vol .ed::before{content:""}
+.vol .own{margin-top:2px}
+.azlist{display:none}
