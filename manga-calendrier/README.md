@@ -95,3 +95,4 @@ Bouton « Je l'ai » sur chaque tome numéroté, et « Je possède les tomes 1 �
 
 ## Où regarder (streaming)
 `fetch-anime.mjs` garde les liens de streaming fournis par AniList pour quelques plateformes reconnues (Crunchyroll, ADN, Netflix, Prime Video, Disney+, Wakanim). Ils apparaissent comme petits boutons sur les cartes anime. AniList ne distingue pas les pays : ces liens ne garantissent pas la disponibilité en France.
+La page Anime propose aussi un filtre par plateforme (boutons colorés au-dessus de la liste, cumulables avec la recherche par titre).

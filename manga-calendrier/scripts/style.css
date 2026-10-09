@@ -338,3 +338,5 @@ a.stream.s-prime-video{background:#00a8e1;color:#111}
 a.stream.s-disney{background:#113ccf;color:#fff}
 a.stream.s-wakanim{background:#e5194f;color:#fff}
 @media (hover:hover){a.stream[class*="s-"]:hover{filter:brightness(1.1);box-shadow:2px 2px 0 var(--shadow);transform:translate(-1px,-1px)}}
+
+.dot.sp-crunchyroll{background:#f47521}.dot.sp-adn{background:#0b78d0}.dot.sp-netflix{background:#e50914}.dot.sp-prime-video{background:#00a8e1}.dot.sp-disney{background:#113ccf}.dot.sp-wakanim{background:#e5194f}.dot.sp-aucune{background:#9aa0aa}

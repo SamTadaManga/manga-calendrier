@@ -195,6 +195,10 @@ function releaseItem(r, showDate = false) {
 }
 
 const STREAM_ICON = { Crunchyroll: 'CR', ADN: 'ADN', Netflix: 'N', 'Prime Video': 'P', 'Disney+': 'D+', Wakanim: 'W' };
+const streamKeys = (e) => {
+  const k = (Array.isArray(e.stream) ? e.stream : []).filter((s) => s && /^https:\/\//.test(s.u || '')).map((s) => slugify(s.n));
+  return k.length ? k.join(' ') : 'aucune';
+};
 const streamChips = (e) => (Array.isArray(e.stream) ? e.stream : [])
   .filter((s) => s && /^https:\/\//.test(s.u || '')).slice(0, 3)
   .map((s) => `<a class="stream s-${esc(slugify(s.n))}" href="${esc(s.u)}" rel="noopener nofollow" target="_blank" title="Regarder sur ${esc(s.n)}" aria-label="Regarder sur ${esc(s.n)}"><svg viewBox="0 0 10 10" width="9" height="9" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>${esc(STREAM_ICON[s.n] || s.n.slice(0, 2))}</a>`).join('');
@@ -205,7 +209,7 @@ function episodeItem(e) {
   const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
   const hasCover = showCovers && /^https:\/\//.test(e.cover || '');
   const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="96" height="144" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
-  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}</span></li>`;
+  return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}</span></li>`;
 }
 
 function animeCard(e) {
@@ -213,7 +217,7 @@ function animeCard(e) {
   const url = safeUrl(e.url);
   const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
   const frame = `<div class="cover">${img}</div>`;
-  return `<li class="acard" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" rel="noopener nofollow" aria-label="${t} : fiche AniList">${frame}</a>` : frame}`
+  return `<li class="acard" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" rel="noopener nofollow" aria-label="${t} : fiche AniList">${frame}</a>` : frame}`
     + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}</div></li>`;
 }
 
@@ -277,8 +281,9 @@ ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem
 const FILTER_JS = `<script>
 (function(){var bar=document.getElementById('filtres');if(!bar)return;bar.hidden=false;
 var q=document.getElementById('f'),chips=[].slice.call(bar.querySelectorAll('[data-chip]')),act={},none=document.getElementById('aucun');
+function hit(v){return v.split(' ').some(function(k){return act[k];});}
 function apply(){var t=(q.value||'').toLowerCase().trim(),any=Object.keys(act).length,shown=0;
-[].forEach.call(document.querySelectorAll('[data-q]'),function(li){var ok=(!any||!li.dataset.pub||act[li.dataset.pub])&&(!t||li.dataset.q.indexOf(t)>-1);li.hidden=!ok;if(ok)shown++;});
+[].forEach.call(document.querySelectorAll('[data-q]'),function(li){var ok=(!any||!li.dataset.pub||hit(li.dataset.pub))&&(!t||li.dataset.q.indexOf(t)>-1);li.hidden=!ok;if(ok)shown++;});
 [].forEach.call(document.querySelectorAll('[data-group]'),function(g){g.hidden=![].some.call(g.querySelectorAll('[data-q]'),function(l){return !l.hidden;});});
 chips.forEach(function(c){var k=c.dataset.chip;c.setAttribute('aria-pressed',k==='tous'?String(!any):String(!!act[k]));});
 if(none)none.hidden=shown>0;}
@@ -546,11 +551,18 @@ ${events.length ? content : `<p class="empty">Aucun changement détecté pour le
     return `<section class="day" id="j-${d}" data-group><h2 class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2>${
       list.length ? (showCovers ? `<ul class="acards">${list.map(animeCard).join('')}</ul>` : `<ul class="list panel eps">${list.map(episodeItem).join('')}</ul>`) : '<p class="empty">Aucun épisode enregistré ce jour-là.</p>'}</section>`;
   }).join('\n');
+  const platCount = new Map();
+  for (const e of eps) for (const k of streamKeys(e).split(' ')) platCount.set(k, (platCount.get(k) || 0) + 1);
+  const platOrder = [...Object.entries(STREAM_ICON).map(([n]) => [slugify(n), n]), ['aucune', 'Autres']].filter(([k]) => platCount.has(k));
+  const platChips = platOrder.length > 1
+    ? ['<button type="button" class="chip" data-chip="tous" aria-pressed="true">Tous</button>']
+      .concat(platOrder.map(([k, n]) => `<button type="button" class="chip" data-chip="${k}" aria-pressed="false"><i class="dot sp-${k}"></i>${esc(n)} <span class="n">${platCount.get(k)}</span></button>`)).join('')
+    : '';
   const body = `
 <h1>Épisodes d'anime de la semaine</h1>
 <p class="lead">Horaires de diffusion au Japon, convertis en heure de Paris. La disponibilité en France dépend des plateformes de streaming.</p>
 ${eps.length ? `<nav class="jumps" aria-label="Aller à un jour">${jump}</nav>
-<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher un anime" aria-label="Chercher un anime"></div>
+<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher un anime" aria-label="Chercher un anime">${platChips}</div>
 <p class="empty" id="aucun" hidden>Aucun épisode ne correspond à cette recherche.</p>
 ${sections}` : '<p class="empty">Les données apparaîtront après la première mise à jour automatique.</p>'}
 <p class="more muted">${updated ? `Mis à jour le ${esc(updated)}. ` : ''}<a href="/anime.ics">Ajouter à mon agenda (anime.ics)</a></p>
