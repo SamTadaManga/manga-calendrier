@@ -16,8 +16,6 @@ jobs:
         working-directory: manga-calendrier
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -39,11 +37,20 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A manga-calendrier/data manga-calendrier/content
-          if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
-          git commit -m "Mise à jour automatique des données"
-          for i in 1 2 3; do
-            git pull --rebase -X theirs origin main && git push && exit 0
-            sleep 5
+          KEEP="$RUNNER_TEMP/keep"
+          rm -rf "$KEEP"; mkdir -p "$KEEP/content-auto"
+          cp -r manga-calendrier/data "$KEEP/data"
+          cp -r manga-calendrier/content/auto/. "$KEEP/content-auto/"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p manga-calendrier/data manga-calendrier/content/auto
+            cp -r "$KEEP/data/." manga-calendrier/data/
+            cp -r "$KEEP/content-auto/." manga-calendrier/content/auto/
+            git add -A manga-calendrier/data manga-calendrier/content
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Mise à jour automatique des données"
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push refusé (essai $i), nouvel essai…"; sleep 5
           done
           exit 1
