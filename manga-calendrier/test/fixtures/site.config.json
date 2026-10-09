@@ -1,0 +1,13 @@
+{
+ "siteName": "Site de test",
+ "siteUrl": "https://test.example.org",
+ "description": "Description de test.",
+ "autoPublish": true,
+ "legal": {
+  "editorName": "Éditeur Test",
+  "contactEmail": "contact@example.org",
+  "publicationDirector": "Éditeur Test",
+  "hostName": "Hébergeur",
+  "hostAddress": "Adresse"
+ }
+}
