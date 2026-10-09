@@ -35,7 +35,7 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/articles/', 'Articles']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/mon-planning/', 'Mon planning'], ['/articles/', 'Articles']];
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 function layout({ title, description, pathname, body, noindex = false, extraHead = '' }) {
@@ -74,6 +74,7 @@ ${body}
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
 <p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
+<script src="/suivi.js" defer></script>
 </body>
 </html>
 `;
@@ -108,7 +109,7 @@ function releaseItem(r, showDate = false) {
     r.source ? `<a href="${esc(r.source)}" rel="noopener nofollow">Fiche éditeur</a>` : '',
   ].filter(Boolean).join('');
   const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
-  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}" data-pub="${pk}" data-q="${esc(q)}"><div class="rel-title"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}" data-pub="${pk}" data-q="${esc(q)}"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
     + `<div class="meta">${meta}</div>${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</li>`;
 }
 
@@ -232,6 +233,23 @@ ${content}` : '<p class="empty">Le calendrier manga sera bientôt alimenté.</p>
 <p class="more"><a href="/manga.ics">Ajouter à mon agenda (manga.ics)</a>${siteUrlOk ? `<span class="muted"> Adresse à coller dans l'agenda : <code>${esc(base)}/manga.ics</code></span>` : ''}</p>
 ${rows.length ? FILTER_JS : ''}`;
   page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs (Glénat, Kana, Pika, Ki-oon), prix et statut de chaque tome.', body });
+}
+
+/* ------------------------------------------------------------ mon planning */
+{
+  const rows = manga.map((r) => ({
+    d: r.date, e: r.editeur, s: r.serie, t: r.tome, k: slugify(r.serie), p: r.prix, st: r.statut, u: r.source, i: r.isbn || undefined,
+  }));
+  write('data/manga.json', JSON.stringify({ generated: today, rows }));
+  write('suivi.js', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'suivi.js'), 'utf8'));
+  page('/mon-planning/', {
+    title: 'Mon planning manga',
+    description: 'Suis tes séries manga préférées : prochains tomes, budget du mois et agenda personnel.',
+    noindex: true,
+    body: `<h1>Mon planning</h1>
+<p class="lead">Choisis les séries que tu collectionnes : tu vois leurs prochains tomes, ce que ça coûte chaque mois, et tu peux les ajouter à ton agenda. Ta liste reste dans ton navigateur, rien n'est envoyé.</p>
+<div id="suivi-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ton planning.</p></div>`,
+  });
 }
 
 /* -------------------------------------------------------------------- anime */

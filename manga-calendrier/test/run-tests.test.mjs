@@ -126,7 +126,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   const dist = (...p) => path.join(dirs.OUT_DIR, ...p);
   for (const f of ['index.html', 'anime/index.html', 'manga/index.html', 'articles/index.html', 'mentions-legales/index.html',
     'articles/anime-2026-10-12/index.html', 'articles/manga-2026-10-12/index.html', 'articles/publie/index.html',
-    'manga.ics', 'anime.ics', 'sitemap.xml', 'robots.txt', 'style.css', '404.html', '_headers']) {
+    'mon-planning/index.html', 'data/manga.json', 'suivi.js', 'manga.ics', 'anime.ics', 'sitemap.xml', 'robots.txt', 'style.css', '404.html', '_headers']) {
     assert.ok(existsSync(dist(f)), `fichier manquant : ${f}`);
   }
   assert.ok(!existsSync(dist('articles/brouillon/index.html')), 'un brouillon ne doit pas être publié');
@@ -142,6 +142,10 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(!mangaPage.includes('Exemple') && !mangaPage.includes('Série Ancienne'));
   assert.ok(!mangaPage.includes('<b>Piégée') && mangaPage.includes('&lt;b&gt;Piégée&lt;/b&gt;'));
   assert.ok(!/href="javascript/.test(mangaPage));
+  const mj = JSON.parse(read(dist('data/manga.json')));
+  assert.ok(mj.rows.length >= 4 && mj.rows.every((r) => r.k && r.d && r.s), 'manga.json : lignes valides');
+  assert.ok(mangaPage.includes('class="follow"') && mangaPage.includes('/suivi.js'), 'boutons Suivre et script présents');
+  assert.ok(read(dist('mon-planning/index.html')).includes('noindex') && !read(dist('sitemap.xml')).includes('mon-planning'));
   const home = read(dist('index.html'));
   assert.ok(home.includes('canonical') && home.includes('Article publié'));
   assert.ok(read(dist('sitemap.xml')).includes('https://test.example.org/articles/publie/'));
