@@ -1,9 +1,11 @@
 {
 "version": 1,
 "since": "2026-10-09",
-"updated": "2026-10-12",
+"updated": "2026-10-13",
 "events": [
-
+{"day":"2026-10-13","type":"date","k":"i:9791043311772","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-collector-9791043311772/","from":"2026-11-04","to":"2026-11-12"},
+{"day":"2026-10-13","type":"date","k":"i:9791043311758","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-9791043311758/","from":"2026-11-04","to":"2026-11-12"},
+{"day":"2026-10-13","type":"date","k":"i:9791043307775","e":"Pika","s":"L'Atelier des Sorciers - La magie créatrice - Artbook luxe","t":"","u":"https://www.pika.fr/livre/latelier-des-sorciers-la-magie-creatrice-artbook-luxe-9791043307775/","from":"2026-11-04","to":"2026-11-12"}
 ],
 "seen": {
 "i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
@@ -84,7 +86,7 @@
 "i:9791043307010": {"e":"Pika","s":"The World After The Fall","t":"10","u":"https://www.pika.fr/livre/world-after-fall-t10-9791043307010/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
 "i:9791043307164": {"e":"Pika","s":"Comment tuer la vilaine","t":"7","u":"https://www.pika.fr/livre/comment-tuer-la-vilaine-t07-9791043307164/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
 "i:9791043307225": {"e":"Pika","s":"Second Life Ranker","t":"4","u":"https://www.pika.fr/livre/second-life-ranker-t04-9791043307225/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
-"i:9791043307775": {"e":"Pika","s":"L'Atelier des Sorciers - La magie créatrice - Artbook luxe","t":"","u":"https://www.pika.fr/livre/latelier-des-sorciers-la-magie-creatrice-artbook-luxe-9791043307775/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
+"i:9791043307775": {"e":"Pika","s":"L'Atelier des Sorciers - La magie créatrice - Artbook luxe","t":"","u":"https://www.pika.fr/livre/latelier-des-sorciers-la-magie-creatrice-artbook-luxe-9791043307775/","d":"2026-11-12","f":"2026-10-09","m":0,"x":false},
 "i:9791043308529": {"e":"Pika","s":"Blade & Bastard","t":"5","u":"https://www.pika.fr/livre/blade-bastard-t05-9791043308529/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
 "i:9791043308659": {"e":"Pika","s":"Galaxias","t":"3","u":"https://www.pika.fr/livre/galaxias-t03-9791043308659/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9791043308697": {"e":"Pika","s":"Shimazaki in the Land of Peace","t":"6","u":"https://www.pika.fr/livre/shimazaki-land-peace-t06-9791043308697/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
@@ -114,8 +116,8 @@
 "i:9791043311505": {"e":"Pika","s":"Humanimals","t":"13","u":"https://www.pika.fr/livre/humanimals-t13-9791043311505/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
 "i:9791043311642": {"e":"Pika","s":"Bless","t":"8","u":"https://www.pika.fr/livre/bless-t08-9791043311642/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9791043311710": {"e":"Pika","s":"Gachiakuta","t":"18","u":"https://www.pika.fr/livre/gachiakuta-t18-9791043311710/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
-"i:9791043311758": {"e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-9791043311758/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
-"i:9791043311772": {"e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-collector-9791043311772/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
+"i:9791043311758": {"e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-9791043311758/","d":"2026-11-12","f":"2026-10-09","m":0,"x":false},
+"i:9791043311772": {"e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-collector-9791043311772/","d":"2026-11-12","f":"2026-10-09","m":0,"x":false},
 "i:9791043311789": {"e":"Pika","s":"You're my soulmate","t":"8","u":"https://www.pika.fr/livre/youre-my-soulmate-t08-9791043311789/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9791043311802": {"e":"Pika","s":"Wind Breaker","t":"25","u":"https://www.pika.fr/livre/wind-breaker-t25-9791043311802/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9791043311888": {"e":"Pika","s":"The Warrior Princess and the Barbaric King","t":"11","u":"https://www.pika.fr/livre/warrior-princess-and-barbaric-king-t11-9791043311888/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
