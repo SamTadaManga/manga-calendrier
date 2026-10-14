@@ -3,10 +3,6 @@ on:
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
-    inputs:
-      covers:
-        description: 'Couvertures à récupérer pendant ce passage (300 par défaut ; 3000 pour un rattrapage, environ 1 h)'
-        default: '300'
   push:
     branches: [main]
     paths:
@@ -20,7 +16,6 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 240
     defaults:
       run:
         working-directory: manga-calendrier
@@ -35,15 +30,6 @@ jobs:
           MANGA_CSV_URL: ${{ secrets.MANGA_CSV_URL }}
       - name: Sorties manga des éditeurs (Glénat, Kana, Pika, Ki-oon)
         run: node scripts/collect-manga.mjs
-        continue-on-error: true
-      - name: Catalogue des tomes (Glénat, Pika)
-        run: node scripts/collect-catalogue.mjs
-        continue-on-error: true
-      - name: Couvertures du catalogue (progressif)
-        run: node scripts/collect-covers.mjs
-        env:
-          COVERS_PER_RUN: ${{ inputs.covers || '300' }}
-          COVERS_DELAY_MS: ${{ inputs.covers && '1000' || '2000' }}
         continue-on-error: true
       - name: Adaptations animées des séries manga
         run: node scripts/fetch-adaptations.mjs
