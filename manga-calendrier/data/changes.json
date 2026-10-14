@@ -1,11 +1,12 @@
 {
 "version": 1,
 "since": "2026-10-09",
-"updated": "2026-10-13",
+"updated": "2026-10-14",
 "events": [
 {"day":"2026-10-13","type":"date","k":"i:9791043311772","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-collector-9791043311772/","from":"2026-11-04","to":"2026-11-12"},
 {"day":"2026-10-13","type":"date","k":"i:9791043311758","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-9791043311758/","from":"2026-11-04","to":"2026-11-12"},
-{"day":"2026-10-13","type":"date","k":"i:9791043307775","e":"Pika","s":"L'Atelier des Sorciers - La magie créatrice - Artbook luxe","t":"","u":"https://www.pika.fr/livre/latelier-des-sorciers-la-magie-creatrice-artbook-luxe-9791043307775/","from":"2026-11-04","to":"2026-11-12"}
+{"day":"2026-10-13","type":"date","k":"i:9791043307775","e":"Pika","s":"L'Atelier des Sorciers - La magie créatrice - Artbook luxe","t":"","u":"https://www.pika.fr/livre/latelier-des-sorciers-la-magie-creatrice-artbook-luxe-9791043307775/","from":"2026-11-04","to":"2026-11-12"},
+{"day":"2026-10-14","type":"date","k":"i:9791043301445","e":"Pika","s":"L'Atelier des Sorciers","t":"6","u":"https://www.pika.fr/livre/latelier-des-sorciers-t06-edition-grimoire-9791043301445/","from":"2026-11-04","to":"2026-11-12"}
 ],
 "seen": {
 "i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
@@ -81,7 +82,7 @@
 "i:9791032723548": {"e":"Ki-oon","s":"Les Carnets de l'apothicaire","t":"17","u":"https://ki-oon.com/9791032723548-les-carnets-de-l-apothicaire-edition-simple-volume-17","d":"2026-11-19","f":"2026-10-09","m":0,"x":false},
 "i:9791032723685": {"e":"Ki-oon","s":"Übel Blatt II","t":"4","u":"https://ki-oon.com/9791032723685-ubel-blatt-ii-edition-simple-volume-4","d":"2026-10-01","f":"2026-10-09","m":0,"x":false},
 "i:9791043301148": {"e":"Pika","s":"Air Gear Unlimited","t":"10","u":"https://www.pika.fr/livre/air-gear-unlimited-t10-9791043301148/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
-"i:9791043301445": {"e":"Pika","s":"L'Atelier des Sorciers","t":"6","u":"https://www.pika.fr/livre/latelier-des-sorciers-t06-edition-grimoire-9791043301445/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
+"i:9791043301445": {"e":"Pika","s":"L'Atelier des Sorciers","t":"6","u":"https://www.pika.fr/livre/latelier-des-sorciers-t06-edition-grimoire-9791043301445/","d":"2026-11-12","f":"2026-10-09","m":0,"x":false},
 "i:9791043305313": {"e":"Pika","s":"Secret Bodyguard","t":"12","u":"https://www.pika.fr/livre/secret-bodyguard-t12-9791043305313/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
 "i:9791043307010": {"e":"Pika","s":"The World After The Fall","t":"10","u":"https://www.pika.fr/livre/world-after-fall-t10-9791043307010/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
 "i:9791043307164": {"e":"Pika","s":"Comment tuer la vilaine","t":"7","u":"https://www.pika.fr/livre/comment-tuer-la-vilaine-t07-9791043307164/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
