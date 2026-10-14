@@ -1306,7 +1306,131 @@
   "whisper-it-in-the-night": {
    "c": "2026-10-09",
    "a": []
+  },
+  "black-torch": {
+   "c": "2026-10-14",
+   "a": [
+    {
+     "id": 187538,
+     "t": "BLACK TORCH",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/187538",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00377907/black-torch"
+      }
+     ]
+    }
+   ]
+  },
+  "gaslight-stray-dog-detectives": {
+   "c": "2026-10-14",
+   "a": []
+  },
+  "jujutsu-kaisen": {
+   "c": "2026-10-14",
+   "a": [
+    {
+     "id": 113415,
+     "t": "JUJUTSU KAISEN",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/113415",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/jujutsu-kaisen"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81278456"
+      }
+     ]
+    },
+    {
+     "id": 145064,
+     "t": "JUJUTSU KAISEN Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/145064",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GRDV0019R/jujutsu-kaisen"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81278456"
+      }
+     ]
+    }
+   ]
+  },
+  "jujutsu-kaisen-modulo": {
+   "c": "2026-10-14",
+   "a": []
+  },
+  "la-fiancee-du-clan-kyougane": {
+   "c": "2026-10-14",
+   "a": []
+  },
+  "la-servante-de-l-empereur": {
+   "c": "2026-10-14",
+   "a": []
+  },
+  "lili-men": {
+   "c": "2026-10-14",
+   "a": []
+  },
+  "lovecraft": {
+   "c": "2026-10-14",
+   "a": []
+  },
+  "my-hero-academia": {
+   "c": "2026-10-14",
+   "a": [
+    {
+     "id": 21459,
+     "t": "My Hero Academia",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/21459",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/80135674"
+      }
+     ]
+    },
+    {
+     "id": 21856,
+     "t": "My Hero Academia Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/21856",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/80135674"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/my-hero-academia-dubs"
+      }
+     ]
+    }
+   ]
+  },
+  "nine-peaks": {
+   "c": "2026-10-14",
+   "a": []
+  },
+  "suicide-red": {
+   "c": "2026-10-14",
+   "a": []
   }
  },
- "generatedAt": "2026-10-14T14:33:06.867Z"
+ "generatedAt": "2026-10-14T14:44:00.591Z"
 }
