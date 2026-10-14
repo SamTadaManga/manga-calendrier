@@ -455,3 +455,14 @@ test('ISBN : somme de contrôle et ISBN-10', async () => {
   assert.equal(isbn10Of('9782723488525'), '2723488527');
   assert.equal(isbn10Of('9791032723425'), '');
 });
+
+test('catalogue : sitemaps simulés -> ISBN, série, tome (hors manga, doublons ignorés)', () => {
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'cat-'));
+  const env = { ...process.env, DATA_DIR: dir, COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/catalogue') };
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-catalogue.mjs')], { env, encoding: 'utf8' });
+  const { items } = JSON.parse(readFileSync(path.join(dir, 'catalogue.json'), 'utf8'));
+  assert.equal(items.length, 6);
+  assert.ok(items.find((i) => i.isbn === '9782811664299' && i.key === 'blue-lock' && i.tome === '2'));
+  assert.ok(items.find((i) => i.key === 'pluto' && i.tome === ''));
+  assert.ok(!items.find((i) => i.source.includes('/bd/')));
+});

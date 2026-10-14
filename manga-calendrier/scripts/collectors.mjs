@@ -171,3 +171,33 @@ export function robotsAllows(robotsTxt, pathname) {
   }
   return !best || best.allow;
 }
+
+/* ---------------------------------------------------------------- catalogue */
+// Lit un sitemap produits (products.xml) et en tire, pour chaque URL de manga :
+// ISBN-13, clé de série, nom de série (déduit de l'adresse) et numéro de tome.
+// Glénat : /glenat-manga/<serie>-tome-12-<isbn>/   Pika : /livre/<serie>-t12-<isbn>/
+const titleCase = (s) => s.split('-').filter(Boolean).map((w) => (w.length > 2 || /^\d/.test(w) ? w[0].toUpperCase() + w.slice(1) : w)).join(' ');
+
+export function parseSitemapCatalogue(xml, { editeur, hrefPrefix }) {
+  const out = [];
+  const seen = new Set();
+  for (const m of String(xml).matchAll(/<loc>\s*([^<\s]+)\s*<\/loc>/g)) {
+    let url = m[1].replace(/&amp;/g, '&');
+    let u;
+    try { u = new URL(url); } catch { continue; }
+    if (!u.pathname.startsWith(hrefPrefix)) continue;
+    const last = u.pathname.slice(hrefPrefix.length).replace(/\/+$/, '');
+    const mm = last.match(/^(.*?)-?(97[89]\d{10})$/);
+    if (!mm || !mm[1]) continue;
+    const isbn = mm[2];
+    if (seen.has(isbn)) continue;
+    seen.add(isbn);
+    let slug = mm[1];
+    let tome = '';
+    const t = slug.match(/^(.*?)-(?:tome|t|vol|volume)-?(\d{1,3})$/);
+    if (t) { slug = t[1]; tome = String(Number(t[2])); }
+    if (!slug) continue;
+    out.push({ editeur, isbn, key: slug, serie: titleCase(slug), tome, source: url });
+  }
+  return out;
+}
