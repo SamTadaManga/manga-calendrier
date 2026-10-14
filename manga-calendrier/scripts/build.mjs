@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { readChanges, keyOf } from './changes.mjs';
 import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
-import { loadCatalogue } from './catalogue.mjs';
+import { loadCatalogue, loadCovers } from './catalogue.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
@@ -25,7 +25,8 @@ const isPrivate = config.launched === false; // site privé : non indexé tant q
 const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
 // Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
-const catalogue = loadCatalogue(P.dataDir);
+const coverOf = loadCovers(P.dataDir);
+const catalogue = loadCatalogue(P.dataDir).map((c) => ({ ...c, cover: coverOf.get(c.isbn) || '' }));
 const mangaSlugs = new Set([...manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)), ...catalogue.map((c) => c.base)].filter(Boolean));
 const mangaOf = (e) => mangaSlugOf(e, mangaSlugs);
 const adaptations = (() => {
@@ -525,8 +526,8 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       : S.total ? `<strong>${esc(S.name)}</strong> compte ${esc(plural(S.total, 'tome', 'tomes'))} au catalogue${S.editeur ? ` de ${esc(S.editeur)}` : ''}. Aucun nouveau tome n'est annoncé pour le moment : suis la série pour être prévenu dans Mon planning.`
       : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata. Suis la série pour la retrouver dans Mon planning.`;
     const catLead = '';
-    const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
-    const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
+    const coverRow = showCovers ? ([...S.rows].reverse().find((r) => r.cover) || S.cat.find((c) => c.cover && (c.tome === '1' || !c.tome)) || S.cat.find((c) => c.cover)) : null;
+    const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(coverRow.serie ? mangaLabel(coverRow) : S.name)}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
     const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
     const ae = aeps.find((e) => e.date >= now()) || aeps[0];
     const adaptHtml = adaptLine(S.name, 2);
@@ -537,7 +538,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       description: n
         ? `${n.tome ? `Tome ${n.tome}` : 'Prochain volume'} de ${S.name} : sortie le ${frShort(n.date)}${n.editeur ? ` chez ${n.editeur}` : ''}. Tous les tomes annoncés et la date de chaque sortie.`
         : `Date du prochain tome de ${S.name} en France : tomes parus et annonces des éditeurs.`,
-      image: showCovers ? ([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover : '',
+      image: showCovers ? (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || S.cat.find((c) => c.cover) || {}).cover || '') : '',
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}${catLead}</p>
@@ -555,7 +556,7 @@ ${AFFILIATE_ON && (S.cat.length || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p c
   }
   const letters = [...new Set(seriesList.map((S) => (slugify(S.name)[0] || '#').toUpperCase()))].sort();
   const card = (S) => {
-    const cr = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
+    const cr = showCovers ? ([...S.rows].reverse().find((r) => r.cover) || S.cat.find((c) => c.cover && (c.tome === '1' || !c.tome)) || S.cat.find((c) => c.cover)) : null;
     return `<li class="scard p-${pubKey(S.editeur)}" data-pub="${pubKey(S.editeur)}" data-q="${esc(S.name.toLowerCase())}"><a class="scard-link" href="/serie/${S.k}/">${showCovers ? coverBox(cr && cr.cover, `Couverture de ${S.name}`) : ''}`
       + `<strong>${esc(S.name)}</strong><span class="muted">${S.next ? `${S.next.tome ? `T${esc(S.next.tome)} · ` : ''}${esc(frShort(S.next.date))}` : (S.total ? plural(S.total, 'tome', 'tomes') : 'rien d\'annoncé')}</span></a></li>`;
   };

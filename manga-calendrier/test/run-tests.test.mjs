@@ -489,3 +489,24 @@ test('catalogue : pages série, fusion avec le calendrier, page Séries filtrabl
   assert.ok(idx.includes('data-chip="pika"') && idx.includes('data-pub="glenat"') && idx.includes('/serie/blue-lock/'));
   assert.ok(read(dirs.OUT_DIR, 'sitemap.xml').includes('/serie/blue-lock/'));
 });
+
+test('couvertures du catalogue : collecte progressive puis affichage', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'articles'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), CONFIG_FILE: path.join(tmp, 'config.json'), NOW: '2026-10-12T07:00:00Z', COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/covers') };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(dirs.DATA_DIR, 'manga.csv'));
+  const cfg = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  writeFileSync(dirs.CONFIG_FILE, JSON.stringify({ ...cfg, showCovers: true }));
+  const mk = (isbn, tome) => ({ editeur: 'Glénat', isbn, key: 'one-piece', serie: 'One Piece', tome, source: `https://example.org/${isbn}/` });
+  writeFileSync(path.join(dirs.DATA_DIR, 'catalogue.json'), JSON.stringify({ maj: '2026-10-12', items: [mk('9782723488532', '2'), mk('9782723488525', '1')] }));
+  const env = { ...process.env, ...dirs, COVERS_PER_RUN: '1' };
+  const run = (s) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', s)], { env, encoding: 'utf8' });
+  run('collect-covers.mjs'); // budget 1 : le tome 1 passe en premier
+  const c1 = JSON.parse(read(dirs.DATA_DIR, 'covers.json'));
+  assert.ok(c1['9782723488525'].u.startsWith('https://media.hachette.fr/') && !c1['9782723488532']);
+  run('collect-covers.mjs');
+  assert.equal(JSON.parse(read(dirs.DATA_DIR, 'covers.json'))['9782723488532'].u, '', 'page sans image : mémorisée vide');
+  run('build.mjs');
+  assert.ok(read(dirs.OUT_DIR, 'serie/one-piece/index.html').includes('media.hachette.fr'));
+  assert.ok(read(dirs.OUT_DIR, 'series/index.html').includes('media.hachette.fr'));
+});

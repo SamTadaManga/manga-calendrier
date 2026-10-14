@@ -42,7 +42,7 @@ const dmy = (s) => {
 /* Glénat et Pika utilisent la même plateforme : des cartes <a href=".../ISBN/"> contenant .InnerCard,
    le titre dans l'attribut aria-label de la couverture et la date JJ/MM/AAAA dans le texte. */
 // Couvertures : l'adresse de l'image est dans les données JSON de la page (année et collection variables), repérée par ISBN
-const hachetteCover = (html, isbn) => {
+export const hachetteCover = (html, isbn) => {
   if (!isbn) return '';
   const m = html.match(new RegExp(`imgArticle(?:\\\\*/)([A-Za-z]+)(?:\\\\*/)(\\d{4})(?:\\\\*/)${isbn}-001-X\\.jpe?g`));
   return m ? `https://media.hachette.fr/fit-in/320x480/imgArticle/${m[1]}/${m[2]}/${isbn}-001-X.jpeg?source=web` : '';

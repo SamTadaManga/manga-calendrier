@@ -22,3 +22,11 @@ export function loadCatalogue(dir) {
     .map((i) => ({ ...splitEdition(String(i.key)), name: '', isbn: i.isbn, editeur: i.editeur || '', serie: i.serie || '', tome: /^\d{1,3}$/.test(i.tome || '') ? String(i.tome) : '', source: /^https:\/\//.test(i.source || '') ? i.source : '' }))
     .map((c) => ({ ...c, name: words(c.base) }));
 }
+
+// Couvertures trouvées par collect-covers.mjs : { isbn: { u: adresse https, d: date } }
+export function loadCovers(dir) {
+  try {
+    const raw = JSON.parse(readFileSync(path.join(dir, 'covers.json'), 'utf8'));
+    return new Map(Object.entries(raw).filter(([, v]) => /^https:\/\//.test(v?.u || '')).map(([k, v]) => [k, v.u]));
+  } catch { return new Map(); }
+}
