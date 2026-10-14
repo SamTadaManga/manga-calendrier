@@ -156,7 +156,7 @@ Titres : Dela Gothic One ; texte : Zen Kaku Gothic New (SIL OFL, voir `scripts/a
 
 ## Liens d'achat (ISBN) et affiliation
 
-Chaque tome ayant un ISBN-13 valide affiche un bouton « Acheter » (« Précommander » avant la sortie) avec un lien par boutique : Amazon, Fnac, Cultura, BDfugue. Le code est dans `scripts/shops.mjs`.
+Chaque tome ayant un ISBN-13 valide affiche des boutons « Acheter » (« Précommander » avant la sortie), un par boutique, stylés comme les plateformes de streaming (accueil, liste des sorties, pages série) : Amazon, Fnac, Cultura, BDfugue. Le code est dans `scripts/shops.mjs`.
 
 Pour remplacer un lien par un lien d'affiliation, ajouter dans `site.config.json` :
 

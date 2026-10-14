@@ -180,10 +180,12 @@ function tile(r) {
   const pk = pubKey(r.editeur);
   const label = `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const frame = coverBox(r.cover, `Couverture de ${label}`, 160, 240);
-  return `<li class="tile p-${pk}"><a class="tile-cover" href="${esc(r.source || '/manga/')}" ${r.source ? 'rel="noopener nofollow"' : ''} aria-label="${esc(label)} : fiche éditeur">${frame}</a>`
-    + `<div class="tile-body"><strong>${esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}`
+  const sl = slugify(r.serie) ? `/serie/${slugify(r.serie)}/` : '';
+  const cl = sl ? `<a class="tile-cover" href="${sl}" aria-label="${esc(label)} : page de la série">${frame}</a>` : `<a class="tile-cover" href="${esc(r.source || '/manga/')}" ${r.source ? 'rel="noopener nofollow"' : ''} aria-label="${esc(label)} : fiche éditeur">${frame}</a>`;
+  return `<li class="tile p-${pk}">${cl}`
+    + `<div class="tile-body"><strong>${sl ? `<a href="${sl}">${esc(r.serie)}</a>` : esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}`
     + `<div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div><span class="pub">${esc(r.editeur || '')}</span>${isNewSeries(r) ? NEW_BADGE : ''}`
-    + `<button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button></div></li>`;
+    + `<button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button>${buyBox(r)}</div></li>`;
 }
 
 
@@ -201,10 +203,11 @@ function coverBox(src, alt, w = 200, h = 300) {
 /* Où acheter : un lien par boutique (adresse normale, ou lien d'affiliation si renseigné dans la config) */
 const SHOPLIST = shopsFrom(config);
 const AFFILIATE_ON = SHOPLIST.some((x) => x.affiliate);
-const buyBox = (r, open = false) => {
+const CART = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M1 1.5h2l1.2 6h5.6l1-4H3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="5" cy="10" r="1" fill="currentColor"/><circle cx="9" cy="10" r="1" fill="currentColor"/></svg>';
+const buyBox = (r, size = '') => {
   if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
-  const links = SHOPLIST.map((x) => `<li><a href="${esc(buyUrl(x, r.isbn))}" rel="${x.affiliate ? 'sponsored ' : ''}nofollow noopener" target="_blank">${esc(x.name)}</a></li>`).join('');
-  return `<details class="buy"${open ? ' open' : ''}><summary>${r.date > today ? 'Précommander' : 'Acheter'}</summary><ul>${links}</ul></details>`;
+  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.affiliate ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${r.date > today ? 'Précommander' : 'Acheter'} sur ${esc(x.name)}" aria-label="${r.date > today ? 'Précommander' : 'Acheter'} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${CART}${esc(x.name)}</a>`).join('');
+  return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}"><span class="shops-l">${r.date > today ? 'Précommander' : 'Acheter'}</span>${links}</div>`;
 };
 function volTile(r) {
   const pk = pubKey(r.editeur);
@@ -242,7 +245,7 @@ function releaseItem(r, showDate = false) {
   const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
   const coverLink = cover && slugify(r.serie) ? `<a class="rel-cover" href="/serie/${slugify(r.serie)}/" aria-label="${esc(r.serie)} : page de la série" tabindex="-1">${cover}</a>` : cover;
   return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
-    + `<div class="meta">${meta}</div>${adaptLine(r.serie)}${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
+    + `<div class="meta">${meta}</div>${buyBox(r)}${adaptLine(r.serie)}${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
 const STREAM_ICON = { Crunchyroll: 'CR', ADN: 'ADN', Netflix: 'N', 'Prime Video': 'P', 'Disney+': 'D+', Wakanim: 'W' };
@@ -522,7 +525,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
-${n ? buyBox(n, true) : ''}
+${n ? buyBox(n, 'lg') : ''}
 ${animeBox}
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
 <div class="coll panel" data-coll data-s="${esc(S.k)}" hidden></div>
