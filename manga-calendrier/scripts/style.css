@@ -90,7 +90,7 @@ a.d-line:hover{text-decoration:underline}
 .p-glenat{--pc:var(--c-glenat);--pt:var(--t-glenat)}.p-kana{--pc:var(--c-kana);--pt:var(--t-kana)}.p-pika{--pc:var(--c-pika);--pt:var(--t-pika)}.p-ki-oon{--pc:var(--c-ki-oon);--pt:var(--t-ki-oon)}.p-akata{--pc:var(--c-akata);--pt:var(--t-akata)}.p-autre{--pc:var(--c-autre);--pt:var(--t-autre)}
 
 /* Deux colonnes */
-.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;align-items:start}
+.two{display:grid;grid-template-columns:minmax(0,1fr);gap:0;align-items:start}
 
 /* Listes de sorties */
 .rel{position:relative;padding:12px 14px 12px 12px;border-left:7px solid var(--pc,var(--c-autre));border-bottom:1px solid var(--line)}
@@ -139,8 +139,8 @@ a.d-line:hover{text-decoration:underline}
 .eps li.ep-row.has-thumb{grid-template-columns:96px 4.4rem minmax(0,1fr) auto;gap:12px 16px;align-items:center}
 .ep-cover{display:block;width:96px;height:144px;box-shadow:3px 3px 0 var(--shadow)}
 .ep-row time{white-space:nowrap;font-weight:800;font-variant-numeric:tabular-nums}
-.ep-row .ep{font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:flex-end;max-width:19rem}
-.ep-row .t{min-width:12ch}
+.ep-row .ep{font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;justify-content:flex-end;max-width:15rem}
+.ep-row .t{min-width:0;overflow-wrap:anywhere}
 .ep-row a{color:var(--ink);text-decoration-color:var(--line)}
 .ep-row a:hover{color:var(--ink)}
 
