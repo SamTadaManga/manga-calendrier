@@ -33,6 +33,8 @@ const adaptOf = (name) => (Array.isArray(adaptations[slugify(name)]?.a) ? adapta
 const eps = anime.episodes
   .map((e) => ({ ...e, date: new Date(e.airingAt * 1000) }))
   .map((e) => ({ ...e, key: parisKey(e.date), time: parisHM(e.date), ms: mangaOf(e) }));
+const animeSlug = (e) => `${e.mediaId}${slugify(displayTitle(e.title)) ? `-${slugify(displayTitle(e.title))}` : ''}`;
+const animeHref = (e) => `/anime/${animeSlug(e)}/`;
 const articles = loadArticles([P.articlesDir, P.autoDir], { includeDrafts: process.env.INCLUDE_DRAFTS === '1' })
   .filter((a) => a.date <= today); // un article daté du futur sera publié le jour venu (programmation)
 
@@ -251,20 +253,19 @@ const adaptLine = (name, max = 1) => adaptOf(name).slice(0, max).map((a) => {
 
 function episodeItem(e) {
   const t = esc(displayTitle(e.title));
-  const url = safeUrl(e.url);
-  const title = url ? `<a href="${esc(url)}" rel="noopener nofollow">${t}</a>` : t;
+  const title = `<a href="${esc(animeHref(e))}">${t}</a>`;
   const hasCover = showCovers && /^https:\/\//.test(e.cover || '');
-  const thumb = hasCover ? `<span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="96" height="144" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span>` : '';
+  const thumb = hasCover ? `<a class="ep-cover-link" href="${esc(animeHref(e))}" aria-label="${t} : où regarder" tabindex="-1"><span class="ep-cover cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="96" height="144" loading="lazy" decoding="async" referrerpolicy="no-referrer"></span></a>` : '';
   return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)} ${afollow(e)}</span></li>`;
 }
 
 function animeCard(e) {
   const t = esc(displayTitle(e.title));
-  const url = safeUrl(e.url);
+  const url = animeHref(e);
   const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
   const frame = `<div class="cover">${img}</div>`;
-  return `<li class="acard" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" rel="noopener nofollow" aria-label="${t} : fiche AniList">${frame}</a>` : frame}`
-    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong>${t}</strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}${afollow(e)}</div></li>`;
+  return `<li class="acard" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" aria-label="${t} : où regarder">${frame}</a>` : frame}`
+    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong><a href="${esc(url)}">${t}</a></strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}${afollow(e)}</div></li>`;
 }
 
 const articleItem = (a) =>
@@ -627,6 +628,47 @@ ${NL.on ? nlForm('nl-page') : '<p class="empty">L\'inscription n\'est pas encore
   });
 }
 
+/* ---------------------------------------------------------- fiches anime */
+const ANIME_PAGES = [];
+{
+  const byId = new Map();
+  for (const e of eps) { if (!byId.has(e.mediaId)) byId.set(e.mediaId, []); byId.get(e.mediaId).push(e); }
+  for (const list of byId.values()) {
+    list.sort((a, b) => a.airingAt - b.airingAt);
+    const e = list.find((x) => x.date >= now()) || list[list.length - 1];
+    const t = displayTitle(e.title);
+    const streamList = (Array.isArray(e.stream) ? e.stream : []).filter((x) => x && /^https:\/\//.test(x.u || ''));
+    const watch = streamList.length
+      ? `<div class="watch">${streamList.map((x) => `<a class="stream stream-lg s-${esc(slugify(x.n))}" href="${esc(x.u)}" rel="noopener nofollow" target="_blank"><svg viewBox="0 0 10 10" width="12" height="12" aria-hidden="true"><path d="M2 1l7 4-7 4z" fill="currentColor"/></svg>Regarder sur ${esc(x.n)}</a>`).join('')}</div><p class="muted">Liens fournis par AniList. La disponibilité en France peut varier selon la plateforme.</p>`
+      : `<p class="empty">Aucune plateforme de streaming n'est indiquée pour le moment.</p>`;
+    const anilist = /^https:\/\/anilist\.co\//.test(e.url || '') ? `<a href="${esc(e.url)}" rel="noopener nofollow" target="_blank">Fiche AniList</a>` : '';
+    const hero = showCovers && /^https:\/\//.test(e.cover || '') ? `<div class="cover series-cover"><img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${esc(t)}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
+    const next = list.find((x) => x.date >= now());
+    const lead = next
+      ? `Prochain épisode de <strong>${esc(t)}</strong> : l'épisode ${esc(next.episode)}, diffusé au Japon le <strong>${esc(frShort(next.key))}</strong> à ${esc(next.time)} (heure de Paris).`
+      : `Dernier épisode connu de <strong>${esc(t)}</strong> : l'épisode ${esc(e.episode)}, diffusé au Japon le ${esc(frShort(e.key))} à ${esc(e.time)} (heure de Paris).`;
+    const rows = list.map((x) => `<li class="ep-row"><time>${esc(weekday(x.key))} ${esc(dayNum(x.key))}</time><span class="t"><a href="/anime/#j-${x.key}">Jour de diffusion</a></span><span class="ep">épisode ${esc(x.episode)}${isPremiere(x) ? ` ${PREMIERE_BADGE}` : ''} · ${esc(x.time)}</span></li>`).join('');
+    const manga = e.ms ? `<p class="adapt"><strong>Adapté d'un manga</strong> : <a href="/serie/${esc(e.ms)}/">voir les prochains tomes</a></p>` : '';
+    ANIME_PAGES.push(animeHref(e));
+    page(animeHref(e), {
+      title: `${t} : où regarder en streaming`,
+      description: `Où regarder ${t} en streaming, horaires de diffusion des épisodes (heure de Paris) et lien vers le manga.`,
+      image: showCovers ? e.cover : '',
+      body: `<div class="series-head">${hero}<div>
+<h1>${esc(t)}</h1>
+<p class="lead">${lead}</p>
+<h2>Où regarder</h2>
+${watch}
+${manga}
+<p>${afollow(e)} <a href="/mes-animes/">Noter mes épisodes vus</a>${anilist ? ` · ${anilist}` : ''}</p>
+</div></div>
+<h2>Épisodes de la semaine</h2>
+<ul class="list panel eps">${rows}</ul>
+<p class="more"><a href="/anime/">Tous les animes de la semaine</a>${reportLink() ? ` · ${reportLink('Une info est fausse ? Signale-la')}` : ''}</p>`,
+    });
+  }
+}
+
 write('anime-vus.js', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'anime-vus.js'), 'utf8'));
 page('/mes-animes/', {
   title: 'Mes animes',
@@ -805,7 +847,7 @@ write('404.html', layout({
 }));
 write('robots.txt', isPrivate ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n${siteUrlOk ? `Sitemap: ${base}/sitemap.xml\n` : ''}`);
 if (siteUrlOk && !isPrivate) {
-  const urls = ['/', '/anime/', '/manga/', '/changements/', '/articles/', '/mentions-legales/', ...SEO_URLS, ...articles.map((a) => `/articles/${a.slug}/`)];
+  const urls = ['/', '/anime/', '/manga/', '/changements/', '/articles/', '/mentions-legales/', ...SEO_URLS, ...ANIME_PAGES, ...articles.map((a) => `/articles/${a.slug}/`)];
   const lastmod = (u) => (u.startsWith('/articles/') && u !== '/articles/' ? articles.find((a) => `/articles/${a.slug}/` === u)?.date : today);
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
     urls.map((u) => `<url><loc>${esc(base + u)}</loc><lastmod>${lastmod(u)}</lastmod></url>`).join('\n')}\n</urlset>\n`);

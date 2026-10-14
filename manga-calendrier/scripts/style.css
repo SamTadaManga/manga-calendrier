@@ -434,3 +434,11 @@ ul.prog a{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:now
 .vus-err:empty{display:none}
 .vus-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .vus-list>li{padding:14px 16px}
+
+.watch{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0}
+a.stream.stream-lg{height:44px;min-width:0;padding:0 18px;font-size:1rem;gap:8px}
+.ep-cover-link{display:block;width:fit-content;background:none!important;text-decoration:none}
+.ep-cover-link:hover .ep-cover{outline:3px solid var(--brand);outline-offset:2px}
+.acard-body strong a{color:inherit;text-decoration:none;background:none}
+.acard-body strong a:hover{text-decoration:underline;text-decoration-color:var(--brand);text-decoration-thickness:3px}
+.series-head .afollow{margin-right:10px}

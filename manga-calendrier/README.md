@@ -145,3 +145,7 @@ Le site fournit : un formulaire d'inscription (page `/newsletter/`, accueil, pie
 ## Mes animes (épisodes vus)
 
 La page `/mes-animes/` permet de noter les épisodes vus (« de X à Y », plages fusionnées automatiquement, bouton « +1 »). Elle reprend les animes suivis avec « Suivre » et permet d'en ajouter à la main. Les données restent dans le navigateur (`mc-vus`, `mc-anime`) ; le script est `scripts/anime-vus.js`.
+
+## Fiches anime
+
+Chaque anime diffusé dans la semaine a sa page `/anime/<id>-<titre>/` (plateformes de streaming, horaires, lien vers le manga). Les jaquettes et titres de la page Anime et de l'accueil y mènent au lieu d'AniList. Les fiches disparaissent quand l'anime sort du programme de la semaine.
