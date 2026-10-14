@@ -275,15 +275,6 @@ function episodeItem(e) {
   return `<li class="ep-row${hasCover ? ' has-thumb' : ''}" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${thumb}<time>${esc(e.time)}</time><span class="t">${title}${e.format === 'MOVIE' ? ' <span class="muted">film</span>' : ''}</span><span class="ep">épisode ${esc(e.episode)}${isPremiere(e) ? ` ${PREMIERE_BADGE}` : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)} ${afollow(e)}</span></li>`;
 }
 
-function animeCard(e) {
-  const t = esc(displayTitle(e.title));
-  const url = animeHref(e);
-  const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
-  const frame = `<div class="cover">${img}</div>`;
-  return `<li class="acard" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" aria-label="${t} : où regarder">${frame}</a>` : frame}`
-    + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong><a href="${esc(url)}">${t}</a></strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}${afollow(e)}</div></li>`;
-}
-
 // Page anime : mêmes lignes que la page manga (barre de couleur, affiche cliquable, Suivre à droite, boutons de streaming alignés)
 function animeRow(e) {
   const t = esc(displayTitle(e.title));
@@ -342,7 +333,7 @@ ${mangaToday.length
 <div>
 <h2>Anime du jour</h2>
 ${todayEps.length
-    ? `<ul class="list panel eps">${topToday.map(episodeItem).join('')}</ul><p class="muted more">Les ${topToday.length} plus suivis sur ${todayEps.length} épisodes. <a href="/anime/#j-${today}">Programme complet</a></p>`
+    ? `<ul class="list panel eps">${topToday.map(showCovers ? animeRow : episodeItem).join('')}</ul><p class="muted more">Les ${topToday.length} plus suivis sur ${todayEps.length} épisodes. <a href="/anime/#j-${today}">Programme complet</a></p>`
     : '<p class="empty">Le programme apparaîtra après la prochaine mise à jour automatique.</p>'}
 </div>
 </section>
@@ -581,7 +572,7 @@ ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="sea
     ? (showCovers ? `<ul class="shelf">${newManga.map(tile).join('')}</ul>` : `<ul class="list panel">${newManga.map((r) => releaseItem(r, true)).join('')}</ul>`)
     : '<p class="empty">Aucune nouvelle série annoncée pour le moment.</p>';
   const animePart = premieres.length
-    ? (showCovers ? `<ul class="acards">${premieres.map(animeCard).join('')}</ul>` : `<ul class="list panel eps">${premieres.map(episodeItem).join('')}</ul>`)
+    ? (showCovers ? `<ul class="list panel eps">${premieres.map(animeRow).join('')}</ul>` : `<ul class="list panel eps">${premieres.map(episodeItem).join('')}</ul>`)
     : '<p class="empty">Aucun premier épisode au programme cette semaine.</p>';
   page('/nouveautes/', {
     title: 'Nouvelles séries manga et premiers épisodes d\'anime',
