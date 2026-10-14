@@ -211,7 +211,7 @@ const buyBox = (r, size = '') => {
   const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.affiliate ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
   return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
-function volTile(r) {
+function volTile(r, noBuy = false) {
   const pk = pubKey(r.editeur);
   const label = mangaLabel(r);
   const cover = showCovers ? coverBox(r.cover, `Couverture de ${label}`) : '';
@@ -223,7 +223,7 @@ function volTile(r) {
     + `${r.source ? `<a class="tile-cover" href="${esc(r.source)}" rel="noopener nofollow" aria-label="${esc(label)} : fiche éditeur">${cover}</a>` : cover}`
     + `<div class="tile-body"><strong>${r.tome ? `Tome ${esc(r.tome)}` : esc(r.serie)}</strong>${ed ? `<span class="ed">${esc(ed)}</span>` : ''}`
     + `<div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div>`
-    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${own}${buyBox(r)}</div></li>`;
+    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${own}${noBuy ? '' : buyBox(r)}</div></li>`;
 }
 
 const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
@@ -282,6 +282,21 @@ function animeCard(e) {
   const frame = `<div class="cover">${img}</div>`;
   return `<li class="acard" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">${url ? `<a class="acard-cover" href="${esc(url)}" aria-label="${t} : où regarder">${frame}</a>` : frame}`
     + `<div class="acard-body"><span class="acard-time">${esc(e.time)}</span><strong><a href="${esc(url)}">${t}</a></strong><span class="muted">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span>${isPremiere(e) ? PREMIERE_BADGE : ''}${streamChips(e) ? `<span class="streams">${streamChips(e)}</span>` : ''}${bridgeLink(e)}${afollow(e)}</div></li>`;
+}
+
+// Page anime : mêmes lignes que la page manga (barre de couleur, affiche cliquable, Suivre à droite, boutons de streaming alignés)
+function animeRow(e) {
+  const t = esc(displayTitle(e.title));
+  const url = esc(animeHref(e));
+  const img = /^https:\/\//.test(e.cover || '') ? `<img class="cover-img" src="${esc(e.cover)}" alt="Affiche de ${t}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : '';
+  const cover = `<div class="cover" aria-hidden="${img ? 'false' : 'true'}">${img}</div>`;
+  const chips = streamChips(e);
+  return `<li class="rel anime-row has-cover" data-pub="${esc(streamKeys(e))}" data-q="${esc(displayTitle(e.title).toLowerCase())}">`
+    + `<a class="rel-cover" href="${url}" aria-label="${t} : où regarder" tabindex="-1">${cover}</a>`
+    + `<div class="rel-main"><button type="button" class="chip afollow" data-a="${esc(e.mediaId)}" data-n="${esc(displayTitle(e.title))}" aria-pressed="false" hidden>Suivre</button>`
+    + `<div class="rel-title"><strong><a href="${url}">${t}</a></strong> <span class="tome">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span></div>`
+    + `<div class="meta"><time>${esc(e.time)}</time>${isPremiere(e) ? PREMIERE_BADGE : ''}${bridgeLink(e)}</div>`
+    + `${chips ? `<div class="shops"><span class="shops-l">Regarder</span>${chips}</div>` : ''}</div></li>`;
 }
 
 const articleItem = (a) =>
@@ -532,7 +547,7 @@ ${animeBox}
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
 <div class="coll panel" data-coll data-s="${esc(S.k)}" hidden></div>
 </div></div>
-${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map(volTile).join('')}</ul>` : ''}
+${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === n)).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map(volTile).join('')}</ul>` : ''}
 ${AFFILIATE_ON && S.rows.some((r) => isIsbn13(r.isbn)) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
@@ -724,7 +739,7 @@ ${events.length ? content : `<p class="empty">Aucun changement détecté pour le
   const sections = days.map((d) => {
     const list = eps.filter((e) => e.key === d);
     return `<section class="day" id="j-${d}" data-group><h2 class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2>${
-      list.length ? (showCovers ? `<ul class="acards">${list.map(animeCard).join('')}</ul>` : `<ul class="list panel eps">${list.map(episodeItem).join('')}</ul>`) : '<p class="empty">Aucun épisode enregistré ce jour-là.</p>'}</section>`;
+      list.length ? (showCovers ? `<ul class="list panel eps">${list.map(animeRow).join('')}</ul>` : `<ul class="list panel eps">${list.map(episodeItem).join('')}</ul>`) : '<p class="empty">Aucun épisode enregistré ce jour-là.</p>'}</section>`;
   }).join('\n');
   const platCount = new Map();
   for (const e of eps) for (const k of streamKeys(e).split(' ')) platCount.set(k, (platCount.get(k) || 0) + 1);
