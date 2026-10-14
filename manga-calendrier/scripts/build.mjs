@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { readChanges, keyOf } from './changes.mjs';
 import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
+import { loadCatalogue } from './catalogue.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
@@ -24,7 +25,8 @@ const isPrivate = config.launched === false; // site privé : non indexé tant q
 const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
 // Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
-const mangaSlugs = new Set(manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
+const catalogue = loadCatalogue(P.dataDir);
+const mangaSlugs = new Set([...manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)), ...catalogue.map((c) => c.base)].filter(Boolean));
 const mangaOf = (e) => mangaSlugOf(e, mangaSlugs);
 const adaptations = (() => {
   try { return JSON.parse(readFileSync(path.join(P.dataDir, 'adaptations.json'), 'utf8')).series || {}; } catch { return {}; }
@@ -495,22 +497,34 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     if (!seriesMap.has(k)) seriesMap.set(k, []);
     seriesMap.get(k).push(r);
   }
+  const catBy = new Map();
+  for (const c of catalogue) {
+    if (!catBy.has(c.base)) catBy.set(c.base, []);
+    catBy.get(c.base).push(c);
+  }
+  const byEdTome = (a, b) => a.edition.localeCompare(b.edition, 'fr') || Number(a.tome || 0) - Number(b.tome || 0);
+  const mostCommon = (arr) => { const m = new Map(); for (const x of arr) m.set(x, (m.get(x) || 0) + 1); return [...m].sort((a, b) => b[1] - a[1])[0]?.[0] || ''; };
+  for (const k of catBy.keys()) if (!seriesMap.has(k)) seriesMap.set(k, []);
   const seriesList = [...seriesMap].map(([k, rows]) => {
     const sorted = [...rows].sort((a, b) => a.date.localeCompare(b.date));
-    const names = new Map();
-    for (const r of rows) names.set(r.serie, (names.get(r.serie) || 0) + 1);
-    const name = [...names].sort((a, b) => b[1] - a[1])[0][0];
-    return { k, name, rows: sorted, next: sorted.find((r) => r.date >= today) || null, editeur: sorted[sorted.length - 1].editeur };
+    const have = new Set(rows.map((r) => r.isbn).filter(Boolean));
+    const cat = (catBy.get(k) || []).filter((c) => !have.has(c.isbn)).sort(byEdTome);
+    const name = rows.length ? mostCommon(rows.map((r) => r.serie)) : cat[0].name;
+    const editeur = rows.length ? sorted[sorted.length - 1].editeur : mostCommon(cat.map((c) => c.editeur));
+    return { k, name, rows: sorted, cat, total: rows.length + cat.length, next: sorted.find((r) => r.date >= today) || null, editeur };
   }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
-  searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: S.editeur || '' }));
+  const catTile = (c) => `<li class="ctile p-${pubKey(c.editeur)}"><div class="ct-head"><strong>${c.tome ? `Tome ${esc(c.tome)}` : 'Volume'}</strong>${c.edition ? `<span class="muted">${esc(c.edition)}</span>` : ''}</div>${buyBox({ isbn: c.isbn, date: '' }, 'sm')}</li>`;
+  searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : (S.total ? plural(S.total, 'tome', 'tomes') : ''), a: S.editeur || '' }));
   for (const S of seriesList) {
     const upcoming = S.rows.filter((r) => r.date >= today);
     const past = S.rows.filter((r) => r.date < today).reverse();
     const n = S.next;
     const lead = n
       ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? '' : ' La date peut encore bouger.'}`
+      : S.total ? `<strong>${esc(S.name)}</strong> compte ${esc(plural(S.total, 'tome', 'tomes'))} au catalogue${S.editeur ? ` de ${esc(S.editeur)}` : ''}. Aucun nouveau tome n'est annoncé pour le moment : suis la série pour être prévenu dans Mon planning.`
       : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata. Suis la série pour la retrouver dans Mon planning.`;
+    const catLead = '';
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
     const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
@@ -526,7 +540,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       image: showCovers ? ([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover : '',
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
-<p class="lead">${lead}</p>
+<p class="lead">${lead}${catLead}</p>
 ${n ? buyBox(n, 'lg') : ''}
 ${animeBox}
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
@@ -534,23 +548,28 @@ ${animeBox}
 </div></div>
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map(volTile).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map(volTile).join('')}</ul>` : ''}
-${AFFILIATE_ON && S.rows.some((r) => isIsbn13(r.isbn)) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
-<p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
+${S.cat.length ? `<h2>${S.rows.length ? 'Autres tomes au catalogue' : 'Tomes au catalogue'}</h2><ul class="cgrid">${S.cat.map(catTile).join('')}</ul>` : ''}
+${AFFILIATE_ON && (S.cat.length || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
+<p class="more">${S.rows.length ? `<a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · ` : ''}<a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
   }
   const letters = [...new Set(seriesList.map((S) => (slugify(S.name)[0] || '#').toUpperCase()))].sort();
   const card = (S) => {
     const cr = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
-    return `<li class="scard p-${pubKey(S.editeur)}" data-q="${esc(S.name.toLowerCase())}"><a class="scard-link" href="/serie/${S.k}/">${showCovers ? coverBox(cr && cr.cover, `Couverture de ${S.name}`) : ''}`
-      + `<strong>${esc(S.name)}</strong><span class="muted">${S.next ? `${S.next.tome ? `T${esc(S.next.tome)} · ` : ''}${esc(frShort(S.next.date))}` : 'rien d\'annoncé'}</span></a></li>`;
+    return `<li class="scard p-${pubKey(S.editeur)}" data-pub="${pubKey(S.editeur)}" data-q="${esc(S.name.toLowerCase())}"><a class="scard-link" href="/serie/${S.k}/">${showCovers ? coverBox(cr && cr.cover, `Couverture de ${S.name}`) : ''}`
+      + `<strong>${esc(S.name)}</strong><span class="muted">${S.next ? `${S.next.tome ? `T${esc(S.next.tome)} · ` : ''}${esc(frShort(S.next.date))}` : (S.total ? plural(S.total, 'tome', 'tomes') : 'rien d\'annoncé')}</span></a></li>`;
   };
+  const serCount = new Map();
+  for (const S of seriesList) serCount.set(pubKey(S.editeur), (serCount.get(pubKey(S.editeur)) || 0) + 1);
+  const serChips = ['<button type="button" class="chip" data-chip="tous" aria-pressed="true">Tous</button>']
+    .concat([...Object.keys(PUBS), 'autre'].filter((k) => serCount.has(k)).map((k) => `<button type="button" class="chip" data-chip="${k}" aria-pressed="false"><i class="dot p-${k}"></i>${esc(PUBS[k] || 'Autres')} <span class="n">${serCount.get(k)}</span></button>`)).join('');
   const az = letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="sgrid">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L).map(card).join('')}</ul></section>`).join('');
   page('/series/', {
     title: 'Toutes les séries manga : prochain tome',
-    description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika, Ki-oon et Akata.`,
+    description: `Catalogue de ${seriesList.length} séries manga publiées en France (Glénat, Kana, Pika, Ki-oon) : tomes parus, prochain tome et où l'acheter.`,
     body: `<h1>Séries manga</h1>
-<p class="lead">${esc(plural(seriesList.length, 'série suivie', 'séries suivies'))} dans les plannings des éditeurs. Clique sur une série pour voir la date de son prochain tome.</p>
-${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série"></div>
+<p class="lead">${esc(seriesList.length.toLocaleString('fr-FR'))} séries au catalogue, dont ${esc(String(seriesList.filter((S) => S.next).length))} avec un prochain tome annoncé. Clique sur une série pour voir ses tomes, sa prochaine date de sortie et où l'acheter.</p>
+${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${serChips}</div>
 <p class="empty" id="aucun" hidden>Aucune série ne correspond.</p>${az}${FILTER_JS}` : '<p class="empty">Les séries apparaîtront après la première collecte.</p>'}`,
   });
   SEO_URLS.push('/sorties-manga/', '/series/', ...months.map((mk) => `/sorties-manga/${monthSlug(mk)}/`), ...seriesList.map((S) => `/serie/${S.k}/`));
