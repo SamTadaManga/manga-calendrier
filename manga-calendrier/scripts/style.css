@@ -450,3 +450,14 @@ a.stream.stream-lg{height:44px;min-width:0;padding:0 18px;font-size:1rem;gap:8px
 .series-head .afollow{margin-right:10px}
 
 @media (max-width:520px){nav a{padding:5px 8px;font-size:.92rem}}
+
+details.buy{margin-top:8px}
+details.buy summary{display:inline-flex;align-items:center;gap:6px;cursor:pointer;list-style:none;min-height:34px;padding:3px 12px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font-weight:700;font-size:.9rem}
+details.buy summary::-webkit-details-marker{display:none}
+details.buy summary::before{content:"\1F6D2\FE0E";font-size:.95em}
+details.buy[open] summary{background:var(--brand);color:#111;border-color:#111}
+details.buy ul{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+details.buy li a{display:inline-block;padding:3px 10px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font-weight:700;font-size:.88rem;text-decoration:none}
+@media (hover:hover){details.buy li a:hover{background:var(--mark);box-shadow:2px 2px 0 var(--shadow)}}
+.tile-body details.buy{width:100%}
+.affil-note{font-size:.88rem;margin-top:18px}

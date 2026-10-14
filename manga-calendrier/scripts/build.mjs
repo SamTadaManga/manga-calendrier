@@ -4,6 +4,7 @@ import { mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { readChanges, keyOf } from './changes.mjs';
+import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
@@ -197,6 +198,14 @@ function coverBox(src, alt, w = 200, h = 300) {
   return `<div class="cover" aria-hidden="${img ? 'false' : 'true'}">${img}</div>`;
 }
 // tuile d'un tome (page de série)
+/* Où acheter : un lien par boutique (adresse normale, ou lien d'affiliation si renseigné dans la config) */
+const SHOPLIST = shopsFrom(config);
+const AFFILIATE_ON = SHOPLIST.some((x) => x.affiliate);
+const buyBox = (r, open = false) => {
+  if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
+  const links = SHOPLIST.map((x) => `<li><a href="${esc(buyUrl(x, r.isbn))}" rel="${x.affiliate ? 'sponsored ' : ''}nofollow noopener" target="_blank">${esc(x.name)}</a></li>`).join('');
+  return `<details class="buy"${open ? ' open' : ''}><summary>${r.date > today ? 'Précommander' : 'Acheter'}</summary><ul>${links}</ul></details>`;
+};
 function volTile(r) {
   const pk = pubKey(r.editeur);
   const label = mangaLabel(r);
@@ -209,7 +218,7 @@ function volTile(r) {
     + `${r.source ? `<a class="tile-cover" href="${esc(r.source)}" rel="noopener nofollow" aria-label="${esc(label)} : fiche éditeur">${cover}</a>` : cover}`
     + `<div class="tile-body"><strong>${r.tome ? `Tome ${esc(r.tome)}` : esc(r.serie)}</strong>${ed ? `<span class="ed">${esc(ed)}</span>` : ''}`
     + `<div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div>`
-    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${own}</div></li>`;
+    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${own}${buyBox(r)}</div></li>`;
 }
 
 const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
@@ -513,12 +522,14 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
+${n ? buyBox(n, true) : ''}
 ${animeBox}
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
 <div class="coll panel" data-coll data-s="${esc(S.k)}" hidden></div>
 </div></div>
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map(volTile).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map(volTile).join('')}</ul>` : ''}
+${AFFILIATE_ON && S.rows.some((r) => isIsbn13(r.isbn)) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
   }
@@ -808,7 +819,10 @@ else{msg.select();done('Sélectionne et copie le texte.');}});
 <h2>Données et contenus</h2>
 <p>Les horaires des épisodes d'anime proviennent de l'API AniList. Les dates de sortie des mangas sont relevées auprès des sources officielles des éditeurs et peuvent évoluer. Les titres, marques et visuels cités appartiennent à leurs propriétaires respectifs. Ce site n'est affilié à aucun éditeur ni à aucune plateforme.</p>
 <h2>Cookies et données personnelles</h2>
-<p>Ce site ne dépose pas de cookies.${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>${NL.on ? `
+<p>Ce site ne dépose pas de cookies.${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>
+${AFFILIATE_ON ? `<h2 id="affiliation">Liens d'affiliation</h2>
+<p>Certains liens d'achat (Amazon, Fnac, Cultura, BDfugue) sont des liens d'affiliation : si tu achètes après avoir cliqué, le site peut percevoir une commission, sans que le prix change pour toi. Ces liens sont signalés sur les pages concernées et n'influencent pas les dates ni les informations publiées.</p>
+` : ''}${NL.on ? `
 <h2 id="newsletter">Newsletter</h2>
 <p>Si vous vous abonnez à la newsletter, votre adresse e-mail est transmise${NL.provider ? ` à ${esc(NL.provider)}` : ' au service d’envoi'} qui envoie les messages pour le compte de ${v(L.editorName)}. Elle sert uniquement à l’envoi du récapitulatif hebdomadaire et est conservée jusqu’à votre désabonnement, possible à tout moment depuis chaque e-mail. Vous pouvez demander l’accès, la rectification ou la suppression de vos données à ${v(L.contactEmail)}.</p>` : ''}`,
   });

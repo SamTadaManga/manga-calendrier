@@ -158,6 +158,23 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   const fiche = read(dist('anime/1-test-series-one/index.html'));
   assert.ok(fiche.includes('Où regarder') && fiche.includes('Regarder sur Crunchyroll') && !fiche.includes('evil.example'), 'fiche anime avec liens de streaming');
   assert.ok(dist('theme.js') && existsSync(dist('theme.js')) && existsSync(dist('agenda/kana.ics')), 'thème et agendas par éditeur');
+  const sp0 = read(dist('serie/serie-fictive-alpha/index.html'));
+  assert.ok(sp0.includes('class="buy"') && sp0.includes('https://www.amazon.fr/dp/2000000010') && sp0.includes('fnac.com/SearchResult') && sp0.includes('cultura.com') && sp0.includes('bdfugue.com'), "liens d'achat par ISBN");
+  assert.ok(!sp0.includes('sponsored') && !sp0.includes('affil-note') && !read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('id="affiliation"'), "pas de mention d'affiliation sans lien d'affiliation");
+  const cfg0 = JSON.parse(readFileSync(dirs.CONFIG_FILE, 'utf8'));
+  const withShops = (shops) => { writeFileSync(dirs.CONFIG_FILE, JSON.stringify({ ...cfg0, shops })); run('build.mjs'); };
+  let sp1;
+  try {
+    withShops({ fnac: { affiliate: 'https://track.example/c?u={urlenc}' }, cultura: { enabled: false } });
+    sp1 = read(dist('serie/serie-fictive-alpha/index.html'));
+  } finally { writeFileSync(dirs.CONFIG_FILE, JSON.stringify(cfg0)); }
+  assert.ok(sp1.includes('https://track.example/c?u=https%3A%2F%2Fwww.fnac.com') && sp1.includes('rel="sponsored nofollow noopener"') && !sp1.includes('cultura.com') && sp1.includes('affil-note'), "lien d'affiliation remplaçable, boutique désactivable, mention affichée");
+  assert.ok(read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('id="affiliation"'), "mention légale d'affiliation");
+  try {
+    withShops({ fnac: { affiliate: 'javascript:alert(1)' } });
+    assert.ok(!read(dist('serie/serie-fictive-alpha/index.html')).includes('javascript:'), "lien d'affiliation non https refusé");
+  } finally { writeFileSync(dirs.CONFIG_FILE, JSON.stringify(cfg0)); }
+  run('build.mjs');
   assert.ok(existsSync(dist('data/search.json')) && existsSync(dist('recherche.js')), 'index de recherche');
   assert.ok(animePage.includes('data-chip="crunchyroll"') && animePage.includes('data-pub="crunchyroll"'), 'filtre par plateforme');
   assert.ok(!animePage.includes('<script>alert(1)'), 'titre piégé non échappé');
@@ -427,4 +444,11 @@ test('newsletter : formulaire et mentions seulement si formAction est renseigné
   assert.ok(on('sitemap.xml').includes('/newsletter/'));
   const http = build({ newsletter: { formAction: 'http://exemple.com/s' } }, 'http');
   assert.ok(!http('index.html').includes('nl-form'), 'une adresse hors https est refusée');
+});
+
+test('ISBN : somme de contrôle et ISBN-10', async () => {
+  const { isIsbn13, isbn10Of } = await import('../scripts/shops.mjs');
+  assert.ok(isIsbn13('9782723488525') && !isIsbn13('9782723488526') && !isIsbn13('12345') && !isIsbn13(''));
+  assert.equal(isbn10Of('9782723488525'), '2723488527');
+  assert.equal(isbn10Of('9791032723425'), '');
 });

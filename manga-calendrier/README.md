@@ -153,3 +153,19 @@ Chaque anime diffusé dans la semaine a sa page `/anime/<id>-<titre>/` (platefor
 ## Polices
 
 Titres : Dela Gothic One ; texte : Zen Kaku Gothic New (SIL OFL, voir `scripts/assets/fonts/LICENSE.txt`). Elles sont hébergées avec le site (`/fonts/`), sans requête vers un tiers. Pour changer : remplacer les `.woff` de `scripts/assets/fonts/` et les `@font-face` de `style.css`.
+
+## Liens d'achat (ISBN) et affiliation
+
+Chaque tome ayant un ISBN-13 valide affiche un bouton « Acheter » (« Précommander » avant la sortie) avec un lien par boutique : Amazon, Fnac, Cultura, BDfugue. Le code est dans `scripts/shops.mjs`.
+
+Pour remplacer un lien par un lien d'affiliation, ajouter dans `site.config.json` :
+
+```json
+"shops": {
+  "amazon":  { "affiliate": "https://www.amazon.fr/dp/{isbn10}?tag=TON-CODE-21" },
+  "fnac":    { "affiliate": "https://lien-de-ton-reseau/?url={urlenc}" },
+  "cultura": { "enabled": false }
+}
+```
+
+Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse normale), `{urlenc}` (adresse normale encodée). Seuls les liens en `https://` sont acceptés. Dès qu'un lien d'affiliation est actif, le site ajoute `rel="sponsored"`, une mention sous les tomes et un paragraphe « Liens d'affiliation » dans les mentions légales.
