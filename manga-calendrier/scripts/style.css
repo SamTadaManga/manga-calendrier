@@ -4,6 +4,11 @@
    - Une couleur par éditeur (bleu Glénat, rouge Kana, vert Pika, violet Ki-oon, magenta Akata) : uniquement pour reconnaître l'éditeur.
    - Les jours de la semaine n'ont pas de couleur.
    Polices du système : aucune requête vers un tiers. */
+/* Polices du site, hébergées ici (aucune requête vers un tiers) : Dela Gothic One pour les titres, Zen Kaku Gothic New pour le texte. Licence SIL OFL. */
+@font-face{font-family:"Dela Gothic One";src:url(/fonts/dela-400.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Zen Kaku Gothic New";src:url(/fonts/zen-400.woff) format("woff");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Zen Kaku Gothic New";src:url(/fonts/zen-700.woff) format("woff");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Zen Kaku Gothic New";src:url(/fonts/zen-900.woff) format("woff");font-weight:800 900;font-style:normal;font-display:swap}
 :root{
   --paper:#fbfaf6;--panel:#fff;--ink:#111;--edge:#111;--muted:#5b5b5b;--line:#e6e3da;
   --brand:#ffd21f;--on-brand:#111;--mark:rgba(255,210,31,.7);
@@ -11,7 +16,8 @@
   --c-glenat:#0a4fd6;--c-kana:#d93a0b;--c-pika:#08804a;--c-ki-oon:#7a24c9;--c-akata:#c4177d;--c-autre:#5f6672;
   --t-glenat:#0a4fd6;--t-kana:#d93a0b;--t-pika:#08804a;--t-ki-oon:#7a24c9;--t-akata:#c4177d;--t-autre:#5f6672;
   --foot:#111;--on-foot:#d8d8d8;
-  --sans:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --sans:"Zen Kaku Gothic New",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --display:"Dela Gothic One","Zen Kaku Gothic New",ui-sans-serif,system-ui,sans-serif;
   --serif:Charter,"Iowan Old Style","Palatino Linotype",Georgia,serif;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
@@ -29,7 +35,7 @@
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 var(--sans);font-synthesis:none}
 ::selection{background:var(--brand);color:#111}
 a{color:var(--link);text-underline-offset:.15em;text-decoration-thickness:2px;text-decoration-color:var(--brand)}
 a:hover{background:var(--mark)}
@@ -45,7 +51,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 .site-header{position:relative;background:var(--brand);color:var(--on-brand);border-bottom:3px solid #111;overflow:hidden}
 .site-header::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(rgba(21,17,43,.2) 1.5px,transparent 2px) 0 0/9px 9px;-webkit-mask-image:linear-gradient(90deg,transparent 35%,#000);mask-image:linear-gradient(90deg,transparent 35%,#000)}
 .hbar{position:relative;display:flex;flex-wrap:wrap;gap:6px 24px;align-items:center;justify-content:space-between;padding-top:8px;padding-bottom:8px}
-.brand{display:flex;align-items:center;gap:10px;padding:6px 0;font-weight:900;font-style:italic;letter-spacing:-.03em;font-size:1.25rem;color:#111;text-decoration:none}
+.brand{display:flex;align-items:center;gap:10px;padding:6px 0;font-family:var(--display);font-weight:400;letter-spacing:0;font-size:1.1rem;color:#111;text-decoration:none}
 .mark{width:24px;height:24px;border:3px solid #111;background:#fff radial-gradient(circle,#111 0 4px,transparent 4.5px);flex:none;transform:rotate(-6deg)}
 nav{display:flex;flex-wrap:wrap;gap:4px}
 nav a{padding:6px 12px;border:2px solid transparent;border-radius:2px;color:#111;text-decoration:none;font-weight:750}
@@ -53,11 +59,11 @@ nav a[aria-current]{background:#111;color:var(--brand)}
 main.wrap{padding-top:36px;padding-bottom:72px}
 
 /* Typographie */
-h1{font-size:clamp(2rem,5vw,3rem);line-height:1.05;letter-spacing:-.045em;font-weight:900;font-style:italic;margin:0 0 12px}
-h2{display:inline-block;font-size:1.4rem;line-height:1.2;letter-spacing:-.025em;font-weight:850;margin:40px 0 14px;box-shadow:inset 0 -.42em 0 var(--mark)}
+h1{font-family:var(--display);font-size:clamp(1.65rem,4.6vw,2.55rem);line-height:1.18;letter-spacing:-.01em;font-weight:400;margin:0 0 14px}
+h2{display:inline-block;font-family:var(--display);font-size:1.2rem;line-height:1.3;letter-spacing:0;font-weight:400;margin:40px 0 14px;box-shadow:inset 0 -.42em 0 var(--mark)}
 h3{font-size:1.05rem;font-weight:750;margin:24px 0 8px}
 .chip-day{box-shadow:none;background:var(--ink);color:var(--paper);border:2px solid var(--ink);padding:2px 14px;margin:28px 0 12px;font-size:1.1rem;letter-spacing:-.01em;border-radius:2px}
-h2.chip-day{font-size:1.3rem;margin-top:36px}
+h2.chip-day{font-size:1.1rem;margin-top:36px}
 .lead{font-size:1.1rem;color:var(--muted);max-width:42rem;margin:0 0 24px}
 .muted{color:var(--muted)}
 .more{margin:14px 0 0}
@@ -74,7 +80,7 @@ ul.list,ul.strip,ul.articles,ul.shelf{list-style:none;margin:0;padding:0}
 .day-panel{display:flex;flex-direction:column;gap:6px;padding:12px;background:var(--panel);border:2px solid var(--edge);border-radius:2px;min-height:140px}
 .d-head{display:flex;flex-direction:column;margin:-12px -12px 6px;padding:10px 12px 8px;border-bottom:2px solid var(--edge)}
 .d-wd{font-size:.88rem;font-weight:700}
-.d-num{font-size:2.4rem;line-height:1;font-weight:900;font-style:italic;letter-spacing:-.05em;font-variant-numeric:tabular-nums}
+.d-num{font-family:var(--display);font-size:2.1rem;line-height:1.1;font-weight:400;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .d-line{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:.92rem;color:var(--ink);text-decoration:none}
 .d-line b{font-size:1.2rem;font-variant-numeric:tabular-nums}
 a.d-line:hover{text-decoration:underline}
@@ -207,7 +213,7 @@ input[type=search]{flex:1 1 220px;max-width:340px;min-height:42px;padding:8px 12
 .articles a{font-weight:800;font-size:1.05rem;color:var(--ink);text-decoration-color:var(--brand);text-decoration-thickness:3px}
 .articles a:hover{color:var(--ink)}
 .post{max-width:40rem;font-family:var(--serif);font-size:1.12rem;line-height:1.7}
-.post h1,.post h2,.post h3{font-family:var(--sans)}
+.post h3{font-family:var(--sans)}
 .post li{margin:.35em 0}
 .post ul{padding-left:1.2em}
 code{background:var(--line);padding:1px 5px;font-size:.9em}
@@ -405,7 +411,7 @@ a.stream-more{font-size:.82rem;font-weight:700;color:var(--ink);text-decoration:
 .share-in{padding:12px 16px;margin:0 0 18px;border-left:8px solid var(--brand)}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 14px}
 .stat{display:flex;flex-direction:column;padding:10px 14px;border:2px solid var(--edge);background:var(--panel);box-shadow:4px 4px 0 var(--shadow)}
-.stat b{font-size:1.9rem;line-height:1.1;font-weight:900}.stat span{font-size:.9rem;color:var(--muted)}
+.stat b{font-family:var(--display);font-size:1.7rem;line-height:1.15;font-weight:400}.stat span{font-size:.9rem;color:var(--muted)}
 ul.prog{list-style:none;margin:0 0 6px;padding:0}
 ul.prog li{display:grid;grid-template-columns:minmax(0,1fr) minmax(90px,200px) 4.5rem;gap:12px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
 ul.prog a{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -442,3 +448,5 @@ a.stream.stream-lg{height:44px;min-width:0;padding:0 18px;font-size:1rem;gap:8px
 .acard-body strong a{color:inherit;text-decoration:none;background:none}
 .acard-body strong a:hover{text-decoration:underline;text-decoration-color:var(--brand);text-decoration-thickness:3px}
 .series-head .afollow{margin-right:10px}
+
+@media (max-width:520px){nav a{padding:5px 8px;font-size:.92rem}}

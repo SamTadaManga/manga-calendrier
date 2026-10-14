@@ -102,6 +102,8 @@ ${image ? '' : '<meta property="og:image:width" content="1200"><meta property="o
 ${image ? '' : `<meta property="og:image:alt" content="${esc(config.siteName)} : ${esc(config.tagline)}">`}
 <meta name="twitter:card" content="${image ? 'summary' : 'summary_large_image'}">
 <link rel="icon" href="${FAVICON}">
+<link rel="preload" href="/fonts/dela-400.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/zen-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/style.css">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#ffd21f">
@@ -890,6 +892,8 @@ if (siteUrlOk) {
   write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>${esc(config.siteName)}</title><link>${esc(base + '/')}</link><description>${esc(config.description)}</description><language>fr</language>\n${items}\n</channel></rss>\n`);
 }
 write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/sw.js\n  Cache-Control: no-cache\n');
+for (const f of ['dela-400', 'zen-400', 'zen-700', 'zen-900']) write(`fonts/${f}.woff`, readFileSync(path.join(SCRIPTS, 'assets', 'fonts', `${f}.woff`)));
+write('fonts/LICENSE.txt', readFileSync(path.join(SCRIPTS, 'assets', 'fonts', 'LICENSE.txt'), 'utf8'));
 write('style.css', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'style.css'), 'utf8'));
 
 /* ---------------------------------------------------------- avertissements */

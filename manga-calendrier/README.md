@@ -149,3 +149,7 @@ La page `/mes-animes/` permet de noter les épisodes vus (« de X à Y », plage
 ## Fiches anime
 
 Chaque anime diffusé dans la semaine a sa page `/anime/<id>-<titre>/` (plateformes de streaming, horaires, lien vers le manga). Les jaquettes et titres de la page Anime et de l'accueil y mènent au lieu d'AniList. Les fiches disparaissent quand l'anime sort du programme de la semaine.
+
+## Polices
+
+Titres : Dela Gothic One ; texte : Zen Kaku Gothic New (SIL OFL, voir `scripts/assets/fonts/LICENSE.txt`). Elles sont hébergées avec le site (`/fonts/`), sans requête vers un tiers. Pour changer : remplacer les `.woff` de `scripts/assets/fonts/` et les `@font-face` de `style.css`.

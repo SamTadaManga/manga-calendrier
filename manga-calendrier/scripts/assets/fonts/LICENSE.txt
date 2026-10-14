@@ -1,0 +1,7 @@
+Polices incluses dans ce dossier (versions réduites au jeu de caractères latin pour le web) :
+
+- Dela Gothic One — Copyright 2020 The Dela Gothic Project Authors (https://github.com/syakuzen/DelaGothic)
+- Zen Kaku Gothic New — Copyright 2022 The Zen Project Authors (https://github.com/googlefonts/zen-kakugothic)
+
+Ces polices sont distribuées sous la licence SIL Open Font License, Version 1.1.
+Texte complet et FAQ : https://openfontlicense.org
