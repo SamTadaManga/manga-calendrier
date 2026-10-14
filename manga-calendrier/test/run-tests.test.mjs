@@ -310,6 +310,12 @@ test('couvertures : collecte, interrupteur et mode site privé', () => {
   assert.ok(!read(dirs.OUT_DIR, 'manga/index.html').includes('cover-img'), 'couvertures absentes par défaut');
   assert.ok(read(dirs.OUT_DIR, 'robots.txt').includes('Allow: /') && existsSync(path.join(dirs.OUT_DIR, 'sitemap.xml')));
 
+  build({ legal: { contactEmail: 'contact@exemple.fr' } });
+  assert.ok(read(dirs.OUT_DIR, 'manga/index.html').includes('<a href="/signaler/" data-report>'), 'lien Signaler vers la page dédiée');
+  const rep = read(dirs.OUT_DIR, 'signaler/index.html');
+  assert.ok(rep.includes('rep-gmail') && rep.includes('rep-mailto') && rep.includes('data-mail="contact@exemple.fr"'), 'page Signaler avec Gmail, Outlook, mail et copie');
+  assert.ok(!read(dirs.OUT_DIR, 'visite.js').includes("'mailto:'"), 'plus de mailto direct dans visite.js');
+
   build({ showCovers: true, launched: false });
   const page = read(dirs.OUT_DIR, 'manga/index.html');
   assert.ok(page.includes('class="cover-img"') && page.includes('referrerpolicy="no-referrer"') && page.includes('loading="lazy"'));

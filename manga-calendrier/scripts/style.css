@@ -418,3 +418,9 @@ ul.prog a{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:now
 .rel-cover{display:block;width:fit-content;height:fit-content;background:none!important}
 .rel-cover:hover{background:none}
 .rel-cover:hover .cover{transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--shadow)}
+
+.rep label{display:block;font-weight:750;margin:16px 0 6px}
+.rep input[type=text],.rep textarea{width:100%;max-width:640px;font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--edge);border-radius:2px;padding:10px 12px}
+.rep-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.rep-btns .btn{display:inline-block;padding:9px 14px;font:inherit;font-weight:750;color:var(--ink);background:var(--panel);border:2px solid var(--edge);border-radius:2px;box-shadow:3px 3px 0 var(--shadow);text-decoration:none;cursor:pointer}
+.rep-btns .btn:active{transform:translate(1px,1px);box-shadow:none}

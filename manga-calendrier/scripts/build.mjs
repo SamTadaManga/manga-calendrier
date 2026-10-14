@@ -54,7 +54,7 @@ const reportEmail = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(config.legal?.con
 const reportUrl = /^https:\/\//.test(config.reportUrl || '') ? config.reportUrl : '';
 const reportLink = (label = 'Signaler une erreur') => reportUrl
   ? `<a href="${esc(reportUrl)}" rel="noopener" target="_blank">${esc(label)}</a>`
-  : reportEmail ? `<a href="mailto:${esc(reportEmail)}" data-report="${esc(reportEmail)}">${esc(label)}</a>` : '';
+  : reportEmail ? `<a href="/signaler/" data-report>${esc(label)}</a>` : '';
 // Newsletter : le formulaire envoie l'adresse directement au service d'envoi choisi (MailerLite, Brevo, Buttondown…)
 const NL = (() => {
   const n = config.newsletter || {};
@@ -697,6 +697,49 @@ ${eps.length ? FILTER_JS : ''}`;
 
 /* -------------------------------------------------------- mentions légales */
 const L = config.legal;
+if (reportEmail && !reportUrl) {
+  page('/signaler/', {
+    title: 'Signaler une erreur',
+    description: 'Une date, un titre ou un horaire est faux ? Dis-le nous.',
+    noindex: true,
+    body: `<h1>Signaler une erreur</h1>
+<p class="lead">Une date de sortie, un titre ou un horaire est faux ? Décris-le ci-dessous : le message est prêt à envoyer, tu choisis ta messagerie.</p>
+<div class="rep" data-mail="${esc(reportEmail)}" hidden>
+<label for="rep-page">Page concernée</label>
+<input id="rep-page" type="text" autocomplete="off">
+<label for="rep-msg">Ce qui est faux (série, tome, date attendue, source si tu en as une)</label>
+<textarea id="rep-msg" rows="6"></textarea>
+<div class="rep-btns">
+<a class="btn" id="rep-gmail" target="_blank" rel="noopener">Envoyer avec Gmail</a>
+<a class="btn" id="rep-outlook" target="_blank" rel="noopener">Envoyer avec Outlook</a>
+<a class="btn" id="rep-mailto">Application mail de l'appareil</a>
+<button type="button" class="btn" id="rep-copy">Copier le message</button>
+</div>
+<p class="muted" id="rep-ok" role="status"></p>
+</div>
+<noscript><p>Écris-nous à <a href="mailto:${esc(reportEmail)}">${esc(reportEmail)}</a> en indiquant la page et ce qui est faux.</p></noscript>
+<p class="muted">Adresse de contact : ${esc(reportEmail)}. Ton message n'est envoyé que si tu valides l'envoi dans ta propre messagerie ; ce site ne le reçoit pas et ne garde rien.</p>
+<script>
+(function(){var r=document.querySelector('.rep');if(!r)return;r.hidden=false;
+var to=r.getAttribute('data-mail'),pg=document.getElementById('rep-page'),msg=document.getElementById('rep-msg'),ok=document.getElementById('rep-ok');
+var q=new URLSearchParams(location.search).get('p')||'';
+pg.value=q&&/^\\/[\\w\\-\\/.#?=&%]*$/.test(q)?location.origin+q:'';
+var sub='Erreur signalée';
+function body(){return 'Page : '+(pg.value||'(non précisée)')+'\\n\\nCe qui est faux :\\n'+msg.value;}
+function upd(){var b=encodeURIComponent(body()),s=encodeURIComponent(sub);
+document.getElementById('rep-gmail').href='https://mail.google.com/mail/?view=cm&fs=1&to='+encodeURIComponent(to)+'&su='+s+'&body='+b;
+document.getElementById('rep-outlook').href='https://outlook.live.com/mail/0/deeplink/compose?to='+encodeURIComponent(to)+'&subject='+s+'&body='+b;
+document.getElementById('rep-mailto').href='mailto:'+to+'?subject='+s+'&body='+b;}
+pg.addEventListener('input',upd);msg.addEventListener('input',upd);upd();
+document.getElementById('rep-copy').addEventListener('click',function(){var t='À : '+to+'\\nObjet : '+sub+'\\n\\n'+body();
+function done(m){ok.textContent=m;}
+if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){done('Message copié.');},function(){done('Copie impossible : sélectionne le texte à la main.');});}
+else{msg.select();done('Sélectionne et copie le texte.');}});
+})();
+</script>`,
+  });
+}
+
 {
   const v = (s) => esc(s || 'À compléter');
   page('/mentions-legales/', {

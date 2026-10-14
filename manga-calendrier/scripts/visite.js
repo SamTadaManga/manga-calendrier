@@ -68,7 +68,7 @@
 
   var rep = document.querySelectorAll('a[data-report]');
   for (var ri = 0; ri < rep.length; ri++) {
-    rep[ri].href = 'mailto:' + rep[ri].getAttribute('data-report') + '?subject=' + encodeURIComponent('Erreur signalée') + '&body=' + encodeURIComponent('Page : ' + location.href + '\n\nCe qui est faux (série, tome, date attendue) :\n');
+    rep[ri].href = '/signaler/?p=' + encodeURIComponent(location.pathname + location.search);
   }
 
   /* invitation à installer le site : à la 3e journée de visite, une fois, puis pas avant 60 jours si on la ferme */
