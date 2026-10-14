@@ -424,3 +424,13 @@ ul.prog a{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:now
 .rep-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
 .rep-btns .btn{display:inline-block;padding:9px 14px;font:inherit;font-weight:750;color:var(--ink);background:var(--panel);border:2px solid var(--edge);border-radius:2px;box-shadow:3px 3px 0 var(--shadow);text-decoration:none;cursor:pointer}
 .rep-btns .btn:active{transform:translate(1px,1px);box-shadow:none}
+
+.vus-ranges{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 6px}
+.vus-form{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 4px}
+.vus-form input[type=number]{width:5.5rem}
+.vus-form input[type=text]{flex:1 1 240px;max-width:420px}
+.vus-form input{font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--edge);border-radius:2px;padding:6px 10px}
+.vus-err{color:var(--ink);font-weight:700;flex-basis:100%}
+.vus-err:empty{display:none}
+.vus-tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.vus-list>li{padding:14px 16px}

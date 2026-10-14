@@ -47,7 +47,7 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/series/', 'Séries'], ['/articles/', 'Articles'], ['/mon-planning/', 'Mon planning'], ['/changements/', 'Changements']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/series/', 'Séries'], ['/articles/', 'Articles'], ['/mon-planning/', 'Mon planning'], ['/mes-animes/', 'Mes animes'], ['/changements/', 'Changements']];
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 const reportEmail = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(config.legal?.contactEmail || '') ? config.legal.contactEmail : '';
@@ -626,6 +626,17 @@ ${NL.on ? nlForm('nl-page') : '<p class="empty">L\'inscription n\'est pas encore
 <div id="suivi-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ton planning.</p></div>`,
   });
 }
+
+write('anime-vus.js', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'anime-vus.js'), 'utf8'));
+page('/mes-animes/', {
+  title: 'Mes animes',
+  description: 'Note les épisodes d\u2019anime que tu as vus, de tel à tel épisode, et vois ce qu\u2019il te reste à rattraper.',
+  noindex: true,
+  body: `<h1>Mes animes</h1>
+<p class="lead">Note les épisodes que tu as vus (de tel épisode à tel épisode) et vois ce qu'il te reste à rattraper. Les animes que tu suis avec le bouton « Suivre » apparaissent ici. Tout reste dans ton navigateur, rien n'est envoyé nulle part.</p>
+<div id="vus-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ta liste.</p></div>
+<script src="/anime-vus.js" defer></script>`,
+});
 
 /* -------------------------------------------------------------- changements */
 {

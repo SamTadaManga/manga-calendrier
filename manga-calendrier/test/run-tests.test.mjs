@@ -316,6 +316,10 @@ test('couvertures : collecte, interrupteur et mode site privé', () => {
   assert.ok(rep.includes('rep-gmail') && rep.includes('rep-mailto') && rep.includes('data-mail="contact@exemple.fr"'), 'page Signaler avec Gmail, Outlook, mail et copie');
   assert.ok(!read(dirs.OUT_DIR, 'visite.js').includes("'mailto:'"), 'plus de mailto direct dans visite.js');
 
+  const vus = read(dirs.OUT_DIR, 'mes-animes/index.html');
+  assert.ok(vus.includes('id="vus-app"') && vus.includes('/anime-vus.js') && vus.includes('noindex'), 'page Mes animes privée avec son script');
+  assert.ok(existsSync(path.join(dirs.OUT_DIR, 'anime-vus.js')) && read(dirs.OUT_DIR, 'manga/index.html').includes('href="/mes-animes/"'), 'script publié et menu à jour');
+
   build({ showCovers: true, launched: false });
   const page = read(dirs.OUT_DIR, 'manga/index.html');
   assert.ok(page.includes('class="cover-img"') && page.includes('referrerpolicy="no-referrer"') && page.includes('loading="lazy"'));

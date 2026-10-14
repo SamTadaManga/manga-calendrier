@@ -141,3 +141,7 @@ Le site fournit : un formulaire d'inscription (page `/newsletter/`, accueil, pie
 - **Ma collection** : tomes possédés, séries à jour, tomes à rattraper (avec le coût) et barre de progression par série.
 - **Installation** : à la 3e journée de visite, une invitation à installer le site (Android/Chrome : bouton ; iPhone : explication), refusable (pas de nouvelle invitation avant 60 jours).
 - **Partage par lien** : Mon planning > « Sauvegarder, transférer ou partager » : lien contenant les séries, les animes et (au choix) la collection. Le destinataire voit un encadré et choisit d'ajouter ou d'ignorer ; rien n'est importé sans son clic.
+
+## Mes animes (épisodes vus)
+
+La page `/mes-animes/` permet de noter les épisodes vus (« de X à Y », plages fusionnées automatiquement, bouton « +1 »). Elle reprend les animes suivis avec « Suivre » et permet d'en ajouter à la main. Les données restent dans le navigateur (`mc-vus`, `mc-anime`) ; le script est `scripts/anime-vus.js`.
