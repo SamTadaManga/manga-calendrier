@@ -21,10 +21,10 @@ export const isbn10Of = (isbn13) => {
 };
 
 export const SHOPS = [
-  { id: 'amazon', name: 'Amazon', url: (i) => (isbn10Of(i) ? `https://www.amazon.fr/dp/${isbn10Of(i)}` : `https://www.amazon.fr/s?k=${i}&i=stripbooks`) },
-  { id: 'fnac', name: 'Fnac', url: (i) => `https://www.fnac.com/SearchResult/ResultList.aspx?Search=${i}` },
-  { id: 'cultura', name: 'Cultura', url: (i) => `https://www.cultura.com/search/results?search_query=${i}` },
-  { id: 'bdfugue', name: 'BDfugue', url: (i) => `https://www.bdfugue.com/catalogsearch/result/?q=${i}` },
+  { id: 'amazon', name: 'Amazon', short: 'AMZ', url: (i) => (isbn10Of(i) ? `https://www.amazon.fr/dp/${isbn10Of(i)}` : `https://www.amazon.fr/s?k=${i}&i=stripbooks`) },
+  { id: 'fnac', name: 'Fnac', short: 'FNAC', url: (i) => `https://www.fnac.com/SearchResult/ResultList.aspx?Search=${i}` },
+  { id: 'cultura', name: 'Cultura', short: 'CULT', url: (i) => `https://www.cultura.com/search/results?search_query=${i}` },
+  { id: 'bdfugue', name: 'BDfugue', short: 'BDF', url: (i) => `https://www.bdfugue.com/catalogsearch/result/?q=${i}` },
 ];
 
 const fill = (tpl, vars) => tpl.replace(/\{(isbn10|isbn|urlenc|url)\}/g, (_, k) => vars[k]);

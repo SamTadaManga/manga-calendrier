@@ -181,13 +181,13 @@ function tile(r) {
   const label = `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const frame = coverBox(r.cover, `Couverture de ${label}`, 160, 240);
   const sl = slugify(r.serie) ? `/serie/${slugify(r.serie)}/` : '';
-  const cl = sl ? `<a class="tile-cover" href="${sl}" aria-label="${esc(label)} : page de la série">${frame}</a>` : `<a class="tile-cover" href="${esc(r.source || '/manga/')}" ${r.source ? 'rel="noopener nofollow"' : ''} aria-label="${esc(label)} : fiche éditeur">${frame}</a>`;
-  return `<li class="tile p-${pk}">${cl}`
-    + `<div class="tile-body"><strong>${sl ? `<a href="${sl}">${esc(r.serie)}</a>` : esc(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}`
-    + `<div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div><span class="pub">${esc(r.editeur || '')}</span>${isNewSeries(r) ? NEW_BADGE : ''}`
-    + `<button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button>${buyBox(r)}</div></li>`;
+  const cl = sl ? `<a class="tile-cover t-cover" href="${sl}" aria-label="${esc(label)} : page de la série">${frame}</a>` : `<a class="tile-cover t-cover" href="${esc(r.source || '/manga/')}" ${r.source ? 'rel="noopener nofollow"' : ''} aria-label="${esc(label)} : fiche éditeur">${frame}</a>`;
+  // Chaque ligne a son emplacement (même vide) : les tuiles d'une même rangée restent alignées
+  return `<li class="tile tile-aligned p-${pk}">${cl}`
+    + `<div class="tile-body"><div class="t-title"><strong>${sl ? `<a href="${sl}">${esc(r.serie)}</a>` : esc(r.serie)}</strong>${r.tome ? `<span class="tome">tome ${esc(r.tome)}</span>` : ''}</div>`
+    + `<div class="t-date"><div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div></div><div class="t-pub"><span class="pub">${esc(r.editeur || '')}</span></div><div class="t-badge">${isNewSeries(r) ? NEW_BADGE : ''}</div>`
+    + `<div class="t-follow"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button></div><div class="t-shops">${buyBox(r, 'sm')}</div></div></li>`;
 }
-
 
 // « Nouvelle série » : tome 1 d'une série, hors rééditions et éditions spéciales, annoncé ou sorti depuis moins de 15 jours
 const isNewSeries = (r) => isFirstVolume(r) && r.date >= addDays(today, -14);
@@ -206,8 +206,10 @@ const AFFILIATE_ON = SHOPLIST.some((x) => x.affiliate);
 const CART = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M1 1.5h2l1.2 6h5.6l1-4H3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="5" cy="10" r="1" fill="currentColor"/><circle cx="9" cy="10" r="1" fill="currentColor"/></svg>';
 const buyBox = (r, size = '') => {
   if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
-  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.affiliate ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${r.date > today ? 'Précommander' : 'Acheter'} sur ${esc(x.name)}" aria-label="${r.date > today ? 'Précommander' : 'Acheter'} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${CART}${esc(x.name)}</a>`).join('');
-  return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}"><span class="shops-l">${r.date > today ? 'Précommander' : 'Acheter'}</span>${links}</div>`;
+  const verb = r.date > today ? 'Précommander' : 'Acheter';
+  const sm = size === 'sm';
+  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.affiliate ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
+  return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
 function volTile(r) {
   const pk = pubKey(r.editeur);
@@ -221,7 +223,7 @@ function volTile(r) {
     + `${r.source ? `<a class="tile-cover" href="${esc(r.source)}" rel="noopener nofollow" aria-label="${esc(label)} : fiche éditeur">${cover}</a>` : cover}`
     + `<div class="tile-body"><strong>${r.tome ? `Tome ${esc(r.tome)}` : esc(r.serie)}</strong>${ed ? `<span class="ed">${esc(ed)}</span>` : ''}`
     + `<div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div>`
-    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${own}${buyBox(r)}</div></li>`;
+    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${own}${buyBox(r, 'sm')}</div></li>`;
 }
 
 const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
