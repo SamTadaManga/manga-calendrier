@@ -496,3 +496,9 @@ a.stream.shop-sm,.shops-sm a.stream{flex:1 1 0;min-width:0;padding:0 2px;height:
 .anime-row .meta time{padding:1px 8px;background:var(--ink);color:var(--paper);border-radius:2px;font-weight:800}
 .anime-row .meta .bridge{margin:0}
 .anime-row .shops{margin-top:8px}
+
+/* Résumé du tome sur la page série */
+.synopsis{max-width:62ch;margin:18px 0 6px;padding:14px 18px;border:2px solid var(--edge);border-left:8px solid var(--brand);background:var(--panel);box-shadow:4px 4px 0 var(--shadow)}
+.synopsis h2{margin:0 0 6px;font-size:1rem}
+.synopsis p{margin:0;line-height:1.55}
+.synopsis .syn-src{margin-top:8px;font-size:.82rem}

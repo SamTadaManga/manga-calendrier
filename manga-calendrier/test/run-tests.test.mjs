@@ -455,3 +455,30 @@ test('ISBN : somme de contrôle et ISBN-10', async () => {
   assert.equal(isbn10Of('9782723488525'), '2723488527');
   assert.equal(isbn10Of('9791032723425'), '');
 });
+
+test('résumés : collecte (pages simulées), puis affichage sur la page série et achat unique en haut', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'articles'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), CONFIG_FILE: path.join(ROOT, 'test/fixtures/site.config.json'), NOW: '2026-10-12T07:00:00Z', COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/synopsis') };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  const head = 'Date de sortie;Éditeur;Série;Tome;Titre du tome (facultatif);ISBN-13;Prix (€);Statut;Source officielle (lien);Vérifié le';
+  writeFileSync(path.join(dirs.DATA_DIR, 'manga.csv'), [head,
+    '2026-10-20;Kana;Sujet Test;3;;9782811664282;7,20;Confirmé;https://www.kana.fr/produit/sujet-test-t3/;',
+    '2026-10-01;Kana;Sujet Test;2;;9782811664299;7,20;Paru;https://www.kana.fr/produit/sujet-test-t2/;',
+    '2026-10-05;Kana;Sujet Vide;1;;9782723459112;7,20;Paru;https://www.kana.fr/produit/sujet-vide-t1/;',
+    '2026-10-06;Kana;Sujet Vide;2;;9782723459129;7,20;Paru;https://www.kana.fr/produit/sujet-vide-t2/;'].join('\n'));
+  const env = { ...process.env, ...dirs };
+  const out = execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-synopsis.mjs')], { env, encoding: 'utf8' });
+  assert.ok(out.includes('1 trouvés'), out);
+  const syn = JSON.parse(read(dirs.DATA_DIR, 'synopsis.json'));
+  assert.ok(syn['https://www.kana.fr/produit/sujet-test-t3/'].t.startsWith('Renji Jibo défend la porte') && syn['https://www.kana.fr/produit/sujet-test-t3/'].t.includes('citadelle interne !'));
+  assert.equal(syn['https://www.kana.fr/produit/sujet-vide-t2/'].t, '', 'description trop courte : pas un résumé');
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env, encoding: 'utf8' });
+  const page = read(dirs.OUT_DIR, 'serie/sujet-test/index.html');
+  assert.ok(page.includes('class="synopsis"') && page.includes('Résumé du tome 3') && page.includes('Résumé de l\'éditeur'));
+  const tile = (page.match(/class="tile rel vol[\s\S]*?<\/li>/g) || []);
+  assert.ok(tile.some((t) => t.includes('Tome 3') && !t.includes('class="shops')), 'le tome mis en avant n\'a pas de boutons en double');
+  const vide = read(dirs.OUT_DIR, 'serie/sujet-vide/index.html');
+  assert.ok(!vide.includes('class="synopsis"'));
+  assert.ok(vide.includes('Dernier tome paru : tome 2 ('), 'série sans sortie à venir : dernier tome paru');
+  assert.ok(vide.indexOf('class="shops') < vide.indexOf('Déjà parus'), 'boutons d\'achat en haut même sans tome à venir');
+});

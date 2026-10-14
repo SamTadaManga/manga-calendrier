@@ -172,3 +172,27 @@ export function robotsAllows(robotsTxt, pathname) {
   return !best || best.allow;
 }
 
+/* Résumé d'un tome : description de la page de l'éditeur (balises og:description / description), ramenée à ~450 caractères */
+export function extractSynopsis(html, max = 450) {
+  const metas = [...String(html).matchAll(/<meta\b[^>]*>/gi)].map((m) => m[0]);
+  const pick = (names) => {
+    for (const tag of metas) {
+      const key = (tag.match(/\b(?:property|name)\s*=\s*["']([^"']+)["']/i) || [])[1];
+      if (!key || !names.includes(key.toLowerCase())) continue;
+      const c = (tag.match(/\bcontent\s*=\s*"([^"]*)"/i) || tag.match(/\bcontent\s*=\s*'([^']*)'/i) || [])[1];
+      if (c) return decode(c);
+    }
+    return '';
+  };
+  let t = pick(['og:description']) || pick(['description']);
+  if (t.length < 60) return '';
+  if (t.length > max) {
+    const cut = t.slice(0, max);
+    const i = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+    t = i > max * 0.5 ? cut.slice(0, i + 1) : `${cut.replace(/\s+\S*$/, '')}…`;
+  } else if (!/[.!?…»")]$/.test(t)) {
+    t = `${t.replace(/[\s,;:]+$/, '')}…`;
+  }
+  return t;
+}
+

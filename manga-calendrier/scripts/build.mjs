@@ -24,6 +24,7 @@ const isPrivate = config.launched === false; // site privé : non indexé tant q
 const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
 // Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
+const SYN = (() => { try { return JSON.parse(readFileSync(path.join(P.dataDir, 'synopsis.json'), 'utf8')); } catch { return {}; } })();
 const mangaSlugs = new Set(manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
 const mangaOf = (e) => mangaSlugOf(e, mangaSlugs);
 const adaptations = (() => {
@@ -514,9 +515,13 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const upcoming = S.rows.filter((r) => r.date >= today);
     const past = S.rows.filter((r) => r.date < today).reverse();
     const n = S.next;
+    const lastOut = [...S.rows].reverse().find((r) => r.date < today) || null;
+    const buyRow = n && isIsbn13(n.isbn) ? n : ([...S.rows].reverse().find((r) => r.date < today && isIsbn13(r.isbn)) || null);
+    const synRow = [n, ...[...S.rows].reverse()].find((r) => r && SYN[r.source]?.t) || null;
+    const synBox = synRow ? `<section class="synopsis"><h2>Résumé${synRow.tome ? ` du tome ${esc(synRow.tome)}` : ''}</h2><p>${esc(SYN[synRow.source].t)}</p><p class="muted syn-src">Résumé de l'éditeur · <a href="${esc(synRow.source)}" rel="noopener nofollow" target="_blank">${esc(synRow.editeur || 'Fiche éditeur')}</a></p></section>` : '';
     const lead = n
       ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? '' : ' La date peut encore bouger.'}`
-      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata. Suis la série pour la retrouver dans Mon planning.`;
+      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata.${lastOut ? ` Dernier tome paru : ${lastOut.tome ? `tome ${esc(lastOut.tome)}` : 'le volume'} (${esc(frShort(lastOut.date))}).` : ''} Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
     const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
@@ -533,13 +538,14 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
-${n ? buyBox(n, 'lg') : ''}
+${buyRow ? buyBox(buyRow, 'lg') : ''}
+${synBox}
 ${animeBox}
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
 <div class="coll panel" data-coll data-s="${esc(S.k)}" hidden></div>
 </div></div>
-${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === n)).join('')}</ul>` : ''}
-${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map(volTile).join('')}</ul>` : ''}
+${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
+${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${AFFILIATE_ON && S.rows.some((r) => isIsbn13(r.isbn)) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
