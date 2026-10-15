@@ -1,7 +1,7 @@
 {
 "version": 1,
 "since": "2026-10-09",
-"updated": "2026-10-14",
+"updated": "2026-10-15",
 "events": [
 {"day":"2026-10-13","type":"date","k":"i:9791043311772","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-collector-9791043311772/","from":"2026-11-04","to":"2026-11-12"},
 {"day":"2026-10-13","type":"date","k":"i:9791043311758","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-9791043311758/","from":"2026-11-04","to":"2026-11-12"},
@@ -19,10 +19,11 @@
 {"day":"2026-10-14","type":"nouveau","k":"i:9791032723258","e":"Ki-oon","s":"My Hero Academia","t":"","u":"https://ki-oon.com/9791032723258-my-hero-academia-edition-simple-volume-0","to":"2026-11-05"},
 {"day":"2026-10-14","type":"nouveau","k":"i:9791032723241","e":"Ki-oon","s":"My Hero Academia","t":"","u":"https://ki-oon.com/9791032723241-my-hero-academia-edition-simple-volume-0","to":"2026-11-05"},
 {"day":"2026-10-14","type":"nouveau","k":"i:9791032723371","e":"Ki-oon","s":"Nine Peaks","t":"13","u":"https://ki-oon.com/9791032723371-nine-peaks-edition-simple-volume-13","to":"2026-11-05"},
-{"day":"2026-10-14","type":"nouveau","k":"i:9791032723531","e":"Ki-oon","s":"Les Carnets de l'apothicaire","t":"17","u":"https://ki-oon.com/9791032723531-les-carnets-de-l-apothicaire-edition-simple-volume-17","to":"2026-11-19"}
+{"day":"2026-10-14","type":"nouveau","k":"i:9791032723531","e":"Ki-oon","s":"Les Carnets de l'apothicaire","t":"17","u":"https://ki-oon.com/9791032723531-les-carnets-de-l-apothicaire-edition-simple-volume-17","to":"2026-11-19"},
+{"day":"2026-10-15","type":"date","k":"i:9782344075258","e":"Glénat","s":"Baptism - Édition originale","t":"2","u":"https://www.glenat.com/glenat-manga/baptism-edition-originale-tome-02-9782344075258/","from":"2026-11-18","to":"2026-12-02"}
 ],
 "seen": {
-"i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
+"i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":1,"x":false},
 "i:9782344071137": {"e":"Glénat","s":"One Piece - Édition originale","t":"114","u":"https://www.glenat.com/glenat-manga/one-piece-edition-originale-tome-114-9782344071137/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9782344072011": {"e":"Glénat","s":"Berserk - Tarot","t":"","u":"https://www.glenat.com/glenat-manga/berserk-tarot-9782344072011/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
 "i:9782344072202": {"e":"Glénat","s":"Shangri-la Frontier","t":"22","u":"https://www.glenat.com/glenat-manga/shangri-la-frontier-tome-22-9782344072202/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
@@ -31,7 +32,7 @@
 "i:9782344074251": {"e":"Glénat","s":"Bleach - Le jeu de karuta","t":"","u":"https://www.glenat.com/glenat-manga/bleach-le-jeu-de-karuta-9782344074251/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
 "i:9782344074299": {"e":"Glénat","s":"Bleach Deluxe","t":"2","u":"https://www.glenat.com/glenat-manga/bleach-deluxe-tome-02-9782344074299/","d":"2026-11-04","f":"2026-10-09","m":0,"x":false},
 "i:9782344074350": {"e":"Glénat","s":"Ender Geister","t":"18","u":"https://www.glenat.com/glenat-manga/ender-geister-tome-18-9782344074350/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
-"i:9782344075258": {"e":"Glénat","s":"Baptism - Édition originale","t":"2","u":"https://www.glenat.com/glenat-manga/baptism-edition-originale-tome-02-9782344075258/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
+"i:9782344075258": {"e":"Glénat","s":"Baptism - Édition originale","t":"2","u":"https://www.glenat.com/glenat-manga/baptism-edition-originale-tome-02-9782344075258/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9782344075722": {"e":"Glénat","s":"Alice au-delà des étoiles","t":"3","u":"https://www.glenat.com/glenat-manga/alice-au-dela-des-etoiles-tome-03-9782344075722/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
 "i:9782344075845": {"e":"Glénat","s":"Trillion Game","t":"11","u":"https://www.glenat.com/glenat-manga/trillion-game-tome-11-9782344075845/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
 "i:9782344075883": {"e":"Glénat","s":"Tower Dungeon","t":"5","u":"https://www.glenat.com/glenat-manga/tower-dungeon-tome-05-9782344075883/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
