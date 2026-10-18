@@ -34,6 +34,9 @@ jobs:
       - name: Résumés des mangas (pages des éditeurs)
         run: node scripts/collect-synopsis.mjs
         continue-on-error: true
+      - name: Traduction des Synopsis (pages des éditeurs)
+        run: node scripts/translate-synopsis.mjs
+        continue-on-error: true
       - name: Adaptations animées des séries manga
         run: node scripts/fetch-adaptations.mjs
         continue-on-error: true
