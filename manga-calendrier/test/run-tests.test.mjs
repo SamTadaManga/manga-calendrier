@@ -482,3 +482,38 @@ test('résumés : collecte (pages simulées), puis affichage sur la page série 
   assert.ok(vide.includes('Dernier tome paru : tome 2 ('), 'série sans sortie à venir : dernier tome paru');
   assert.ok(vide.indexOf('class="shops') < vide.indexOf('Déjà parus'), 'boutons d\'achat en haut même sans tome à venir');
 });
+
+test('synopsis anime + vignettes dans les articles (couvertures activées)', async () => {
+  const lib = await import('../scripts/lib.mjs');
+  assert.equal(lib.cleanSynopsis('Hello <br><br>world, this is a long enough synopsis for a test. (Source: X) [Written by MAL Rewrite]'), 'Hello world, this is a long enough synopsis for a test.');
+  assert.equal(lib.cleanSynopsis('Trop court'), '');
+  const html = lib.markdown('- [![Couverture de A](https://exemple.fr/a.jpg)](/serie/a/) **A** : texte\n  → [lien](/x/)\n- ![x](http://non-https/x.jpg) sans vignette\n- ![évil](javascript:alert(1))');
+  assert.ok(html.includes('<li class="art-item"><a href="/serie/a/"') && html.includes('<img class="art-img" src="https://exemple.fr/a.jpg"'));
+  assert.ok(!html.includes('http://non-https') || !/<img[^>]*http:\/\/non-https/.test(html), 'pas d\'image en http');
+  assert.ok(!/<img[^>]*javascript:/.test(html));
+
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'articles'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), CONFIG_FILE: path.join(tmp, 'config.json'), NOW: '2026-10-12T07:00:00Z' };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(dirs.DATA_DIR, 'manga.csv'));
+  const cfg = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const env = { ...process.env, ...dirs };
+  const run = (script, ...args) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', script), ...args], { env, encoding: 'utf8' });
+  run('fetch-anime.mjs', '--from-file', path.join(ROOT, 'test/mock-anilist.json'));
+  const eps = JSON.parse(read(dirs.DATA_DIR, 'anime.json')).episodes;
+  assert.ok(eps.find((e) => e.synopsis.startsWith('A quiet student discovers') && !e.synopsis.includes('Source')));
+  // couvertures désactivées : aucune image dans les articles
+  writeFileSync(dirs.CONFIG_FILE, JSON.stringify(cfg));
+  run('daily-articles.mjs');
+  assert.ok(!read(dirs.AUTO_DIR, 'anime-2026-10-12.md').includes('!['));
+  // couvertures activées
+  writeFileSync(dirs.CONFIG_FILE, JSON.stringify({ ...cfg, showCovers: true }));
+  run('daily-articles.mjs');
+  const md = read(dirs.AUTO_DIR, 'anime-2026-10-12.md');
+  assert.ok(md.includes('- [![Affiche de Test Series One](https://s4.anilist.co/'), md);
+  run('build.mjs');
+  const art = read(dirs.OUT_DIR, 'articles/anime-2026-10-12/index.html');
+  assert.ok(art.includes('class="art-item"') && art.includes('class="art-img"'));
+  const page = read(dirs.OUT_DIR, 'anime/1-test-series-one/index.html');
+  assert.ok(page.includes('class="synopsis"') && page.includes('A quiet student discovers') && page.includes('en anglais'));
+});

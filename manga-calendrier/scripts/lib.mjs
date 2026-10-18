@@ -233,6 +233,8 @@ export function inline(text) {
   t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
   t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
   t = t.replace(/(^|[^*])\*([^*\s][^*]*)\*/g, '$1<em>$2</em>');
+  // images : seulement en https, jamais de script ni d'adresse locale
+  t = t.replace(/!\[([^\]]*)\]\((https:\/\/[^)\s]+)\)/g, '<img class="art-img" src="$2" alt="$1" width="90" height="135" loading="lazy" decoding="async" referrerpolicy="no-referrer">');
   t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (m, label, url) =>
     /^(https?:\/\/|\/|#|mailto:)/i.test(url) ? `<a href="${url}" rel="noopener">${label}</a>` : m);
   return t;
@@ -245,7 +247,18 @@ export function markdown(src) {
   let list = null;
   const flushP = () => { if (para.length) { out.push(`<p>${inline(para.join(' '))}</p>`); para = []; } };
   const flushL = () => {
-    if (list) { out.push(`<${list.tag}>${list.items.map((i) => `<li>${inline(i).replace(/\n/g, '<br>')}</li>`).join('')}</${list.tag}>`); list = null; }
+    if (list) {
+      const li = (i) => {
+        // « - [![alt](https://image)](/lien) texte » : vignette cliquable à gauche, texte à droite
+        const m = i.match(/^(\[!\[[^\]]*\]\(https:\/\/[^)\s]+\)\]\(\/[^)\s]*\))\s+([\s\S]*)$/);
+        return m ? `<li class="art-item">${inline(m[1])}<div>${inline(m[2]).replace(/\n/g, '<br>')}</div></li>` : `<li>${inline(i).replace(/\n/g, '<br>')}</li>`;
+      };
+      const THUMB = /^\[!\[[^\]]*\]\(https:\/\/[^)\s]+\)\]\(\/[^)\s]*\)\s/;
+      const withThumbs = list.items.some((i) => THUMB.test(i));
+      // une liste où certains éléments ont une vignette : les autres gardent la même colonne (alignement)
+      const html = list.items.map((i) => (withThumbs && !THUMB.test(i) ? `<li class="art-item art-none"><span></span><div>${inline(i).replace(/\n/g, '<br>')}</div></li>` : li(i))).join('');
+      out.push(`<${list.tag}>${html}</${list.tag}>`); list = null;
+    }
   };
   for (const line of String(src).replace(/\r/g, '').split('\n')) {
     let m;
@@ -358,3 +371,20 @@ export const isFirstVolume = (r) => String(r.tome) === '1' && r.statut !== 'annu
 // Pont anime -> manga : slug de la série du calendrier correspondant à un épisode (titres du manga d'origine, puis titres de l'anime)
 export const mangaSlugOf = (e, slugs) =>
   [...(Array.isArray(e.manga) ? e.manga : []), e.title?.english, e.title?.romaji].map((t) => slugify(t || '')).find((k) => k && slugs.has(k)) || '';
+
+// Synopsis AniList (texte brut en anglais) : sans balises ni mentions de source, ramené à ~450 caractères
+export function cleanSynopsis(raw, max = 450) {
+  let t = String(raw || '')
+    .replace(/<br\s*\/?>/gi, ' ').replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/g, ' ').replace(/&quot;/g, '"').replace(/&#0?39;|&apos;/g, "'").replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&')
+    .replace(/\((?:source|written by)[^)]*\)/gi, ' ').replace(/\[(?:source|written by)[^\]]*\]/gi, ' ')
+    .replace(/\s+/g, ' ').trim();
+  if (t.length < 40) return '';
+  if (t.length > max) {
+    const cut = t.slice(0, max);
+    const i = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? '));
+    t = i > max * 0.5 ? cut.slice(0, i + 1) : `${cut.replace(/\s+\S*$/, '')}…`;
+  }
+  return t;
+}
+

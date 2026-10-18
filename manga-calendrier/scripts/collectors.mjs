@@ -195,4 +195,3 @@ export function extractSynopsis(html, max = 450) {
   }
   return t;
 }
-

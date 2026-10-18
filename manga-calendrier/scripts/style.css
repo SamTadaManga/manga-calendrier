@@ -502,3 +502,11 @@ a.stream.shop-sm,.shops-sm a.stream{flex:1 1 0;min-width:0;padding:0 2px;height:
 .synopsis h2{margin:0 0 6px;font-size:1rem}
 .synopsis p{margin:0;line-height:1.55}
 .synopsis .syn-src{margin-top:8px;font-size:.82rem}
+
+/* Images dans les articles : vignette à gauche, texte à droite */
+.post img.art-img{display:block;width:90px;height:auto;aspect-ratio:2/3;object-fit:cover;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--shadow);background:var(--panel)}
+.post ul>li.art-item{display:grid;grid-template-columns:90px minmax(0,1fr);gap:0 16px;align-items:start;list-style:none;margin:0 0 18px}
+.post ul:has(>li.art-item){padding-left:0}
+.post li.art-item>a{display:block;width:fit-content;background:none}
+.post li.art-item>a:hover img{outline:3px solid var(--brand);outline-offset:2px}
+@media (max-width:520px){.post ul>li.art-item{grid-template-columns:64px minmax(0,1fr);gap:0 12px}.post img.art-img{width:64px}}

@@ -6,7 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { streams, sourceManga } from './anilist.mjs';
-import { paths, now, parisKey, parisMidnight, addDays } from './lib.mjs';
+import { paths, now, parisKey, parisMidnight, addDays, cleanSynopsis } from './lib.mjs';
 
 const ENDPOINT = 'https://graphql.anilist.co';
 const DAYS_AHEAD = 8;
@@ -19,7 +19,7 @@ const QUERY = `query ($page: Int, $from: Int, $to: Int) {
     airingSchedules(airingAt_greater: $from, airingAt_lesser: $to, sort: TIME) {
       airingAt
       episode
-      media { id format countryOfOrigin isAdult popularity siteUrl source relations { edges { relationType node { type title { romaji english native } } } } externalLinks { site url type isDisabled } coverImage { large } title { romaji english native } }
+      media { id format countryOfOrigin isAdult popularity siteUrl source relations { edges { relationType node { type title { romaji english native } } } } externalLinks { site url type isDisabled } coverImage { large } description(asHtml: false) title { romaji english native } }
     }
   }
 }`;
@@ -78,6 +78,7 @@ const episodes = raw
     stream: streams(x.media.externalLinks),
     manga: sourceManga(x.media.relations),
     cover: /^https:\/\/[a-z0-9.-]*anilist\.co\//i.test(x.media.coverImage?.large || '') ? x.media.coverImage.large : '',
+    synopsis: cleanSynopsis(x.media.description),
   }))
   .filter((e) => {
     const k = `${e.mediaId}-${e.episode}-${e.airingAt}`;

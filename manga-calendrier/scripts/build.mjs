@@ -678,6 +678,7 @@ const ANIME_PAGES = [];
       ? `Prochain épisode de <strong>${esc(t)}</strong> : l'épisode ${esc(next.episode)}, diffusé au Japon le <strong>${esc(frShort(next.key))}</strong> à ${esc(next.time)} (heure de Paris).`
       : `Dernier épisode connu de <strong>${esc(t)}</strong> : l'épisode ${esc(e.episode)}, diffusé au Japon le ${esc(frShort(e.key))} à ${esc(e.time)} (heure de Paris).`;
     const rows = list.map((x) => `<li class="ep-row"><time>${esc(weekday(x.key))} ${esc(dayNum(x.key))}</time><span class="t"><a href="/anime/#j-${x.key}">Jour de diffusion</a></span><span class="ep">épisode ${esc(x.episode)}${isPremiere(x) ? ` ${PREMIERE_BADGE}` : ''} · ${esc(x.time)}</span></li>`).join('');
+    const synAnime = e.synopsis ? `<section class="synopsis"><h2>Synopsis</h2><p>${esc(e.synopsis)}</p><p class="muted syn-src">Synopsis AniList, en anglais${anilist ? ` · ${anilist}` : ''}</p></section>` : '';
     const manga = e.ms ? `<p class="adapt"><strong>Adapté d'un manga</strong> : <a href="/serie/${esc(e.ms)}/">voir les prochains tomes</a></p>` : '';
     ANIME_PAGES.push(animeHref(e));
     page(animeHref(e), {
@@ -687,6 +688,7 @@ const ANIME_PAGES = [];
       body: `<div class="series-head">${hero}<div>
 <h1>${esc(t)}</h1>
 <p class="lead">${lead}</p>
+${synAnime}
 <h2>Où regarder</h2>
 ${watch}
 ${manga}

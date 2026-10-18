@@ -19,6 +19,9 @@ const today = process.env.DATE || parisKey(now());
 const draft = config.autoPublish === false; // false : les articles auto restent en brouillon jusqu'à validation
 
 mkdirSync(P.autoDir, { recursive: true });
+// Vignette cliquable en tête d'un élément de liste (seulement si les couvertures sont activées dans site.config.json)
+const thumb = (url, alt, href) => (config.showCovers === true && /^https:\/\//.test(url || '') && href
+  ? `[![${String(alt).replace(/[\[\]()]/g, '')}](${url})](${href}) ` : '');
 const q = (s) => String(s).replace(/"/g, '\\"');
 const created = [];
 
@@ -34,6 +37,7 @@ const mangaLinks = (r) => `\n  → [Calendrier manga](/manga/#j-${r.date}) · [P
 /* ------------------------------------------------------------------ anime */
 const anime = readAnime(P.dataDir);
 const mangaSlugs = new Set(loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
+const animeThumb = (e) => thumb(e.cover, `Affiche de ${displayTitle(e.title)}`, mangaSlugOf(e, mangaSlugs) ? `/serie/${mangaSlugOf(e, mangaSlugs)}/` : `/anime/#j-${parisKey(e.date)}`);
 const animeLinks = (e) => { const k = mangaSlugOf(e, mangaSlugs); return `\n  → [Page Anime](/anime/#j-${parisKey(e.date)})${k ? ` · [Lire le manga](/serie/${k}/)` : ''}`; };
 const eps = anime.episodes
   .map((e) => ({ ...e, date: new Date(e.airingAt * 1000) }))
@@ -49,7 +53,7 @@ if (eps.length) {
     '',
     '## Les plus populaires du jour',
     '',
-    ...top.map((e) => `- **${label(e)}** : épisode ${e.episode}, à ${parisHM(e.date)}${animeLinks(e)}`),
+    ...top.map((e) => `- ${animeThumb(e)}**${label(e)}** : épisode ${e.episode}, à ${parisHM(e.date)}${animeLinks(e)}`),
     '',
     `## Programme complet (${eps.length} épisodes)`,
     '',
@@ -68,11 +72,12 @@ const manga = loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule');
 const STATUT_TXT = {
   confirme: 'date confirmée', annonce: 'date annoncée, non confirmée', paru: 'déjà paru', reporte: 'date modifiée',
 };
+const mangaThumb = (r) => thumb(r.cover, `Couverture de ${mangaLabel(r)}`, slugify(r.serie) ? `/serie/${slugify(r.serie)}/` : '');
 const line = (r) => {
   const parts = [`**${mangaLabel(r)}**`];
   if (r.prix != null) parts.push(euro(r.prix));
   parts.push(STATUT_TXT[r.statut]);
-  let s = `- ${parts.join(' · ')}`;
+  let s = `- ${mangaThumb(r)}${parts.join(' · ')}`;
   if (r.source) s += ` ([source](${r.source}))`;
   if (r.notes) s += `. ${r.notes.replace(/\s+/g, ' ')}`;
   return s + mangaLinks(r);
@@ -111,7 +116,7 @@ if (weekdayOfKey(today) === 1) {
     const body = [
       `Voici les sorties manga prévues en France du ${frDate(today)} au ${frDate(end)} : ${week.length} tome${week.length > 1 ? 's' : ''} chez ${new Set(week.map((r) => r.editeur)).size} éditeur${new Set(week.map((r) => r.editeur)).size > 1 ? 's' : ''}.`,
       '',
-      ...(fresh.length ? ['## Les nouvelles séries de la semaine', '', ...fresh.map((r) => `- **${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}${mangaLinks(r)}`), ''] : []),
+      ...(fresh.length ? ['## Les nouvelles séries de la semaine', '', ...fresh.map((r) => `- ${mangaThumb(r)}**${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}${mangaLinks(r)}`), ''] : []),
       ...days.flatMap((d) => [`## ${ucfirst(frDayMonth(d))}`, '', ...week.filter((r) => r.date === d).map((r) => line({ ...r, notes: r.notes })), '']),
       ...(lastWeek.length ? ['## Ce qui a bougé la semaine dernière', '', `${lastWeek.length} changement${lastWeek.length > 1 ? 's' : ''} relevé${lastWeek.length > 1 ? 's' : ''} dans les plannings des éditeurs : [voir le détail](/changements/).`, ''] : []),
       'Les dates peuvent changer : consultez la source indiquée pour chaque sortie. Le calendrier complet est sur la page [Manga](/manga/).',
@@ -137,10 +142,10 @@ if (weekdayOfKey(today) === 1) {
     const body = [
       `Cette semaine, ${week.length} épisode${week.length > 1 ? 's' : ''} d'anime sont diffusés au Japon, répartis sur ${byMedia.size} séries. Les horaires de chaque jour sont sur la page [Anime](/anime/), à l'heure de Paris.`,
       '',
-      ...(firsts.length ? ['## Les premiers épisodes', '', ...firsts.slice(0, 10).map((e) => `- ${lab(e)} : épisode 1 le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}${animeLinks(e)}`), ''] : []),
+      ...(firsts.length ? ['## Les premiers épisodes', '', ...firsts.slice(0, 10).map((e) => `- ${animeThumb(e)}${lab(e)} : épisode 1 le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}${animeLinks(e)}`), ''] : []),
       '## Les séries les plus suivies',
       '',
-      ...top.map((e) => `- ${lab(e)} : prochain épisode (n° ${e.episode}) le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}${animeLinks(e)}`),
+      ...top.map((e) => `- ${animeThumb(e)}${lab(e)} : prochain épisode (n° ${e.episode}) le ${frShort(parisKey(e.date))} à ${parisHM(e.date)}${animeLinks(e)}`),
       '',
       'Données de diffusion : [AniList](https://anilist.co). La disponibilité en France dépend des plateformes de streaming.',
     ].join('\n');
@@ -167,7 +172,7 @@ if (today.endsWith('-01')) {
       '',
       ...pubs.map(([pub, rows]) => `- **${pub}** : ${rows.length} tome${rows.length > 1 ? 's' : ''}`),
       '',
-      ...(fresh.length ? ['## Les nouvelles séries du mois', '', ...fresh.map((r) => `- **${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}${mangaLinks(r)}`), ''] : []),
+      ...(fresh.length ? ['## Les nouvelles séries du mois', '', ...fresh.map((r) => `- ${mangaThumb(r)}**${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}${mangaLinks(r)}`), ''] : []),
       `La liste complète, jour par jour, est sur la page [sorties manga ${deName}](/sorties-manga/${slugify(name)}/).`,
       '',
       'Les dates peuvent changer : consultez la fiche de l\'éditeur pour chaque tome.',
