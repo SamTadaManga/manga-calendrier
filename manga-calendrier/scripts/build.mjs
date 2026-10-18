@@ -3,6 +3,7 @@
 import { mkdirSync, writeFileSync, readFileSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 import { readChanges, keyOf } from './changes.mjs';
 import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
 import {
@@ -24,6 +25,7 @@ const isPrivate = config.launched === false; // site privé : non indexé tant q
 const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
 // Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
+const SYN_FR = (() => { try { return JSON.parse(readFileSync(path.join(P.dataDir, 'synopsis-fr.json'), 'utf8')); } catch { return {}; } })();
 const SYN = (() => { try { return JSON.parse(readFileSync(path.join(P.dataDir, 'synopsis.json'), 'utf8')); } catch { return {}; } })();
 const mangaSlugs = new Set(manga.filter((r) => r.statut !== 'annule').map((r) => slugify(r.serie)).filter(Boolean));
 const mangaOf = (e) => mangaSlugOf(e, mangaSlugs);
@@ -678,7 +680,8 @@ const ANIME_PAGES = [];
       ? `Prochain épisode de <strong>${esc(t)}</strong> : l'épisode ${esc(next.episode)}, diffusé au Japon le <strong>${esc(frShort(next.key))}</strong> à ${esc(next.time)} (heure de Paris).`
       : `Dernier épisode connu de <strong>${esc(t)}</strong> : l'épisode ${esc(e.episode)}, diffusé au Japon le ${esc(frShort(e.key))} à ${esc(e.time)} (heure de Paris).`;
     const rows = list.map((x) => `<li class="ep-row"><time>${esc(weekday(x.key))} ${esc(dayNum(x.key))}</time><span class="t"><a href="/anime/#j-${x.key}">Jour de diffusion</a></span><span class="ep">épisode ${esc(x.episode)}${isPremiere(x) ? ` ${PREMIERE_BADGE}` : ''} · ${esc(x.time)}</span></li>`).join('');
-    const synAnime = e.synopsis ? `<section class="synopsis"><h2>Synopsis</h2><p>${esc(e.synopsis)}</p><p class="muted syn-src">Synopsis AniList, en anglais${anilist ? ` · ${anilist}` : ''}</p></section>` : '';
+    const frSyn = SYN_FR[e.mediaId] && SYN_FR[e.mediaId].h === createHash('sha1').update(e.synopsis || '').digest('hex').slice(0, 12) ? SYN_FR[e.mediaId].t : '';
+    const synAnime = e.synopsis ? `<section class="synopsis"><h2>Synopsis</h2><p>${esc(frSyn || e.synopsis)}</p><p class="muted syn-src">${frSyn ? 'Synopsis AniList, traduit automatiquement' : 'Synopsis AniList, en anglais'}${anilist ? ` · ${anilist}` : ''}</p></section>` : '';
     const manga = e.ms ? `<p class="adapt"><strong>Adapté d'un manga</strong> : <a href="/serie/${esc(e.ms)}/">voir les prochains tomes</a></p>` : '';
     ANIME_PAGES.push(animeHref(e));
     page(animeHref(e), {

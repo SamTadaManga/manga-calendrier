@@ -517,3 +517,26 @@ test('synopsis anime + vignettes dans les articles (couvertures activées)', asy
   const page = read(dirs.OUT_DIR, 'anime/1-test-series-one/index.html');
   assert.ok(page.includes('class="synopsis"') && page.includes('A quiet student discovers') && page.includes('en anglais'));
 });
+
+test('traduction des synopsis anime : désactivée rien ne change, avec traduction simulée le français s\'affiche', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'articles'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), CONFIG_FILE: path.join(ROOT, 'test/fixtures/site.config.json'), NOW: '2026-10-12T07:00:00Z' };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(dirs.DATA_DIR, 'manga.csv'));
+  const clean = { ...process.env, ...dirs }; delete clean.DEEPL_API_KEY; delete clean.ANTHROPIC_API_KEY; delete clean.TRANSLATE_MOCK; clean.TRANSLATE_PROVIDER = 'none';
+  const run = (script, env = clean, ...args) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', script), ...args], { env, encoding: 'utf8' });
+  run('fetch-anime.mjs', clean, '--from-file', path.join(ROOT, 'test/mock-anilist.json'));
+  assert.ok(run('translate-synopsis.mjs').includes('désactivée'));
+  assert.ok(!existsSync(path.join(dirs.DATA_DIR, 'synopsis-fr.json')));
+  run('build.mjs');
+  assert.ok(read(dirs.OUT_DIR, 'anime/1-test-series-one/index.html').includes('en anglais'));
+  const en = JSON.parse(read(dirs.DATA_DIR, 'anime.json')).episodes.find((e) => e.synopsis).synopsis;
+  const mock = path.join(tmp, 'mock.json');
+  writeFileSync(mock, JSON.stringify({ [en]: 'Un étudiant discret découvre une porte cachée dans la bibliothèque du lycée. Chaque nuit, elle s\'ouvre sur un monde différent.' }));
+  const out = run('translate-synopsis.mjs', { ...clean, TRANSLATE_MOCK: mock });
+  assert.ok(out.includes('1 synopsis traduits'), out);
+  assert.ok(run('translate-synopsis.mjs', { ...clean, TRANSLATE_MOCK: mock }).includes('0 synopsis traduits'), 'déjà traduit : pas de nouvel appel');
+  run('build.mjs');
+  const page = read(dirs.OUT_DIR, 'anime/1-test-series-one/index.html');
+  assert.ok(page.includes('Un étudiant discret') && page.includes('traduit automatiquement') && !page.includes('A quiet student'));
+});
