@@ -1,7 +1,7 @@
 {
 "version": 1,
 "since": "2026-10-09",
-"updated": "2026-10-18",
+"updated": "2026-10-19",
 "events": [
 {"day":"2026-10-13","type":"date","k":"i:9791043311772","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-collector-9791043311772/","from":"2026-11-04","to":"2026-11-12"},
 {"day":"2026-10-13","type":"date","k":"i:9791043311758","e":"Pika","s":"L'Atelier des Sorciers","t":"16","u":"https://www.pika.fr/livre/latelier-des-sorciers-t16-9791043311758/","from":"2026-11-04","to":"2026-11-12"},
@@ -24,7 +24,7 @@
 {"day":"2026-10-17","type":"retire","k":"i:9782344053508","e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","from":"2026-11-18"}
 ],
 "seen": {
-"i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":8,"x":true},
+"i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":9,"x":true},
 "i:9782344071137": {"e":"Glénat","s":"One Piece - Édition originale","t":"114","u":"https://www.glenat.com/glenat-manga/one-piece-edition-originale-tome-114-9782344071137/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9782344072011": {"e":"Glénat","s":"Berserk - Tarot","t":"","u":"https://www.glenat.com/glenat-manga/berserk-tarot-9782344072011/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
 "i:9782344072202": {"e":"Glénat","s":"Shangri-la Frontier","t":"22","u":"https://www.glenat.com/glenat-manga/shangri-la-frontier-tome-22-9782344072202/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
