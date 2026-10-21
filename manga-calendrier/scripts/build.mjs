@@ -843,8 +843,9 @@ else{msg.select();done('Sélectionne et copie le texte.');}});
 <h2>Cookies et données personnelles</h2>
 <p>Ce site ne dépose pas de cookies.${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>
 ${AFFILIATE_ON ? `<h2 id="affiliation">Liens d'affiliation</h2>
-<p>Certains liens d'achat (Amazon, Fnac, Cultura, BDfugue) sont des liens d'affiliation : si tu achètes après avoir cliqué, le site peut percevoir une commission, sans que le prix change pour toi. Ces liens sont signalés sur les pages concernées et n'influencent pas les dates ni les informations publiées.</p>
-` : ''}${NL.on ? `
+<p>Certains liens d'achat (${esc(SHOPLIST.filter((x) => x.sponsored).map((x) => x.name).join(', '))}) sont des liens d'affiliation : si tu achètes après avoir cliqué, le site peut percevoir une commission, sans que le prix change pour toi. Ces liens sont signalés sur les pages concernées et n'influencent pas les dates ni les informations publiées.</p>
+${SHOPLIST.some((x) => x.id === 'amazon' && x.sponsored) ? `<p>En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.</p>
+` : ''}` : ''}${NL.on ? `
 <h2 id="newsletter">Newsletter</h2>
 <p>Si vous vous abonnez à la newsletter, votre adresse e-mail est transmise${NL.provider ? ` à ${esc(NL.provider)}` : ' au service d’envoi'} qui envoie les messages pour le compte de ${v(L.editorName)}. Elle sert uniquement à l’envoi du récapitulatif hebdomadaire et est conservée jusqu’à votre désabonnement, possible à tout moment depuis chaque e-mail. Vous pouvez demander l’accès, la rectification ou la suppression de vos données à ${v(L.contactEmail)}.</p>` : ''}`,
   });
