@@ -31,17 +31,26 @@ jobs:
       - name: Sorties manga des éditeurs (Glénat, Kana, Pika, Ki-oon)
         run: node scripts/collect-manga.mjs
         continue-on-error: true
+      - name: Compléments (Google Books et flux RSS des autres éditeurs)
+        run: node scripts/collect-extra.mjs
+        continue-on-error: true
+        env:
+          GOOGLE_BOOKS_API_KEY: ${{ secrets.GOOGLE_BOOKS_API_KEY }}
       - name: Résumés des mangas (pages des éditeurs)
         run: node scripts/collect-synopsis.mjs
-        continue-on-error: true
-      - name: Traduction des Synopsis (pages des éditeurs)
-        run: node scripts/translate-synopsis.mjs
         continue-on-error: true
       - name: Adaptations animées des séries manga
         run: node scripts/fetch-adaptations.mjs
         continue-on-error: true
       - name: Épisodes d'anime
         run: node scripts/fetch-anime.mjs
+      - name: Traduction des synopsis d'anime en français
+        run: node scripts/translate-synopsis.mjs
+        continue-on-error: true
+        env:
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          MYMEMORY_EMAIL: ${{ secrets.MYMEMORY_EMAIL }}
       - name: Articles du jour
         run: node scripts/daily-articles.mjs
       - name: Vérification de la construction
