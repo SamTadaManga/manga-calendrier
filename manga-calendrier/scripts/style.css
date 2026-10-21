@@ -456,6 +456,7 @@ a.stream.stream-lg{height:44px;min-width:0;padding:0 18px;font-size:1rem;gap:8px
 .shops-l{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-right:2px}
 .shops-lg{margin:12px 0}
 a.stream.shop{gap:5px;padding:0 9px}
+a.stream.s-goodies{background:var(--panel);color:var(--ink);border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);max-width:100%;white-space:normal;height:auto;min-height:44px;padding-top:6px;padding-bottom:6px;text-align:left}
 a.stream.s-amazon{background:#ff9900;color:#111}
 a.stream.s-fnac{background:#e1a925;color:#111}
 a.stream.s-cultura{background:#0d5aa7;color:#fff}
