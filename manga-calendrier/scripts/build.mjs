@@ -214,6 +214,14 @@ const buyBox = (r, size = '') => {
   const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
   return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
+/* Goodies : une recherche Amazon sur le nom de la série (résultats affichés par Amazon, rien n'est copié). Désactivable avec "goodies": false */
+const AMZ = SHOPLIST.find((x) => x.id === 'amazon');
+const GOODIES_ON = Boolean(AMZ) && config.goodies !== false;
+const goodiesBox = (name) => {
+  if (!GOODIES_ON || !name) return '';
+  const url = `https://www.amazon.fr/s?k=${encodeURIComponent(`${name} goodies`).replace(/%20/g, '+')}${AMZ.tag ? `&tag=${encodeURIComponent(AMZ.tag)}` : ''}`;
+  return `<div class="shops shops-lg"><span class="shops-l">Goodies</span><a class="stream shop stream-lg s-goodies" href="${esc(url)}" rel="${AMZ.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" aria-label="Goodies ${esc(name)} sur Amazon">${CART}Goodies ${esc(name)} sur Amazon</a></div>`;
+};
 function volTile(r, noBuy = false) {
   const pk = pubKey(r.editeur);
   const label = mangaLabel(r);
@@ -541,6 +549,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
 ${buyRow ? buyBox(buyRow, 'lg') : ''}
+${goodiesBox(S.name)}
 ${synBox}
 ${animeBox}
 <p><button type="button" class="follow follow-static" data-s="${esc(S.k)}" data-n="${esc(S.name)}" hidden>Suivre</button></p>
@@ -548,7 +557,7 @@ ${animeBox}
 </div></div>
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
-${AFFILIATE_ON && S.rows.some((r) => isIsbn13(r.isbn)) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
+${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
   }
