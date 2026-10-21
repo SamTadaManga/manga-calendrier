@@ -3,7 +3,7 @@
 //
 // Usage normal :  node scripts/fetch-anime.mjs
 // Test hors ligne : node scripts/fetch-anime.mjs --from-file test/mock-anilist.json
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { streams, sourceManga } from './anilist.mjs';
 import { paths, now, parisKey, parisMidnight, addDays, cleanSynopsis } from './lib.mjs';
@@ -38,6 +38,12 @@ async function request(page, from, to, attempt = 1) {
     await sleep(wait);
     return request(page, from, to, attempt + 1);
   }
+  if ((res.status === 403 || res.status >= 500) && attempt <= 3) {
+    const wait = 30000 * attempt;
+    console.log(`AniList a répondu ${res.status}, nouvelle tentative dans ${wait / 1000} s…`);
+    await sleep(wait);
+    return request(page, from, to, attempt + 1);
+  }
   if (!res.ok) throw new Error(`AniList a répondu avec le code ${res.status}`);
   const json = await res.json();
   if (json.errors) throw new Error(`Erreur AniList : ${JSON.stringify(json.errors).slice(0, 300)}`);
@@ -55,11 +61,20 @@ let raw = [];
 if (fromFile) {
   raw = JSON.parse(readFileSync(process.argv[fileIdx + 1], 'utf8')).data.Page.airingSchedules;
 } else {
-  for (let page = 1; page <= MAX_PAGES; page++) {
-    const p = await request(page, from, to);
-    raw.push(...p.airingSchedules);
-    if (!p.pageInfo.hasNextPage) break;
-    await sleep(1500);
+  try {
+    for (let page = 1; page <= MAX_PAGES; page++) {
+      const p = await request(page, from, to);
+      raw.push(...p.airingSchedules);
+      if (!p.pageInfo.hasNextPage) break;
+      await sleep(1500);
+    }
+  } catch (e) {
+    // AniList indisponible ou bloque l'adresse du serveur : on garde le dernier programme enregistré
+    if (existsSync(path.join(P.dataDir, 'anime.json'))) {
+      console.log(`${e.message} : data/anime.json est conservé tel quel, nouvel essai à la prochaine exécution.`);
+      process.exit(0);
+    }
+    throw e;
   }
 }
 
