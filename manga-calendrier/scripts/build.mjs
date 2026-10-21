@@ -205,13 +205,13 @@ function coverBox(src, alt, w = 200, h = 300) {
 // tuile d'un tome (page de série)
 /* Où acheter : un lien par boutique (adresse normale, ou lien d'affiliation si renseigné dans la config) */
 const SHOPLIST = shopsFrom(config);
-const AFFILIATE_ON = SHOPLIST.some((x) => x.affiliate);
+const AFFILIATE_ON = SHOPLIST.some((x) => x.sponsored);
 const CART = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M1 1.5h2l1.2 6h5.6l1-4H3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="5" cy="10" r="1" fill="currentColor"/><circle cx="9" cy="10" r="1" fill="currentColor"/></svg>';
 const buyBox = (r, size = '') => {
   if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
   const verb = r.date > today ? 'Précommander' : 'Acheter';
   const sm = size === 'sm';
-  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.affiliate ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
+  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
   return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
 function volTile(r, noBuy = false) {
