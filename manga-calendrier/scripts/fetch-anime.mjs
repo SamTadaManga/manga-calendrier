@@ -40,6 +40,10 @@ async function request(page, from, to, attempt = 1) {
   }
   if ((res.status === 403 || res.status >= 500) && attempt <= 3) {
     const wait = 30000 * attempt;
+    if (attempt === 1) {
+      const body = (await res.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
+      console.log(`Détail du refus : serveur=${res.headers.get('server') || '?'} — ${body}`);
+    }
     console.log(`AniList a répondu ${res.status}, nouvelle tentative dans ${wait / 1000} s…`);
     await sleep(wait);
     return request(page, from, to, attempt + 1);
