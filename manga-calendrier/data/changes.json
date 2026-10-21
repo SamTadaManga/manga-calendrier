@@ -23,10 +23,11 @@
 {"day":"2026-10-15","type":"date","k":"i:9782344075258","e":"Glénat","s":"Baptism - Édition originale","t":"2","u":"https://www.glenat.com/glenat-manga/baptism-edition-originale-tome-02-9782344075258/","from":"2026-11-18","to":"2026-12-02"},
 {"day":"2026-10-17","type":"retire","k":"i:9782344053508","e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","from":"2026-11-18"},
 {"day":"2026-10-21","type":"nouveau","k":"i:9782344071571","e":"Glénat","s":"Les techniques de manga ultimes du docteur Mashirito","t":"","u":"https://www.glenat.com/glenat-manga/les-techniques-de-manga-ultimes-du-docteur-mashirito-9782344071571/","to":"2026-10-21"},
-{"day":"2026-10-21","type":"nouveau","k":"i:9782505133926","e":"Kana","s":"Princesse Puncheuse","t":"10","u":"https://www.kana.fr/produit/princesse-puncheuse-t10/","to":"2026-12-04"}
+{"day":"2026-10-21","type":"nouveau","k":"i:9782505133926","e":"Kana","s":"Princesse Puncheuse","t":"10","u":"https://www.kana.fr/produit/princesse-puncheuse-t10/","to":"2026-12-04"},
+{"day":"2026-10-21","type":"retire","k":"s:princesse-puncheuse|10|","e":"Kana","s":"Princesse Puncheuse","t":"10","u":"https://www.kana.fr/produit/princesse-puncheuse-t10/","from":"2026-12-04"}
 ],
 "seen": {
-"i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":12,"x":true},
+"i:9782344053508": {"e":"Glénat","s":"RedFlower","t":"3","u":"https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/","d":"2026-11-18","f":"2026-10-09","m":13,"x":true},
 "i:9782344071137": {"e":"Glénat","s":"One Piece - Édition originale","t":"114","u":"https://www.glenat.com/glenat-manga/one-piece-edition-originale-tome-114-9782344071137/","d":"2026-12-02","f":"2026-10-09","m":0,"x":false},
 "i:9782344071571": {"e":"Glénat","s":"Les techniques de manga ultimes du docteur Mashirito","t":"","u":"https://www.glenat.com/glenat-manga/les-techniques-de-manga-ultimes-du-docteur-mashirito-9782344071571/","d":"2026-10-21","f":"2026-10-21","m":0,"x":false},
 "i:9782344072011": {"e":"Glénat","s":"Berserk - Tarot","t":"","u":"https://www.glenat.com/glenat-manga/berserk-tarot-9782344072011/","d":"2026-11-18","f":"2026-10-09","m":0,"x":false},
@@ -175,7 +176,7 @@
 "s:march-comes-in-like-a-lion|18|": {"e":"Kana","s":"March comes in like a lion","t":"18","u":"https://www.kana.fr/produit/march-comes-in-like-a-lion-t18/","d":"2026-12-04","f":"2026-10-09","m":0,"x":false},
 "s:mission-yozakura-family|29|": {"e":"Kana","s":"Mission: Yozakura family","t":"29","u":"https://www.kana.fr/produit/mission-yozakura-family-t29/","d":"2026-12-04","f":"2026-10-09","m":0,"x":false},
 "s:mujina-into-the-deep|4|": {"e":"Kana","s":"Mujina into the deep","t":"4","u":"https://www.kana.fr/produit/mujina-into-the-deep-t4/","d":"2026-11-20","f":"2026-10-09","m":0,"x":false},
-"s:princesse-puncheuse|10|": {"e":"Kana","s":"Princesse Puncheuse","t":"10","u":"https://www.kana.fr/produit/princesse-puncheuse-t10/","d":"2026-12-04","f":"2026-10-09","m":2,"x":false},
+"s:princesse-puncheuse|10|": {"e":"Kana","s":"Princesse Puncheuse","t":"10","u":"https://www.kana.fr/produit/princesse-puncheuse-t10/","d":"2026-12-04","f":"2026-10-09","m":3,"x":true},
 "s:saint-seiya-rerise-of-poseidon|2|": {"e":"Kana","s":"Saint Seiya Rerise of Poseidon","t":"2","u":"https://www.kana.fr/produit/saint-seiya-rerise-of-poseidon-t2/","d":"2026-12-04","f":"2026-10-09","m":0,"x":false},
 "s:samurai-deeper-kyo-star-edition|10|": {"e":"Kana","s":"Samurai Deeper Kyo Star Edition","t":"10","u":"https://www.kana.fr/produit/samurai-deeper-kyo-star-edition-t10/","d":"2026-10-30","f":"2026-10-09","m":0,"x":false},
 "s:samurai-deeper-kyo-star-edition|11|": {"e":"Kana","s":"Samurai Deeper Kyo Star Edition","t":"11","u":"https://www.kana.fr/produit/samurai-deeper-kyo-star-edition-t11/","d":"2026-12-11","f":"2026-10-09","m":0,"x":false},
