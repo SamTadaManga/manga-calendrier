@@ -4,6 +4,9 @@
   "siteUrl": "https://prochaintome.fr",
   "description": "Les sorties manga en France et les épisodes d'anime de la semaine, jour par jour.",
   "autoPublish": true,
+    "shops": {
+    "bdfugue": { "affiliate": "https://bdfugue.com/a/?ean={isbn}&ref=cRY31lIG" }
+  },
   "showCovers": true,
   "launched": false,
   "legal": {
