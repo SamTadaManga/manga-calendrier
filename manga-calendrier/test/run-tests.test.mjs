@@ -228,7 +228,7 @@ test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () =
   const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
   const env = { ...process.env, DATA_DIR: tmp, NOW: '2026-10-12T07:00:00Z', COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/publishers') };
   const out = execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-manga.mjs')], { env, encoding: 'utf8' });
-  assert.ok(/Glénat : 3/.test(out) && /Kana : 3/.test(out) && /Pika : 4/.test(out) && /Ki-oon : 3/.test(out) && !/Akata/.test(out), out);
+  assert.ok(/Glénat : 3/.test(out) && /Kana : 3/.test(out) && /Pika : 4/.test(out) && /Ki-oon : 3/.test(out) && /Akata : [1-9]/.test(out), out);
   const csv = readFileSync(path.join(tmp, 'manga-auto.csv'), 'utf8');
   assert.ok(!csv.includes('Lou ! Sonata'), 'la BD Glénat est exclue');
   assert.ok(!csv.includes('Vieux Titre') && !csv.includes('2026-05-20'), 'dates hors fenêtre exclues');

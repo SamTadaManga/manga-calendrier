@@ -114,18 +114,17 @@ const SOURCES = [
       return rows;
     },
   },
-  // Akata : désactivé pour l'instant. Pour le réactiver, déplace ce bloc dans SOURCES.
-  //   {
-  //     editeur: 'Akata',
-  //     async run() {
-  //       const rows = [];
-  //       for (const { ym } of months) {
-  //         const html = await get(`https://www.akata.fr/planning?date=${ym}`);
-  //         if (html) rows.push(...parseAkata(html));
-  //       }
-  //       return rows;
-  //     },
-  //   },
+  {
+    editeur: 'Akata',
+    async run() {
+      const rows = [];
+      for (const { ym } of months) {
+        const html = await get(`https://www.akata.fr/planning?date=${ym}`);
+        if (html) rows.push(...parseAkata(html));
+      }
+      return rows;
+    },
+  },
 ];
 
 /* ------------------------------------------------------------- exécution */
