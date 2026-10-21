@@ -16,3 +16,6 @@ jobs:
           node-version: 22
       - name: Repérer les pages de planning des éditeurs
         run: node scripts/probe-publishers.mjs
+      - name: Essayer les adresses classiques de planning
+        run: node scripts/probe-planning.mjs
+        continue-on-error: true
