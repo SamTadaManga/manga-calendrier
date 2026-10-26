@@ -350,10 +350,12 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
 <section class="week" aria-labelledby="t-week">
 <div class="week-head"><h1 id="t-week">Les sorties de la semaine</h1>
 <p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon et Akata. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
+<form class="home-search" action="/recherche/" method="get" role="search"><input type="search" name="q" placeholder="Chercher une série, un anime, un article" aria-label="Chercher sur le site" autocomplete="off"><button class="btn" type="submit">Chercher</button></form>
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
 <section class="pour-toi" id="pour-toi" aria-labelledby="t-pt" hidden><h2 id="t-pt">Pour toi cette semaine</h2><div id="pt-body"></div></section>
 <div class="since panel" id="since" hidden></div>
 <ul class="strip">${strip}</ul>
+<p class="more"><a href="/semaine/">Voir la semaine en détail</a></p>
 </section>
 <section class="two" aria-label="Aujourd'hui">
 <div>
@@ -379,7 +381,8 @@ ${recent.length ? `<section><h2>Derniers changements de date</h2><ul class="list
 <h2>Derniers articles</h2>
 ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p class="more"><a href="/articles/">Tous les articles</a></p>` : '<p class="empty">Les premiers articles arrivent bientôt.</p>'}
 </section>`;
-  page('/', { title: config.siteName, description: config.description, body });
+  page('/', { title: config.siteName, description: config.description, body,
+    extraHead: siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.siteName, url: `${base}/`, inLanguage: 'fr', potentialAction: { '@type': 'SearchAction', target: `${base}/recherche/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } }).replace(/</g, '\\u003c')}</script>` : '' });
 }
 
 /* ------------------------------------------------------- filtres (partagés) */
@@ -394,6 +397,9 @@ chips.forEach(function(c){var k=c.dataset.chip;c.setAttribute('aria-pressed',k==
 if(none)none.hidden=shown>0;}
 chips.forEach(function(c){c.addEventListener('click',function(){var k=c.dataset.chip;if(k==='tous')act={};else if(act[k])delete act[k];else act[k]=1;apply();});});
 q.addEventListener('input',apply);
+var SK='mc-f:'+location.pathname;
+try{var sf=JSON.parse(localStorage.getItem(SK)||'null');if(sf){if(sf.q)q.value=sf.q;(sf.a||[]).forEach(function(k){if(chips.some(function(c){return c.dataset.chip===k;}))act[k]=1;});if(sf.q||(sf.a||[]).length)apply();}}catch(e){}
+var _ap=apply;apply=function(){_ap();try{var a=Object.keys(act);if(!q.value&&!a.length)localStorage.removeItem(SK);else localStorage.setItem(SK,JSON.stringify({q:q.value,a:a}));}catch(e){}};
 var vb=document.getElementById('vues'),alt=null,NAMES=${JSON.stringify(PUBS)};
 function mk(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt)e.textContent=txt;return e;}
 function group(title,cls,items,span){var g=mk('section','daygroup');g.setAttribute('data-group','');var h=mk('h3','chip-day '+cls,title);if(span)h.appendChild(mk('span','now',span));g.appendChild(h);var ul=mk('ul','list panel');items.forEach(function(li){var c=li.cloneNode(true);c.hidden=false;var m=c.querySelector('.meta');if(m&&c.dataset.df){var t=mk('time','',c.dataset.df);t.setAttribute('datetime',c.dataset.d);m.insertBefore(t,m.firstChild);}ul.appendChild(c);});g.appendChild(ul);return g;}
@@ -562,7 +568,17 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const adaptHtml = adaptLine(S.name, 2);
     const airing = ae ? `<p class="adapt"><strong>Prochain épisode</strong> : <a href="/anime/#j-${ae.key}">${esc(displayTitle(ae.title))}</a>, épisode ${esc(ae.episode)} diffusé au Japon le ${esc(frShort(ae.key))} à ${esc(ae.time)} (heure de Paris).</p>` : '';
     const animeBox = adaptHtml || airing ? `<div class="bridge-box panel">${adaptHtml}${airing}</div>` : '';
+    const serieLd = siteUrlOk ? `<script type="application/ld+json">${JSON.stringify([
+      { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Séries', item: `${base}/series/` },
+        { '@type': 'ListItem', position: 3, name: S.name, item: `${base}/serie/${S.k}/` }] },
+      { '@context': 'https://schema.org', '@type': 'ComicSeries', name: S.name, inLanguage: 'fr', url: `${base}/serie/${S.k}/`,
+        ...(S.editeur ? { publisher: { '@type': 'Organization', name: S.editeur } } : {}),
+        ...(n && isIsbn13(n.isbn) ? { hasPart: { '@type': 'Book', name: mangaLabel(n), isbn: n.isbn, datePublished: n.date, bookFormat: 'https://schema.org/Paperback' } } : {}) },
+    ]).replace(/</g, '\\u003c')}</script>` : '';
     page(`/serie/${S.k}/`, {
+      extraHead: serieLd,
       title: `Prochain tome de ${S.name} : date de sortie en France`,
       description: n
         ? `${n.tome ? `Tome ${n.tome}` : 'Prochain volume'} de ${S.name} : sortie le ${frShort(n.date)}${n.editeur ? ` chez ${n.editeur}` : ''}. Tous les tomes annoncés et la date de chaque sortie.`
@@ -853,6 +869,38 @@ ${names.length ? `<h2>Sources</h2><div class="tbl-wrap"><table class="status-tab
   });
 }
 
+/* ------------------------------------------------------- semaine en détail */
+{
+  const live = manga.filter((r) => r.statut !== 'annule');
+  const days = Array.from({ length: 7 }, (_, i) => addDays(today, i));
+  const sec = days.map((d) => {
+    const m = live.filter((r) => r.date === d);
+    const a = eps.filter((e) => e.key === d).sort((x, y) => y.popularity - x.popularity);
+    const top = a.slice(0, 6).sort((x, y) => x.airingAt - y.airingAt);
+    return `<section class="daygroup" id="j-${d}"><h2 class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2>
+<div class="two"><div><h3>Manga</h3>${m.length ? `<ul class="list panel">${m.map((r) => releaseItem(r)).join('')}</ul>` : '<p class="empty">Aucune sortie enregistrée.</p>'}</div>
+<div><h3>Anime</h3>${a.length ? `<ul class="list panel eps">${top.map(showCovers ? animeRow : episodeItem).join('')}</ul><p class="muted more">${top.length < a.length ? `Les ${top.length} plus suivis sur ${a.length} épisodes. ` : ''}<a href="/anime/#j-${d}">Programme complet</a></p>` : '<p class="empty">Aucun épisode au programme.</p>'}</div></div></section>`;
+  }).join('\n');
+  page('/semaine/', {
+    title: 'Les sorties des 7 prochains jours',
+    description: 'Jour par jour pendant une semaine : sorties manga en France et épisodes d\'anime, horaires à l\'heure de Paris.',
+    body: `<h1>La semaine en détail</h1><p class="lead">Les sept prochains jours, manga et anime côte à côte. ${animeNotice() ? '' : ''}Les dates peuvent changer : la fiche de l'éditeur fait foi.</p>${animeNotice()}<nav class="kind-nav" aria-label="Jours">${days.map((d) => `<a href="#j-${d}">${esc(d === today ? "Aujourd'hui" : ucfirst(weekday(d)) + ' ' + dayNum(d))}</a>`).join('')}</nav>${sec}`,
+  });
+  SEO_URLS.push('/semaine/');
+}
+
+/* ------------------------------------------------------- page de recherche */
+page('/recherche/', {
+  title: 'Recherche',
+  description: 'Chercher une série manga, un anime ou un article.',
+  noindex: true,
+  body: `<h1>Recherche</h1>
+<form class="home-search" action="/recherche/" method="get" role="search"><input type="search" name="q" id="rq" placeholder="Chercher une série, un anime, un article" aria-label="Recherche" autocomplete="off"><button class="btn" type="submit">Chercher</button></form>
+<div id="rres" aria-live="polite"></div>
+<noscript><p>La recherche a besoin de JavaScript. Tu peux parcourir la <a href="/series/">liste des séries</a> ou les <a href="/articles/">articles</a>.</p></noscript>
+<script src="/resultats.js" defer></script>`,
+});
+
 /* ----------------------------------------------------------------- articles */
 {
   const SECTIONS = [
@@ -1018,7 +1066,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date) })),
   }));
 }
-for (const f of ['visite.js', 'recherche.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['visite.js', 'recherche.js', 'resultats.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',

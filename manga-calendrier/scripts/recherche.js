@@ -18,7 +18,7 @@
     input.addEventListener('keydown', function (e) {
       if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
       else if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
-      else if (e.key === 'Enter') { var a = list.querySelector('a.on') || list.querySelector('a'); if (a) { e.preventDefault(); location.href = a.href; } }
+      else if (e.key === 'Enter') { var a = list.querySelector('a.on') || list.querySelector('a'); if (a) { e.preventDefault(); location.href = a.href; } else if (input.value.trim()) { e.preventDefault(); location.href = '/recherche/?q=' + encodeURIComponent(input.value.trim()); } }
       else if (e.key === 'Escape') { e.preventDefault(); close(); }
     });
     document.body.appendChild(box);
@@ -54,7 +54,8 @@
       });
     });
     if (!total) list.appendChild(h('li', 'srch-empty', 'Aucun résultat pour « ' + input.value.trim() + ' ».'));
-    else { cur = 0; items[0].classList.add('on'); }
+    else {
+      var all = h('li', 'srch-row'); var aa = h('a'); aa.href = '/recherche/?q=' + encodeURIComponent(input.value.trim()); aa.appendChild(h('strong', '', 'Voir tous les résultats')); all.appendChild(aa); list.appendChild(all); items.push(aa); cur = 0; items[0].classList.add('on'); }
   }
 
   function move(d) {

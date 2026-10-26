@@ -532,3 +532,6 @@ a.stream.shop-sm,.shops-sm a.stream{flex:1 1 0;min-width:0;padding:0 2px;height:
 .kind-nav a:hover{box-shadow:3px 3px 0 var(--ink)}
 .art-sec{margin:0 0 28px}.art-sec h2{margin-bottom:2px}
 details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:800}
+
+.home-search{display:flex;gap:8px;margin:12px 0;max-width:560px}
+.home-search input{flex:1;min-width:0;padding:10px 12px;border:2px solid var(--ink);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit}

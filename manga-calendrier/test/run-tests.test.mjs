@@ -607,3 +607,16 @@ test('page des articles : séparation quotidien / hebdomadaire', () => {
   assert.match(h, /id="t-hebdo"/); assert.match(h, /id="t-quotidien"/); assert.match(h, /id="t-mensuel"/);
   assert.ok(h.indexOf('t-hebdo') < h.indexOf('id="t-quotidien"'));
 });
+
+test('phase 2 : pages /semaine/ et /recherche/, moteur de résultats copié', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'p2-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  assert.ok(existsSync(path.join(out, 'semaine/index.html')));
+  assert.ok(existsSync(path.join(out, 'resultats.js')));
+  assert.match(readFileSync(path.join(out, 'recherche/index.html'), 'utf8'), /noindex/);
+  assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /action="\/recherche\/"/);
+});
