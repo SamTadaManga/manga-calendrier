@@ -1,0 +1,1766 @@
+{
+ "generatedAt": "2026-10-26T14:10:22.934Z",
+ "seasons": [
+  {
+   "season": "FALL",
+   "year": 2026,
+   "items": [
+    {
+     "id": 195539,
+     "t": "Cyberpunk: Edgerunners 2",
+     "f": "ONA",
+     "st": "FINISHED",
+     "n": 10,
+     "d": [
+      2026,
+      10,
+      20
+     ],
+     "u": "https://anilist.co/anime/195539",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195539-4LdfmKIHzuxr.png",
+     "g": [
+      "Action",
+      "Drama",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81744227"
+      }
+     ]
+    },
+    {
+     "id": 195516,
+     "t": "The Apothecary Diaries Season 3",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      2
+     ],
+     "u": "https://anilist.co/anime/195516",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195516-MJpUZlOberqH.jpg",
+     "g": [
+      "Drama",
+      "Mystery"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/G3KHEVDJ7/the-apothecary-diaries"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/us/title/81712068"
+      }
+     ]
+    },
+    {
+     "id": 195604,
+     "t": "Black Clover Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      3
+     ],
+     "u": "https://anilist.co/anime/195604",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195604-tSZcfKbVqSEG.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GRE50KV36/black-clover"
+      }
+     ]
+    },
+    {
+     "id": 159042,
+     "t": "Reincarnated as a Sword Season 2",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      1
+     ],
+     "u": "https://anilist.co/anime/159042",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx159042-GGFwlDskc5vR.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/gp/video/detail/B0HLCHQS6T"
+      }
+     ]
+    },
+    {
+     "id": 189123,
+     "t": "Blue Box Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/189123",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189123-0secXELIhkIW.jpg",
+     "g": [
+      "Romance",
+      "Slice of Life",
+      "Sports"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81663323"
+      }
+     ]
+    },
+    {
+     "id": 212888,
+     "t": "Overgeared",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      9,
+      27
+     ],
+     "u": "https://anilist.co/anime/212888",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212888-NhyvqPt5aIuJ.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384004"
+      }
+     ]
+    },
+    {
+     "id": 210482,
+     "t": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 11,
+     "d": [
+      2026,
+      9,
+      25
+     ],
+     "u": "https://anilist.co/anime/210482",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210482-P1VNKbqdJ6Zj.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Drama"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/82116553"
+      }
+     ]
+    },
+    {
+     "id": 205909,
+     "t": "Firefly Wedding",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      9
+     ],
+     "u": "https://anilist.co/anime/205909",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205909-DM0fAzNQulod.jpg",
+     "g": [
+      "Drama",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383999"
+      }
+     ]
+    },
+    {
+     "id": 160275,
+     "t": "Made in Abyss: Mezameru Shinpi",
+     "f": "MOVIE",
+     "st": "FINISHED",
+     "n": 1,
+     "d": [
+      2026,
+      10,
+      23
+     ],
+     "u": "https://anilist.co/anime/160275",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx160275-cBOWJpcCGeMq.jpg",
+     "g": [
+      "Adventure",
+      "Drama",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 191656,
+     "t": "Even the Student Council Has Its Holes!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/191656",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191656-xFHtxM8SUTdU.png",
+     "g": [
+      "Comedy",
+      "Ecchi",
+      "Slice of Life"
+     ],
+     "s": []
+    },
+    {
+     "id": 143103,
+     "t": "Witch on the Holy Night",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2026,
+      11,
+      20
+     ],
+     "u": "https://anilist.co/anime/143103",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143103-vvsaIpZPpIuE.png",
+     "g": [
+      "Action",
+      "Drama",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 207329,
+     "t": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      7
+     ],
+     "u": "https://anilist.co/anime/207329",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/b207329-6VPeZIDfF4Sr.png",
+     "g": [
+      "Adventure",
+      "Comedy",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384016/"
+      }
+     ]
+    },
+    {
+     "id": 178083,
+     "t": "Tokyo Revengers: War of the Three Titans Arc",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 13,
+     "d": [
+      2026,
+      10,
+      3
+     ],
+     "u": "https://anilist.co/anime/178083",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178083-bg7pg6TCHwtG.jpg",
+     "g": [
+      "Action",
+      "Drama",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 213805,
+     "t": "The Ramparts of Ice Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      1
+     ],
+     "u": "https://anilist.co/anime/213805",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213805-Nokui3uWlIlw.png",
+     "g": [
+      "Comedy",
+      "Drama",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/82031882"
+      }
+     ]
+    },
+    {
+     "id": 199340,
+     "t": "Rascal Does Not Dream of a Dear Friend",
+     "f": "MOVIE",
+     "st": "FINISHED",
+     "n": 1,
+     "d": [
+      2026,
+      10,
+      16
+     ],
+     "u": "https://anilist.co/anime/199340",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199340-YQlmzvmcJzyt.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 172192,
+     "t": "A Returner's Magic Should be Special Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      8
+     ],
+     "u": "https://anilist.co/anime/172192",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx172192-W7P5xEUaxF3y.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GEXH3W207/a-returners-magic-should-be-special"
+      }
+     ]
+    },
+    {
+     "id": 200929,
+     "t": "The Apothecary Diaries: The Late Lady’s Treasure",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2026,
+      12,
+      11
+     ],
+     "u": "https://anilist.co/anime/200929",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200929-dx3hnftE7K7C.jpg",
+     "g": [
+      "Drama",
+      "Mystery"
+     ],
+     "s": []
+    },
+    {
+     "id": 185756,
+     "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      9,
+      27
+     ],
+     "u": "https://anilist.co/anime/185756",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185756-xPCl0RyQ7fXD.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GG5H5XQMD/as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world"
+      }
+     ]
+    },
+    {
+     "id": 206814,
+     "t": "Dragon Ball Super: Beerus",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      11
+     ],
+     "u": "https://anilist.co/anime/206814",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206814-PVVzRbf1IQpe.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/83189604"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00389311/dragon-ball-super-beerus"
+      }
+     ]
+    },
+    {
+     "id": 207191,
+     "t": "Hello, I am a Witch and my Crush Wants me to Make a Love Potion!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/207191",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207191-VgkIzfH92WoZ.jpg",
+     "g": [
+      "Fantasy",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00378072/hello-i-am-a-witch-and-my-crush-wants-me-to-make-a-love-potion"
+      }
+     ]
+    },
+    {
+     "id": 208025,
+     "t": "I'm Dating a Dark Summoner",
+     "f": "TV_SHORT",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/208025",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208025-JKvqWNr8rz8l.jpg",
+     "g": [
+      "Comedy",
+      "Ecchi",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 186541,
+     "t": "Reborn as a Space Mercenary: I Woke Up Piloting the Strongest Starship!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 13,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/186541",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186541-caYpLsLmbCh7.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Drama"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384006/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship"
+      }
+     ]
+    },
+    {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 152677,
+     "t": "The Detective Is Already Dead Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 13,
+     "d": [
+      2026,
+      10,
+      7
+     ],
+     "u": "https://anilist.co/anime/152677",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx152677-gtJbgjE94lCN.png",
+     "g": [
+      "Comedy",
+      "Drama",
+      "Mystery"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/the-detective-is-already-dead"
+      }
+     ]
+    },
+    {
+     "id": 191788,
+     "t": "Aoashi Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 24,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/191788",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191788-XC6F24LdX6a4.jpg",
+     "g": [
+      "Sports"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/aoashi"
+      }
+     ]
+    },
+    {
+     "id": 213457,
+     "t": "Fool Night",
+     "f": "ONA",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2026,
+      11,
+      26
+     ],
+     "u": "https://anilist.co/anime/213457",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81991076"
+      }
+     ]
+    },
+    {
+     "id": 204389,
+     "t": "A Wild Last Boss Appeared! Season 2",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      9,
+      26
+     ],
+     "u": "https://anilist.co/anime/204389",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204389-jCoFCeTthDMy.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00361955/a-wild-last-boss-appeared"
+      }
+     ]
+    },
+    {
+     "id": 169581,
+     "t": "Magical Explorer",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 13,
+     "d": [
+      2026,
+      9,
+      27
+     ],
+     "u": "https://anilist.co/anime/169581",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169581-UlAviVH36Hxi.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Ecchi"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
+      }
+     ]
+    },
+    {
+     "id": 202250,
+     "t": "Magic Repo Man: Dumped by My Party, I’ll Cash In With a Cute Support Fairy to Become the Strongest!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/202250",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202250-mpm2cvr92Au2.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00385867/magic-repo-man-dumped-by-my-party-ill-cash-in-with-a-cute-support-fairy-to-become-the-strongest"
+      }
+     ]
+    },
+    {
+     "id": 204011,
+     "t": "PSYREN",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/204011",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204011-j45RZoqYbdZK.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00371866/psyren"
+      }
+     ]
+    },
+    {
+     "id": 212503,
+     "t": "The Iceblade Sorcerer Shall Rule the World II",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      9
+     ],
+     "u": "https://anilist.co/anime/212503",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212503-sXBpRZr96c4e.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GDKHZEP21/the-iceblade-sorcerer-shall-rule-the-world"
+      }
+     ]
+    },
+    {
+     "id": 209502,
+     "t": "The Cold Sato-san is Only Sweet to Me",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/209502",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
+     "g": [
+      "Comedy",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
+      }
+     ]
+    },
+    {
+     "id": 209219,
+     "t": "So What's Wrong with Getting Reborn as a Goblin?",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/209219",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
+      }
+     ]
+    },
+    {
+     "id": 204650,
+     "t": "TOUGEN ANKI: Nikko Kegon Falls Arc",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      2
+     ],
+     "u": "https://anilist.co/anime/204650",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204650-cAQOzQ84Lwk8.png",
+     "g": [
+      "Action",
+      "Mystery",
+      "Supernatural"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GP5HJ84D2/tougen-anki"
+      },
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/dp/B0FCM3YGCQ"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81969861"
+      }
+     ]
+    },
+    {
+     "id": 187402,
+     "t": "A Tale of the Secret Saint",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      3
+     ],
+     "u": "https://anilist.co/anime/187402",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187402-ReKkLwFmMV3q.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00371633"
+      }
+     ]
+    },
+    {
+     "id": 206401,
+     "t": "FX Fighter Kurumi-chan",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      1
+     ],
+     "u": "https://anilist.co/anime/206401",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
+     "g": [
+      "Drama",
+      "Slice of Life"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://crunchyroll.com/series/GT00384001/fx-fighter-kurumi-chan"
+      }
+     ]
+    },
+    {
+     "id": 205896,
+     "t": "Full Clearing Another World under a Goddess with Zero Believers",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      11
+     ],
+     "u": "https://anilist.co/anime/205896",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+      }
+     ]
+    },
+    {
+     "id": 209872,
+     "t": "Ranma1/2 (2024) Season 3",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/209872",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209872-RBeVPqwejHFp.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81171925"
+      }
+     ]
+    },
+    {
+     "id": 211778,
+     "t": "The World's Strongest Witch",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      7
+     ],
+     "u": "https://anilist.co/anime/211778",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211778-0MXK5HqVFBYH.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384009/the-worlds-strongest-witch"
+      }
+     ]
+    },
+    {
+     "id": 180894,
+     "t": "Romelia War Chronicle",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 24,
+     "d": [
+      2026,
+      10,
+      3
+     ],
+     "u": "https://anilist.co/anime/180894",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx180894-o3pz4DWFm3je.png",
+     "g": [
+      "Adventure",
+      "Drama",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384007/romelia-war-chronicle"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "season": "WINTER",
+   "year": 2027,
+   "items": [
+    {
+     "id": 177704,
+     "t": "MASHLE: Sanma Taisou Shinkakusha Saishuu Shiken-hen",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/177704",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx177704-y10Nw7MUXCHD.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 189323,
+     "t": "Shangri-La Frontier Season 3",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      10
+     ],
+     "u": "https://anilist.co/anime/189323",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189323-gHXhqIOBUY8F.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 186822,
+     "t": "The Guy She Was Interested In Wasn't a Guy At All",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      8
+     ],
+     "u": "https://anilist.co/anime/186822",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186822-9zsR5NtOP0yJ.jpg",
+     "g": [
+      "Music",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 169579,
+     "t": "Sekai Saikou no Ansatsusha, Isekai Kizoku ni Tensei suru 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/169579",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169579-KxMH0iq7jlPr.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Drama"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GMEHME55K/the-worlds-finest-assassin-gets-reincarnated-in-another-world-as-an-aristocrat"
+      }
+     ]
+    },
+    {
+     "id": 204363,
+     "t": "SAKAMOTO DAYS Season 2",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/204363",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204363-rDHWhXs48Ygl.jpg",
+     "g": [
+      "Action",
+      "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 197620,
+     "t": "Sekiro: No Defeat",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 8,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/197620",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197620-COEsbB1otIdR.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 204747,
+     "t": "One Punch Man Season 3 Part 2",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/204747",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204747-INMrngH10Kwq.png",
+     "g": [
+      "Action",
+      "Comedy",
+      "Sci-Fi"
+     ],
+     "s": []
+    },
+    {
+     "id": 213752,
+     "t": "MARRIAGETOXIN 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213752",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213752-UNsERPORVGfJ.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 202564,
+     "t": "Kakunaru Ue wa",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/202564",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202564-gLnCiyS8vHsB.jpg",
+     "g": [
+      "Comedy",
+      "Ecchi",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 204579,
+     "t": "Jirai nan desu ka? Chihara-san",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      8
+     ],
+     "u": "https://anilist.co/anime/204579",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204579-eIieS4KuQN9x.jpg",
+     "g": [
+      "Comedy",
+      "Romance",
+      "Slice of Life"
+     ],
+     "s": []
+    },
+    {
+     "id": 209980,
+     "t": "Isekai de Cheat Skill wo Te ni Shita Ore wa, Genjitsu Sekai wo mo Musou Suru: Level Up wa Jinsei wo Kaeta 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/209980",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209980-CTTwiweBKBS2.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 217070,
+     "t": "Futsutsuka na Akujo de wa Gozaimasu ga: Suuguu Chouso Torikae Den Part 2",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/217070",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx217070-Muh7Kjw4RQsi.jpg",
+     "g": [
+      "Drama",
+      "Fantasy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 188892,
+     "t": "Kuroiwa Medaka ni Watashi no Kawaii ga Tsuujinai 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/188892",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx188892-KpzXYChwPxyT.jpg",
+     "g": [
+      "Comedy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 190244,
+     "t": "Date A Live F Last Date",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2027,
+      3,
+      26
+     ],
+     "u": "https://anilist.co/anime/190244",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx190244-u2yo4hPmVp6Z.png",
+     "g": [
+      "Action",
+      "Comedy",
+      "Ecchi"
+     ],
+     "s": []
+    },
+    {
+     "id": 216624,
+     "t": "SSS-Class Revival Hunter",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/216624",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx216624-ZgSowlLTtu3G.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 213360,
+     "t": "Akane-banashi 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213360",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213360-xNEWCLeQkXkI.jpg",
+     "g": [
+      "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 186741,
+     "t": "Himekishi-sama no Himo",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/186741",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186741-jfAFI71jie1x.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 194213,
+     "t": "ghost – end of night",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2027,
+      2,
+      11
+     ],
+     "u": "https://anilist.co/anime/194213",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-hbKL5BMfdtcK.jpg",
+     "g": [
+      "Supernatural"
+     ],
+     "s": []
+    },
+    {
+     "id": 196333,
+     "t": "Hirayasumi",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/196333",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196333-HRmwgn8j8tvi.jpg",
+     "g": [
+      "Comedy",
+      "Drama",
+      "Slice of Life"
+     ],
+     "s": []
+    },
+    {
+     "id": 206298,
+     "t": "Medalist Movie",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2027,
+      2,
+      19
+     ],
+     "u": "https://anilist.co/anime/206298",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206298-q8wPQWpcT4WV.png",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Sports"
+     ],
+     "s": []
+    },
+    {
+     "id": 205130,
+     "t": "Historié",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/205130",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205130-dC5WuIvGMMgr.png",
+     "g": [
+      "Adventure",
+      "Drama",
+      "Psychological"
+     ],
+     "s": []
+    },
+    {
+     "id": 208766,
+     "t": "Bless",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/208766",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208766-FIvJRb63ztBJ.jpg",
+     "g": [
+      "Slice of Life"
+     ],
+     "s": []
+    },
+    {
+     "id": 207251,
+     "t": "Mairimashita! Iruma-kun: If Episode of Mafia",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/207251",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207251-9HLT5632FOMw.jpg",
+     "g": [
+      "Action",
+      "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 197619,
+     "t": "Bride of the Barrier Master",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/197619",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197619-dxMkg18OwS7r.png",
+     "g": [
+      "Drama",
+      "Fantasy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 200578,
+     "t": "Isshiki-san wa Koi wo Shiritai.",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/200578",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200578-F1U6GNXA0p3l.png",
+     "g": [
+      "Action",
+      "Comedy",
+      "Ecchi"
+     ],
+     "s": []
+    },
+    {
+     "id": 189121,
+     "t": "BanG Dream! MyGO!!!!! // Ave Mujica",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      8
+     ],
+     "u": "https://anilist.co/anime/189121",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189121-m3EHJ33Y8jgT.png",
+     "g": [
+      "Music"
+     ],
+     "s": []
+    },
+    {
+     "id": 210199,
+     "t": "The Fable 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      10
+     ],
+     "u": "https://anilist.co/anime/210199",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210199-THddm86dG5PI.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 213877,
+     "t": "MURCIÉLAGO",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213877",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213877-NK48aPaVO29y.jpg",
+     "g": [],
+     "s": []
+    },
+    {
+     "id": 209661,
+     "t": "Magical Buffs: The Support Caster is Stronger Than He Realized!",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      4
+     ],
+     "u": "https://anilist.co/anime/209661",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209661-RHN7Jp3VPdFV.jpg",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 213052,
+     "t": "Dengeki Daisy",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213052",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213052-RzCXgG576ilW.jpg",
+     "g": [
+      "Comedy",
+      "Drama",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 174427,
+     "t": "Zombie no Afureta Sekai de Ore dake ga Osowarenai",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/174427",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174427-ozv3bFtwB08m.jpg",
+     "g": [
+      "Action",
+      "Ecchi",
+      "Supernatural"
+     ],
+     "s": []
+    },
+    {
+     "id": 213497,
+     "t": "Sudachi no Maoujou",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213497",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213497-bi5uWSWWtGmH.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 202282,
+     "t": "Disney Twisted-Wonderland: THE ANIMATION - Season 2: EPISODE of SAVANACLAW",
+     "f": "ONA",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2026,
+      12,
+      0
+     ],
+     "u": "https://anilist.co/anime/202282",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202282-4KJHHwWKebwv.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 202503,
+     "t": "Majutsu wo Kiwamete Tabi ni Deta Tensei Elf, Moteamashita Jumyou de Ikeru Densetsu to Naru",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/202503",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202503-U8b43fpnu9EI.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 207782,
+     "t": "Odebu Akujo ni Tensei Shitara, Naze ka Last Boss Ouji-sama ni Shuuchaku Sareteimasu",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/207782",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207782-wKac51K7adn3.jpg",
+     "g": [
+      "Fantasy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 187303,
+     "t": "Giant Ojou-sama",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/187303",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Ecchi"
+     ],
+     "s": []
+    },
+    {
+     "id": 194030,
+     "t": "Gacha wo Mawashite Nakama wo Fuyasu: Saikyou no Bishoujo Gundan wo Tsukuriagero",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/194030",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194030-vUznQtK7kodY.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 198728,
+     "t": "Kaze wo Tsugumono",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/198728",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-RguTjB254b7H.jpg",
+     "g": [
+      "Action"
+     ],
+     "s": []
+    },
+    {
+     "id": 197095,
+     "t": "Kaketa Tsuki no Mercedes",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/197095",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197095-NultpVkKUJWz.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 199590,
+     "t": "Matsurika Kanriden",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/199590",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199590-gMBbisGLCZxa.png",
+     "g": [
+      "Drama",
+      "Fantasy",
+      "Romance"
+     ],
+     "s": []
+    }
+   ]
+  }
+ ]
+}
