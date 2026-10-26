@@ -42,6 +42,9 @@ jobs:
       - name: Adaptations animées des séries manga
         run: node scripts/fetch-adaptations.mjs
         continue-on-error: true
+      - name: Anime de la saison
+        run: node scripts/fetch-season.mjs
+        continue-on-error: true
       - name: Épisodes d'anime
         run: node scripts/fetch-anime.mjs
       - name: Traduction des synopsis d'anime en français
@@ -77,3 +80,5 @@ jobs:
             echo "Push refusé (essai $i), nouvel essai…"; sleep 5
           done
           exit 1
+      - name: Contrôle de fraîcheur des sources
+        run: node scripts/check-status.mjs

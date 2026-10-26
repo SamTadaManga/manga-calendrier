@@ -34,12 +34,16 @@ export function shopsFrom(config) {
   const conf = config && typeof config.shops === 'object' && config.shops ? config.shops : {};
   return SHOPS.filter((s) => conf[s.id]?.enabled !== false).map((s) => {
     const aff = typeof conf[s.id]?.affiliate === 'string' ? conf[s.id].affiliate.trim() : '';
-    return { ...s, affiliate: /^https:\/\/[^\s"<>]+$/.test(aff) ? aff : '' };
+    const tag = typeof conf[s.id]?.tag === 'string' && /^[a-z0-9][a-z0-9-]{2,39}$/i.test(conf[s.id].tag.trim()) ? conf[s.id].tag.trim() : '';
+    const affiliate = /^https:\/\/[^\s"<>]+$/.test(aff) ? aff : '';
+    // « tag » : identifiant partenaire Amazon (ex. prochaintome-21), ajouté à l'adresse normale, y compris pour les ISBN en 979 sans adresse directe
+    return { ...s, affiliate, tag: s.id === 'amazon' && !affiliate ? tag : '', sponsored: Boolean(affiliate || (s.id === 'amazon' && tag)) };
   });
 }
 
 export function buyUrl(shop, isbn) {
   const url = shop.url(isbn);
+  if (shop.tag) return `${url}${url.includes('?') ? '&' : '?'}tag=${encodeURIComponent(shop.tag)}`;
   if (!shop.affiliate) return url;
   return fill(shop.affiliate, { isbn, isbn10: isbn10Of(isbn), url, urlenc: encodeURIComponent(url) });
 }
