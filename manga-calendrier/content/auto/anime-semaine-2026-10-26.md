@@ -1,12 +1,12 @@
 ---
 title: "Anime : la semaine du lundi 26 octobre 2026"
 date: 2026-10-26
-description: "101 épisodes d'anime cette semaine. Les plus suivis : The Apothecary Diaries Season 3, Black Clover Season 2, BLEACH: Thousand-Year Blood War - The Calamity…"
+description: "102 épisodes d'anime cette semaine. Les plus suivis : The Apothecary Diaries Season 3, Black Clover Season 2, BLEACH: Thousand-Year Blood War - The Calamity…"
 auto: true
 draft: false
 ---
 
-Cette semaine, 101 épisodes d'anime sont diffusés au Japon, répartis sur 100 séries. Les horaires de chaque jour sont sur la page [Anime](/anime/), à l'heure de Paris.
+Cette semaine, 102 épisodes d'anime sont diffusés au Japon, répartis sur 101 séries. Les horaires de chaque jour sont sur la page [Anime](/anime/), à l'heure de Paris.
 
 ## Les séries les plus suivies
 
