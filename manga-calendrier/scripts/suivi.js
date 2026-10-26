@@ -66,7 +66,7 @@
   var own = loadOwn();
   function saveOwn() { try { localStorage.setItem(OWN_KEY, JSON.stringify(own)); } catch (e) { stored = false; } }
   /* statut par tome : { slug : { numéro : 'a' (à acheter) | 'p' (précommandé) | 'l' (lu) } } */
-  var TM_KEY = 'mc-tome', TM = { a: 'À acheter', p: 'Précommandé', l: 'Lu' };
+  var TM_KEY = 'mc-tome', TM = { a: 'À acheter', p: 'Précommandé', r: 'À lire', l: 'Lu' };
   function loadTm() {
     try {
       var v = JSON.parse(localStorage.getItem(TM_KEY) || '{}'), o = {};
