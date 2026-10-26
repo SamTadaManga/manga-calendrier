@@ -931,3 +931,23 @@ test('dossiers automatiques : fichiers générés, idempotents, section dédiée
   assert.match(a, /id="t-dossier"/); assert.match(a, /Dossiers du mois/);
   assert.doesNotMatch(readFileSync(path.join(auto, 'dossier-kana-2026-11.md'), 'utf8'), /href="\/serie\/serie-fictive/);
 });
+
+test('accueil : boutons de streaming sur les tuiles anime du jour ; articles : sélecteur de type et boutons', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'ui-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data); mkdirSync(path.join(tmp, 'a'));
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  writeFileSync(path.join(tmp, 'a/x.md'), '---\ntitle: "Essai"\ndate: 2026-10-01\ndraft: false\n---\n\nTexte.\n');
+  writeFileSync(path.join(tmp, 'a/auto.md'), '---\ntitle: "Sorties"\ndate: 2026-10-05\nauto: true\ndraft: false\n---\n\n- **Série** (Kana)\n  → [Calendrier manga](/manga/) · [Page de la série](/serie/serie-fictive-alpha/)\n');
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, showCovers: true }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: out, CONFIG_FILE: cfg, NOW: '2026-10-12T07:00:00Z' };
+  const run = (s, ...a) => execFileSync(process.execPath, [path.join(ROOT, 'scripts', s), ...a], { env, encoding: 'utf8' });
+  run('fetch-anime.mjs', '--from-file', path.join(ROOT, 'test/mock-anilist.json'));
+  run('fetch-adaptations.mjs', '--from-file', path.join(ROOT, 'test/mock-adaptations.json'));
+  run('build.mjs');
+  assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /class="shops shops-sm t-shops"><a class="stream s-crunchyroll"/);
+  const arts = readFileSync(path.join(out, 'articles/index.html'), 'utf8');
+  assert.match(arts, /<select id="art-type">/); assert.match(arts, /id="t-quotidien"|id="t-redac"/);
+  assert.match(readFileSync(path.join(out, 'articles/auto/index.html'), 'utf8'), /<span class="art-acts"><a class="chip"[^>]*>Calendrier manga<\/a><a class="chip"[^>]*>Page de la série<\/a><\/span>/);
+});

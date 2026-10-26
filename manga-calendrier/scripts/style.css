@@ -656,3 +656,18 @@ ul.hscroll .tile-body .follow,ul.hscroll .tile-body .afollow{margin-top:4px}
 .fdet[open]>summary::after{content:"▴"}
 .fpanel{position:absolute;z-index:20;top:calc(100% + 6px);left:0;width:min(34rem,calc(100vw - 32px));background:var(--panel);border:2px solid var(--edge);border-radius:10px;padding:12px;box-shadow:4px 4px 0 var(--shadow);max-height:70vh;overflow:auto}
 .fgrp{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}.fgrp:last-child{margin:0}.fgrp .fsep{flex:0 0 100%;margin:0 0 2px;font-weight:700}
+
+/* Boutons des articles (liens « Calendrier manga · Page de la série ») */
+.art-acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;font-family:var(--sans)}
+.post .art-acts a.chip{min-height:34px;padding:4px 12px;font-size:.88rem;font-weight:800;background:var(--panel);box-shadow:3px 3px 0 var(--shadow);text-decoration:none}
+.post .art-acts a.chip:hover{background:var(--brand);color:#111}
+.post .art-acts a.chip:first-child::before{content:"▸";margin-right:2px}
+/* Filtres : le panneau reste dans l'écran sur mobile */
+.filters{position:relative}
+@media (max-width:700px){.fdet{position:static}.fpanel{left:0;right:0;width:auto;max-width:100%}}
+/* Mobile : « Suivre » est en haut à droite, la ligne « Je l'ai » + statut lui laisse la place */
+@media(max-width:759px){
+  .rel:has(.rel-acts) .rel-acts{padding-right:96px;flex-wrap:nowrap}
+  .rel-acts .own{min-width:0;padding:0 8px;flex:0 0 auto}
+  .rel-acts .tst{width:auto;flex:1 1 0;min-width:0}
+}

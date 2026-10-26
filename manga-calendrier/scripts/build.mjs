@@ -389,9 +389,11 @@ function animeTile(e) {
   const url = esc(animeHref(e));
   return `<li class="tile p-anime"><a class="tile-cover t-cover" href="${url}" aria-label="${t} : où regarder">${coverBox(e.cover, `Affiche de ${displayTitle(e.title)}`, 160, 240)}</a>`
     + `<div class="tile-body"><div class="t-title"><strong><a href="${url}">${t}</a></strong><span class="tome">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span></div>`
-    + `<div class="tile-date"><time>${esc(e.time)}</time></div>${isPremiere(e) ? PREMIERE_BADGE : ''}${afollow(e)}</div></li>`;
+    + `<div class="tile-date"><time>${esc(e.time)}</time></div>${isPremiere(e) ? PREMIERE_BADGE : ''}${afollow(e)}${streamChips(e) ? `<div class="shops shops-sm t-shops">${streamChips(e)}</div>` : ''}</div></li>`;
 }
 
+// Les lignes « → Calendrier manga · Page de la série » des articles automatiques deviennent de vrais boutons
+const artHtml = (body) => markdown(body).replace(/<br>→ ((?:<a [^>]*>[^<]*<\/a>(?: · )?)+)/g, (m, links) => `<span class="art-acts">${links.replace(/ · /g, '').replace(/<a /g, '<a class="chip" ')}</span>`);
 const KIND_LABEL = { quotidien: 'Quotidien', hebdo: 'Hebdomadaire', mensuel: 'Mensuel', changements: 'Changements', dossier: 'Dossier', redac: 'Rédaction' };
 const kindBadge = (a) => `<span class="kind k-${a.kind}">${KIND_LABEL[a.kind] || ''}</span>`;
 const articleItem = (a) =>
@@ -763,7 +765,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
     description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika, Ki-oon et Akata.`,
     body: `<h1>Séries manga</h1>
 <p class="lead">${esc(plural(seriesList.length, 'série suivie', 'séries suivies'))} dans les plannings des éditeurs. Clique sur une série pour voir la date de son prochain tome.</p>
-${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série"></div>
+${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" data-gs placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"></div>
 <p class="empty" id="aucun" hidden>Aucune série ne correspond.</p>${az}${FILTER_JS}` : '<p class="empty">Les séries apparaîtront après la première collecte.</p>'}`,
   });
   /* ------------------------------------------------------------- pages de genres et sélection « séries terminées » (sélections éditoriales construites à partir des données AniList) */
@@ -1219,7 +1221,7 @@ page('/recherche/', {
     ['redac', 'Dossiers et actualités', '', 20],
   ];
   const groups = SECTIONS.map(([k, t, d, n]) => ({ k, t, d, n, list: articles.filter((a) => a.kind === k) })).filter((g) => g.list.length);
-  const nav = groups.length > 1 ? `<nav class="kind-nav" aria-label="Types d'articles">${groups.map((g) => `<a href="#t-${g.k}">${esc(g.t)} <span class="badge">${g.list.length}</span></a>`).join('')}</nav>` : '';
+  const nav = groups.length > 1 ? `<div class="filters" id="art-filtre" hidden><label class="p-lab"><span>Type d'article</span><select id="art-type"><option value="">Tous les types (${articles.length})</option>${groups.map((g) => `<option value="${g.k}">${esc(g.t)} (${g.list.length})</option>`).join('')}</select></label></div><noscript><nav class="kind-nav" aria-label="Types d'articles">${groups.map((g) => `<a href="#t-${g.k}">${esc(g.t)}</a>`).join('')}</nav></noscript><script>document.addEventListener('DOMContentLoaded',function(){var f=document.getElementById('art-filtre'),s=document.getElementById('art-type');if(!f||!s)return;f.hidden=false;var secs=[].slice.call(document.querySelectorAll('.art-sec'));function ap(){secs.forEach(function(e){e.hidden=!!s.value&&e.id!=='t-'+s.value;});try{history.replaceState(null,'',s.value?'#t-'+s.value:location.pathname);}catch(e){}}s.addEventListener('change',ap);var h=location.hash.replace('#t-','');if(h&&[].some.call(s.options,function(o){return o.value===h;})){s.value=h;}ap();});</script>` : '';
   const sectionHtml = groups.map((g) => `<section class="art-sec" id="t-${g.k}"><h2>${esc(g.t)}</h2>${g.d ? `<p class="muted">${esc(g.d)}</p>` : ''}<ul class="articles">${g.list.slice(0, g.n).map(articleItem).join('')}</ul>${g.list.length > g.n ? `<details class="older"><summary>Voir les ${g.list.length - g.n} plus anciens</summary><ul class="articles">${g.list.slice(g.n).map(articleItem).join('')}</ul></details>` : ''}</section>`).join('');
   page('/articles/', {
     title: 'Articles',
@@ -1234,7 +1236,7 @@ page('/recherche/', {
     page(`/articles/${a.slug}/`, {
       title: a.title,
       description: (a.description || a.title).length < 70 ? `${a.description || a.title} Dates, horaires et fiches de chaque série sur ${config.siteName}.` : (a.description || a.title),
-      body: `<article class="post"><p class="muted">${kindBadge(a)} <time datetime="${a.date}">${esc(frDate(a.date))}</time></p><h1>${esc(a.title)}</h1>\n${markdown(a.body)}</article>\n<p class="more"><a href="/articles/">Tous les articles</a></p>`,
+      body: `<article class="post"><p class="muted">${kindBadge(a)} <time datetime="${a.date}">${esc(frDate(a.date))}</time></p><h1>${esc(a.title)}</h1>\n${artHtml(a.body)}</article>\n<p class="more"><a href="/articles/">Tous les articles</a></p>`,
       extraHead: `<script type="application/ld+json">${ld}</script>`,
     });
   }
