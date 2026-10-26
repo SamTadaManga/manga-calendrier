@@ -616,7 +616,11 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     }).filter((x) => x.au || x.ge >= 2).sort((a, b) => b.sc - a.sc || a.o.name.localeCompare(b.o.name, 'fr')).slice(0, 6);
     const nm = norm(S.name);
     const arts = nm.length >= 5 ? artText.filter((x) => x.t.includes(nm)).slice(0, 3).map((x) => x.a) : [];
-    const sim = scored.length ? `<h2>Si tu aimes ${esc(S.name)}</h2><ul class="related">${scored.map(({ o, au }) => `<li><a href="/serie/${o.k}/">${esc(o.name)}</a><span class="muted"> · ${au ? 'même auteur' : esc(o.editeur || '')}${o.next ? ` · prochain tome ${esc(frShort(o.next.date))}` : ''}</span></li>`).join('')}</ul>` : '';
+    const simCard = ({ o, au }) => {
+      const cr = showCovers ? [...o.rows].reverse().find((r) => r.cover) : null;
+      return `<li class="scard p-${pubKey(o.editeur)}"><a class="scard-link" href="/serie/${o.k}/">${showCovers ? coverBox(cr && cr.cover, `Couverture de ${o.name}`) : ''}<strong>${esc(o.name)}</strong><span class="muted">${au ? 'Même auteur · ' : ''}${o.next ? `${o.next.tome ? `T${esc(o.next.tome)} · ` : ''}${esc(frShort(o.next.date))}` : esc(o.editeur || '')}</span></a></li>`;
+    };
+    const sim = scored.length ? `<h2>Si tu aimes ${esc(S.name)}</h2><div class="carousel" role="region" aria-label="Séries proches de ${esc(S.name)}" tabindex="0"><ul class="sgrid carousel-track">${scored.map(simCard).join('')}</ul></div>` : '';
     const art = arts.length ? `<h2>À lire aussi</h2><ul class="articles">${arts.map(articleItem).join('')}</ul>` : '';
     return sim + art;
   };

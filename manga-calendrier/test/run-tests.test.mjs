@@ -740,8 +740,8 @@ test('fiche série : séries proches (auteur/genres) et articles qui la citent',
   const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: arts, AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
   execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
   const a = readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8');
-  assert.match(a, /Si tu aimes/); assert.match(a, /href="\/serie\/serie-fictive-beta\/"/);
+  assert.match(a, /Si tu aimes/); assert.match(a, /class="carousel"/); assert.match(a, /href="\/serie\/serie-fictive-beta\/"/);
   assert.match(a, /À lire aussi/); assert.match(a, /Focus sur Série Fictive Alpha/);
-  assert.doesNotMatch(a, /href="\/serie\/serie-fictive-gamma\/"[^<]*<\/a><span class="muted"/);
+  assert.doesNotMatch(a, /href="\/serie\/serie-fictive-gamma\//);
   assert.doesNotMatch(readFileSync(path.join(out, 'serie/serie-fictive-gamma/index.html'), 'utf8'), /Si tu aimes/);
 });
