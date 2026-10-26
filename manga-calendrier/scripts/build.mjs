@@ -289,11 +289,12 @@ function volTile(r, noBuy = false) {
   const ed = editionOf(r);
   const mv = moves.get(keyOf(r));
   const moved = mv && mv.to === r.date ? `<span class="badge ${mv.to > mv.from ? 's-reporte' : 's-confirme'}">${mv.to > mv.from ? 'Reporté' : 'Avancé'}</span>` : '';
+  const reli = !moved && r.date >= today ? (r.statut === 'confirme' ? '<span class="badge s-confirme" title="Date vérifiée">Date confirmée</span>' : r.statut === 'annonce' ? '<span class="badge s-estime" title="Date relevée dans le planning de l\'éditeur : elle peut encore bouger">Date estimée</span>' : '') : '';
   return `<li class="tile rel vol p-${pk}${r.date < today ? ' past' : ''}">`
     + `${r.source ? `<a class="tile-cover" href="${esc(r.source)}" rel="noopener nofollow" aria-label="${esc(label)} : fiche éditeur">${cover}</a>` : cover}`
     + `<div class="tile-body"><strong>${r.tome ? `Tome ${esc(r.tome)}` : esc(r.serie)}</strong>${ed ? `<span class="ed">${esc(ed)}</span>` : ''}`
     + `<div class="tile-date"><time datetime="${r.date}">${esc(frShort(r.date))}</time></div>`
-    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${own}${noBuy ? '' : buyBox(r)}</div></li>`;
+    + `<span class="pub">${esc(r.editeur || '')}${r.prix != null ? ` · ${esc(euro(r.prix))}` : ''}</span>${isNewSeries(r) ? NEW_BADGE : ''}${moved}${reli}${own}${noBuy ? '' : buyBox(r)}</div></li>`;
 }
 
 const BADGE_TXT = { confirme: 'Date confirmée', reporte: 'Reporté', annule: 'Annulé' };
@@ -624,6 +625,19 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const art = arts.length ? `<h2>À lire aussi</h2><ul class="articles">${arts.map(articleItem).join('')}</ul>` : '';
     return sim + art;
   };
+  const daysBetween = (a, b) => Math.round((Date.parse(`${b}T00:00:00Z`) - Date.parse(`${a}T00:00:00Z`)) / 86400000);
+  const historyBox = (S) => {
+    const seen = new Set();
+    const evs = (changes.events || []).filter((e) => slugify(e.s) === S.k).filter((e) => { const key = `${e.day}|${e.type}|${e.t}|${e.from || ''}|${e.to || ''}`; if (seen.has(key)) return false; seen.add(key); return true; }).sort((a, b) => b.day.localeCompare(a.day));
+    const tl = (e) => (e.t ? `Tome ${esc(e.t)}` : 'Volume spécial');
+    const line = (e) => {
+      if (e.type === 'date') { const d = daysBetween(e.from, e.to); return `<strong>${tl(e)}</strong> : ${esc(frShort(e.from))} → <strong>${esc(frShort(e.to))}</strong> <span class="badge ${d > 0 ? 's-reporte' : 's-confirme'}">${d > 0 ? 'Reporté' : 'Avancé'} de ${Math.abs(d)} jour${Math.abs(d) > 1 ? 's' : ''}</span>`; }
+      if (e.type === 'nouveau') return `<strong>${tl(e)}</strong> ajouté au planning, sortie prévue le ${esc(frShort(e.to))}`;
+      return `<strong>${tl(e)}</strong> retiré du planning (sortie qui était prévue le ${esc(frShort(e.from))})`;
+    };
+    const since = changes.since ? ` Le suivi des changements a commencé le ${esc(frDate(changes.since))}.` : '';
+    return `<details class="history"><summary>Historique des dates${evs.length ? ` (${evs.length})` : ''}</summary>${evs.length ? `<ul class="hist">${evs.map((e) => `<li><time class="muted" datetime="${esc(e.day)}">${esc(frShort(e.day))}</time> ${line(e)}</li>`).join('')}</ul>` : '<p class="muted">Aucun changement de date constaté pour cette série.</p>'}<p class="muted">${since.trim()} Les dates « estimées » viennent du planning de l'éditeur ; elles passent en « confirmées » après vérification.</p></details>`;
+  };
   for (const S of seriesList) {
     const upcoming = S.rows.filter((r) => r.date >= today);
     const past = S.rows.filter((r) => r.date < today).reverse();
@@ -633,7 +647,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const synRow = [n, ...[...S.rows].reverse()].find((r) => r && SYN[r.source]?.t) || null;
     const synBox = synRow ? `<section class="synopsis"><h2>Résumé${synRow.tome ? ` du tome ${esc(synRow.tome)}` : ''}</h2><p>${esc(SYN[synRow.source].t)}</p><p class="muted syn-src">Résumé de l'éditeur · <a href="${esc(synRow.source)}" rel="noopener nofollow" target="_blank">${esc(synRow.editeur || 'Fiche éditeur')}</a></p></section>` : '';
     const lead = n
-      ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? '' : ' La date peut encore bouger.'}`
+      ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? ' Cette date est confirmée.' : ' Cette date est estimée d\'après le planning de l\'éditeur : elle peut encore bouger.'}`
       : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata.${lastOut ? ` Dernier tome paru : ${lastOut.tome ? `tome ${esc(lastOut.tome)}` : 'le volume'} (${esc(frShort(lastOut.date))}).` : ''} Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
@@ -672,6 +686,7 @@ ${animeBox}
 </div></div>
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
+${historyBox(S)}
 ${relatedBox(S)}
 ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more">${S.editeur && slugify(S.editeur) ? `<a href="/editeur/${slugify(S.editeur)}/">Autres sorties ${esc(S.editeur)}</a> · ` : ''}<a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
@@ -1000,8 +1015,8 @@ ${names.length ? `<h2>Sources</h2><div class="tbl-wrap"><table class="status-tab
 <ul class="checks">${issueHtml}</ul>
 <h2>Comment lire les statuts d'une sortie</h2>
 <ul>
-<li><strong>Annoncé</strong> : date relevée dans un planning officiel, susceptible de bouger.</li>
-<li><strong>Confirmé</strong> : date vérifiée à la main.</li>
+<li><strong>Annoncé</strong> (affiché « Date estimée » sur les fiches) : date relevée dans un planning officiel, susceptible de bouger.</li>
+<li><strong>Confirmé</strong> (« Date confirmée ») : date vérifiée à la main.</li>
 <li><strong>Reporté</strong> : la date a changé depuis la dernière annonce (voir <a href="/changements/">Changements</a>).</li>
 <li><strong>Paru</strong> : le tome est sorti. Aucune date n'est inventée : sans confirmation de l'éditeur, le tome n'apparaît pas.</li>
 </ul>`,

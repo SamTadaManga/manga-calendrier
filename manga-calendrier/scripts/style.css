@@ -585,3 +585,10 @@ ul.sgrid.carousel-track{display:flex;gap:16px;width:max-content;padding:0 6px 6p
 .rel.tm-p{box-shadow:inset 4px 0 0 var(--brand)}
 .rel.tm-l .rel-title strong{opacity:.65}
 .vol .tst{margin-top:2px}
+
+/* Dates estimées / confirmées et historique */
+.s-estime{border:1.5px dashed var(--edge);color:var(--ink)}
+details.history{margin:1.2rem 0}
+details.history summary{cursor:pointer;font-weight:800}
+ul.hist{list-style:none;margin:.6rem 0;padding:0;display:grid;gap:.45rem}
+ul.hist li{padding:.35rem 0;border-bottom:1px solid var(--line)}
