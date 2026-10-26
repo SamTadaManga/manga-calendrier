@@ -511,3 +511,15 @@ a.stream.shop-sm,.shops-sm a.stream{flex:1 1 0;min-width:0;padding:0 2px;height:
 .post li.art-item>a{display:block;width:fit-content;background:none}
 .post li.art-item>a:hover img{outline:3px solid var(--brand);outline-offset:2px}
 @media (max-width:520px){.post ul>li.art-item{grid-template-columns:64px minmax(0,1fr);gap:0 12px}.post img.art-img{width:64px}}
+
+/* État des données */
+.notice{padding:10px 14px;border:2px solid var(--ink);border-radius:2px;background:var(--panel);margin:10px 0 16px}
+.notice.warn{background:#fff3c4;color:#111;box-shadow:3px 3px 0 var(--ink)}
+.tbl-wrap{overflow-x:auto;margin:8px 0 20px}
+.status-table{width:100%;border-collapse:collapse;border:2px solid var(--ink);background:var(--panel)}
+.status-table th,.status-table td{padding:8px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.status-table thead th{background:var(--ink);color:var(--paper);font-size:.85rem}
+.status-table small{display:block;color:var(--muted);font-weight:400;font-size:.8rem}
+.badge{display:inline-block;padding:1px 9px;border:2px solid var(--ink);border-radius:20px;font-size:.78rem;font-weight:800}
+.b-ok{background:#c7f2d4;color:#111}.b-warn{background:#ffe08a;color:#111}.b-bad{background:#ffb3a6;color:#111}
+.checks{padding-left:1.1em}.checks>li{margin:8px 0}.checks ul{margin:4px 0 0}

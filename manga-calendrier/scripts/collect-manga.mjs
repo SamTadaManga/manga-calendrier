@@ -8,6 +8,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { paths, now, parisKey, addDays, loadManga } from './lib.mjs';
 import { readChanges, updateChanges, serializeChanges } from './changes.mjs';
+import { recordStatus } from './status.mjs';
 import { parseHachette, parseKana, parseKioon, parseAkata, robotsAllows } from './collectors.mjs';
 
 const P = paths();
@@ -142,9 +143,11 @@ const okPublishers = new Set();
 const report = [];
 for (const src of SOURCES) {
   let rows = [];
+  let failure = '';
   try {
     rows = await src.run();
   } catch (e) {
+    failure = e.message;
     console.error(`${src.editeur} : échec (${e.message})`);
   }
   rows = rows.filter((r) => r.date >= first && r.date <= last && r.serie);
@@ -160,10 +163,12 @@ for (const src of SOURCES) {
     fresh.push(...rows);
     okPublishers.add(src.editeur);
     report.push(`${src.editeur} : ${rows.length}`);
+    recordStatus(P.dataDir, `Manga · ${src.editeur}`, { ok: true, count: rows.length });
   } else {
     const old = previous.filter((r) => r.editeur === src.editeur && r.date >= addDays(today, -30));
     result.push(...old.map((r) => ({ ...r, prix: r.prix })));
     report.push(`${src.editeur} : 0 trouvée (${old.length} anciennes conservées)`);
+    recordStatus(P.dataDir, `Manga · ${src.editeur}`, { ok: false, count: 0, note: failure || `aucune sortie trouvée, ${old.length} ancienne(s) conservée(s)` });
   }
 }
 

@@ -6,6 +6,7 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
 import { streams, sourceManga } from './anilist.mjs';
+import { recordStatus } from './status.mjs';
 import { paths, now, parisKey, parisMidnight, addDays, cleanSynopsis } from './lib.mjs';
 
 const ENDPOINT = 'https://graphql.anilist.co';
@@ -38,8 +39,8 @@ async function request(page, from, to, attempt = 1) {
     await sleep(wait);
     return request(page, from, to, attempt + 1);
   }
-  if ((res.status === 403 || res.status >= 500) && attempt <= 3) {
-    const wait = 30000 * attempt;
+  if ((res.status === 403 || res.status >= 500) && attempt <= 1) {
+    const wait = 30000;
     if (attempt === 1) {
       const body = (await res.text().catch(() => '')).replace(/\s+/g, ' ').slice(0, 300);
       console.log(`Détail du refus : serveur=${res.headers.get('server') || '?'} — ${body}`);
@@ -76,8 +77,10 @@ if (fromFile) {
     // AniList indisponible ou bloque l'adresse du serveur : on garde le dernier programme enregistré
     if (existsSync(path.join(P.dataDir, 'anime.json'))) {
       console.log(`${e.message} : data/anime.json est conservé tel quel, nouvel essai à la prochaine exécution.`);
+      recordStatus(P.dataDir, 'Anime · AniList', { ok: false, note: e.message });
       process.exit(0);
     }
+    recordStatus(P.dataDir, 'Anime · AniList', { ok: false, note: e.message });
     throw e;
   }
 }
@@ -109,6 +112,7 @@ const episodes = raw
 
 if (!fromFile && episodes.length === 0) {
   console.error('Aucun épisode reçu : data/anime.json est conservé tel quel.');
+  recordStatus(P.dataDir, 'Anime · AniList', { ok: false, note: 'AniList a répondu sans aucun épisode' });
   process.exit(1);
 }
 
@@ -120,4 +124,5 @@ const text = '{\n'
   + '"source": "AniList",\n'
   + '"episodes": [\n' + episodes.map((e) => JSON.stringify(e)).join(',\n') + '\n]\n}\n';
 writeFileSync(path.join(P.dataDir, 'anime.json'), text);
+if (!fromFile) recordStatus(P.dataDir, 'Anime · AniList', { ok: true, count: episodes.length });
 console.log(`${episodes.length} épisodes enregistrés (du ${startKey} pour ${DAYS_AHEAD} jours).`);

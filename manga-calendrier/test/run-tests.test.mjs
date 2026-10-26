@@ -8,10 +8,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   parseDate, parseCSV, parseMangaCSV, markdown, foldLine, parisMidnight, parisKey, parisHM, addDays, weekdayOfKey,
-  parseFrontmatter,
+  parseFrontmatter, loadAllManga,
 } from '../scripts/lib.mjs';
 import { splitTitle, robotsAllows, parseKioon, decode } from '../scripts/collectors.mjs';
 import { updateChanges, emptyState } from '../scripts/changes.mjs';
+import { shopsFrom as sf, buyUrl as bu } from '../scripts/shops.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const read = (...p) => readFileSync(path.join(...p), 'utf8');
@@ -173,6 +174,19 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   } finally { writeFileSync(dirs.CONFIG_FILE, JSON.stringify(cfg0)); }
   assert.ok(sp1.includes('https://track.example/c?u=https%3A%2F%2Fwww.fnac.com') && sp1.includes('rel="sponsored nofollow noopener"') && sp1.includes('class="stream shop') && !sp1.includes('cultura.com') && sp1.includes('affil-note'), "lien d'affiliation remplaçable, boutique désactivable, mention affichée");
   assert.ok(read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('id="affiliation"'), "mention légale d'affiliation");
+  withShops({ amazon: { tag: 'prochaintome-21' } });
+  const spA = read(dist('serie/serie-fictive-alpha/index.html'));
+  assert.ok(spA.includes('https://www.amazon.fr/dp/2000000010?tag=prochaintome-21') && spA.includes('rel="sponsored nofollow noopener"') && spA.includes('affil-note'), 'Amazon : identifiant partenaire ajouté');
+  assert.ok(read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.'), 'phrase Partenaire Amazon');
+  const amz = sf({ shops: { amazon: { tag: 'prochaintome-21' } } }).find((x) => x.id === 'amazon');
+  withShops({ amazon: { tag: 'prochaintome-21' } });
+  const spG = read(dist('serie/serie-fictive-alpha/index.html'));
+  assert.ok(spG.includes('https://www.amazon.fr/s?k=S%C3%A9rie+Fictive+Alpha+goodies&amp;tag=prochaintome-21') || /amazon\.fr\/s\?k=[^"]*goodies&amp;tag=prochaintome-21/.test(spG), 'bouton goodies sur la page série');
+  writeFileSync(dirs.CONFIG_FILE, JSON.stringify({ ...cfg0, shops: { amazon: { tag: 'prochaintome-21' } }, goodies: false })); run('build.mjs');
+  assert.ok(!read(dist('serie/serie-fictive-alpha/index.html')).includes('goodies'), 'goodies désactivables');
+  withShops({ amazon: { enabled: false } });
+  assert.ok(!read(dist('serie/serie-fictive-alpha/index.html')).includes('goodies'), 'pas de goodies sans Amazon');
+  assert.equal(bu(amz, '9791032723999'), 'https://www.amazon.fr/s?k=9791032723999&i=stripbooks&tag=prochaintome-21', 'ISBN en 979 : recherche + tag');
   try {
     withShops({ fnac: { affiliate: 'javascript:alert(1)' } });
     assert.ok(!read(dist('serie/serie-fictive-alpha/index.html')).includes('javascript:'), "lien d'affiliation non https refusé");
@@ -222,6 +236,24 @@ test('robots.txt : Disallow, Allow plus précis, page HTML = autorisé', () => {
   assert.equal(robotsAllows(r, '/manga/planning/'), true);
   assert.equal(robotsAllows('<!DOCTYPE html><html>', '/x'), true);
   assert.equal(parseKioon({ volumes: [{ serie_title: 'X', date: 'pas une date' }] }).length, 0);
+});
+
+test('collecte de complément : Google Books et flux RSS (données simulées)', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mx-'));
+  const env = { ...process.env, DATA_DIR: tmp, NOW: '2026-10-12T07:00:00Z', EXTRA_FIXTURES: path.join(ROOT, 'test/fixtures/extra') };
+  const out = execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-extra.mjs')], { env, encoding: 'utf8' });
+  assert.ok(/Mangetsu : 2/.test(out) && /Delcourt : 1/.test(out), out);
+  const csv = readFileSync(path.join(tmp, 'manga-extra.csv'), 'utf8');
+  assert.ok(csv.includes('Sujet Test,3') && csv.includes('Autre Série,12') && csv.includes('Manga Delcourt,5'), csv);
+  assert.ok(!csv.includes('Voisin') && !csv.includes('Floue') && !csv.includes('Vieux') && !csv.includes('Franco-belge'), 'filtres : éditeur, date incomplète, passé, BD');
+  assert.ok(/Flux RSS : 1 annonce/.test(out), out);
+  const rev = readFileSync(path.join(tmp, 'annonces-a-verifier.csv'), 'utf8');
+  assert.ok(rev.includes('2026-11-12') && rev.includes('Nouveau manga annoncé') && !rev.includes('Interview'), rev);
+  // fusion : le complément passe après la collecte principale et la saisie manuelle
+  writeFileSync(path.join(tmp, 'manga.csv'), 'Date de sortie,Éditeur,Série,Tome\n2026-11-12,Mangetsu,Sujet Test,3\n');
+  const all = loadAllManga(tmp);
+  assert.equal(all.filter((r) => r.serie === 'Sujet Test').length, 1);
+  assert.ok(all.some((r) => r.serie === 'Manga Delcourt'));
 });
 
 test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () => {
@@ -539,4 +571,22 @@ test('traduction des synopsis anime : désactivée rien ne change, avec traducti
   run('build.mjs');
   const page = read(dirs.OUT_DIR, 'anime/1-test-series-one/index.html');
   assert.ok(page.includes('Un étudiant discret') && page.includes('traduit automatiquement') && !page.includes('A quiet student'));
+});
+
+test('page /etat/ et message anime périmé', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'etat-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  writeFileSync(path.join(data, 'anime.json'), JSON.stringify({ generatedAt: '2026-10-01T00:00:00Z', episodes: [] }));
+  writeFileSync(path.join(data, 'status.json'), JSON.stringify({ version: 1, sources: { 'Anime · AniList': { lastRun: '2026-10-12T03:00:00Z', ok: false, count: 0, note: '', lastSuccess: '2026-10-01T00:00:00Z', lastSuccessCount: 10, fails: 3 } } }));
+  const out = path.join(tmp, 'out'); mkdirSync(path.join(tmp, 'art'));
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, ARTICLES_DIR: path.join(tmp, 'art'), AUTO_DIR: path.join(tmp, 'art'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const etat = readFileSync(path.join(out, 'etat/index.html'), 'utf8');
+  assert.match(etat, /Anime · AniList/);
+  assert.match(etat, /En retard/);
+  assert.match(readFileSync(path.join(out, 'anime/index.html'), 'utf8'), /n'a pas pu être actualisé|n&#39;a pas pu être actualisé/);
+  let failed = false;
+  try { execFileSync('node', [path.join(ROOT, 'scripts/check-status.mjs')], { env, stdio: 'pipe' }); } catch { failed = true; }
+  assert.ok(failed);
 });

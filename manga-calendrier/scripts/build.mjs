@@ -9,8 +9,9 @@ import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
-  esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume, mangaSlugOf,
+  esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume, mangaSlugOf, loadManga,
 } from './lib.mjs';
+import { readStatus } from './status.mjs';
 
 const P = paths();
 const SCRIPTS = path.dirname(fileURLToPath(import.meta.url));
@@ -24,6 +25,19 @@ const showCovers = config.showCovers === true;
 const isPrivate = config.launched === false; // site privé : non indexé tant que « launched » n'est pas passé à true
 const manga = loadAllManga(P.dataDir);
 const anime = readAnime(P.dataDir);
+/* Fraîcheur des données (data/status.json, écrit par les collecteurs) */
+const STATUS = readStatus(P.dataDir).sources;
+const hoursSince = (iso) => (iso ? (now().getTime() - new Date(iso).getTime()) / 36e5 : Infinity);
+const agoFr = (iso) => {
+  const h = hoursSince(iso);
+  if (!Number.isFinite(h)) return 'jamais';
+  if (h < 1) return "il y a moins d'une heure";
+  if (h < 48) return `il y a ${Math.round(h)} h`;
+  return `il y a ${Math.round(h / 24)} jours`;
+};
+const stampFr = (iso) => (iso ? `${frDate(parisKey(new Date(iso)))} à ${parisHM(new Date(iso))}` : '—');
+const ANIME_STALE = !anime.generatedAt || hoursSince(anime.generatedAt) > 30;
+const mangaUpdatedIso = Object.entries(STATUS).filter(([k, v]) => k.startsWith('Manga ·') && v.lastSuccess).map(([, v]) => v.lastSuccess).sort().pop() || null;
 // Pont anime -> manga : un anime est relié à une série du calendrier si le titre du manga d'origine (AniList) ou celui de l'anime correspond
 const SYN_FR = (() => { try { return JSON.parse(readFileSync(path.join(P.dataDir, 'synopsis-fr.json'), 'utf8')); } catch { return {}; } })();
 const SYN = (() => { try { return JSON.parse(readFileSync(path.join(P.dataDir, 'synopsis.json'), 'utf8')); } catch { return {}; } })();
@@ -123,7 +137,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="/suivi.js" defer></script>
 <script src="/visite.js" defer></script>
@@ -134,6 +148,11 @@ ${body}
 `;
 }
 let searchSeries = [];
+function animeNotice() {
+  if (!ANIME_STALE) return '';
+  if (!anime.generatedAt) return '<p class="notice warn" role="status">Le programme des épisodes n\'a pas encore pu être récupéré. Il apparaîtra dès que la source (AniList) répondra.</p>';
+  return `<p class="notice warn" role="status">Le programme n'a pas pu être actualisé depuis ${esc(agoFr(anime.generatedAt))} (source AniList indisponible). Les épisodes affichés viennent de la dernière mise à jour réussie, le ${esc(stampFr(anime.generatedAt))} : les horaires peuvent avoir changé. <a href="/etat/">État des données</a></p>`;
+}
 const page = (pathname, opts) => write(`${pathname.replace(/^\//, '')}index.html`, layout({ ...opts, pathname }));
 
 /* ------------------------------------------------------------- composants */
@@ -345,7 +364,9 @@ ${mangaToday.length
 <h2>Anime du jour</h2>
 ${todayEps.length
     ? `<ul class="list panel eps">${topToday.map(showCovers ? animeRow : episodeItem).join('')}</ul><p class="muted more">Les ${topToday.length} plus suivis sur ${todayEps.length} épisodes. <a href="/anime/#j-${today}">Programme complet</a></p>`
-    : '<p class="empty">Le programme apparaîtra après la prochaine mise à jour automatique.</p>'}
+    : (eps.length
+      ? '<p class="empty">Aucun épisode n\'est prévu aujourd\'hui. <a href="/anime/">Voir la semaine</a></p>'
+      : `<p class="empty">Le programme anime n'est pas disponible pour le moment${anime.generatedAt ? ` (dernière mise à jour réussie : ${esc(agoFr(anime.generatedAt))})` : ''}. Il revient automatiquement dès que la source répond. <a href="/etat/">État des données</a></p>`)}${todayEps.length && ANIME_STALE ? `<p class="muted more">Programme non actualisé depuis ${esc(agoFr(anime.generatedAt))}. <a href="/etat/">Détails</a></p>` : ''}
 </div>
 </section>
 ${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2>${shelf.length >= 6 ? `<ul class="shelf">${shelf.map(tile).join('')}</ul>` : `<ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
@@ -449,7 +470,7 @@ target.classList.remove('flash');void target.offsetWidth;target.classList.add('f
 
   const body = `
 <h1>Calendrier des sorties manga</h1>
-<p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.</p>
+<p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.${mangaUpdatedIso ? ` <span class="muted">Mis à jour ${esc(agoFr(mangaUpdatedIso))}. <a href="/etat/">État des données</a></span>` : ''}</p>
 ${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}</div>
 <div class="views" id="vues" role="group" aria-label="Affichage" hidden><span class="muted">Affichage :</span>
 <button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button><button type="button" class="chip jump-today" id="auj">Aujourd'hui</button></div>
@@ -762,6 +783,7 @@ ${events.length ? content : `<p class="empty">Aucun changement détecté pour le
   const body = `
 <h1>Épisodes d'anime de la semaine</h1>
 <p class="lead">Horaires de diffusion au Japon, convertis en heure de Paris. La disponibilité en France dépend des plateformes de streaming.</p>
+${animeNotice()}
 ${eps.length ? `<nav class="jumps" aria-label="Aller à un jour">${jump}</nav>
 <div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher un anime" aria-label="Chercher un anime">${platChips}</div>
 <p class="empty" id="aucun" hidden>Aucun épisode ne correspond à cette recherche.</p>
@@ -769,6 +791,64 @@ ${sections}` : '<p class="empty">Les données apparaîtront après la première 
 <p class="more muted">${updated ? `Mis à jour le ${esc(updated)}. ` : ''}<a href="/anime.ics">Ajouter à mon agenda (anime.ics)</a></p>
 ${eps.length ? FILTER_JS : ''}`;
   page('/anime/', { title: "Épisodes d'anime de la semaine", description: "Programme des épisodes d'anime de la semaine, horaires à l'heure de Paris.", body });
+}
+
+/* ------------------------------------------------------------ état des données */
+{
+  const SOURCE_NOTE = {
+    'Anime · AniList': 'Programme des épisodes (8 jours)',
+    'Saisie · Google Sheets': 'Tes sorties saisies à la main',
+    'Complément · Google Books': 'Tomes des éditeurs sans planning lisible (à vérifier)',
+    'Complément · Flux RSS': 'Annonces des sites d\'éditeurs (jamais publiées sans relecture)',
+  };
+  const verdict = (v) => {
+    const h = hoursSince(v.lastSuccess);
+    if (!v.lastSuccess) return ['bad', 'Jamais réussi'];
+    if (v.ok && h <= 36) return ['ok', 'À jour'];
+    if (h > 72) return ['bad', 'En retard'];
+    if (!v.ok) return ['warn', 'Dernier passage en échec, données conservées'];
+    return ['warn', 'À vérifier'];
+  };
+  const names = Object.keys(STATUS);
+  const rowsHtml = names.map((n) => {
+    const v = STATUS[n];
+    const [cls, label] = verdict(v);
+    return `<tr><th scope="row">${esc(n)}${SOURCE_NOTE[n] ? `<small>${esc(SOURCE_NOTE[n])}</small>` : ''}</th><td><span class="badge b-${cls}">${esc(label)}</span>${v.note ? `<small>${esc(v.note)}</small>` : ''}</td><td>${esc(agoFr(v.lastSuccess))}<small>${esc(stampFr(v.lastSuccess))}</small></td><td>${v.lastSuccessCount ?? '—'}</td></tr>`;
+  }).join('');
+
+  // Contrôles qualité sur les données réellement utilisées par le site
+  const files = ['manga.csv', 'manga-auto.csv', 'manga-extra.csv'].map((f) => ({ f, rows: loadManga(path.join(P.dataDir, f)) }));
+  const byIsbn = new Map();
+  for (const { f, rows } of files) for (const r of rows) if (r.isbn.length >= 10) { if (!byIsbn.has(r.isbn)) byIsbn.set(r.isbn, []); byIsbn.get(r.isbn).push({ f, r }); }
+  const lbl = (r) => `${r.serie}${r.tome ? ` t. ${r.tome}` : ''}`;
+  const issues = [];
+  const divergent = [...byIsbn.values()].filter((l) => new Set(l.map((x) => x.r.date)).size > 1);
+  issues.push(['Dates différentes selon la source pour un même ISBN', divergent.map((l) => `${lbl(l[0].r)} : ${l.map((x) => `${frShort(x.r.date)} (${x.f.replace('.csv', '')})`).join(' / ')}`)]);
+  issues.push(['ISBN invalide (clé de contrôle incorrecte)', manga.filter((r) => r.isbn && !isIsbn13(r.isbn)).map((r) => `${lbl(r)} : ${r.isbn}`)]);
+  issues.push(['Sortie passée de plus de 7 jours encore marquée « annoncée » ou « confirmée »', manga.filter((r) => r.date < addDays(today, -7) && (r.statut === 'annonce' || r.statut === 'confirme')).map((r) => `${lbl(r)} : ${frShort(r.date)}`)]);
+  const dupMap = new Map();
+  for (const r of manga) { const k = `${slugify(r.serie)}|${r.tome}|${r.titre ? slugify(r.titre) : ''}`; if (r.tome) dupMap.set(k, [...(dupMap.get(k) || []), r]); }
+  issues.push(['Même série et même tome présents plusieurs fois', [...dupMap.values()].filter((l) => l.length > 1).map((l) => `${lbl(l[0])} : ${l.map((r) => frShort(r.date)).join(', ')}`)]);
+  const recentPubs = new Set(manga.filter((r) => r.date >= addDays(today, -90) && r.editeur).map((r) => r.editeur));
+  issues.push(['Éditeur sans aucune sortie dans les 30 prochains jours', [...recentPubs].filter((e) => !manga.some((r) => r.editeur === e && r.date >= today && r.date <= addDays(today, 30))).sort()]);
+  const issueHtml = issues.map(([t, l]) => `<li>${l.length ? `<strong>${esc(t)}</strong> <span class="badge b-warn">${l.length}</span><ul>${l.slice(0, 8).map((x) => `<li>${esc(x)}</li>`).join('')}${l.length > 8 ? `<li class="muted">… et ${l.length - 8} autre(s)</li>` : ''}</ul>` : `${esc(t)} <span class="badge b-ok">aucun</span>`}</li>`).join('');
+
+  page('/etat/', {
+    title: 'État des données',
+    description: 'Dernière mise à jour réussie de chaque source du site (plannings des éditeurs, programme anime) et contrôles de qualité.',
+    body: `<h1>État des données</h1>
+<p class="lead">Le site se met à jour chaque nuit. Cette page montre, pour chaque source, la dernière fois où elle a répondu correctement. Quand une source échoue, le site garde ses dernières données valides et ne les remplace jamais par du vide.</p>
+${names.length ? `<h2>Sources</h2><div class="tbl-wrap"><table class="status-table"><thead><tr><th scope="col">Source</th><th scope="col">État</th><th scope="col">Dernière réussite</th><th scope="col">Éléments</th></tr></thead><tbody>${rowsHtml}</tbody></table></div>` : '<p class="empty">Aucune mise à jour enregistrée pour le moment. Le tableau se remplit après la prochaine exécution automatique.</p>'}
+<h2>Contrôles de qualité</h2>
+<ul class="checks">${issueHtml}</ul>
+<h2>Comment lire les statuts d'une sortie</h2>
+<ul>
+<li><strong>Annoncé</strong> : date relevée dans un planning officiel, susceptible de bouger.</li>
+<li><strong>Confirmé</strong> : date vérifiée à la main.</li>
+<li><strong>Reporté</strong> : la date a changé depuis la dernière annonce (voir <a href="/changements/">Changements</a>).</li>
+<li><strong>Paru</strong> : le tome est sorti. Aucune date n'est inventée : sans confirmation de l'éditeur, le tome n'apparaît pas.</li>
+</ul>`,
+  });
 }
 
 /* ----------------------------------------------------------------- articles */
@@ -895,7 +975,7 @@ write('404.html', layout({
 }));
 write('robots.txt', isPrivate ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\n${siteUrlOk ? `Sitemap: ${base}/sitemap.xml\n` : ''}`);
 if (siteUrlOk && !isPrivate) {
-  const urls = ['/', '/anime/', '/manga/', '/changements/', '/articles/', '/mentions-legales/', ...SEO_URLS, ...ANIME_PAGES, ...articles.map((a) => `/articles/${a.slug}/`)];
+  const urls = ['/', '/anime/', '/manga/', '/changements/', '/articles/', '/etat/', '/mentions-legales/', ...SEO_URLS, ...ANIME_PAGES, ...articles.map((a) => `/articles/${a.slug}/`)];
   const lastmod = (u) => (u.startsWith('/articles/') && u !== '/articles/' ? articles.find((a) => `/articles/${a.slug}/` === u)?.date : today);
   write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${
     urls.map((u) => `<url><loc>${esc(base + u)}</loc><lastmod>${lastmod(u)}</lastmod></url>`).join('\n')}\n</urlset>\n`);

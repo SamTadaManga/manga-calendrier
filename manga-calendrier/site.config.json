@@ -4,14 +4,11 @@
   "siteUrl": "https://prochaintome.fr",
   "description": "Les sorties manga en France et les épisodes d'anime de la semaine, jour par jour.",
   "autoPublish": true,
-      "shops": {
-    "amazon": { "tag": "prochaintome-21" }
-  },
   "showCovers": true,
   "launched": false,
   "legal": {
     "editorName": "Sam Tada",
-    "contactEmail": "contact@prochaintome.fr",
+    "contactEmail": "tada.ebook@gmail.com",
     "publicationDirector": "Sam Tada",
     "hostName": "Cloudflare, Inc.",
     "hostAddress": "101 Townsend Street, San Francisco, CA 94107, États-Unis"
