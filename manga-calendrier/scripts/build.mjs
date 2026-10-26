@@ -392,7 +392,7 @@ function animeTile(e) {
     + `<div class="tile-date"><time>${esc(e.time)}</time></div>${isPremiere(e) ? PREMIERE_BADGE : ''}${afollow(e)}</div></li>`;
 }
 
-const KIND_LABEL = { quotidien: 'Quotidien', hebdo: 'Hebdomadaire', mensuel: 'Mensuel', changements: 'Changements', redac: 'Rédaction' };
+const KIND_LABEL = { quotidien: 'Quotidien', hebdo: 'Hebdomadaire', mensuel: 'Mensuel', changements: 'Changements', dossier: 'Dossier', redac: 'Rédaction' };
 const kindBadge = (a) => `<span class="kind k-${a.kind}">${KIND_LABEL[a.kind] || ''}</span>`;
 const articleItem = (a) =>
   `<li><time class="muted" datetime="${a.date}">${esc(frShort(a.date))}</time><div>${kindBadge(a)} <a href="/articles/${a.slug}/">${esc(a.title)}</a>${a.description ? `<p class="notes">${esc(a.description)}</p>` : ''}</div></li>`;
@@ -1188,6 +1188,7 @@ page('/recherche/', {
     ['hebdo', 'Les rendez-vous de la semaine', 'Un récapitulatif chaque lundi : sorties manga et épisodes d\'anime des sept prochains jours.', 8],
     ['quotidien', 'Le programme du jour', 'Publié chaque matin : ce qui sort aujourd\'hui en manga et en anime.', 10],
     ['changements', 'Changements de dates', 'Reports, avancées, annonces et retraits relevés dans les plannings des éditeurs.', 6],
+    ['dossier', 'Dossiers du mois', 'Nouvelles séries, éditions spéciales, sorties par éditeur et séries à lire d\'une traite, mis à jour automatiquement.', 8],
     ['redac', 'Dossiers et actualités', '', 20],
   ];
   const groups = SECTIONS.map(([k, t, d, n]) => ({ k, t, d, n, list: articles.filter((a) => a.kind === k) })).filter((g) => g.list.length);

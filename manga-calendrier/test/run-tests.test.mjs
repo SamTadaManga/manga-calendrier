@@ -906,3 +906,23 @@ test('page Ma collection : nav, page noindex, script, statut À lire', () => {
   assert.match(h, /<option value="r">À lire<\/option>/);
   assert.ok(existsSync(path.join(out, 'mon-planning/index.html')));
 });
+
+test('dossiers automatiques : fichiers générés, idempotents, section dédiée dans /articles/', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'dos-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  const auto = path.join(tmp, 'auto');
+  const csv = 'Date de sortie,Éditeur,Série,Tome,Titre du tome (facultatif),ISBN-13,Prix (€),Statut,Source officielle (lien),Vérifié le,Notes\n'
+    + ['2026-11-04,Kana,Serie Un,1,,,,annonce,,,', '2026-11-05,Kana,Serie Deux,1,,,,annonce,,,', '2026-11-06,Kana,Serie Trois,4,Serie Trois - Collector,,,annonce,,,', '2026-11-07,Kana,Serie Trois,5,Coffret Serie Trois,,,annonce,,,', '2026-11-09,Kana,Serie Quatre,2,Serie Quatre Artbook,,,annonce,,,', '2026-11-10,Kana,Serie Cinq,2,,,,annonce,,,'].join('\n') + '\n';
+  writeFileSync(path.join(data, 'manga.csv'), csv);
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: path.join(tmp, 'out'), CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: auto, NOW: '2026-11-12T07:00:00Z' };
+  const o1 = execFileSync('node', [path.join(ROOT, 'scripts/dossiers-auto.mjs')], { env }).toString();
+  assert.match(o1, /[1-9]\d* fichier/);
+  for (const f of ['dossier-nouvelles-series-2026-11.md', 'dossier-editions-speciales-2026-11.md', 'dossier-kana-2026-11.md']) assert.ok(existsSync(path.join(auto, f)), f);
+  assert.match(execFileSync('node', [path.join(ROOT, 'scripts/dossiers-auto.mjs')], { env }).toString(), /0 fichier/, 'second passage : rien à réécrire');
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const a = readFileSync(path.join(tmp, 'out/articles/index.html'), 'utf8');
+  assert.match(a, /id="t-dossier"/); assert.match(a, /Dossiers du mois/);
+  assert.doesNotMatch(readFileSync(path.join(auto, 'dossier-kana-2026-11.md'), 'utf8'), /href="\/serie\/serie-fictive/);
+});

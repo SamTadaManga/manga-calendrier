@@ -56,6 +56,8 @@ jobs:
           MYMEMORY_EMAIL: ${{ secrets.MYMEMORY_EMAIL }}
       - name: Articles du jour
         run: node scripts/daily-articles.mjs
+      - name: Dossiers éditoriaux automatiques
+        run: node scripts/dossiers-auto.mjs
       - name: Vérification de la construction
         run: node scripts/build.mjs
       - name: Enregistrer les changements
