@@ -142,6 +142,7 @@ ${image ? '' : `<meta property="og:image:alt" content="${esc(config.siteName)} :
 <link rel="icon" href="${FAVICON}">
 <link rel="preload" href="/fonts/dela-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="/fonts/zen-400.woff" as="font" type="font/woff" crossorigin>
+<link rel="preload" href="/fonts/zen-900.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="${av('style.css')}">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#ffd21f">
