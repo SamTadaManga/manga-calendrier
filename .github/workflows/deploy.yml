@@ -45,3 +45,20 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+  alerte:
+    needs: deploy
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Ouvrir ou compléter le ticket d'alerte
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITLE="Alerte : le déploiement du site a échoué"
+          N=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
+          BODY="Le déploiement a échoué le $(date -u +%F) : $RUN_URL"
+          if [ -n "$N" ]; then gh issue comment "$N" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+          else gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$BODY (ce ticket se complète à chaque nouvel échec ; ferme-le quand c'est réglé)"; fi
