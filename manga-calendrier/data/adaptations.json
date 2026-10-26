@@ -400,15 +400,29 @@
    }
   },
   "capitaine-albator-memoire-de-l-arcadia-integrale": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "comment-tuer-la-vilaine": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Wol-Saeng Sa",
+     "Haegi"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2021
+   }
   },
   "craque-pour-moi-medaka": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 188892,
@@ -431,46 +445,98 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Ran Kuze"
+    ],
+    "g": [
+     "Comedy",
+     "Ecchi",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2021
+   }
   },
   "crows": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Kazuya Machida",
+     "Yukisuke Yanagi"
+    ],
+    "g": [
+     "Action"
+    ],
+    "st": "FINISHED",
+    "y": 2009
+   }
   },
   "dead-rock": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Hiro Mashima"
+    ],
+    "g": [
+     "Action",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "death-note-black-edition": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "destiny-unchain-online": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Yachimoto",
+     "resn"
+    ],
+    "g": [
+     "Action",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "dong-hua-chun-barbershop": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "dragon-ball-full-color-freezer": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "elle-et-moi-dans-l-open-space": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "ender-geister": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "esquisses-de-nos-coeurs-en-devenir": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "fairy-tail-100-years-quest": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 139095,
@@ -485,10 +551,25 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Hiro Mashima",
+     "Atsuo Ueda"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Ecchi",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2018
+   }
   },
   "fall-in-love-false-angels": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 213131,
@@ -498,10 +579,21 @@
      "u": "https://anilist.co/anime/213131",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Coco Uzuki"
+    ],
+    "g": [
+     "Comedy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "fool-night": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 213457,
@@ -516,10 +608,24 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Kasumi Yasuda",
+     "Snir Aharon"
+    ],
+    "g": [
+     "Drama",
+     "Psychological",
+     "Sci-Fi",
+     "Thriller"
+    ],
+    "st": "RELEASING",
+    "y": 2020
+   }
   },
   "fungus-and-iron": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 208610,
@@ -529,10 +635,24 @@
      "u": "https://anilist.co/anime/208610",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Ayaka Katayama"
+    ],
+    "g": [
+     "Adventure",
+     "Drama",
+     "Fantasy",
+     "Psychological",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2021
+   }
   },
   "gachiakuta": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 204436,
@@ -555,34 +675,72 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Kei Urana"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "galaxias": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Ao Hatezaka"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2024
+   }
   },
   "gamaran-le-tournoi-ultime": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Yousuke Nakamaru"
+    ],
+    "g": [
+     "Action"
+    ],
+    "st": "FINISHED",
+    "y": 2018
+   }
   },
   "goddesses-cafe-terrace": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "hell-dogs": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "how-i-married-an-amagami-sister": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "humanimals": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "hunter-x-hunter": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 136,
@@ -609,10 +767,23 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Yoshihiro Togashi"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 1998
+   }
   },
   "kagurabachi": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 211496,
@@ -622,18 +793,42 @@
      "u": "https://anilist.co/anime/211496",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "kaijin-fugeki-kindled-spirits": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Ito Oogure"
+    ],
+    "g": [
+     "Action",
+     "Fantasy",
+     "Sci-Fi",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2024
+   }
   },
   "kohva": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "komi-cherche-ses-mots": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 133965,
@@ -661,18 +856,33 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Tomohito Oda",
+     "Erwan Lossois",
+     "Eve Grandt"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2016
+   }
   },
   "kujo-l-implacable": {
    "c": "2026-10-09",
    "a": []
   },
   "l-amour-est-dans-le-the": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "l-atelier-des-sorciers": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 213702,
@@ -699,46 +909,78 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Kamome Shirahama"
+    ],
+    "g": [
+     "Adventure",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2016
+   }
   },
   "l-atelier-des-sorciers-coffret": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "l-atelier-des-sorciers-la-magie-creatrice-artbook-luxe": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "l-epouse-damnee-et-le-chasseur-de-demons": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "l-ete-qu-on-n-a-jamais-quitte": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "la-vraie-c-est-moi": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "le-harem-de-l-imperatrice": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "le-secret-de-scarecrow": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "les-carnets-de-l-apothicaire": {
-   "c": "2026-10-23",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Natsu Hyuuga",
+     "Erika Ikeda"
+    ],
+    "g": [
+     "Drama",
+     "Mystery"
+    ],
+    "st": "RELEASING",
+    "y": 2017
+   }
   },
   "manga-issho": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "march-comes-in-like-a-lion": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 21366,
@@ -766,22 +1008,60 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Chica Umino"
+    ],
+    "g": [
+     "Drama",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2007
+   }
   },
   "marriage-of-convenience": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Ant Studio",
+     "KEN",
+     "Hanheun"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2022
+   }
   },
   "midnight-heart-tune": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "miss-fantasmes": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Yukino Seo"
+    ],
+    "g": [
+     "Comedy",
+     "Ecchi",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2015
+   }
   },
   "mission-yozakura-family": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 213657,
@@ -804,22 +1084,61 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Hitsuji Gondaira"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2019
+   }
   },
   "mujina-into-the-deep": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Inio Asano",
+     "Éric Montésinos"
+    ],
+    "g": [
+     "Action"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "my-ex-husband-s-mad-dog": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "nano-machine": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Geobalhan",
+     "Geumgangbulgoe",
+     "Hanjung Worya"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2020
+   }
   },
   "nights-with-a-cat": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 148042,
@@ -837,10 +1156,21 @@
      "u": "https://anilist.co/anime/160088",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "KyuruZ"
+    ],
+    "g": [
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2019
+   }
   },
   "no-longer-rangers": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 158417,
@@ -868,10 +1198,23 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Negi Haruba"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2021
+   }
   },
   "nodame-cantabile": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 1698,
@@ -889,18 +1232,33 @@
      "u": "https://anilist.co/anime/4477",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Tomoko Ninomiya"
+    ],
+    "g": [
+     "Comedy",
+     "Music",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2001
+   }
   },
   "one-piece-edition-originale": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "one-piece-vivre-rush": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "pandora-hearts": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 5530,
@@ -910,15 +1268,44 @@
      "u": "https://anilist.co/anime/5530",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Jun Mochizuki"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Drama",
+     "Fantasy",
+     "Mystery"
+    ],
+    "st": "FINISHED",
+    "y": 2006
+   }
   },
   "princesse-puncheuse": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Sora Hoonoki",
+     "Nana Ootori"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2019
+   }
   },
   "quatre-freres-pour-moi": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "ragna-crimson": {
    "c": "2026-10-09",
@@ -947,35 +1334,64 @@
    "a": []
   },
   "rokudenashi-mini-blues": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "saint-seiya-final-edition": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "saint-seiya-rerise-of-poseidon": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Tunakan Suda"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2022
+   }
   },
   "samurai-deeper-kyo-star-edition": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "second-life-ranker": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Nong Nong",
+     "Do-Yeon Sa"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2019
+   }
   },
   "secret-bodyguard": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "serenade-pour-une-pluie-de-larmes": {
    "c": "2026-10-09",
    "a": []
   },
   "shangri-la-frontier": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 189323,
@@ -1002,26 +1418,75 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Ryousuke Fuji",
+     "Katarina"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Fantasy",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2020
+   }
   },
   "shimazaki-in-the-land-of-peace": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Takeshi Seshimo",
+     "Gouten Hamada"
+    ],
+    "g": [
+     "Action",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "show-ha-shoten": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Takeshi Obata",
+     "Akinari Asakura"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2021
+   }
   },
   "silence": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Azuma Takamiya"
+    ],
+    "g": [],
+    "st": "RELEASING",
+    "y": 2004
+   }
   },
   "slam-dunk-deluxe": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "smoking-behind-the-supermarket-with-you": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 196187,
@@ -1040,14 +1505,27 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Jinushi"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "soara-et-les-batisseurs-fantastiques": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "sss-class-revival-hunter": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 216624,
@@ -1057,18 +1535,60 @@
      "u": "https://anilist.co/anime/216624",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Neida",
+     "No-A Sin",
+     "Bill K"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Drama",
+     "Fantasy",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2020
+   }
   },
   "stranger-case": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Kyou Shirodaira",
+     "Chashiba Katase"
+    ],
+    "g": [
+     "Comedy",
+     "Horror",
+     "Mystery",
+     "Romance",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2015
+   }
   },
   "tatari": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Watari"
+    ],
+    "g": [
+     "Adventure",
+     "Comedy"
+    ],
+    "st": "FINISHED",
+    "y": 2023
+   }
   },
   "the-kingdoms-of-ruin": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 160900,
@@ -1083,10 +1603,23 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Yoruhashi",
+     "Joseph Barr"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2019
+   }
   },
   "the-warrior-princess-and-the-barbaric-king": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 182483,
@@ -1101,22 +1634,64 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Noriaki Kotoba",
+     "Clair Obscur"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Ecchi",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2021
+   }
   },
   "the-world-after-the-fall": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Singsyong",
+     "S-Cynan",
+     "Eondedeu Gamja"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "togen-anki-la-legende-du-sang-maudit": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "tokyo-aliens": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "NAOE"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2020
+   }
   },
   "tower-dungeon": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 210115,
@@ -1126,10 +1701,22 @@
      "u": "https://anilist.co/anime/210115",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Tsutomu Nihei"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "trillion-game": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 169315,
@@ -1144,10 +1731,24 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Riichirou Inagaki",
+     "Ryouichi Ikegami"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Psychological"
+    ],
+    "st": "FINISHED",
+    "y": 2020
+   }
   },
   "undead-unluck": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 204604,
@@ -1170,18 +1771,45 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Yoshifumi Tozuka",
+     "Éric Montésinos"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Sci-Fi",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2020
+   }
   },
   "veritas-oculis": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "versus": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Keiko Yamada"
+    ],
+    "g": [
+     "Drama",
+     "Music",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 1999
+   }
   },
   "viral-hit": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 174653,
@@ -1196,10 +1824,22 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Jeong-Hyeon Kim",
+     "Tae-Jun Park"
+    ],
+    "g": [
+     "Action",
+     "Comedy"
+    ],
+    "st": "FINISHED",
+    "y": 2019
+   }
   },
   "wind-breaker": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 163270,
@@ -1239,10 +1879,22 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Satoru Nii"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama"
+    ],
+    "st": "RELEASING",
+    "y": 2021
+   }
   },
   "wistoria-wand-and-sword": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 213656,
@@ -1269,14 +1921,30 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Fujino Oomori",
+     "Toshi Aoi"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2020
+   }
   },
   "x-clamp": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "xxxholic": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 861,
@@ -1299,22 +1967,58 @@
      "u": "https://anilist.co/anime/3091",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "CLAMP"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Mystery",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2003
+   }
   },
   "you-re-my-soulmate": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Anashin"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2021
+   }
   },
   "you-rock-me": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Keiko Iwashita"
+    ],
+    "g": [
+     "Drama",
+     "Music",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "yu-gi-oh-edition-millenium": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "akane-banashi": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 213360,
@@ -1337,11 +2041,35 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Takamasa Moue",
+     "Yuuki Suenaga"
+    ],
+    "g": [
+     "Drama"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "cosmos": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Ryuuhei Tamura"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "kindergarten-wars": {
    "c": "2026-10-23",
@@ -1492,11 +2220,23 @@
    }
   },
   "gaslight-stray-dog-detectives": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Toshimitsu Matsubara",
+     "Yuugo Aosaki"
+    ],
+    "g": [
+     "Drama",
+     "Mystery"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "jujutsu-kaisen": {
-   "c": "2026-10-14",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 113415,
@@ -1532,66 +2272,109 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Gege Akutami"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2018
+   }
   },
   "jujutsu-kaisen-modulo": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Gege Akutami",
+     "Yuuji Iwasaki"
+    ],
+    "g": [
+     "Action",
+     "Sci-Fi",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2025
+   }
   },
   "la-fiancee-du-clan-kyougane": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "la-servante-de-l-empereur": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Ichiha Hiiragi",
+     "Studio Charon",
+     "Haruki Yoshimura"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2021
+   }
   },
   "lili-men": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Takuma Tokashiki"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2022
+   }
   },
   "lovecraft": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "my-hero-academia": {
-   "c": "2026-10-14",
-   "a": [
-    {
-     "id": 21459,
-     "t": "My Hero Academia",
-     "st": "FINISHED",
-     "f": "TV",
-     "u": "https://anilist.co/anime/21459",
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/80135674"
-      }
-     ]
-    },
-    {
-     "id": 21856,
-     "t": "My Hero Academia Season 2",
-     "st": "FINISHED",
-     "f": "TV",
-     "u": "https://anilist.co/anime/21856",
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/80135674"
-      },
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/my-hero-academia-dubs"
-      }
-     ]
-    }
-   ]
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Anri Takahashi"
+    ],
+    "g": [
+     "Action",
+     "Comedy"
+    ],
+    "st": "FINISHED",
+    "y": 2016
+   }
   },
   "nine-peaks": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Tetsuhiro Hirakawa"
+    ],
+    "g": [
+     "Action"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "suicide-red": {
    "c": "2026-10-14",
@@ -1679,19 +2462,32 @@
    }
   },
   "constellations-cruelles": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Shinoa"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2023
+   }
   },
   "earth-expansion": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "gardienne": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "go-for-it-nakamura": {
-   "c": "2026-10-22",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 180228,
@@ -1706,22 +2502,57 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Shundei"
+    ],
+    "g": [
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2014
+   }
   },
   "kiss-me-kitty": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Miko Senri"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2020
+   }
   },
   "la-couche-est-pleine": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Akiko Higashimura"
+    ],
+    "g": [
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2007
+   }
   },
   "les-7-chevaliers-du-royaume-des-marronniers": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "les-filles-d-awajima": {
-   "c": "2026-10-22",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 177501,
@@ -1736,55 +2567,141 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Takako Shimura",
+     "Tom Bertrand"
+    ],
+    "g": [
+     "Drama",
+     "Music",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2011
+   }
   },
   "love-potion-la-sorciere-mal-aimee": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "magical-girl-dandelion": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Kaeru Mizuho"
+    ],
+    "g": [
+     "Action",
+     "Fantasy",
+     "Mahou Shoujo"
+    ],
+    "st": "RELEASING",
+    "y": 2024
+   }
   },
   "memoire-filante": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "my-sweet-boy": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Kaori Hoshiya"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2018
+   }
   },
   "noel-d-amour": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "not-just-a-pretty-face": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Karin Anzai"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2020
+   }
   },
   "our-love-language": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Teku Rin"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2023
+   }
   },
   "principal": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Ryou Ikuemi"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2010
+   }
   },
   "sasaki-et-miyano-1ere-annee": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "she-is-a-haunting": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "strange-natives-la-derniere-pretresse": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "un-zeste-de-tendresse": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Chigaya Ichigaya"
+    ],
+    "g": [
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2022
+   }
   },
   "fire": {
    "c": "2026-10-22",
@@ -1803,5 +2720,5 @@
    "a": []
   }
  },
- "generatedAt": "2026-10-26T13:41:31.947Z"
+ "generatedAt": "2026-10-26T13:56:39.613Z"
 }
