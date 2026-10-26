@@ -368,6 +368,14 @@ function animeRow(e) {
     + `${chips ? `<div class="shops"><span class="shops-l">Regarder</span>${chips}</div>` : ''}</div></li>`;
 }
 
+function animeTile(e) {
+  const t = esc(displayTitle(e.title));
+  const url = esc(animeHref(e));
+  return `<li class="tile p-anime"><a class="tile-cover t-cover" href="${url}" aria-label="${t} : où regarder">${coverBox(e.cover, `Affiche de ${displayTitle(e.title)}`, 160, 240)}</a>`
+    + `<div class="tile-body"><div class="t-title"><strong><a href="${url}">${t}</a></strong><span class="tome">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span></div>`
+    + `<div class="tile-date"><time>${esc(e.time)}</time></div>${isPremiere(e) ? PREMIERE_BADGE : ''}${afollow(e)}</div></li>`;
+}
+
 const KIND_LABEL = { quotidien: 'Quotidien', hebdo: 'Hebdomadaire', mensuel: 'Mensuel', changements: 'Changements', redac: 'Rédaction' };
 const kindBadge = (a) => `<span class="kind k-${a.kind}">${KIND_LABEL[a.kind] || ''}</span>`;
 const articleItem = (a) =>
@@ -379,7 +387,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
 /* ------------------------------------------------------------------ accueil */
 {
   const todayEps = eps.filter((e) => e.key === today);
-  const topToday = [...todayEps].sort((a, b) => b.popularity - a.popularity).slice(0, 8).sort((a, b) => a.airingAt - b.airingAt);
+  const topToday = [...todayEps].sort((a, b) => b.popularity - a.popularity).slice(0, showCovers ? 14 : 8).sort((a, b) => a.airingAt - b.airingAt);
   const live = manga.filter((r) => r.statut !== 'annule');
   const mangaToday = live.filter((r) => r.date === today);
   const mangaNext = live.filter((r) => r.date > today && r.date <= addDays(today, 30)).slice(0, 10);
@@ -389,7 +397,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const strip = Array.from({ length: 7 }, (_, i) => addDays(today, i)).map((d) => {
     const m = live.filter((r) => r.date === d);
     const a = eps.filter((e) => e.key === d);
-    return `<li class="day-panel ${wdc(d)}${d === today ? ' today' : ''}"><div class="d-head"><span class="d-wd">${esc(d === today ? "aujourd'hui" : weekday(d))}</span><span class="d-num">${dayNum(d)}</span></div>`
+    return `<li class="day-panel ${wdc(d)}${d === today ? ' today' : ''}"><div class="d-head"><a class="d-link" href="/semaine/#j-${d}" aria-label="Voir le détail du ${esc(frDate(d))}"><span class="d-wd">${esc(d === today ? "aujourd'hui" : weekday(d))}</span><span class="d-num">${dayNum(d)}</span></a></div>`
       + (m.length ? `<a class="d-line" href="/manga/#j-${d}"><b>${m.length}</b> ${m.length > 1 ? 'mangas' : 'manga'}<span class="dots">${dots(m)}</span></a>` : '<span class="d-line none">Pas de manga</span>')
       + (a.length ? `<a class="d-line" href="/anime/#j-${d}"><b>${a.length}</b> ${a.length > 1 ? 'épisodes' : 'épisode'}</a>` : '<span class="d-line none">Pas d\'épisode</span>')
       + '</li>';
@@ -405,17 +413,17 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
 <ul class="strip">${strip}</ul>
 <p class="more"><a href="/semaine/">Voir la semaine en détail</a></p>
 </section>
-<section class="two" aria-label="Aujourd'hui">
+<section class="two stack" aria-label="Aujourd'hui">
 <div>
 <h2>Manga du ${esc(frDate(today))}</h2>
 ${mangaToday.length
-    ? `<ul class="list panel">${mangaToday.map((r) => releaseItem(r)).join('')}</ul>`
+    ? (showCovers ? `<ul class="hscroll" tabindex="0" aria-label="Sorties manga du jour">${mangaToday.map(tile).join('')}</ul>` : `<ul class="list panel">${mangaToday.map((r) => releaseItem(r)).join('')}</ul>`)
     : '<p class="empty">Aucune sortie manga enregistrée aujourd\'hui. <a href="/manga/">Voir le calendrier</a></p>'}
 </div>
 <div>
 <h2>Anime du jour</h2>
 ${todayEps.length
-    ? `<ul class="list panel eps">${topToday.map(showCovers ? animeRow : episodeItem).join('')}</ul><p class="muted more">Les ${topToday.length} plus suivis sur ${todayEps.length} épisodes. <a href="/anime/#j-${today}">Programme complet</a></p>`
+    ? `${showCovers ? `<ul class="hscroll" tabindex="0" aria-label="Épisodes d'anime du jour">${topToday.map(animeTile).join('')}</ul>` : `<ul class="list panel eps">${topToday.map(episodeItem).join('')}</ul>`}<p class="muted more">Les ${topToday.length} plus suivis sur ${todayEps.length} épisodes. <a href="/anime/#j-${today}">Programme complet</a></p>`
     : (eps.length
       ? '<p class="empty">Aucun épisode n\'est prévu aujourd\'hui. <a href="/anime/">Voir la semaine</a></p>'
       : `<p class="empty">Le programme anime n'est pas disponible pour le moment${anime.generatedAt ? ` (dernière mise à jour réussie : ${esc(agoFr(anime.generatedAt))})` : ''}. Il revient automatiquement dès que la source répond. <a href="/etat/">État des données</a></p>`)}${todayEps.length && ANIME_STALE ? `<p class="muted more">Programme non actualisé depuis ${esc(agoFr(anime.generatedAt))}. <a href="/etat/">Détails</a></p>` : ''}
