@@ -166,6 +166,7 @@ ${body}
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
+<script src="${av('clic.js')}" defer></script>
 <script src="${av('recherche.js')}" defer></script>
 <script src="${av('theme.js')}" defer></script>
 </body>
@@ -255,7 +256,7 @@ const buyBox = (r, size = '') => {
   if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
   const verb = r.date > today ? 'Précommander' : 'Acheter';
   const sm = size === 'sm';
-  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
+  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" data-sh="${esc(x.id)}" data-k="${esc(slugify(r.serie))}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
   return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
 /* Goodies : une recherche Amazon sur le nom de la série (résultats affichés par Amazon, rien n'est copié). Désactivable avec "goodies": false */
@@ -282,7 +283,7 @@ const goodiesBox = (name) => {
   const picks = GOODIES.get(slugify(name));
   const direct = picks && picks.length ? `https://www.amazon.fr/dp/${picks[dayHash(name) % picks.length]}${AMZ.tag ? `?tag=${encodeURIComponent(AMZ.tag)}` : ''}` : '';
   const url = direct || `https://www.amazon.fr/s?k=${encodeURIComponent(`${name} goodies`).replace(/%20/g, '+')}${AMZ.tag ? `&tag=${encodeURIComponent(AMZ.tag)}` : ''}`;
-  return `<div class="shops shops-lg"><span class="shops-l">Goodies</span><a class="stream shop stream-lg s-goodies" href="${esc(url)}" rel="${AMZ.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" aria-label="Goodies ${esc(name)} sur Amazon">${CART}Goodies ${esc(name)} sur Amazon</a></div>`;
+  return `<div class="shops shops-lg"><span class="shops-l">Goodies</span><a class="stream shop stream-lg s-goodies" data-sh="goodies" data-k="${esc(slugify(name))}" href="${esc(url)}" rel="${AMZ.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" aria-label="Goodies ${esc(name)} sur Amazon">${CART}Goodies ${esc(name)} sur Amazon</a></div>`;
 };
 function volTile(r, noBuy = false) {
   const pk = pubKey(r.editeur);
@@ -1163,7 +1164,7 @@ else{msg.select();done('Sélectionne et copie le texte.');}});
 <h2>Cookies et données personnelles</h2>
 <p>Ce site ne dépose pas de cookies.${ANALYTICS ? ' La fréquentation est mesurée avec Cloudflare Web Analytics, un outil sans cookie qui ne crée aucun profil individuel : il compte les pages vues, les pays et les navigateurs de façon agrégée, sans stocker d’adresse IP.' : ''}${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>
 ${AFFILIATE_ON ? `<h2 id="affiliation">Liens d'affiliation</h2>
-<p>Certains liens d'achat (${esc(SHOPLIST.filter((x) => x.sponsored).map((x) => x.name).join(', '))}) sont des liens d'affiliation : si tu achètes après avoir cliqué, le site peut percevoir une commission, sans que le prix change pour toi. Ces liens sont signalés sur les pages concernées et n'influencent pas les dates ni les informations publiées.</p>
+<p>Certains liens d'achat (${esc(SHOPLIST.filter((x) => x.sponsored).map((x) => x.name).join(', '))}) sont des liens d'affiliation : si tu achètes après avoir cliqué, le site peut percevoir une commission, sans que le prix change pour toi. Ces liens sont signalés sur les pages concernées et n'influencent pas les dates ni les informations publiées. Pour savoir quels liens sont utiles, le site compte les clics sur les boutons d'achat de façon anonyme : seuls la boutique, la série, la page et le jour sont enregistrés, sans cookie, sans adresse IP et sans identifiant. Rien n'est compté si ton navigateur envoie « Ne pas me suivre ».</p>
 ${SHOPLIST.some((x) => x.id === 'amazon' && x.sponsored) ? `<p>En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.</p>
 ` : ''}` : ''}${NL.on ? `
 <h2 id="newsletter">Newsletter</h2>
@@ -1237,7 +1238,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));
 }
-for (const f of ['visite.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
