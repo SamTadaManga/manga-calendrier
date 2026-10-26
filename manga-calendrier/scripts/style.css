@@ -551,3 +551,9 @@ details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:80
 
 .coll-row select{font:inherit;padding:4px 8px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink)}
 .coll-row>a{min-width:12rem;font-weight:700}
+
+.facts{display:flex;flex-wrap:wrap;gap:8px 22px;margin:8px 0 2px;padding:0}
+.facts div{display:flex;flex-direction:column}
+.facts dt{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.facts dd{margin:0;font-weight:700}
+.facts-src{margin:2px 0 10px;font-size:.8rem}

@@ -114,6 +114,8 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.equal(anime.episodes.length, 6, 'filtre : adulte, Chine, musique, hier et hors fenêtre exclus');
   assert.ok(anime.episodes.every((e) => e.title && typeof e.airingAt === 'number'));
 
+  const adaptJson = JSON.parse(read(dirs.DATA_DIR, 'adaptations.json'));
+  assert.deepEqual(adaptJson.series['serie-fictive-alpha'].i, { au: ['Auteur Test'], g: ['Action', 'Sci-Fi'], st: 'RELEASING', y: 2019 }, 'fiche auteur, genres, état');
   run('daily-articles.mjs');
   const animeMd = read(dirs.AUTO_DIR, 'anime-2026-10-12.md');
   assert.ok(animeMd.includes('02 h 30') && animeMd.includes('17 h 00') && animeMd.includes('23 h 30'));
@@ -148,6 +150,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   const mp = read(dist('manga/index.html'));
   assert.ok(mp.includes('Adapté en anime') && mp.includes('Alpha Season 2') && mp.includes('crunchyroll.com/series/ALPHA') && !mp.includes('evil.example'), 'adaptation sous les tomes');
   const sp = read(dist('serie/serie-fictive-alpha/index.html'));
+  assert.ok(sp.includes('class="facts"') && sp.includes('Auteur Test') && sp.includes('Science-fiction') && !sp.includes('Pas Un Auteur'), 'fiche série : auteur et genres AniList');
   assert.ok(sp.includes('Alpha Old') && sp.includes('en cours de diffusion') && sp.includes('Prochain épisode'), 'encadré de la page série');
   assert.ok(read(dirs.OUT_DIR, 'index.html').includes('id="pour-toi"') && existsSync(dist('data/anime-week.json')), 'section Pour toi et données anime');
   assert.ok(JSON.parse(read(dirs.OUT_DIR, 'data/anime-week.json')).eps.length > 0 && read(dirs.OUT_DIR, 'anime/index.html').includes('class="chip afollow"'), 'suivi des animes');

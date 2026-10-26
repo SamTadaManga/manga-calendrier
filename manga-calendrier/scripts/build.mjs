@@ -47,6 +47,19 @@ const adaptations = (() => {
   try { return JSON.parse(readFileSync(path.join(P.dataDir, 'adaptations.json'), 'utf8')).series || {}; } catch { return {}; }
 })();
 const ADAPT_ST = { RELEASING: 'en cours de diffusion', NOT_YET_RELEASED: 'à venir', FINISHED: 'terminé' };
+const infoOf = (name) => adaptations[slugify(name)]?.i || null;
+const GENRE_FR = { Action: 'Action', Adventure: 'Aventure', Comedy: 'Comédie', Drama: 'Drame', Ecchi: 'Ecchi', Fantasy: 'Fantasy', Horror: 'Horreur', 'Mahou Shoujo': 'Magical girl', Mecha: 'Mecha', Music: 'Musique', Mystery: 'Mystère', Psychological: 'Psychologique', Romance: 'Romance', 'Sci-Fi': 'Science-fiction', 'Slice of Life': 'Tranche de vie', Sports: 'Sport', Supernatural: 'Surnaturel', Thriller: 'Thriller' };
+const PUB_ST = { RELEASING: 'En cours de publication', FINISHED: 'Terminée', HIATUS: 'En pause', CANCELLED: 'Arrêtée', NOT_YET_RELEASED: 'À venir' };
+const infoBox = (name) => {
+  const i = infoOf(name);
+  if (!i) return '';
+  const rows = [
+    i.au?.length ? ['Auteur' + (i.au.length > 1 ? 's' : ''), i.au.join(', ')] : null,
+    i.g?.length ? ['Genres', i.g.map((x) => GENRE_FR[x] || x).join(', ')] : null,
+    i.st && PUB_ST[i.st] ? ['Publication au Japon', PUB_ST[i.st] + (i.y ? ` (depuis ${i.y})` : '')] : (i.y ? ['Début de la série', String(i.y)] : null),
+  ].filter(Boolean);
+  return rows.length ? `<dl class="facts">${rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl><p class="muted facts-src">Données : <a href="https://anilist.co" rel="noopener nofollow">AniList</a></p>` : '';
+};
 const adaptOf = (name) => (Array.isArray(adaptations[slugify(name)]?.a) ? adaptations[slugify(name)].a : []);
 const eps = anime.episodes
   .map((e) => ({ ...e, date: new Date(e.airingAt * 1000) }))
@@ -569,7 +582,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     return { k, name, rows: sorted, next: sorted.find((r) => r.date >= today) || null, editeur: sorted[sorted.length - 1].editeur };
   }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
-  searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: S.editeur || '', c: showCovers ? (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover || '') : '', x: [S.editeur, S.rows.filter((r) => r.date >= today).length ? `${S.rows.filter((r) => r.date >= today).length} tome(s) à venir` : 'rien d\'annoncé'].filter(Boolean).join(' · ') }));
+  searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: [S.editeur, ...((infoOf(S.name) || {}).au || [])].filter(Boolean).join(' '), c: showCovers ? (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover || '') : '', x: [S.editeur, S.rows.filter((r) => r.date >= today).length ? `${S.rows.filter((r) => r.date >= today).length} tome(s) à venir` : 'rien d\'annoncé'].filter(Boolean).join(' · ') }));
   for (const S of seriesList) {
     const upcoming = S.rows.filter((r) => r.date >= today);
     const past = S.rows.filter((r) => r.date < today).reverse();
@@ -595,6 +608,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
         { '@type': 'ListItem', position: 3, name: S.name, item: `${base}/serie/${S.k}/` }] },
       { '@context': 'https://schema.org', '@type': 'ComicSeries', name: S.name, inLanguage: 'fr', url: `${base}/serie/${S.k}/`,
         ...(S.editeur ? { publisher: { '@type': 'Organization', name: S.editeur } } : {}),
+        ...((infoOf(S.name) || {}).au?.length ? { author: infoOf(S.name).au.map((x) => ({ '@type': 'Person', name: x })) } : {}),
         ...(n && isIsbn13(n.isbn) ? { hasPart: { '@type': 'Book', name: mangaLabel(n), isbn: n.isbn, datePublished: n.date, bookFormat: 'https://schema.org/Paperback' } } : {}) },
     ]).replace(/</g, '\\u003c')}</script>` : '';
     page(`/serie/${S.k}/`, {
@@ -607,6 +621,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
 <p class="lead">${lead}</p>
+${infoBox(S.name)}
 ${buyRow ? buyBox(buyRow, 'lg') : ''}
 ${goodiesBox(S.name)}
 ${synBox}

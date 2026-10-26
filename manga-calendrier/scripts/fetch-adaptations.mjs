@@ -17,7 +17,7 @@ const TITLE = 'title { romaji english native }';
 const QUERY = `query ($s: String) {
   Page(perPage: 4) {
     media(search: $s, type: MANGA, sort: SEARCH_MATCH) {
-      ${TITLE} synonyms
+      ${TITLE} synonyms genres status startDate { year } staff(perPage: 6) { edges { role node { name { full } } } }
       relations { edges { relationType node { id type format status siteUrl ${TITLE} externalLinks { site url type isDisabled } } } }
     }
   }
@@ -42,6 +42,18 @@ export function pickAdaptations(media, slug) {
       u: /^https:\/\/anilist\.co\//.test(n.siteUrl || '') ? n.siteUrl : '',
       s: streams(n.externalLinks),
     }));
+}
+
+// Fiche d'information du manga trouvé : auteurs (rôles Story / Art), genres, état de publication au Japon, année de début
+const AUTHOR_ROLE = /\b(story|art)\b/i;
+export function pickInfo(media, slug) {
+  const m = (media || []).find((x) => namesOf(x).includes(slug));
+  if (!m) return null;
+  const au = [...new Set((m.staff?.edges || []).filter((e) => AUTHOR_ROLE.test(e?.role || '')).map((e) => String(e.node?.name?.full || '').trim()).filter(Boolean))].slice(0, 4);
+  const g = (m.genres || []).map((x) => String(x)).filter((x) => /^[A-Za-z' -]{2,30}$/.test(x)).slice(0, 5);
+  const st = ['RELEASING', 'FINISHED', 'HIATUS', 'CANCELLED', 'NOT_YET_RELEASED'].includes(m.status) ? m.status : '';
+  const y = Number.isInteger(m.startDate?.year) && m.startDate.year > 1900 && m.startDate.year < 2100 ? m.startDate.year : 0;
+  return au.length || g.length || st || y ? { au, g, st, y } : null;
 }
 
 async function search(term, attempt = 1) {
@@ -82,7 +94,7 @@ for (const r of loadAllManga(P.dataDir)) {
   if (r.date >= today) upcoming.add(k);
 }
 const stale = (e) => {
-  if (!e) return true;
+  if (!e || !('i' in e)) return true;
   const age = e.a?.length ? (e.a.some((x) => x.st !== 'FINISHED') ? 7 : 60) : 21;
   return e.c <= addDays(today, -age);
 };
@@ -94,7 +106,7 @@ for (const k of todo.slice(0, MAX)) {
   try {
     const media = mock ? (mock[k] || []) : await search(names.get(k));
     const a = pickAdaptations(media, k);
-    state.series[k] = { c: today, a };
+    state.series[k] = { c: today, a, i: pickInfo(media, k) };
     done++; if (a.length) found++;
   } catch (e) {
     console.error(`Arrêt anticipé (${e.message}) : le travail déjà fait est conservé.`);
