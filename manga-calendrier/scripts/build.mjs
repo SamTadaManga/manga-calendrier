@@ -285,7 +285,7 @@ function volTile(r, noBuy = false) {
   const pk = pubKey(r.editeur);
   const label = mangaLabel(r);
   const cover = showCovers ? coverBox(r.cover, `Couverture de ${label}`) : '';
-  const own = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` : '';
+  const own = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="l">Lu</option></select>` : '';
   const ed = editionOf(r);
   const mv = moves.get(keyOf(r));
   const moved = mv && mv.to === r.date ? `<span class="badge ${mv.to > mv.from ? 's-reporte' : 's-confirme'}">${mv.to > mv.from ? 'Reporté' : 'Avancé'}</span>` : '';
@@ -310,7 +310,7 @@ function releaseItem(r, showDate = false) {
     isNewSeries(r) ? NEW_BADGE : '',
     badge,
     r.source ? `<a href="${esc(r.source)}" rel="noopener nofollow">Fiche éditeur</a>` : '',
-    /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` : '',
+    /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="l">Lu</option></select>` : '',
   ].filter(Boolean).join('');
   const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
