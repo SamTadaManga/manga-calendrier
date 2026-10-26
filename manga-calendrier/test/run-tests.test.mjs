@@ -681,6 +681,11 @@ test('visuels à partager : page et script publiés, lien dans le pied de page',
   execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
   assert.ok(existsSync(path.join(out, 'partager/index.html')) && existsSync(path.join(out, 'partager.js')));
   assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /href="\/partager\/"/);
+  const part = JSON.parse(readFileSync(path.join(out, 'data/partage.json'), 'utf8'));
+  assert.ok(part.months.length && part.months[0].total > 0 && Array.isArray(part.months[0].fresh) && Array.isArray(part.finished) && Array.isArray(part.genres), 'données des visuels : mois, séries terminées, genres');
+  // la recherche du site s'ouvre depuis les barres de l'accueil, du calendrier manga et du calendrier anime
+  for (const f of ['manga/index.html']) assert.match(readFileSync(path.join(out, f), 'utf8'), /<input type="search" id="f" data-gs /, f);
+  assert.match(readFileSync(path.join(out, 'recherche.js'), 'utf8'), /input\[type=search\]\[data-gs\]/);
 });
 
 test('article du mois : généré à partir du 25 pour le mois suivant, une seule fois', () => {

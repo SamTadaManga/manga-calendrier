@@ -484,7 +484,7 @@ if(none)none.hidden=shown>0;var fc=document.getElementById('fcount');if(fc){fc.t
 chips.forEach(function(c){c.addEventListener('click',function(){var k=c.dataset.chip,a=at(c);if(k==='tous')act={};else{act[a]=act[a]||{};if(act[a][k])delete act[a][k];else act[a][k]=1;}apply();});});
 q.addEventListener('input',apply);
 var SK='mc-f:'+location.pathname;
-try{var sf=JSON.parse(localStorage.getItem(SK)||'null');if(sf){if(sf.q)q.value=sf.q;(sf.a||[]).forEach(function(s){var p=String(s).split(':'),a=p.length>1?p[0]:'pub',k=p.length>1?p[1]:p[0];if(chips.some(function(c){return c.dataset.chip===k&&at(c)===a;})){act[a]=act[a]||{};act[a][k]=1;}});if(sf.q||nAct())apply();}}catch(e){}
+try{var sf=JSON.parse(localStorage.getItem(SK)||'null');if(sf){if(sf.q&&!q.hasAttribute('data-gs'))q.value=sf.q;(sf.a||[]).forEach(function(s){var p=String(s).split(':'),a=p.length>1?p[0]:'pub',k=p.length>1?p[1]:p[0];if(chips.some(function(c){return c.dataset.chip===k&&at(c)===a;})){act[a]=act[a]||{};act[a][k]=1;}});if(sf.q||nAct())apply();}}catch(e){}
 var _ap=apply;apply=function(){_ap();try{var a=[];Object.keys(act).forEach(function(x){Object.keys(act[x]).forEach(function(k){a.push(x+':'+k);});});if(!q.value&&!a.length)localStorage.removeItem(SK);else localStorage.setItem(SK,JSON.stringify({q:q.value,a:a}));}catch(e){}};
 var vb=document.getElementById('vues'),alt=null,NAMES=${JSON.stringify(PUBS)};
 function mk(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt)e.textContent=txt;return e;}
@@ -589,7 +589,7 @@ var _ap2=apply;apply=function(){if(tpl&&((q.value||'').trim()||nAct())){loadMore
   const body = `
 <h1>Calendrier des sorties manga</h1>
 <p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.${mangaUpdatedIso ? ` <span class="muted">Mis à jour ${esc(agoFr(mangaUpdatedIso))}. <a href="/etat/">État des données</a></span>` : ''}</p>
-${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série"><details class="fdet" id="fdet"><summary>Filtres <span class="n" id="fcount" hidden></span></summary><div class="fpanel"><p class="fgrp"><span class="muted fsep">Éditeur</span>${chips}</p>${stChips ? `<p class="fgrp"><span class="muted fsep">Statut</span>${stChips}</p>` : ''}${tyChips.split('data-chip').length > 2 ? `<p class="fgrp"><span class="muted fsep">Type</span>${tyChips}</p>` : ''}</div></details></div>
+${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" data-gs placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"><details class="fdet" id="fdet"><summary>Filtres <span class="n" id="fcount" hidden></span></summary><div class="fpanel"><p class="fgrp"><span class="muted fsep">Éditeur</span>${chips}</p>${stChips ? `<p class="fgrp"><span class="muted fsep">Statut</span>${stChips}</p>` : ''}${tyChips.split('data-chip').length > 2 ? `<p class="fgrp"><span class="muted fsep">Type</span>${tyChips}</p>` : ''}</div></details></div>
 ${monthJump}
 <div class="views" id="vues" role="group" aria-label="Affichage" hidden><span class="muted">Affichage :</span>
 <button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button><button type="button" class="chip jump-today" id="auj">Aujourd'hui</button></div>
@@ -1044,7 +1044,7 @@ ${events.length ? content : `<p class="empty">Aucun changement détecté pour le
 <p class="chiprow"><a class="chip" href="/anime/saison/">Anime de la saison</a><a class="chip" href="/semaine/">La semaine en détail</a></p>
 ${animeNotice()}
 ${eps.length ? `<nav class="jumps" aria-label="Aller à un jour">${jump}</nav>
-<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher un anime" aria-label="Chercher un anime">${platChips}</div>
+<div class="filters" id="filtres" hidden><input type="search" id="f" data-gs placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off">${platChips}</div>
 <p class="empty" id="aucun" hidden>Aucun épisode ne correspond à cette recherche.</p>
 ${sections}` : '<p class="empty">Les données apparaîtront après la première mise à jour automatique.</p>'}
 <p class="more muted">${updated ? `Mis à jour le ${esc(updated)}. ` : ''}<a href="/anime/saison/">Anime de la saison</a> · <a href="/anime.ics">Ajouter à mon agenda (anime.ics)</a></p>
@@ -1157,15 +1157,42 @@ ${names.length ? `<h2>Sources</h2><div class="tbl-wrap"><table class="status-tab
 }
 
 /* ------------------------------------------------------- visuels à partager */
+{
+  // Données des visuels à partager (mois, sélections) : calculées ici pour que l'image se dessine sans calcul lourd dans le navigateur
+  const live = manga.filter((r) => r.statut !== 'annule' && r.date);
+  const months = [...new Set(live.filter((r) => r.date.slice(0, 7) >= today.slice(0, 7)).map((r) => r.date.slice(0, 7)))].sort().slice(0, 3).map((mk) => {
+    const rows = live.filter((r) => r.date.startsWith(mk)).sort((a, b) => a.date.localeCompare(b.date) || a.serie.localeCompare(b.serie, 'fr'));
+    const pubs = new Map(); for (const r of rows) if (r.editeur) pubs.set(r.editeur, (pubs.get(r.editeur) || 0) + 1);
+    const days = new Map(); for (const r of rows) days.set(r.date, (days.get(r.date) || 0) + 1);
+    const busy = [...days].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))[0];
+    const label = (r) => `${r.serie}${r.tome ? ` T${r.tome}` : ''}`;
+    return {
+      k: mk, label: frMonth(`${mk}-01`), total: rows.length,
+      fresh: rows.filter(isFirstVolume).map((r) => ({ s: r.serie, e: r.editeur || '', d: r.date })),
+      special: rows.filter((r) => pubType(r) !== 'standard').map((r) => ({ s: label(r), e: r.editeur || '', d: r.date, ty: (TYPES.find(([k]) => k === pubType(r)) || [, ''])[1] })),
+      pubs: [...pubs].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([e, n]) => ({ e, n })),
+      busy: busy ? { d: busy[0], n: busy[1] } : null,
+    };
+  });
+  const lastPub = new Map(); for (const r of live) if (r.editeur) lastPub.set(slugify(r.serie), r.editeur);
+  const nameOf = new Map(); for (const r of live) nameOf.set(slugify(r.serie), r.serie);
+  const infos = [...nameOf].map(([k, name]) => ({ k, s: name, e: lastPub.get(k) || '', i: adaptations[k]?.i })).filter((x) => x.i && x.k);
+  const finished = infos.filter((x) => x.i.st === 'FINISHED' && x.i.au?.length)
+    .map((x) => ({ s: x.s, e: x.e, g: (x.i.g || []).map((g) => GENRE_FR[g]).filter(Boolean).slice(0, 2), au: x.i.au[0] })).sort((a, b) => a.s.localeCompare(b.s, 'fr')).slice(0, 80);
+  const genres = [...GENRE_COUNT].filter(([g]) => genreOk(g)).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([g]) => ({
+    g: GENRE_FR[g], items: infos.filter((x) => x.i.g?.includes(g)).map((x) => ({ s: x.s, e: x.e })).sort((a, b) => a.s.localeCompare(b.s, 'fr')).slice(0, 40),
+  }));
+  write('data/partage.json', JSON.stringify({ generated: today, months, finished, genres }));
+}
 page('/partager/', {
   title: 'Visuels à partager',
-  description: 'Génère une image prête à poster : sorties manga de la semaine, nouvelles séries, anime de la semaine.',
+  description: 'Génère une image prête à poster : sorties manga de la semaine et du mois, nouvelles séries, changements de date, anime, sélections.',
   body: `<h1>Visuels à partager</h1>
 <p class="lead">Choisis un visuel, un format et télécharge l'image à poster sur Instagram, TikTok ou Pinterest. Elle est dessinée dans ton navigateur à partir des données du jour.</p>
 <div id="partage-app"><p class="empty">Cette page a besoin de JavaScript pour créer les images.</p></div>
 <script src="${av('partager.js')}" defer></script>
 <h2>À quoi servent ces visuels ?</h2>
-<p>Trois modèles sont proposés : les sorties manga de la semaine, les nouvelles séries à surveiller et l'anime de la semaine. Chaque image est créée dans ton navigateur à partir des données du jour, aux formats carré (Instagram), vertical (TikTok, Stories) ou portrait (Pinterest). Un texte d'accompagnement est proposé avec l'image ; pense à citer le site quand tu la partages.</p>`,
+<p>Plusieurs modèles sont proposés : les sorties de la semaine, le bilan du mois, les nouvelles séries à surveiller, les changements de date, l'anime de la semaine et des sélections (séries à lire d'une traite, genre du moment). Chaque image est créée dans ton navigateur à partir des données du jour, aux formats carré (Instagram), vertical (TikTok, Stories) ou portrait (Pinterest). Un texte d'accompagnement est proposé avec l'image ; pense à citer le site quand tu la partages.</p>`,
 });
 SEO_URLS.push('/partager/');
 
