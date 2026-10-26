@@ -9,7 +9,7 @@ import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
-  esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume, mangaSlugOf, loadManga,
+  esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume, mangaSlugOf, loadManga, parseCSV,
 } from './lib.mjs';
 import { readStatus } from './status.mjs';
 
@@ -236,9 +236,27 @@ const buyBox = (r, size = '') => {
 /* Goodies : une recherche Amazon sur le nom de la série (résultats affichés par Amazon, rien n'est copié). Désactivable avec "goodies": false */
 const AMZ = SHOPLIST.find((x) => x.id === 'amazon');
 const GOODIES_ON = Boolean(AMZ) && config.goodies !== false;
+/* Produits choisis à la main : data/goodies.csv (colonnes serie;asin). Un produit est tiré au hasard parmi ceux de la série, il change chaque jour. */
+const GOODIES = (() => {
+  const m = new Map();
+  try {
+    const t = readFileSync(path.join(P.dataDir, 'goodies.csv'), 'utf8');
+    const [head, ...rows] = parseCSV(t);
+    const iS = head.findIndex((h) => /^s[ée]rie$/i.test(h.trim())), iA = head.findIndex((h) => /^asin$/i.test(h.trim()));
+    if (iS < 0 || iA < 0) return m;
+    for (const r of rows) {
+      const k = slugify(r[iS] || ''), a = String(r[iA] || '').trim().toUpperCase();
+      if (k && /^[A-Z0-9]{10}$/.test(a)) m.set(k, [...new Set([...(m.get(k) || []), a])]);
+    }
+  } catch { /* pas de fichier : liens de recherche */ }
+  return m;
+})();
+const dayHash = (s) => { let h = 0; for (const c of `${s}|${today}`) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
 const goodiesBox = (name) => {
   if (!GOODIES_ON || !name) return '';
-  const url = `https://www.amazon.fr/s?k=${encodeURIComponent(`${name} goodies`).replace(/%20/g, '+')}${AMZ.tag ? `&tag=${encodeURIComponent(AMZ.tag)}` : ''}`;
+  const picks = GOODIES.get(slugify(name));
+  const direct = picks && picks.length ? `https://www.amazon.fr/dp/${picks[dayHash(name) % picks.length]}${AMZ.tag ? `?tag=${encodeURIComponent(AMZ.tag)}` : ''}` : '';
+  const url = direct || `https://www.amazon.fr/s?k=${encodeURIComponent(`${name} goodies`).replace(/%20/g, '+')}${AMZ.tag ? `&tag=${encodeURIComponent(AMZ.tag)}` : ''}`;
   return `<div class="shops shops-lg"><span class="shops-l">Goodies</span><a class="stream shop stream-lg s-goodies" href="${esc(url)}" rel="${AMZ.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" aria-label="Goodies ${esc(name)} sur Amazon">${CART}Goodies ${esc(name)} sur Amazon</a></div>`;
 };
 function volTile(r, noBuy = false) {
@@ -549,7 +567,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     return { k, name, rows: sorted, next: sorted.find((r) => r.date >= today) || null, editeur: sorted[sorted.length - 1].editeur };
   }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
-  searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: S.editeur || '' }));
+  searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: S.editeur || '', c: showCovers ? (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover || '') : '', x: [S.editeur, S.rows.filter((r) => r.date >= today).length ? `${S.rows.filter((r) => r.date >= today).length} tome(s) à venir` : 'rien d\'annoncé'].filter(Boolean).join(' · ') }));
   for (const S of seriesList) {
     const upcoming = S.rows.filter((r) => r.date >= today);
     const past = S.rows.filter((r) => r.date < today).reverse();
@@ -1058,12 +1076,12 @@ write('data/recent.json', JSON.stringify({
     if (seenA.has(e.mediaId)) continue;
     seenA.add(e.mediaId);
     const names = [e.title?.english, e.title?.romaji, e.title?.native].filter(Boolean);
-    animeIdx.push({ n: displayTitle(e.title), u: `/anime/#j-${e.key}`, d: `${frShort(e.key)} · ${e.time}`, a: names.join(' ') });
+    animeIdx.push({ n: displayTitle(e.title), u: `/anime/#j-${e.key}`, d: `${frShort(e.key)} · ${e.time}`, a: names.join(' '), c: showCovers && /^https:\/\//.test(e.cover || '') ? e.cover : '', x: `Épisode ${e.episode} · ${frShort(e.key)} à ${e.time}` });
   }
   write('data/search.json', JSON.stringify({
     series: searchSeries,
     anime: animeIdx,
-    articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date) })),
+    articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));
 }
 for (const f of ['visite.js', 'recherche.js', 'resultats.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));

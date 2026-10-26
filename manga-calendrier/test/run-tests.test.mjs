@@ -620,3 +620,19 @@ test('phase 2 : pages /semaine/ et /recherche/, moteur de résultats copié', ()
   assert.match(readFileSync(path.join(out, 'recherche/index.html'), 'utf8'), /noindex/);
   assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /action="\/recherche\/"/);
 });
+
+test('goodies : lien produit direct avec tag quand data/goodies.csv existe, sinon recherche', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'gd-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  writeFileSync(path.join(data, 'goodies.csv'), 'serie;asin\nSérie Fictive Alpha;B0ABCDEF12\nSérie Fictive Alpha;B0ZZZZZZ99\nSérie Fictive Alpha;pas-un-asin\n');
+  const cfg = path.join(tmp, 'site.config.json');
+  writeFileSync(cfg, JSON.stringify({ ...JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8')), shops: { amazon: { tag: 'prochaintome-21' } } }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const a = readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8');
+  assert.match(a, /amazon\.fr\/dp\/B0(ABCDEF12|ZZZZZZ99)\?tag=prochaintome-21/);
+  const b = readFileSync(path.join(out, 'serie/serie-fictive-beta/index.html'), 'utf8');
+  assert.match(b, /amazon\.fr\/s\?k=.*goodies.*tag=prochaintome-21/);
+});

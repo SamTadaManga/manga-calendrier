@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   var norm = function (s) { return String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); };
-  var idx = null, loading = false, box, input, list, btn, items = [], cur = -1, lastFocus = null;
+  var idx = null, loading = false, box, input, list, prev, btn, items = [], cur = -1, lastFocus = null;
 
   function h(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
 
@@ -11,8 +11,9 @@
     var panel = h('div', 'srch-panel');
     input = h('input', 'srch-input'); input.type = 'search'; input.placeholder = 'Chercher une série, un anime, un article'; input.setAttribute('aria-label', 'Recherche'); input.autocomplete = 'off';
     list = h('ul', 'srch-list'); list.setAttribute('role', 'listbox');
+    prev = h('div', 'srch-prev'); prev.hidden = true;
     var hint = h('p', 'srch-hint', '↑ ↓ pour choisir · Entrée pour ouvrir · Échap pour fermer');
-    panel.appendChild(input); panel.appendChild(list); panel.appendChild(hint); box.appendChild(panel);
+    panel.appendChild(input); panel.appendChild(list); panel.appendChild(prev); panel.appendChild(hint); box.appendChild(panel);
     box.addEventListener('mousedown', function (e) { if (e.target === box) close(); });
     input.addEventListener('input', render);
     input.addEventListener('keydown', function (e) {
@@ -22,6 +23,17 @@
       else if (e.key === 'Escape') { e.preventDefault(); close(); }
     });
     document.body.appendChild(box);
+  }
+
+  function preview(x) {
+    prev.textContent = '';
+    if (!x) { prev.hidden = true; return; }
+    prev.hidden = false;
+    if (x.c && /^https:\/\//.test(x.c)) { var im = h('img'); im.src = x.c; im.alt = ''; im.width = 48; im.height = 72; im.referrerPolicy = 'no-referrer'; im.loading = 'lazy'; prev.appendChild(im); }
+    var t = h('div'); t.appendChild(h('strong', '', x.n));
+    if (x.d) t.appendChild(h('span', '', x.d));
+    if (x.x) t.appendChild(h('span', 'srch-x', x.x));
+    prev.appendChild(t);
   }
 
   function load() {
@@ -37,7 +49,7 @@
   }
 
   function render() {
-    list.textContent = ''; items = []; cur = -1;
+    list.textContent = ''; items = []; cur = -1; if (prev) prev.hidden = true;
     var q = norm(input.value).trim();
     if (!idx) { list.appendChild(h('li', 'srch-empty', 'Chargement…')); return; }
     if (!q) { list.appendChild(h('li', 'srch-empty', 'Tape le nom d\'une série, d\'un anime ou d\'un article.')); return; }
@@ -50,19 +62,20 @@
       hits.forEach(function (o) {
         var row = h('li', 'srch-row'); row.setAttribute('role', 'option');
         var a = h('a'); a.href = o.x.u; a.appendChild(h('strong', '', o.x.n)); if (o.x.d) a.appendChild(h('span', 'srch-sub', o.x.d));
+        a.__x = o.x; a.addEventListener('mouseenter', function () { preview(a.__x); }); a.addEventListener('focus', function () { preview(a.__x); });
         row.appendChild(a); list.appendChild(row); items.push(a); total++;
       });
     });
     if (!total) list.appendChild(h('li', 'srch-empty', 'Aucun résultat pour « ' + input.value.trim() + ' ».'));
     else {
-      var all = h('li', 'srch-row'); var aa = h('a'); aa.href = '/recherche/?q=' + encodeURIComponent(input.value.trim()); aa.appendChild(h('strong', '', 'Voir tous les résultats')); all.appendChild(aa); list.appendChild(all); items.push(aa); cur = 0; items[0].classList.add('on'); }
+      var all = h('li', 'srch-row'); var aa = h('a'); aa.href = '/recherche/?q=' + encodeURIComponent(input.value.trim()); aa.appendChild(h('strong', '', 'Voir tous les résultats')); all.appendChild(aa); list.appendChild(all); items.push(aa); cur = 0; items[0].classList.add('on'); preview(items[0].__x); }
   }
 
   function move(d) {
     if (!items.length) return;
     items[cur] && items[cur].classList.remove('on');
     cur = (cur + d + items.length) % items.length;
-    items[cur].classList.add('on'); items[cur].scrollIntoView({ block: 'nearest' });
+    items[cur].classList.add('on'); items[cur].scrollIntoView({ block: 'nearest' }); preview(items[cur].__x);
   }
 
   function open() {

@@ -19,8 +19,12 @@
       out.appendChild(h('h2', '', g[0] + ' (' + hits.length + ')'));
       var ul = h('ul', 'list panel');
       hits.slice(0, 50).forEach(function (o) {
-        var li = h('li'); var a = h('a'); a.href = o.x.u; a.appendChild(h('strong', '', o.x.n));
-        li.appendChild(a); if (o.x.d) li.appendChild(h('span', 'muted', ' · ' + o.x.d)); ul.appendChild(li);
+        var li = h('li', 'res-row');
+        if (o.x.c && /^https:\/\//.test(o.x.c)) { var im = h('img'); im.src = o.x.c; im.alt = ''; im.width = 48; im.height = 72; im.loading = 'lazy'; im.referrerPolicy = 'no-referrer'; li.appendChild(im); }
+        var t = h('div'); var a = h('a'); a.href = o.x.u; a.appendChild(h('strong', '', o.x.n)); t.appendChild(a);
+        if (o.x.d) t.appendChild(h('span', 'muted', ' · ' + o.x.d));
+        if (o.x.x) t.appendChild(h('p', 'notes', o.x.x));
+        li.appendChild(t); ul.appendChild(li);
       });
       out.appendChild(ul);
     });
