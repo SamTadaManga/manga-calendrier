@@ -83,7 +83,7 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/manga/', 'Sorties manga'], ['/anime/', 'Calendrier anime'], ['/series/', 'Séries'], ['/mon-planning/', 'Ma collection'], ['/articles/', 'Actualités'], ['/recherche/', 'Recherche']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Sorties manga'], ['/anime/', 'Calendrier anime'], ['/series/', 'Séries'], ['/mon-planning/', 'Ma collection'], ['/articles/', 'Actualités']];
 // pages rattachées à une entrée du menu (pour la mettre en évidence)
 const NAV_ALIAS = { '/mes-animes/': '/anime/', '/changements/': '/articles/', '/genre/': '/series/', '/genres/': '/series/', '/series-terminees/': '/series/', '/serie/': '/series/', '/editeur/': '/manga/', '/editeurs/': '/manga/', '/sorties-manga/': '/manga/', '/semaine/': '/manga/' };
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
@@ -419,7 +419,6 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
 <div class="week-head"><h1 id="t-week">Sorties manga et anime, jour par jour</h1>
 <p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon et Akata. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
 <form class="home-search" action="/recherche/" method="get" role="search"><input type="search" name="q" placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"><button class="btn" type="submit">Chercher</button></form>
-<p class="quick"><a class="chip" href="/manga/">Calendrier manga</a><a class="chip" href="/anime/">Calendrier anime</a><a class="chip" href="/series/">Toutes les séries</a><a class="chip" href="/mon-planning/">Ma collection</a><a class="chip" href="/changements/">Changements de dates</a></p>
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
 <section class="pour-toi" id="pour-toi" aria-labelledby="t-pt" hidden><h2 id="t-pt">Pour toi cette semaine</h2><div id="pt-body"></div></section>
 <div class="since panel" id="since" hidden></div>
