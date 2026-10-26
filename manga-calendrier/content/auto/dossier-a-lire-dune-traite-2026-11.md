@@ -26,7 +26,7 @@ Ki-oon · action, aventure, drame · Jun Mochizuki · depuis 2006
 
 ## [Versus](/serie/versus/)
 
-Pika · drame, musique, romance · Keiko Yamada · depuis 1999
+Pika · Pyon-kti · depuis 2011
 
 ## [Tatari](/serie/tatari/)
 
