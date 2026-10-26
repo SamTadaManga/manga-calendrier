@@ -683,6 +683,29 @@ test('visuels à partager : page et script publiés, lien dans le pied de page',
   assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /href="\/partager\/"/);
 });
 
+test('article du mois : généré à partir du 25 pour le mois suivant, une seule fois', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'mois-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  const head = 'Date de sortie;Éditeur;Série;Tome;Titre du tome (facultatif);ISBN-13;Prix (€);Statut;Source officielle (lien);Vérifié le;Couverture (lien);Notes\n';
+  writeFileSync(path.join(data, 'manga.csv'), head
+    + '2026-11-04;Glénat;Série Neuve;1;;;;Annoncé;;;https://exemple.fr/c.jpg;\n'
+    + '2026-11-04;Kana;Série Longue;12;;;;Annoncé;;;;\n'
+    + '2026-11-10;Ki-oon;Coffret Spécial;;;;34,5;Annoncé;;;;\n');
+  writeFileSync(path.join(data, 'adaptations.json'), JSON.stringify({ series: { 'serie-longue': { c: '2026-10-01', a: [{ id: 1, t: 'Longue', st: 'RELEASING', f: 'TV', u: '', s: [] }], i: null } } }));
+  const auto = path.join(tmp, 'auto'); mkdirSync(auto);
+  const env = { ...process.env, DATA_DIR: data, AUTO_DIR: auto, ARTICLES_DIR: path.join(tmp, 'n'), DATE: '2026-10-26', NOW: '2026-10-26T12:00:00Z' };
+  const run = () => execFileSync('node', [path.join(ROOT, 'scripts/daily-articles.mjs')], { env, stdio: 'pipe' });
+  run();
+  const md = readFileSync(path.join(auto, 'manga-mois-2026-11.md'), 'utf8');
+  assert.match(md, /title: "Manga : les sorties de novembre 2026, nos repères"/);
+  assert.ok(!md.includes('2026 2026'));
+  assert.ok(md.includes('![Couverture de Série Neuve tome 1]') || md.includes('**Série Neuve**'));
+  assert.ok(md.includes('anime en cours de diffusion') && md.includes('34,50') );
+  const before = md; writeFileSync(path.join(auto, 'manga-mois-2026-11.md'), before + '\nmarque');
+  run();
+  assert.ok(readFileSync(path.join(auto, 'manga-mois-2026-11.md'), 'utf8').endsWith('marque'), 'pas régénéré');
+});
+
 test('pages éditeurs : index, page par éditeur, lien depuis la fiche série et sitemap', () => {
   const tmp = mkdtempSync(path.join(os.tmpdir(), 'ed-'));
   const data = path.join(tmp, 'data'); mkdirSync(data);

@@ -5,7 +5,7 @@
 //   - content/auto/anime-semaine-AAAA-MM-JJ.md : anime de la semaine, premiers épisodes (le lundi)
 //   - content/auto/manga-mois-AAAA-MM.md       : sorties du mois (le 1er)
 // Les fichiers sont réécrits à chaque exécution : ne les modifie pas à la main (écris tes articles dans content/articles).
-import { writeFileSync, mkdirSync } from 'node:fs';
+import { writeFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { readChanges } from './changes.mjs';
 import path from 'node:path';
 import {
@@ -157,29 +157,54 @@ if (weekdayOfKey(today) === 1) {
 }
 
 /* --------------------------------------------- manga du mois (le 1er) */
-if (today.endsWith('-01')) {
-  const mk = today.slice(0, 7);
-  const month = manga.filter((r) => r.date.startsWith(mk));
-  if (month.length) {
-    const pubs = byPublisher(month).sort((a, b) => b[1].length - a[1].length);
-    const fresh = month.filter(isFirstVolume);
+/* Repères du mois : publié à partir du 25 pour le mois suivant (ou les 3 premiers jours du mois s'il manque). Une seule fois par mois. */
+{
+  const dayNum = Number(today.slice(8));
+  const nextMk = addDays(`${today.slice(0, 7)}-28`, 5).slice(0, 7);
+  const targets = dayNum >= 25 ? [nextMk] : dayNum <= 3 ? [today.slice(0, 7)] : [];
+  let adapt = {};
+  try { adapt = JSON.parse(readFileSync(path.join(P.dataDir, 'adaptations.json'), 'utf8')).series || {}; } catch { /* pas encore de données */ }
+  const ADAPT_LABEL = { RELEASING: 'anime en cours de diffusion', NOT_YET_RELEASED: 'anime à venir', FINISHED: 'anime terminé' };
+  for (const mk of targets) {
+    if (existsSync(path.join(P.autoDir, `manga-mois-${mk}.md`))) continue;
+    const month = manga.filter((r) => r.date.startsWith(mk));
+    if (!month.length) continue;
     const name = frMonth(`${mk}-01`);
     const deName = /^[aeiouéèêh]/i.test(name) ? `d'${name}` : `de ${name}`;
+    const pubs = byPublisher(month).sort((a, b) => b[1].length - a[1].length);
+    const fresh = month.filter(isFirstVolume);
+    const freshKeys = new Set(fresh.map((r) => slugify(r.serie)));
+    const cap = (rows, n) => rows.slice(0, n);
+    const more = (rows, n) => (rows.length > n ? [`- … et ${rows.length - n} autre${rows.length - n > 1 ? 's' : ''} : voir [le calendrier du mois](/sorties-manga/${slugify(name)}/).`] : []);
+    const RANK = { RELEASING: 0, NOT_YET_RELEASED: 1, FINISHED: 2 };
+    const adaptRank = (r) => RANK[adapt[slugify(r.serie)].a[0].st] ?? 3;
+    const adapted = month.filter((r) => !isFirstVolume(r) && r.tome && adapt[slugify(r.serie)]?.a?.length)
+      .sort((a, b) => adaptRank(a) - adaptRank(b) || a.date.localeCompare(b.date) || a.serie.localeCompare(b.serie, 'fr'));
+    const other = month.filter((r) => !r.tome && !freshKeys.has(slugify(r.serie)))
+      .sort((a, b) => (b.prix || 0) - (a.prix || 0) || a.date.localeCompare(b.date));
+    const days = [...month.reduce((m, r) => m.set(r.date, (m.get(r.date) || 0) + 1), new Map())].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0])).slice(0, 3).sort((a, b) => a[0].localeCompare(b[0]));
+    const adaptNote = (r) => { const x = adapt[slugify(r.serie)].a[0]; return ADAPT_LABEL[x.st] ? ` (${ADAPT_LABEL[x.st]})` : ''; };
     const body = [
-      `${month.length} tome${month.length > 1 ? 's' : ''} manga sont annoncés en France pour ${name}.`,
+      `${month.length} sortie${month.length > 1 ? 's' : ''} manga sont annoncées en France pour ${name} chez ${pubs.map(([p]) => p).join(', ').replace(/, ([^,]*)$/, ' et $1')}. Voici de quoi s'y retrouver. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : le [calendrier manga](/manga/) est mis à jour chaque nuit, et les décalages sont listés sur la page [Changements](/changements/).`,
+      '',
+      ...(fresh.length ? ['## Les nouvelles séries du mois', '', ...cap(fresh, 12).map((r) => `- ${mangaThumb(r)}**${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${mangaLinks(r)}`), ...more(fresh, 12), ''] : []),
+      ...(adapted.length ? ['## Les séries adaptées en anime qui continuent', '', 'Des séries déjà portées à l\'écran, avec un nouveau tome ce mois-ci :', '', ...cap(adapted, 12).map((r) => `- ${mangaThumb(r)}**${r.serie}**, tome ${r.tome} (${r.editeur}) : ${frShort(r.date)}${adaptNote(r)}${mangaLinks(r)}`), ...more(adapted, 12), ''] : []),
+      ...(other.length ? ['## One-shots, coffrets et éditions spéciales', '', 'Références sans numéro de tome dans les plannings, avec leur prix quand il est connu :', '', ...cap(other, 12).map((r) => `- ${mangaThumb(r)}**${r.serie}**${r.titre ? ` (${r.titre})` : ''} (${r.editeur}) : ${frShort(r.date)}${r.prix != null ? `, ${euro(r.prix)}` : ''}${mangaLinks(r)}`), ...more(other, 12), ''] : []),
+      '## Les jours forts',
+      '',
+      ...days.map(([d, n]) => `- **${frShort(d)}** : ${n} sortie${n > 1 ? 's' : ''} ([voir ce jour](/manga/#j-${d}))`),
       '',
       '## Par éditeur',
       '',
-      ...pubs.map(([pub, rows]) => `- **${pub}** : ${rows.length} tome${rows.length > 1 ? 's' : ''}`),
+      ...pubs.map(([pub, rows]) => `- **${pub}** : ${rows.length} sortie${rows.length > 1 ? 's' : ''}`),
       '',
-      ...(fresh.length ? ['## Les nouvelles séries du mois', '', ...fresh.map((r) => `- ${mangaThumb(r)}**${r.serie}** (${r.editeur}) : tome 1 le ${frShort(r.date)}${r.source ? ` ([fiche éditeur](${r.source}))` : ''}${mangaLinks(r)}`), ''] : []),
-      `La liste complète, jour par jour, est sur la page [sorties manga ${deName}](/sorties-manga/${slugify(name)}/).`,
+      `La liste complète, jour par jour, est sur la page [sorties manga ${deName}](/sorties-manga/${slugify(name)}/). Pour suivre tes séries et ton budget du mois, utilise le bouton « Suivre » : elles apparaissent dans [Mon planning](/mon-planning/).`,
       '',
-      'Les dates peuvent changer : consultez la fiche de l\'éditeur pour chaque tome.',
+      `Sources : plannings officiels des éditeurs, relevés le ${frDate(today)}.`,
     ].join('\n');
     writeArticle(`manga-mois-${mk}`, {
-      title: `Manga : les sorties ${deName}`,
-      description: `${month.length} tomes manga annoncés en France pour ${name}${fresh.length ? `, dont ${fresh.length} nouvelle${fresh.length > 1 ? 's' : ''} série${fresh.length > 1 ? 's' : ''}` : ''}.`,
+      title: `Manga : les sorties ${deName}, nos repères`,
+      description: `${month.length} sorties manga annoncées en France pour ${name}${fresh.length ? `, dont ${fresh.length} nouvelle${fresh.length > 1 ? 's' : ''} série${fresh.length > 1 ? 's' : ''}` : ''}.`,
     }, body);
   }
 }
