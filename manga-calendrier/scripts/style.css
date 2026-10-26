@@ -671,3 +671,11 @@ ul.hscroll .tile-body .follow,ul.hscroll .tile-body .afollow{margin-top:4px}
   .rel-acts .own{min-width:0;padding:0 8px;flex:0 0 auto}
   .rel-acts .tst{width:auto;flex:1 1 0;min-width:0}
 }
+
+/* Carrousels de l'accueil : tuiles de même hauteur, titre sur deux lignes réservées, boutons de streaming alignés en bas */
+ul.hscroll>li{display:flex;flex-direction:column}
+ul.hscroll>li>.tile-body{flex:1 1 auto}
+ul.hscroll .t-title{min-height:calc(3 * 1.3em)}
+ul.hscroll .t-title .tome{display:block;color:var(--muted);font-size:.9rem}
+ul.hscroll .t-shops{margin-top:auto;width:100%;align-self:stretch}
+ul.hscroll .tile-body>.t-shops{padding-top:4px}

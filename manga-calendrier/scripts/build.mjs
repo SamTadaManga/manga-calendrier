@@ -387,9 +387,9 @@ function animeRow(e) {
 function animeTile(e) {
   const t = esc(displayTitle(e.title));
   const url = esc(animeHref(e));
-  return `<li class="tile p-anime"><a class="tile-cover t-cover" href="${url}" aria-label="${t} : où regarder">${coverBox(e.cover, `Affiche de ${displayTitle(e.title)}`, 160, 240)}</a>`
+  return `<li class="tile p-anime"><a class="tile-cover t-cover" href="${url}" aria-label="${t} : où regarder">${coverBox(e.cover, `Affiche de ${displayTitle(e.title)}`, 160, 240)}${isPremiere(e) ? '<span class="cover-flag">★ Épisode 1</span>' : ''}</a>`
     + `<div class="tile-body"><div class="t-title"><strong><a href="${url}">${t}</a></strong><span class="tome">épisode ${esc(e.episode)}${e.format === 'MOVIE' ? ' · film' : ''}</span></div>`
-    + `<div class="tile-date"><time>${esc(e.time)}</time></div>${isPremiere(e) ? PREMIERE_BADGE : ''}${afollow(e)}${streamChips(e) ? `<div class="shops shops-sm t-shops">${streamChips(e)}</div>` : ''}</div></li>`;
+    + `<div class="tile-date"><time>${esc(e.time)}</time></div>${afollow(e)}${streamChips(e) ? `<div class="shops shops-sm t-shops">${streamChips(e)}</div>` : ''}</div></li>`;
 }
 
 // Les lignes « → Calendrier manga · Page de la série » des articles automatiques deviennent de vrais boutons
