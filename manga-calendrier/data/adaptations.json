@@ -873,8 +873,9 @@
    }
   },
   "kujo-l-implacable": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "l-amour-est-dans-le-the": {
    "c": "2026-10-26",
@@ -1308,7 +1309,7 @@
    "i": null
   },
   "ragna-crimson": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 146493,
@@ -1323,15 +1324,29 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Daiki Kobayashi"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy",
+     "Mystery"
+    ],
+    "st": "RELEASING",
+    "y": 2017
+   }
   },
   "redflower": {
    "c": "2026-10-09",
    "a": []
   },
   "reve-ou-realite": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "rokudenashi-mini-blues": {
    "c": "2026-10-26",
@@ -1387,8 +1402,9 @@
    "i": null
   },
   "serenade-pour-une-pluie-de-larmes": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "shangri-la-frontier": {
    "c": "2026-10-26",
@@ -2072,7 +2088,7 @@
    }
   },
   "kindergarten-wars": {
-   "c": "2026-10-23",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 199597,
@@ -2082,22 +2098,38 @@
      "u": "https://anilist.co/anime/199597",
      "s": []
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "You Chiba"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2022
+   }
   },
   "l-anneau-de-gyges": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "la-13e-piste": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "my-dear-detective": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "no-longer-allowed-in-another-world": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 152137,
@@ -2112,18 +2144,45 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Takahiro Wakamatsu",
+     "Hiroshi Noda"
+    ],
+    "g": [
+     "Comedy",
+     "Fantasy",
+     "Romance",
+     "Slice of Life",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2019
+   }
   },
   "phantom-busters": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Neoshoco"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2022
+   }
   },
   "ryukyu-buccaneer": {
    "c": "2026-10-09",
    "a": []
   },
   "sanda": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 179302,
@@ -2138,10 +2197,22 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Paru Itagaki"
+    ],
+    "g": [
+     "Drama",
+     "Mystery",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2021
+   }
   },
   "shy": {
-   "c": "2026-10-09",
+   "c": "2026-10-26",
    "a": [
     {
      "id": 155389,
@@ -2169,23 +2240,48 @@
       }
      ]
     }
-   ]
+   ],
+   "i": {
+    "au": [
+     "Bukimi Miki"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama"
+    ],
+    "st": "FINISHED",
+    "y": 2019
+   }
   },
   "the-bugle-call": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "ubel-blatt-ii": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "valkyrie-apocalypse": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "whisper-it-in-the-night": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Yuri Nakagawa"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2023
+   }
   },
   "black-torch": {
    "c": "2026-10-26",
@@ -2377,12 +2473,14 @@
    }
   },
   "suicide-red": {
-   "c": "2026-10-14",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "les-techniques-de-manga-ultimes-du-docteur-mashirito": {
-   "c": "2026-10-21",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "a-crocs-a-toi": {
    "c": "2026-10-26",
@@ -2704,21 +2802,55 @@
    }
   },
   "fire": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Hideko Mizuno"
+    ],
+    "g": [
+     "Drama",
+     "Music",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 1969
+   }
   },
   "numero-invalide": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": null
   },
   "qui-a-vu-le-paon-danser": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Rito Asami",
+     "Tom Bertrand"
+    ],
+    "g": [
+     "Mystery"
+    ],
+    "st": "FINISHED",
+    "y": 2022
+   }
   },
   "zange": {
-   "c": "2026-10-22",
-   "a": []
+   "c": "2026-10-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Shiuko Kano"
+    ],
+    "g": [
+     "Drama"
+    ],
+    "st": "FINISHED",
+    "y": 1998
+   }
   }
  },
- "generatedAt": "2026-10-26T13:56:39.613Z"
+ "generatedAt": "2026-10-26T14:02:10.492Z"
 }
