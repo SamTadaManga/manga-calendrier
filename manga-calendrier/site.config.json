@@ -3,6 +3,7 @@
   "tagline": "Quand sort le prochain tome ? Les sorties manga en France (Glénat, Kana, Pika, Ki-oon) et les épisodes d'anime de la semaine, jour par jour.",
   "siteUrl": "https://prochaintome.fr",
   "shops": { "amazon": { "tag": "prochaintome-21" } },
+  "analytics": { "cloudflareToken": "dd4088227bae419cbe7cf9f674506813" },
   "description": "Les sorties manga en France et les épisodes d'anime de la semaine, jour par jour.",
   "autoPublish": true,
   "showCovers": true,

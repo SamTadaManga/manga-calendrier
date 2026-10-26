@@ -105,6 +105,11 @@ const THEME_BOOT = `<script>try{var t=localStorage.getItem('mc-theme');if(t==='l
 
 const assetV = (f) => { try { return createHash('md5').update(readFileSync(path.join(SCRIPTS, f))).digest('hex').slice(0, 8); } catch { return '0'; } };
 const av = (f) => `/${f}?v=${assetV(f)}`;
+/* Mesure d'audience : Cloudflare Web Analytics (sans cookie, sans donnée personnelle). Activée si "analytics": { "cloudflareToken": "..." } est dans site.config.json */
+const CF_TOKEN = String(config.analytics?.cloudflareToken || '').trim();
+const ANALYTICS = /^[a-f0-9]{32}$/i.test(CF_TOKEN)
+  ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${CF_TOKEN}"}'></script>`
+  : '';
 function layout({ title, description, pathname, body, noindex = false, extraHead = '', image = '' }) {
   const ogImage = /^https:\/\//.test(image) ? image : (siteUrlOk ? `${base}/og.png` : '/og.png');
   const fullTitle = pathname === '/' ? `${config.siteName} : ${config.tagline}` : `${title} | ${config.siteName}`;
@@ -143,6 +148,7 @@ ${image ? '' : `<meta property="og:image:alt" content="${esc(config.siteName)} :
 <link rel="apple-touch-icon" href="/icon-192.png">
 ${siteUrlOk ? `<link rel="alternate" type="application/rss+xml" title="${esc(config.siteName)}" href="/feed.xml">` : ''}
 ${extraHead}
+${ANALYTICS}
 </head>
 <body>
 <a class="skip" href="#contenu">Aller au contenu</a>
@@ -848,6 +854,7 @@ ${events.length ? content : `<p class="empty">Aucun changement détecté pour le
   const body = `
 <h1>Épisodes d'anime de la semaine</h1>
 <p class="lead">Horaires de diffusion au Japon, convertis en heure de Paris. La disponibilité en France dépend des plateformes de streaming.</p>
+<p class="chiprow"><a class="chip" href="/anime/saison/">Anime de la saison</a><a class="chip" href="/semaine/">La semaine en détail</a></p>
 ${animeNotice()}
 ${eps.length ? `<nav class="jumps" aria-label="Aller à un jour">${jump}</nav>
 <div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher un anime" aria-label="Chercher un anime">${platChips}</div>
@@ -1063,7 +1070,7 @@ else{msg.select();done('Sélectionne et copie le texte.');}});
 <h2>Données et contenus</h2>
 <p>Les horaires des épisodes d'anime proviennent de l'API AniList. Les dates de sortie des mangas sont relevées auprès des sources officielles des éditeurs et peuvent évoluer. Les titres, marques et visuels cités appartiennent à leurs propriétaires respectifs. Ce site n'est affilié à aucun éditeur ni à aucune plateforme.</p>
 <h2>Cookies et données personnelles</h2>
-<p>Ce site ne dépose pas de cookies.${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>
+<p>Ce site ne dépose pas de cookies.${ANALYTICS ? ' La fréquentation est mesurée avec Cloudflare Web Analytics, un outil sans cookie qui ne crée aucun profil individuel : il compte les pages vues, les pays et les navigateurs de façon agrégée, sans stocker d’adresse IP.' : ''}${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>
 ${AFFILIATE_ON ? `<h2 id="affiliation">Liens d'affiliation</h2>
 <p>Certains liens d'achat (${esc(SHOPLIST.filter((x) => x.sponsored).map((x) => x.name).join(', '))}) sont des liens d'affiliation : si tu achètes après avoir cliqué, le site peut percevoir une commission, sans que le prix change pour toi. Ces liens sont signalés sur les pages concernées et n'influencent pas les dates ni les informations publiées.</p>
 ${SHOPLIST.some((x) => x.id === 'amazon' && x.sponsored) ? `<p>En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.</p>

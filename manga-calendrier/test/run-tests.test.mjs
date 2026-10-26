@@ -656,3 +656,18 @@ test('phase 3 : assets versionnés et sauvegarde/statuts présents', () => {
   assert.match(js, /mc-statut/); assert.match(js, /prochain-tome-sauvegarde/);
   assert.match(readFileSync(path.join(out, '_headers'), 'utf8'), /\/data\/\*/);
 });
+
+test('analytics Cloudflare : balise seulement avec un jeton valide', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'an-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const go = (analytics, name) => {
+    const cfg = path.join(tmp, `${name}.json`); writeFileSync(cfg, JSON.stringify({ ...base, analytics }));
+    const out = path.join(tmp, name);
+    execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' }, stdio: 'pipe' });
+    return readFileSync(path.join(out, 'index.html'), 'utf8');
+  };
+  assert.ok(go({ cloudflareToken: 'a'.repeat(32) }, 'on').includes('static.cloudflareinsights.com/beacon.min.js'));
+  assert.ok(!go({ cloudflareToken: 'pas-valide"><script>' }, 'off').includes('cloudflareinsights'));
+});
