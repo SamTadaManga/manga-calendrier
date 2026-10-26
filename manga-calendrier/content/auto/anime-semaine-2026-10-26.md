@@ -1,7 +1,7 @@
 ---
 title: "Anime : la semaine du lundi 26 octobre 2026"
 date: 2026-10-26
-description: "101 épisodes d'anime cette semaine."
+description: "101 épisodes d'anime cette semaine. Les plus suivis : The Apothecary Diaries Season 3, Black Clover Season 2, BLEACH: Thousand-Year Blood War - The Calamity…"
 auto: true
 draft: false
 ---

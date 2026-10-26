@@ -1,7 +1,7 @@
 ---
 title: "Manga : les sorties de la semaine du lundi 26 octobre 2026"
 date: 2026-10-26
-description: "6 sorties manga attendues cette semaine en France."
+description: "6 sorties manga attendues cette semaine en France. À suivre : Our Love Language, Strange Natives - La dernière Prêtresse, Samurai Deeper Kyo Star Edition…"
 auto: true
 draft: false
 ---
