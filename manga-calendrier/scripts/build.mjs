@@ -90,6 +90,8 @@ ${Object.entries(NL.extra).filter(([k, v]) => /^[\w.\[\]-]{1,60}$/.test(k) && ty
 </form>`;
 const THEME_BOOT = `<script>try{var t=localStorage.getItem('mc-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>`;
 
+const assetV = (f) => { try { return createHash('md5').update(readFileSync(path.join(SCRIPTS, f))).digest('hex').slice(0, 8); } catch { return '0'; } };
+const av = (f) => `/${f}?v=${assetV(f)}`;
 function layout({ title, description, pathname, body, noindex = false, extraHead = '', image = '' }) {
   const ogImage = /^https:\/\//.test(image) ? image : (siteUrlOk ? `${base}/og.png` : '/og.png');
   const fullTitle = pathname === '/' ? `${config.siteName} : ${config.tagline}` : `${title} | ${config.siteName}`;
@@ -122,7 +124,7 @@ ${image ? '' : `<meta property="og:image:alt" content="${esc(config.siteName)} :
 <link rel="icon" href="${FAVICON}">
 <link rel="preload" href="/fonts/dela-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="/fonts/zen-400.woff" as="font" type="font/woff" crossorigin>
-<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="${av('style.css')}">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#ffd21f">
 <link rel="apple-touch-icon" href="/icon-192.png">
@@ -139,10 +141,10 @@ ${body}
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
 <p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
-<script src="/suivi.js" defer></script>
-<script src="/visite.js" defer></script>
-<script src="/recherche.js" defer></script>
-<script src="/theme.js" defer></script>
+<script src="${av('suivi.js')}" defer></script>
+<script src="${av('visite.js')}" defer></script>
+<script src="${av('recherche.js')}" defer></script>
+<script src="${av('theme.js')}" defer></script>
 </body>
 </html>
 `;
@@ -778,7 +780,7 @@ page('/mes-animes/', {
   body: `<h1>Mes animes</h1>
 <p class="lead">Note les épisodes que tu as vus (de tel épisode à tel épisode) et vois ce qu'il te reste à rattraper. Les animes que tu suis avec le bouton « Suivre » apparaissent ici. Tout reste dans ton navigateur, rien n'est envoyé nulle part.</p>
 <div id="vus-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ta liste.</p></div>
-<script src="/anime-vus.js" defer></script>`,
+<script src="${av('anime-vus.js')}" defer></script>`,
 });
 
 /* -------------------------------------------------------------- changements */
@@ -916,7 +918,7 @@ page('/recherche/', {
 <form class="home-search" action="/recherche/" method="get" role="search"><input type="search" name="q" id="rq" placeholder="Chercher une série, un anime, un article" aria-label="Recherche" autocomplete="off"><button class="btn" type="submit">Chercher</button></form>
 <div id="rres" aria-live="polite"></div>
 <noscript><p>La recherche a besoin de JavaScript. Tu peux parcourir la <a href="/series/">liste des séries</a> ou les <a href="/articles/">articles</a>.</p></noscript>
-<script src="/resultats.js" defer></script>`,
+<script src="${av('resultats.js')}" defer></script>`,
 });
 
 /* ----------------------------------------------------------------- articles */
@@ -1095,7 +1097,7 @@ if (siteUrlOk) {
   const items = articles.slice(0, 20).map((a) => `<item><title>${esc(a.title)}</title><link>${esc(`${base}/articles/${a.slug}/`)}</link><guid isPermaLink="true">${esc(`${base}/articles/${a.slug}/`)}</guid><pubDate>${new Date(`${a.date}T07:00:00Z`).toUTCString()}</pubDate><description>${esc(a.description || a.title)}</description></item>`).join('\n');
   write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>${esc(config.siteName)}</title><link>${esc(base + '/')}</link><description>${esc(config.description)}</description><language>fr</language>\n${items}\n</channel></rss>\n`);
 }
-write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/sw.js\n  Cache-Control: no-cache\n');
+write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/sw.js\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n');
 for (const f of ['dela-400', 'zen-400', 'zen-700', 'zen-900']) write(`fonts/${f}.woff`, readFileSync(path.join(SCRIPTS, 'assets', 'fonts', `${f}.woff`)));
 write('fonts/LICENSE.txt', readFileSync(path.join(SCRIPTS, 'assets', 'fonts', 'LICENSE.txt'), 'utf8'));
 write('style.css', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'style.css'), 'utf8'));

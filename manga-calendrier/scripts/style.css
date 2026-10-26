@@ -548,3 +548,6 @@ details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:80
 .res-row{display:flex;gap:12px;align-items:flex-start}
 .res-row img{width:48px;height:72px;object-fit:cover;border:2px solid var(--edge);flex:none}
 .res-row .notes{margin:2px 0 0}
+
+.coll-row select{font:inherit;padding:4px 8px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink)}
+.coll-row>a{min-width:12rem;font-weight:700}

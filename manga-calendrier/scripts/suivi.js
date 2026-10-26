@@ -65,6 +65,17 @@
   }
   var own = loadOwn();
   function saveOwn() { try { localStorage.setItem(OWN_KEY, JSON.stringify(own)); } catch (e) { stored = false; } }
+  /* statut de lecture par série : { slug : 'cours' | 'alire' | 'fini' | 'pause' } */
+  var ST_KEY = 'mc-statut', ST = { cours: 'En cours', alire: 'À lire', fini: 'Terminée', pause: 'En pause' };
+  function loadSt() {
+    try {
+      var v = JSON.parse(localStorage.getItem(ST_KEY) || '{}'), o = {};
+      Object.keys(v).forEach(function (k) { if (/^[a-z0-9-]{1,100}$/.test(k) && ST[v[k]]) o[k] = v[k]; });
+      return o;
+    } catch (e) { return {}; }
+  }
+  var statut = loadSt();
+  function saveSt() { try { localStorage.setItem(ST_KEY, JSON.stringify(statut)); } catch (e) { stored = false; } }
   var byNum = function (a, b) { return a - b; };
   function tnum(t) {
     if (t === '' || t == null) return 0; // one-shot
@@ -253,7 +264,7 @@
   function getJSON(u) { return fetch(u, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); }); }
 
   function upcoming() {
-    return rows.filter(function (r) { return has(r.k) && r.d >= today && r.st !== 'annule'; })
+    return rows.filter(function (r) { return has(r.k) && statut[r.k] !== 'fini' && statut[r.k] !== 'pause' && r.d >= today && r.st !== 'annule'; })
       .sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : a.s < b.s ? -1 : 1; });
   }
 
@@ -374,6 +385,19 @@
     } else {
       root.appendChild(h('h2', { text: 'Séries suivies' }));
       root.appendChild(chips);
+    }
+
+    /* statuts de lecture */
+    if (list.length) {
+      var cnt = {}; list.forEach(function (k) { var v = statut[k] || 'cours'; cnt[v] = (cnt[v] || 0) + 1; });
+      var stDet = h('details', { class: 'transfer coll-edit', open: 'open' }, [h('summary', { text: 'Où j’en suis dans mes séries · ' + Object.keys(ST).filter(function (v) { return cnt[v]; }).map(function (v) { return cnt[v] + ' ' + ST[v].toLowerCase(); }).join(', ') })]);
+      list.slice().sort(function (a, b) { return (names[a] || a).localeCompare(names[b] || b, 'fr'); }).forEach(function (k) {
+        var sel = h('select', { 'aria-label': 'Statut de ' + (names[k] || k) });
+        Object.keys(ST).forEach(function (v) { var o = h('option', { value: v, text: ST[v] }); if ((statut[k] || 'cours') === v) o.selected = true; sel.appendChild(o); });
+        sel.addEventListener('change', function () { statut[k] = sel.value; saveSt(); render(); });
+        stDet.appendChild(h('div', { class: 'coll-row' }, [h('a', { href: '/serie/' + k + '/', text: names[k] || k }), sel]));
+      });
+      root.appendChild(stDet);
     }
 
     /* ma collection : chiffres et progression par série */
@@ -510,8 +534,42 @@
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, function () { shareMsg.textContent = ' ' + url; });
       else shareMsg.textContent = ' ' + url;
     });
+    var fileMsg = h('span', { class: 'muted', role: 'status' });
+    var expBtn = h('button', { type: 'button', class: 'chip', text: 'Exporter mes données (fichier)' });
+    expBtn.addEventListener('click', function () {
+      var data = { app: 'prochain-tome', v: 1, suivi: list.slice(), own: encodeOwn(), anime: anime, statut: statut };
+      var blob = new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' });
+      var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+      a.download = 'prochain-tome-sauvegarde-' + today + '.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      fileMsg.textContent = ' Fichier enregistré dans tes téléchargements.';
+    });
+    var fileIn = h('input', { type: 'file', accept: 'application/json,.json', 'aria-label': 'Importer un fichier de sauvegarde' });
+    fileIn.addEventListener('change', function () {
+      var f = fileIn.files && fileIn.files[0]; if (!f) return;
+      if (f.size > 1000000) { fileMsg.textContent = ' Fichier trop gros.'; return; }
+      var rd = new FileReader();
+      rd.onload = function () {
+        try {
+          var d = JSON.parse(String(rd.result));
+          if (!d || d.app !== 'prochain-tome') throw new Error('format');
+          var ns = 0, na = 0;
+          (Array.isArray(d.suivi) ? d.suivi : []).slice(0, 500).forEach(function (k) { if (typeof k === 'string' && /^[a-z0-9-]{1,100}$/.test(k) && names[k] && !has(k)) { list.push(k); ns++; } });
+          if (d.anime && typeof d.anime === 'object') Object.keys(d.anime).slice(0, 300).forEach(function (id) { if (/^\d{1,9}$/.test(id) && typeof d.anime[id] === 'string' && !anime[id]) { anime[id] = d.anime[id].slice(0, 200); na++; } });
+          var nt = typeof d.own === 'string' ? decodeOwn(d.own.slice(0, 50000)) : 0;
+          if (d.statut && typeof d.statut === 'object') Object.keys(d.statut).forEach(function (k) { if (/^[a-z0-9-]{1,100}$/.test(k) && ST[d.statut[k]] && !statut[k]) statut[k] = d.statut[k]; });
+          save(); saveA(); saveSt(); paint(); paintA(); paintOwn(); render();
+          var m = document.getElementById('ajout-msg');
+          if (m) m.textContent = 'Sauvegarde importée : ' + ns + ' série(s), ' + na + ' anime(s), ' + nt + ' tome(s) ajouté(s). Rien n’a été supprimé.';
+        } catch (e) { fileMsg.textContent = ' Ce fichier n’est pas une sauvegarde Prochain Tome valide.'; }
+      };
+      rd.readAsText(f);
+    });
     root.appendChild(h('details', { class: 'transfer' }, [
       h('summary', { text: 'Sauvegarder, transférer ou partager ma liste' }),
+      h('p', { class: 'muted' }, ['Sauvegarde complète (séries, animes, collection, statuts) : ', expBtn, fileMsg]),
+      h('p', { class: 'muted' }, ['Restaurer depuis un fichier (fusionne avec ce que tu as déjà) : ', fileIn]),
       h('p', { class: 'muted' }, ['Partager par lien (tes séries et tes animes suivis) : ', h('label', {}, [inclOwn, ' inclure ma collection']), ' ', shareBtn, shareMsg]),
       h('p', { class: 'muted', text: 'Ta liste est enregistrée dans ce navigateur uniquement. Pour la retrouver sur un autre appareil, copie le texte ci-dessous puis colle-le dans la même page là-bas.' }),
       area, imp, impBtn,

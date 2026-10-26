@@ -636,3 +636,17 @@ test('goodies : lien produit direct avec tag quand data/goodies.csv existe, sino
   const b = readFileSync(path.join(out, 'serie/serie-fictive-beta/index.html'), 'utf8');
   assert.match(b, /amazon\.fr\/s\?k=.*goodies.*tag=prochaintome-21/);
 });
+
+test('phase 3 : assets versionnés et sauvegarde/statuts présents', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'p3-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /recherche\.js\?v=[a-f0-9]{8}/);
+  assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /style\.css\?v=[a-f0-9]{8}/);
+  const js = readFileSync(path.join(out, 'suivi.js'), 'utf8');
+  assert.match(js, /mc-statut/); assert.match(js, /prochain-tome-sauvegarde/);
+  assert.match(readFileSync(path.join(out, '_headers'), 'utf8'), /\/data\/\*/);
+});
