@@ -110,9 +110,12 @@ const CF_TOKEN = String(config.analytics?.cloudflareToken || '').trim();
 const ANALYTICS = /^[a-f0-9]{32}$/i.test(CF_TOKEN)
   ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "${CF_TOKEN}"}'></script>`
   : '';
+const clampDesc = (t, max = 158) => { const x = String(t || '').replace(/\s+/g, ' ').trim(); if (x.length <= max) return x; const c = x.slice(0, max - 1); return `${c.slice(0, Math.max(c.lastIndexOf(' '), 60)).replace(/[\s,;:(–-]+$/, '')}…`; };
 function layout({ title, description, pathname, body, noindex = false, extraHead = '', image = '' }) {
+  description = clampDesc(description);
   const ogImage = /^https:\/\//.test(image) ? image : (siteUrlOk ? `${base}/og.png` : '/og.png');
-  const fullTitle = pathname === '/' ? `${config.siteName} : ${config.tagline}` : `${title} | ${config.siteName}`;
+  // Titre de la page d'accueil court (≈60 caractères max, sinon Google le coupe) ; le nom du site n'est ajouté aux autres pages que s'il tient
+  const fullTitle = pathname === '/' ? (`${config.siteName} : ${config.tagline}`.length <= 65 ? `${config.siteName} : ${config.tagline}` : `${config.siteName} : sorties manga en France et épisodes d'anime`) : (`${title} | ${config.siteName}`.length <= 62 ? `${title} | ${config.siteName}` : title);
   const canonical = siteUrlOk ? `${base}${pathname}` : '';
   const nav = NAV.map(([href, label]) => {
     const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
@@ -202,7 +205,7 @@ for (const ev of [...changes.events].sort((a, b) => (a.day < b.day ? -1 : 1))) {
   if (ev.type === 'date' && ev.day >= addDays(today, -30)) moves.set(ev.k, ev);
 }
 
-const serieLink = (name) => (slugify(name) ? `<a class="slink" href="/serie/${slugify(name)}/">${esc(name)}</a>` : esc(name));
+const serieLink = (name) => (slugify(name) && mangaSlugs.has(slugify(name)) ? `<a class="slink" href="/serie/${slugify(name)}/">${esc(name)}</a>` : esc(name));
 
 function changeItem(ev) {
   const pk = pubKey(ev.e);
@@ -224,7 +227,7 @@ function tile(r) {
   const pk = pubKey(r.editeur);
   const label = `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const frame = coverBox(r.cover, `Couverture de ${label}`, 160, 240) + (isNewSeries(r) ? '<span class="cover-flag">★ Nouvelle série</span>' : '');
-  const sl = slugify(r.serie) ? `/serie/${slugify(r.serie)}/` : '';
+  const sl = slugify(r.serie) && mangaSlugs.has(slugify(r.serie)) ? `/serie/${slugify(r.serie)}/` : '';
   const cl = sl ? `<a class="tile-cover t-cover" href="${sl}" aria-label="${esc(label)} : page de la série">${frame}</a>` : `<a class="tile-cover t-cover" href="${esc(r.source || '/manga/')}" ${r.source ? 'rel="noopener nofollow"' : ''} aria-label="${esc(label)} : fiche éditeur">${frame}</a>`;
   // Chaque ligne a son emplacement (même vide) : les tuiles d'une même rangée restent alignées
   return `<li class="tile tile-aligned p-${pk}">${cl}`
@@ -668,7 +671,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     ]).replace(/</g, '\\u003c')}</script>` : '';
     page(`/serie/${S.k}/`, {
       extraHead: serieLd,
-      title: `Prochain tome de ${S.name} : date de sortie en France`,
+      title: `Prochain tome de ${S.name} : date de sortie`,
       description: n
         ? `${n.tome ? `Tome ${n.tome}` : 'Prochain volume'} de ${S.name} : sortie le ${frShort(n.date)}${n.editeur ? ` chez ${n.editeur}` : ''}. Tous les tomes annoncés et la date de chaque sortie.`
         : `Date du prochain tome de ${S.name} en France : tomes parus et annonces des éditeurs.`,
