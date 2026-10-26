@@ -860,10 +860,10 @@ test('accueil et navigation : menu demandé, ordre des blocs, raccourcis et sél
   const h = readFileSync(path.join(out, 'index.html'), 'utf8');
   const nav = h.match(/<nav aria-label="Navigation principale">(.*?)<\/nav>/s)[1];
   const labels = [...nav.matchAll(/>([^<]+)<\/a>/g)].map((m) => m[1]);
-  assert.deepEqual(labels, ['Accueil', 'Sorties manga', 'Calendrier anime', 'Séries', 'Ma collection', 'Actualités', 'Recherche']);
+  assert.deepEqual(labels, ['Accueil', 'Sorties manga', 'Calendrier anime', 'Séries', 'Ma collection', 'Actualités']);
   const pos = (t) => h.indexOf(t);
   assert.ok(pos('role="search"') < pos('Anime du jour') && pos('Anime du jour') < pos('id="t-days"') && pos('id="t-days"') < pos('Derniers articles'));
-  assert.match(h, /class="quick"/);
+  assert.doesNotMatch(h, /class="quick"/);
   // une fiche série met « Séries » en évidence
   assert.match(readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8'), /href="\/series\/" aria-current="page"/);
 });

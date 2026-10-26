@@ -78,12 +78,13 @@
     items[cur].classList.add('on'); items[cur].scrollIntoView({ block: 'nearest' }); preview(items[cur].__x);
   }
 
-  function open() {
+  function open(initial) {
     if (!box) build();
     lastFocus = document.activeElement; box.hidden = false; document.body.classList.add('srch-open');
-    input.value = ''; render(); load(); input.focus();
+    input.value = typeof initial === 'string' ? initial : ''; render(); load(); input.focus();
   }
-  function close() { if (!box) return; box.hidden = true; document.body.classList.remove('srch-open'); if (lastFocus && lastFocus.focus) lastFocus.focus(); }
+  window.mcSearchOpen = open;
+  function close() { if (!box) return; box.hidden = true; document.body.classList.remove('srch-open'); if (lastFocus && lastFocus.focus && !(lastFocus.closest && lastFocus.closest('.home-search'))) lastFocus.focus(); }
 
   function init() {
     var bar = document.querySelector('.site-header .tools');
@@ -91,6 +92,12 @@
       btn = h('button', 'srch-btn'); btn.type = 'button'; btn.setAttribute('aria-label', 'Rechercher (touche /)'); btn.title = 'Rechercher (touche /)';
       btn.innerHTML = '<svg viewBox="0 0 20 20" width="18" height="18" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
       btn.addEventListener('click', open); bar.appendChild(btn);
+    }
+    // la barre de recherche de l'accueil ouvre la même recherche (suggestions, aperçu) que la loupe du bandeau
+    var hq = document.querySelector('.home-search input[type=search]');
+    if (hq) {
+      var go = function () { if (!box || box.hidden) open(hq.value); };
+      hq.addEventListener('focus', go); hq.addEventListener('click', go);
     }
     document.addEventListener('keydown', function (e) {
       if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
