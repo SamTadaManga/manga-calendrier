@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   if (navigator.doNotTrack === '1' || window.doNotTrack === '1') return;
-  var PAGES = { manga: 1, serie: 1, anime: 1, 'mon-planning': 1, recherche: 1, editeur: 1, 'sorties-manga': 1, semaine: 1, articles: 1 };
+  var PAGES = { manga: 1, serie: 1, anime: 1, 'mon-planning': 1, 'ma-collection': 1, recherche: 1, editeur: 1, 'sorties-manga': 1, semaine: 1, articles: 1 };
   function pageKind() { var s = location.pathname.split('/')[1] || 'home'; return PAGES[s] ? s : (s === 'home' ? 'home' : 'autre'); }
   function send(a) {
     var body = JSON.stringify({ sh: a.getAttribute('data-sh'), k: a.getAttribute('data-k') || '', p: pageKind() });

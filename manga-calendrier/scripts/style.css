@@ -631,3 +631,15 @@ ul.hscroll .tile-body .follow,ul.hscroll .tile-body .afollow{margin-top:4px}
   .hbar nav::-webkit-scrollbar{display:none}
   .hbar nav a{flex:0 0 auto}
 }
+
+/* Ma collection */
+.cstats{display:grid;grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));gap:.6rem;margin:1rem 0}
+.cstat{background:var(--card,#fff);border:1px solid var(--line,#ddd);border-radius:10px;padding:.7rem .8rem;display:flex;flex-direction:column}
+.cstat dt{font-size:.8rem;opacity:.75}.cstat dd{margin:0;font-size:1.6rem;font-weight:700;line-height:1.2}
+.ctools{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0}.ctools input{flex:1 1 14rem;min-width:0}
+.clist{list-style:none;margin:1rem 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr));gap:.8rem}
+.cseries{display:flex;gap:.8rem;border:1px solid var(--line,#ddd);border-radius:10px;padding:.7rem;background:var(--card,#fff)}
+.cseries .rel-cover{flex:0 0 60px}.cs-main{min-width:0;flex:1}.cs-main h3{margin:0 0 .1rem;font-size:1rem}.cs-main p{margin:.2rem 0}
+.cbar{height:8px;border-radius:4px;background:var(--line,#ddd);overflow:hidden;margin:.4rem 0}.cbar i{display:block;height:100%;background:var(--accent,#c0392b)}
+.cvols{list-style:none;margin:.4rem 0 0;padding:0}.cvol{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem .6rem;padding:.3rem 0;border-top:1px solid var(--line,#ddd)}
+.cdet summary,.transfer summary{cursor:pointer}.transfer{margin:1.5rem 0}

@@ -83,9 +83,9 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/manga/', 'Sorties manga'], ['/anime/', 'Calendrier anime'], ['/series/', 'Séries'], ['/mon-planning/', 'Ma collection'], ['/articles/', 'Actualités']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Sorties manga'], ['/anime/', 'Calendrier anime'], ['/series/', 'Séries'], ['/ma-collection/', 'Ma collection'], ['/articles/', 'Actualités']];
 // pages rattachées à une entrée du menu (pour la mettre en évidence)
-const NAV_ALIAS = { '/mes-animes/': '/anime/', '/changements/': '/articles/', '/genre/': '/series/', '/genres/': '/series/', '/series-terminees/': '/series/', '/serie/': '/series/', '/editeur/': '/manga/', '/editeurs/': '/manga/', '/sorties-manga/': '/manga/', '/semaine/': '/manga/' };
+const NAV_ALIAS = { '/mon-planning/': '/ma-collection/', '/mes-animes/': '/anime/', '/changements/': '/articles/', '/genre/': '/series/', '/genres/': '/series/', '/series-terminees/': '/series/', '/serie/': '/series/', '/editeur/': '/manga/', '/editeurs/': '/manga/', '/sorties-manga/': '/manga/', '/semaine/': '/manga/' };
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 const reportEmail = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(config.legal?.contactEmail || '') ? config.legal.contactEmail : '';
@@ -168,7 +168,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a><a href="/changements/">Changements</a><a href="/mes-animes/">Mes animes</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/genres/">Genres</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a><a href="/changements/">Changements</a><a href="/mes-animes/">Mes animes</a><a href="/mon-planning/">Mon planning</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/genres/">Genres</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
@@ -304,7 +304,7 @@ function volTile(r, noBuy = false) {
   const pk = pubKey(r.editeur);
   const label = mangaLabel(r);
   const cover = showCovers ? coverBox(r.cover, `Couverture de ${label}`) : '';
-  const own = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="l">Lu</option></select>` : '';
+  const own = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="r">À lire</option><option value="l">Lu</option></select>` : '';
   const ed = editionOf(r);
   const mv = moves.get(keyOf(r));
   const moved = mv && mv.to === r.date ? `<span class="badge ${mv.to > mv.from ? 's-reporte' : 's-confirme'}">${mv.to > mv.from ? 'Reporté' : 'Avancé'}</span>` : '';
@@ -323,7 +323,7 @@ function releaseItem(r, showDate = false) {
   const mv = moves.get(keyOf(r));
   const moved = mv && mv.to === r.date ? `<span class="badge ${mv.to > mv.from ? 's-reporte' : 's-confirme'}">${mv.to > mv.from ? 'Reporté' : 'Avancé'} (avant : ${esc(frShort(mv.from))})</span>` : '';
   const badge = moved || (BADGE_TXT[r.statut] ? `<span class="badge s-${r.statut}">${BADGE_TXT[r.statut]}</span>` : '');
-  const acts = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="l">Lu</option></select>` : '';
+  const acts = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="r">À lire</option><option value="l">Lu</option></select>` : '';
   const meta = [
     showDate ? `<time datetime="${r.date}">${esc(frShort(r.date))}</time>` : '',
     `<span class="pub">${esc(r.editeur || 'Éditeur inconnu')}</span>`,
@@ -924,11 +924,21 @@ ${NL.on ? nlForm('nl-page') : '<p class="empty">L\'inscription n\'est pas encore
   }));
   write('data/manga.json', JSON.stringify({ generated: today, covers: showCovers, rows }));
   write('suivi.js', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'suivi.js'), 'utf8'));
+  page('/ma-collection/', {
+    title: 'Ma collection de mangas',
+    description: 'Ta collection de mangas : tomes possédés, manquants, précommandés et à acheter, avec progression par série.',
+    noindex: true,
+    body: `<h1>Ma collection</h1>
+<p class="lead">Retrouve ici toutes tes séries : tomes possédés, manquants, précommandés, à acheter ou à lire, avec ta progression série par série. Tout reste dans ton navigateur, rien n'est envoyé.</p>
+<div id="coll-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ta collection.</p></div>
+<script src="${av('collection.js')}" defer></script>`,
+  });
   page('/mon-planning/', {
     title: 'Mon planning manga',
     description: 'Suis tes séries manga préférées : prochains tomes, budget du mois et agenda personnel.',
     noindex: true,
     body: `<h1>Mon planning</h1>
+<p class="muted"><a href="/ma-collection/">Voir ma collection complète</a></p>
 <p class="lead">Choisis les séries que tu collectionnes : tu vois leurs prochains tomes, ce que ça coûte chaque mois, ce qu'il te reste à acheter, et tu peux les ajouter à ton agenda. Ta liste et ta collection restent dans ton navigateur, rien n'est envoyé.</p>
 <div id="suivi-app"><p class="empty">Cette page a besoin de JavaScript pour afficher ton planning.</p></div>`,
   });
@@ -1332,7 +1342,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));
 }
-for (const f of ['visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['collection.js', 'visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
