@@ -526,7 +526,7 @@ a.stream.shop-sm,.shops-sm a.stream{flex:1 1 0;min-width:0;padding:0 2px;height:
 
 /* Types d'articles */
 .kind{display:inline-block;padding:0 8px;border:2px solid var(--ink);border-radius:20px;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em;margin-right:6px;vertical-align:middle;color:#111}
-.k-quotidien{background:#cfe8ff}.k-hebdo{background:#ffe08a}.k-mensuel{background:#d9c7ff}.k-changements{background:#ffb3a6}.k-redac{background:#c7f2d4}
+.k-quotidien{background:#cfe8ff}.k-hebdo{background:#ffe08a}.k-mensuel{background:#d9c7ff}.k-changements{background:#ffb3a6}.k-dossier{background:#ffd2ec}.k-redac{background:#c7f2d4}
 .kind-nav{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 20px}
 .kind-nav a{padding:6px 12px;border:2px solid var(--ink);background:var(--panel);color:var(--ink);font-weight:800;text-decoration:none;border-radius:2px}
 .kind-nav a:hover{box-shadow:3px 3px 0 var(--ink)}

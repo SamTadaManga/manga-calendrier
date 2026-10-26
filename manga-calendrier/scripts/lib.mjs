@@ -310,6 +310,7 @@ export function articleKind(slug, auto) {
   if (/^(manga|anime)-semaine-/.test(slug)) return 'hebdo';
   if (/^manga-mois-/.test(slug)) return 'mensuel';
   if (/^manga-changements-/.test(slug)) return 'changements';
+  if (/^dossier-/.test(slug)) return 'dossier';
   return 'quotidien';
 }
 
