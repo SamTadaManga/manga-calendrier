@@ -17,7 +17,7 @@ Voici les sorties manga prévues en France du lundi 26 octobre 2026 au dimanche 
 
 ## Vendredi 30 octobre
 
-- [![Couverture de Samurai Deeper Kyo Star Edition tome 10](https://www.kana.fr/wp-content/themes/kana/assets/images/kana-default.png?x29790)](/serie/samurai-deeper-kyo-star-edition/) **Samurai Deeper Kyo Star Edition tome 10** · date annoncée, non confirmée ([source](https://www.kana.fr/produit/samurai-deeper-kyo-star-edition-t10/)). Collecte automatique
+- [![Couverture de Samurai Deeper Kyo Star Edition tome 10](https://www.kana.fr/wp-content/themes/kana/assets/images/kana-default.png?x84728)](/serie/samurai-deeper-kyo-star-edition/) **Samurai Deeper Kyo Star Edition tome 10** · date annoncée, non confirmée ([source](https://www.kana.fr/produit/samurai-deeper-kyo-star-edition-t10/)). Collecte automatique
   → [Calendrier manga](/manga/#j-2026-10-30) · [Page de la série](/serie/samurai-deeper-kyo-star-edition/)
 - [![Couverture de Slam Dunk deluxe tome 17](https://bdi.dlpdomain.com/album/9782505143314-couv-M300x425.jpg)](/serie/slam-dunk-deluxe/) **Slam Dunk deluxe tome 17** · date annoncée, non confirmée ([source](https://www.kana.fr/produit/slam-dunk-deluxe-t17/)). Collecte automatique
   → [Calendrier manga](/manga/#j-2026-10-30) · [Page de la série](/serie/slam-dunk-deluxe/)
