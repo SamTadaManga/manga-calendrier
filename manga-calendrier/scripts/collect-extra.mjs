@@ -72,17 +72,18 @@ async function fetchText(url, fixtureName, { robots = true } = {}) {
 }
 
 /* ----------------------------------------------------------- piste 1 : Google Books */
-export function booksToRows(json, pub, { first, lastDay }) {
+export function booksToRows(json, pub, { first, lastDay }, diag = {}) {
   const out = [];
+  const no = (k) => { diag[k] = (diag[k] || 0) + 1; };
   for (const it of json?.items || []) {
     const v = it.volumeInfo || {};
-    if (!pub.match.test(String(v.publisher || ''))) continue;
+    if (!pub.match.test(String(v.publisher || ''))) { no('autre éditeur'); continue; }
     const cats = [].concat(v.categories || []).join(' ');
-    if (!pub.pure && !/manga/i.test(cats)) continue;
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(v.publishedDate || ''))) continue; // dates incomplètes (année ou mois seuls) ignorées
-    if (v.publishedDate < first || v.publishedDate > lastDay) continue;
+    if (!pub.pure && !/manga/i.test(cats)) { no('hors catégorie manga'); continue; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(v.publishedDate || ''))) { no('date incomplète'); continue; } // année ou mois seuls ignorés
+    if (v.publishedDate < first || v.publishedDate > lastDay) { no(v.publishedDate < first ? 'déjà paru' : 'trop lointain'); continue; }
     const isbn = (v.industryIdentifiers || []).map((x) => (x.type === 'ISBN_13' ? x.identifier : '')).find(Boolean) || '';
-    if (!/^97[89]\d{10}$/.test(isbn)) continue;
+    if (!/^97[89]\d{10}$/.test(isbn)) { no('sans ISBN-13'); continue; }
     let full = decode(v.title || '');
     if (v.subtitle && !/\b(?:tome|t\.?|vol)\s*\d+/i.test(full)) full = `${full} ${decode(v.subtitle)}`;
     const { serie, tome, titre } = splitTitle(full);
@@ -100,6 +101,8 @@ const cell = (v) => { const s = String(v ?? ''); return /[",\n\r;]/.test(s) ? `"
 const result = [];
 const report = [];
 let quota = false;
+let answered = 0;
+const diagAll = {};
 for (const pub of PUBLISHERS) {
   let rows = [];
   let seenItems = 0;
@@ -109,10 +112,11 @@ for (const pub of PUBLISHERS) {
         const url = `https://www.googleapis.com/books/v1/volumes?q=inpublisher:%22${encodeURIComponent(pub.query)}%22&orderBy=newest&printType=books&langRestrict=fr&maxResults=40&startIndex=${page * 40}${KEY ? `&key=${encodeURIComponent(KEY)}` : ''}`;
         const r = await fetchText(url, `google_${slug(pub.editeur)}_${page + 1}.json`, { robots: false });
         if (r.status === 429 || r.status === 403) { quota = true; console.log(`Google Books : limite de requêtes atteinte (code ${r.status}), reprise à la prochaine exécution.`); break; }
-        if (r.status !== 200) break;
+        if (r.status !== 200) { console.log(`${pub.editeur} : Google Books a répondu ${r.status}`); break; }
+        answered++;
         const json = JSON.parse(r.text);
         seenItems += (json.items || []).length;
-        rows.push(...booksToRows(json, pub, { first: today, lastDay: last }));
+        rows.push(...booksToRows(json, pub, { first: today, lastDay: last }, diagAll));
         if ((json.items || []).length < 40) break;
       }
     } catch (e) { console.log(`${pub.editeur} : échec Google Books (${e.message})`); }
@@ -135,9 +139,10 @@ mkdirSync(P.dataDir, { recursive: true });
 const out = lines.join('\n') + '\n';
 if (!existsSync(file) || readFileSync(file, 'utf8') !== out) writeFileSync(file, out);
 console.log(`Google Books : ${result.length} sorties — ${report.join(' | ')}`);
+console.log(`Google Books, résultats écartés : ${Object.entries(diagAll).map(([k, v]) => `${k} ${v}`).join(', ') || 'aucun résultat renvoyé'}`);
 {
   const fresh = result.filter((r) => r.note === 'Google Books (à vérifier)').length;
-  recordStatus(P.dataDir, 'Complément · Google Books', { ok: !quota && result.length > 0, count: result.length, note: quota ? 'limite de requêtes atteinte' : result.length ? '' : 'aucun tome trouvé' });
+  recordStatus(P.dataDir, 'Complément · Google Books', { ok: !quota && answered > 0, count: result.length, note: quota ? 'limite de requêtes atteinte' : !answered ? 'Google Books n\'a pas répondu' : result.length ? '' : 'répond, mais aucun tome daté dans les 2 mois' });
 }
 
 /* ----------------------------------------------------------- piste 2 : flux RSS */
