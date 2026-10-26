@@ -307,6 +307,7 @@ function releaseItem(r, showDate = false) {
   const mv = moves.get(keyOf(r));
   const moved = mv && mv.to === r.date ? `<span class="badge ${mv.to > mv.from ? 's-reporte' : 's-confirme'}">${mv.to > mv.from ? 'Reporté' : 'Avancé'} (avant : ${esc(frShort(mv.from))})</span>` : '';
   const badge = moved || (BADGE_TXT[r.statut] ? `<span class="badge s-${r.statut}">${BADGE_TXT[r.statut]}</span>` : '');
+  const acts = /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="l">Lu</option></select>` : '';
   const meta = [
     showDate ? `<time datetime="${r.date}">${esc(frShort(r.date))}</time>` : '',
     `<span class="pub">${esc(r.editeur || 'Éditeur inconnu')}</span>`,
@@ -314,13 +315,12 @@ function releaseItem(r, showDate = false) {
     isNewSeries(r) ? NEW_BADGE : '',
     badge,
     r.source ? `<a href="${esc(r.source)}" rel="noopener nofollow">Fiche éditeur</a>` : '',
-    /^\d*$/.test(String(r.tome || '')) && slugify(r.serie) ? `<button type="button" class="own" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-pressed="false" hidden>Je l'ai</button>` + `<select class="tst" data-s="${esc(slugify(r.serie))}" data-t="${esc(r.tome || '')}" aria-label="Statut de ce tome" hidden><option value="">Statut…</option><option value="a">À acheter</option><option value="p">Précommandé</option><option value="l">Lu</option></select>` : '',
   ].filter(Boolean).join('');
   const q = `${r.serie} ${r.tome} ${r.titre} ${r.editeur}`.toLowerCase();
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
   const coverLink = cover && slugify(r.serie) ? `<a class="rel-cover" href="/serie/${slugify(r.serie)}/" aria-label="${esc(r.serie)} : page de la série" tabindex="-1">${cover}</a>` : cover;
-  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-st="${r.date <= today ? 'dispo' : (mv && mv.to === r.date && mv.to > mv.from ? 'reporte' : r.statut)}" data-nw="${isNewSeries(r) ? 1 : 0}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-st="${r.date <= today ? 'dispo' : (mv && mv.to === r.date && mv.to > mv.from ? 'reporte' : r.statut)}" data-nw="${isNewSeries(r) ? 1 : 0}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button>${acts ? `<div class="rel-acts">${acts}</div>` : ''}<div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
     + `<div class="meta">${meta}</div>${buyBox(r)}${adaptLine(r.serie)}${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
@@ -585,6 +585,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     description: 'Les sorties manga en France mois par mois : tous les tomes annoncés par Glénat, Kana, Pika, Ki-oon et Akata.',
     body: `<h1>Sorties manga par mois</h1>
 <p class="lead">Choisis un mois pour voir tous les tomes annoncés.</p>
+<p>${months.length ? `${esc(plural(live.length, 'tome', 'tomes'))} au total, répartis sur ${months.length} mois, de ${esc(frMonth(`${months[0]}-01`))} à ${esc(frMonth(`${months[months.length - 1]}-01`))}. ` : ''}Chaque page mensuelle réunit les sorties de Glénat, Kana, Pika, Ki-oon et Akata avec leur date, leur prix et un lien vers la fiche de l'éditeur. Les dates viennent des plannings officiels : elles sont marquées « estimées » tant qu'un éditeur ne les a pas confirmées, et les reports sont signalés sur la page <a href="/changements/">Changements</a>.</p>
 <p class="chiprow">${months.map((mk) => `<a class="chip" href="/sorties-manga/${monthSlug(mk)}/">${esc(ucfirst(frMonth(`${mk}-01`)))} <span class="n">${byMonth.get(mk).length}</span></a>`).join('')}</p>
 <p class="more"><a href="/manga/">Voir le calendrier</a> · <a href="/series/">Parcourir les séries</a></p>`,
   });
@@ -740,7 +741,7 @@ ${mine.length ? `<h2>Séries ${esc(p.name)} sur le site</h2><ul class="chiprow">
     page('/editeurs/', {
       title: 'Éditeurs de manga : calendriers des sorties',
       description: `Les sorties manga de ${pubs.length} éditeurs français : Glénat, Kana, Pika, Ki-oon, Akata et d'autres.`,
-      body: `<h1>Éditeurs de manga</h1><p class="lead">Le calendrier des sorties de chaque éditeur.</p><ul class="sgrid">${pubs.map((p) => `<li class="scard p-${pubKey(p.name)}"><a class="scard-link" href="/editeur/${p.k}/"><strong>${esc(p.name)}</strong><span class="muted">${esc(plural(p.rows.filter((r) => r.date >= today).length, 'sortie à venir', 'sorties à venir'))}</span></a></li>`).join('')}</ul>`,
+      body: `<h1>Éditeurs de manga</h1><p class="lead">Le calendrier des sorties de chaque éditeur.</p><p>Chaque page éditeur liste ses prochaines sorties, ses nouvelles séries et toutes les séries que nous suivons chez lui. Les données sont relevées chaque nuit sur les plannings officiels de ${esc(pubs.map((p) => p.name).slice(0, 5).join(', '))}${pubs.length > 5 ? ' et d\'autres éditeurs' : ''}.</p><ul class="sgrid">${pubs.map((p) => `<li class="scard p-${pubKey(p.name)}"><a class="scard-link" href="/editeur/${p.k}/"><strong>${esc(p.name)}</strong><span class="muted">${esc(plural(p.rows.filter((r) => r.date >= today).length, 'sortie à venir', 'sorties à venir'))}</span></a></li>`).join('')}</ul>`,
     });
     SEO_URLS.push('/editeurs/', ...pubs.map((p) => `/editeur/${p.k}/`));
   }
@@ -1053,7 +1054,9 @@ page('/partager/', {
   body: `<h1>Visuels à partager</h1>
 <p class="lead">Choisis un visuel, un format et télécharge l'image à poster sur Instagram, TikTok ou Pinterest. Elle est dessinée dans ton navigateur à partir des données du jour.</p>
 <div id="partage-app"><p class="empty">Cette page a besoin de JavaScript pour créer les images.</p></div>
-<script src="${av('partager.js')}" defer></script>`,
+<script src="${av('partager.js')}" defer></script>
+<h2>À quoi servent ces visuels ?</h2>
+<p>Trois modèles sont proposés : les sorties manga de la semaine, les nouvelles séries à surveiller et l'anime de la semaine. Chaque image est créée dans ton navigateur à partir des données du jour, aux formats carré (Instagram), vertical (TikTok, Stories) ou portrait (Pinterest). Un texte d'accompagnement est proposé avec l'image ; pense à citer le site quand tu la partages.</p>`,
 });
 SEO_URLS.push('/partager/');
 
@@ -1093,7 +1096,7 @@ page('/recherche/', {
     }).replace(/</g, '\\u003c');
     page(`/articles/${a.slug}/`, {
       title: a.title,
-      description: a.description || a.title,
+      description: (a.description || a.title).length < 70 ? `${a.description || a.title} Dates, horaires et fiches de chaque série sur ${config.siteName}.` : (a.description || a.title),
       body: `<article class="post"><p class="muted">${kindBadge(a)} <time datetime="${a.date}">${esc(frDate(a.date))}</time></p><h1>${esc(a.title)}</h1>\n${markdown(a.body)}</article>\n<p class="more"><a href="/articles/">Tous les articles</a></p>`,
       extraHead: `<script type="application/ld+json">${ld}</script>`,
     });
@@ -1149,7 +1152,7 @@ else{msg.select();done('Sélectionne et copie le texte.');}});
   const v = (s) => esc(s || 'À compléter');
   page('/mentions-legales/', {
     title: 'Mentions légales',
-    description: 'Mentions légales du site.',
+    description: `Mentions légales de ${config.siteName} : éditeur du site, hébergement, données personnelles, mesure d'audience et liens d'affiliation.`,
     body: `<h1>Mentions légales</h1>
 <h2>Éditeur du site</h2>
 <p>${v(L.editorName)}<br>Contact : ${v(L.contactEmail)}<br>Directeur de la publication : ${v(L.publicationDirector)}</p>

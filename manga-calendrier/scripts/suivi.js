@@ -322,9 +322,8 @@
       if (r.nw) meta.push(h('span', { class: 'badge s-new', text: '\u2605 Nouvelle série' }));
       if (r.st === 'confirme') meta.push(h('span', { class: 'badge s-confirme', text: 'Date confirmée' }));
       if (/^https?:\/\//.test(r.u || '')) meta.push(h('a', { href: r.u, rel: 'noopener nofollow', text: 'Fiche éditeur' }));
-      if (tnum(r.t) !== null) meta.push(h('button', { type: 'button', class: 'own', 'data-s': r.k, 'data-t': r.t || '', 'aria-pressed': 'false', hidden: 'hidden', text: 'Je l’ai' }));
-      if (tnum(r.t) !== null) meta.push(tstSelect(r.k, r.t));
-      var kids = [h('div', { class: 'rel-main' }, [h('div', { class: 'rel-title' }, title), h('div', { class: 'meta' }, meta)])];
+      var acts = tnum(r.t) !== null ? h('div', { class: 'rel-acts' }, [h('button', { type: 'button', class: 'own', 'data-s': r.k, 'data-t': r.t || '', 'aria-pressed': 'false', hidden: 'hidden', text: 'Je l’ai' }), tstSelect(r.k, r.t)]) : null;
+      var kids = [h('div', { class: 'rel-main' }, [h('div', { class: 'rel-title' }, title), h('div', { class: 'meta' }, meta)].concat(acts ? [acts] : []))];
       if (covers) {
         var box = h('div', { class: 'cover', 'aria-hidden': r.c ? 'false' : 'true' });
         if (/^https:\/\//.test(r.c || '')) box.appendChild(h('img', { class: 'cover-img', src: r.c, alt: 'Couverture de ' + r.s + (r.t ? ' tome ' + r.t : ''), width: '60', height: '90', loading: 'lazy', decoding: 'async', referrerpolicy: 'no-referrer' }));

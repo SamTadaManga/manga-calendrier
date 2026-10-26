@@ -25,6 +25,7 @@ const thumb = (url, alt, href) => (config.showCovers === true && /^https:\/\//.t
 const q = (s) => String(s).replace(/"/g, '\\"');
 const created = [];
 
+const some = (list, f, intro = ' Au programme : ') => { const n = [...new Set(list.map(f))].slice(0, 3); return n.length ? `${intro}${n.join(', ')}${list.length > n.length ? '…' : '.'}` : ''; };
 function writeArticle(name, { title, description }, body) {
   const text = `---\ntitle: "${q(title)}"\ndate: ${today}\ndescription: "${q(description)}"\nauto: true\ndraft: ${draft}\n---\n\n${body.trim()}\n`;
   writeFileSync(path.join(P.autoDir, `${name}.md`), text);
@@ -63,7 +64,7 @@ if (eps.length) {
   ].join('\n');
   writeArticle(`anime-${today}`, {
     title: `Anime : les épisodes du ${frDate(today)}`,
-    description: `${eps.length} épisodes d'anime au programme le ${frDate(today)}, horaires à l'heure de Paris.`,
+    description: `${eps.length} épisodes d'anime au programme le ${frDate(today)}, horaires à l'heure de Paris.${some(eps, (e) => label(e))}`,
   }, body);
 }
 
@@ -95,7 +96,7 @@ const byPublisher = (rows) => {
 const todays = manga.filter((r) => r.date === today);
 if (todays.length) {
   const body = [
-    `Voici les sorties manga prévues en France le ${frDate(today)}.`,
+    `Voici les sorties manga prévues en France le ${frDate(today)}.${some(todays, (r) => r.serie)}`,
     '',
     ...byPublisher(todays).flatMap(([pub, rows]) => [`## ${pub}`, '', ...rows.map(line), '']),
     'Les dates peuvent changer : consultez la source indiquée pour chaque sortie.',
@@ -123,7 +124,7 @@ if (weekdayOfKey(today) === 1) {
     ].join('\n');
     writeArticle(`manga-semaine-${today}`, {
       title: `Manga : les sorties de la semaine du ${frDate(today)}`,
-      description: `${week.length} sortie${week.length > 1 ? 's' : ''} manga attendue${week.length > 1 ? 's' : ''} cette semaine en France.`,
+      description: `${week.length} sortie${week.length > 1 ? 's' : ''} manga attendue${week.length > 1 ? 's' : ''} cette semaine en France.${some(week, (r) => r.serie, ' À suivre : ')}`,
     }, body);
   }
 }
@@ -151,7 +152,7 @@ if (weekdayOfKey(today) === 1) {
     ].join('\n');
     writeArticle(`anime-semaine-${today}`, {
       title: `Anime : la semaine du ${frDate(today)}`,
-      description: `${week.length} épisodes d'anime cette semaine${firsts.length ? `, dont ${firsts.length} premier${firsts.length > 1 ? 's' : ''} épisode${firsts.length > 1 ? 's' : ''}` : ''}.`,
+      description: `${week.length} épisodes d'anime cette semaine${firsts.length ? `, dont ${firsts.length} premier${firsts.length > 1 ? 's' : ''} épisode${firsts.length > 1 ? 's' : ''}` : ''}.${some(top, (e) => displayTitle(e.title), ' Les plus suivis : ')}`,
     }, body);
   }
 }

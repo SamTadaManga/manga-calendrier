@@ -592,3 +592,13 @@ details.history{margin:1.2rem 0}
 details.history summary{cursor:pointer;font-weight:800}
 ul.hist{list-style:none;margin:.6rem 0;padding:0;display:grid;gap:.45rem}
 ul.hist li{padding:.35rem 0;border-bottom:1px solid var(--line)}
+
+/* Actions « Je l'ai » + statut : colonne alignée à gauche du bouton Suivre */
+.rel-acts{display:flex;gap:8px;align-items:center;margin-top:8px}
+.rel-acts .own{min-width:76px;min-height:32px}
+.rel-acts .tst{width:122px;min-height:32px}
+@media(min-width:760px){
+  .rel-acts{position:absolute;z-index:1;top:10px;right:92px;margin:0}
+  .rel-main>.rel-title,.rel>.rel-main .rel-title{padding-right:0}
+  .rel:has(.rel-acts) .rel-title{padding-right:300px}
+}
