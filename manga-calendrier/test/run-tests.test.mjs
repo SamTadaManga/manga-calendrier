@@ -867,3 +867,21 @@ test('accueil et navigation : menu demandé, ordre des blocs, raccourcis et sél
   // une fiche série met « Séries » en évidence
   assert.match(readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8'), /href="\/series\/" aria-current="page"/);
 });
+
+test('calendrier manga : filtre par type de publication, navigation par mois, chargement progressif des mois', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'cal-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  const csv = 'Date de sortie,Éditeur,Série,Tome,Titre du tome (facultatif),ISBN-13,Prix (€),Statut,Source officielle (lien),Vérifié le,Notes\n'
+    + ['2026-10-14,Glénat,Alpha,1,Alpha T1,,,annonce,,,', '2026-10-15,Glénat,Alpha,2,Alpha T2 - Collector,,,annonce,,,', '2026-11-04,Kana,Beta,1,,,,annonce,,,', '2026-12-02,Pika,Gamma,1,,,,annonce,,,', '2027-01-06,Pika,Delta,1,,,,annonce,,,'].join('\n') + '\n';
+  writeFileSync(path.join(data, 'manga.csv'), csv);
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const h = readFileSync(path.join(out, 'manga/index.html'), 'utf8');
+  assert.match(h, /data-attr="ty"[^>]*>Collector/); assert.match(h, /data-ty="collector"/);
+  assert.match(h, /<template id="mois-tpl">/); assert.match(h, /id="plus-btn"/);
+  assert.ok(h.indexOf('<template id="mois-tpl">') > h.indexOf('Novembre 2026') && h.indexOf('Décembre 2026') > h.indexOf('<template id="mois-tpl">'), 'seuls 2 mois dans la page, les suivants à la demande');
+  assert.match(h, /class="chiprow monthjump"/); assert.match(h, /href="\/sorties-manga\/decembre-2026\/"/);
+});

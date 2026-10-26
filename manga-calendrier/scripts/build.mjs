@@ -197,6 +197,15 @@ const wdc = (k) => `wd-${((weekdayOfKey(k) + 6) % 7) + 1}`; // 1 = lundi … 7 =
 const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
 
 // « Ryukyu Buccaneer - Tome 01 - Édition collector » -> « Édition collector »
+const TYPES = [
+  ['collector', 'Collector', /collector/],
+  ['coffret', 'Coffret', /coffret|\bbox\b/],
+  ['integrale', 'Intégrale', /int[ée]grale|omnibus/],
+  ['artbook', 'Artbook', /artbook|art book|fanbook|guide ?book|illustrations?/],
+  ['deluxe', 'Deluxe et prestige', /deluxe|prestige|\bluxe\b|limitée|full color|perfect|tarot/],
+  ['edition', 'Éditions spéciales', /édition originale|edition originale|star [ée]dition|final [ée]dition|nouvelle édition|millenium|rerise|\bremake\b|ultimate/],
+];
+const pubType = (r) => { const t = `${r.titre || ''} ${r.serie || ''}`.toLowerCase(); const f = TYPES.find(([, , re]) => re.test(t)); return f ? f[0] : 'standard'; };
 function editionOf(r) {
   if (!r.titre) return '';
   let t = r.titre.replace(r.serie, '').replace(/^[\s,–-]*(?:tome|t\.?|vol\.?)\s*0*\d+\b/i, '').replace(/^[\s,–:-]+/, '').trim();
@@ -327,7 +336,7 @@ function releaseItem(r, showDate = false) {
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
   const coverLink = cover && slugify(r.serie) ? `<a class="rel-cover" href="/serie/${slugify(r.serie)}/" aria-label="${esc(r.serie)} : page de la série" tabindex="-1">${cover}</a>` : cover;
-  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-st="${r.date <= today ? 'dispo' : (mv && mv.to === r.date && mv.to > mv.from ? 'reporte' : r.statut)}" data-nw="${isNewSeries(r) ? 1 : 0}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button>${acts ? `<div class="rel-acts">${acts}</div>` : ''}<div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-st="${r.date <= today ? 'dispo' : (mv && mv.to === r.date && mv.to > mv.from ? 'reporte' : r.statut)}" data-nw="${isNewSeries(r) ? 1 : 0}" data-ty="${pubType(r)}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button>${acts ? `<div class="rel-acts">${acts}</div>` : ''}<div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
     + `<div class="meta">${meta}</div>${buyBox(r)}${adaptLine(r.serie)}${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
@@ -462,6 +471,7 @@ var at=function(c){return c.dataset.attr||'pub';},nAct=function(){return Object.
 function okItem(li){var a,keys;for(a in act){keys=Object.keys(act[a]);if(!keys.length)continue;
 if(a==='nw'){if(li.dataset.nw!=='1')return false;}
 else if(a==='st'){if(!act.st[li.dataset.st])return false;}
+else if(a==='ty'){if(!act.ty[li.dataset.ty])return false;}
 else if(li.dataset.pub&&!li.dataset.pub.split(' ').some(function(k){return act.pub[k];}))return false;}return true;}
 function apply(){var t=(q.value||'').toLowerCase().trim(),any=nAct(),shown=0;
 [].forEach.call(document.querySelectorAll('[data-q]'),function(li){var ok=okItem(li)&&(!t||li.dataset.q.indexOf(t)>-1);li.hidden=!ok;if(ok)shown++;});
@@ -504,6 +514,12 @@ if(!target){aj.textContent='Rien à venir';setTimeout(function(){aj.textContent=
 var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 target.scrollIntoView({behavior:rm?'auto':'smooth',block:'start'});
 target.classList.remove('flash');void target.offsetWidth;target.classList.add('flash');});}
+var tpl=document.getElementById('mois-tpl'),pm=document.getElementById('plus-mois'),pb=document.getElementById('plus-btn'),box=document.getElementById('mois-suite');
+function loadMore(){if(!tpl||!box)return;box.appendChild(tpl.content.cloneNode(true));tpl.remove();tpl=null;if(pm)pm.remove();
+var cur=vb&&vb.querySelector('[data-view][aria-pressed="true"]');var v=cur?cur.dataset.view:'jour';
+if(window.mcPaint)window.mcPaint();if(window.mcPaintOwn)window.mcPaintOwn();if(v!=='jour')show(v);else apply();}
+if(tpl&&pm){pm.hidden=false;pb.addEventListener('click',loadMore);
+var _ap2=apply;apply=function(){if(tpl&&((q.value||'').trim()||nAct())){loadMore();return;}_ap2();};if((q.value||'').trim()||nAct())apply();}
 })();
 </script>`;
 
@@ -537,11 +553,16 @@ target.classList.remove('flash');void target.offsetWidth;target.classList.add('f
     return `<table class="cal"><caption class="sr">Calendrier de ${esc(frMonth(first))}</caption><thead><tr>${heads}</tr></thead><tbody>${trs.join('')}</tbody></table>`;
   };
 
-  const content = monthKeys.map((mk) => {
+  const mSlug = (mk) => slugify(frMonth(`${mk}-01`));
+  const monthHtml = monthKeys.map((mk) => {
     const days = [...byDate.keys()].filter((d) => d.startsWith(mk)).sort();
     return `<section class="month" data-group><h2>${esc(ucfirst(frMonth(`${mk}-01`)))}</h2>${grid(mk)}${
       days.map((d) => `<div class="daygroup" data-group><h3 id="j-${d}" class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h3><ul class="list panel">${byDate.get(d).map((r) => releaseItem(r)).join('')}</ul></div>`).join('')}</section>`;
-  }).join('\n');
+  });
+  const FIRST_MONTHS = 2;
+  const content = monthHtml.slice(0, FIRST_MONTHS).join('\n') + (monthHtml.length > FIRST_MONTHS
+    ? `\n<div id="mois-suite"></div><template id="mois-tpl">${monthHtml.slice(FIRST_MONTHS).join('\n')}</template><p class="more" id="plus-mois" hidden><button type="button" class="chip" id="plus-btn">Charger les mois suivants (${esc(monthKeys.slice(FIRST_MONTHS).map((mk) => frMonth(`${mk}-01`)).join(', '))})</button></p><noscript><p class="more">Les mois suivants : ${monthKeys.slice(FIRST_MONTHS).map((mk) => `<a href="/sorties-manga/${mSlug(mk)}/">${esc(frMonth(`${mk}-01`))}</a>`).join(' · ')}</p></noscript>`
+    : '');
 
   const counts = new Map();
   for (const r of rows) counts.set(pubKey(r.editeur), (counts.get(pubKey(r.editeur)) || 0) + 1);
@@ -557,10 +578,16 @@ target.classList.remove('flash');void target.offsetWidth;target.classList.add('f
     ['reporte', 'Reporté', (r) => r.date > today && (r.statut === 'reporte' || ((m) => m && m.to === r.date && m.to > m.from)(moves.get(keyOf(r))))],
   ].filter(([, , f]) => stCount(f)).map(([k, l, f]) => `<button type="button" class="chip" data-chip="${k}" data-attr="st" aria-pressed="false">${l} <span class="n">${stCount(f)}</span></button>`).join('')
     + (rows.some((r) => isNewSeries(r)) ? `<button type="button" class="chip" data-chip="1" data-attr="nw" aria-pressed="false">Nouvelles séries <span class="n">${rows.filter((r) => isNewSeries(r)).length}</span></button>` : '');
+  const tyCount = (k) => rows.filter((r) => pubType(r) === k).length;
+  const tyChips = [['standard', 'Tome standard'], ...TYPES.map(([k, l]) => [k, l])].filter(([k]) => tyCount(k)).map(([k, l]) => `<button type="button" class="chip" data-chip="${k}" data-attr="ty" aria-pressed="false">${esc(l)} <span class="n">${tyCount(k)}</span></button>`).join('');
+  const allMonths = [...new Set(manga.filter((r) => r.statut !== 'annule' && r.date).map((r) => r.date.slice(0, 7)))].sort();
+  const prevM = allMonths.filter((m) => m < monthKeys[0]).pop();
+  const monthJump = `<p class="chiprow monthjump"><span class="muted">Mois :</span>${prevM ? `<a class="chip" href="/sorties-manga/${mSlug(prevM)}/">← ${esc(frMonth(`${prevM}-01`))}</a>` : ''}${monthKeys.map((mk) => `<a class="chip" href="/sorties-manga/${mSlug(mk)}/">${esc(frMonth(`${mk}-01`))}</a>`).join('')}<a class="chip" href="/sorties-manga/">Tous les mois</a></p>`;
   const body = `
 <h1>Calendrier des sorties manga</h1>
 <p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.${mangaUpdatedIso ? ` <span class="muted">Mis à jour ${esc(agoFr(mangaUpdatedIso))}. <a href="/etat/">État des données</a></span>` : ''}</p>
-${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}${stChips ? `<span class="muted fsep">Statut :</span>${stChips}` : ''}</div>
+${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}${stChips ? `<span class="muted fsep">Statut :</span>${stChips}` : ''}${tyChips.split('data-chip').length > 2 ? `<span class="muted fsep">Type :</span>${tyChips}` : ''}</div>
+${monthJump}
 <div class="views" id="vues" role="group" aria-label="Affichage" hidden><span class="muted">Affichage :</span>
 <button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button><button type="button" class="chip jump-today" id="auj">Aujourd'hui</button></div>
 <p class="empty" id="aucun" hidden>Aucune sortie ne correspond à ce filtre.</p>
