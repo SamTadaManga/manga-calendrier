@@ -571,3 +571,10 @@ details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:80
 
 .related{list-style:none;padding:0;margin:0 0 1rem;display:grid;gap:.4rem}
 .related li{padding:.35rem 0;border-bottom:1px solid var(--line,#ddd)}
+
+/* Carrousel « Si tu aimes » : défilement horizontal, glisser au doigt ou à la molette */
+.carousel{overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;margin:0 0 1.2rem;padding-bottom:8px}
+.carousel:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+ul.sgrid.carousel-track{display:flex;gap:16px;width:max-content;padding:0 6px 6px 0}
+.carousel-track .scard{flex:0 0 130px;scroll-snap-align:start}
+@media(min-width:700px){.carousel-track .scard{flex-basis:150px}}
