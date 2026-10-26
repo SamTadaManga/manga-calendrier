@@ -602,6 +602,24 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
   searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: [S.editeur, ...((infoOf(S.name) || {}).au || [])].filter(Boolean).join(' '), c: showCovers ? (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover || '') : '', x: [S.editeur, S.rows.filter((r) => r.date >= today).length ? `${S.rows.filter((r) => r.date >= today).length} tome(s) à venir` : 'rien d\'annoncé'].filter(Boolean).join(' · ') }));
+  // Séries proches (auteur, genres, éditeur) et articles qui citent la série
+  const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const artText = articles.map((a) => ({ a, t: norm(`${a.title} ${a.body}`) }));
+  const relatedBox = (S) => {
+    const me = infoOf(S.name) || {};
+    const scored = seriesList.filter((o) => o.k !== S.k).map((o) => {
+      const oi = infoOf(o.name) || {};
+      const au = (me.au || []).filter((x) => (oi.au || []).includes(x)).length;
+      const ge = (me.g || []).filter((x) => (oi.g || []).includes(x)).length;
+      const sc = au * 4 + ge * 2 + (au || ge ? (o.editeur === S.editeur ? 1 : 0) : 0) + (o.next ? 0.5 : 0);
+      return { o, sc, au, ge };
+    }).filter((x) => x.au || x.ge >= 2).sort((a, b) => b.sc - a.sc || a.o.name.localeCompare(b.o.name, 'fr')).slice(0, 6);
+    const nm = norm(S.name);
+    const arts = nm.length >= 5 ? artText.filter((x) => x.t.includes(nm)).slice(0, 3).map((x) => x.a) : [];
+    const sim = scored.length ? `<h2>Si tu aimes ${esc(S.name)}</h2><ul class="related">${scored.map(({ o, au }) => `<li><a href="/serie/${o.k}/">${esc(o.name)}</a><span class="muted"> · ${au ? 'même auteur' : esc(o.editeur || '')}${o.next ? ` · prochain tome ${esc(frShort(o.next.date))}` : ''}</span></li>`).join('')}</ul>` : '';
+    const art = arts.length ? `<h2>À lire aussi</h2><ul class="articles">${arts.map(articleItem).join('')}</ul>` : '';
+    return sim + art;
+  };
   for (const S of seriesList) {
     const upcoming = S.rows.filter((r) => r.date >= today);
     const past = S.rows.filter((r) => r.date < today).reverse();
@@ -650,6 +668,7 @@ ${animeBox}
 </div></div>
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
+${relatedBox(S)}
 ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more">${S.editeur && slugify(S.editeur) ? `<a href="/editeur/${slugify(S.editeur)}/">Autres sorties ${esc(S.editeur)}</a> · ` : ''}<a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
