@@ -578,3 +578,10 @@ details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:80
 ul.sgrid.carousel-track{display:flex;gap:16px;width:max-content;padding:0 6px 6px 0}
 .carousel-track .scard{flex:0 0 130px;scroll-snap-align:start}
 @media(min-width:700px){.carousel-track .scard{flex-basis:150px}}
+
+/* Statut par tome */
+.tst{min-height:26px;max-width:9.5rem;padding:0 4px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink);font:inherit;font-size:.8rem;font-weight:750;cursor:pointer}
+.tst[hidden]{display:none}
+.rel.tm-p{box-shadow:inset 4px 0 0 var(--brand)}
+.rel.tm-l .rel-title strong{opacity:.65}
+.vol .tst{margin-top:2px}

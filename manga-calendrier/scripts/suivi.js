@@ -65,6 +65,27 @@
   }
   var own = loadOwn();
   function saveOwn() { try { localStorage.setItem(OWN_KEY, JSON.stringify(own)); } catch (e) { stored = false; } }
+  /* statut par tome : { slug : { numéro : 'a' (à acheter) | 'p' (précommandé) | 'l' (lu) } } */
+  var TM_KEY = 'mc-tome', TM = { a: 'À acheter', p: 'Précommandé', l: 'Lu' };
+  function loadTm() {
+    try {
+      var v = JSON.parse(localStorage.getItem(TM_KEY) || '{}'), o = {};
+      Object.keys(v).forEach(function (k) {
+        if (!/^[a-z0-9-]{1,100}$/.test(k) || !v[k] || typeof v[k] !== 'object') return;
+        Object.keys(v[k]).forEach(function (n) { if (/^\d{1,4}$/.test(n) && TM[v[k][n]]) { (o[k] = o[k] || {})[n] = v[k][n]; } });
+      });
+      return o;
+    } catch (e) { return {}; }
+  }
+  var tm = loadTm();
+  function saveTm() { try { localStorage.setItem(TM_KEY, JSON.stringify(tm)); } catch (e) { stored = false; } }
+  function tmOf(k, t) { var n = tnum(t); return n !== null && tm[k] && tm[k][n] || ''; }
+  function setTm(k, t, c) {
+    var n = tnum(t); if (n === null) return;
+    if (c && TM[c]) { (tm[k] = tm[k] || {})[n] = c; }
+    else if (tm[k]) { delete tm[k][n]; if (!Object.keys(tm[k]).length) delete tm[k]; }
+    saveTm();
+  }
   /* statut de lecture par série : { slug : 'cours' | 'alire' | 'fini' | 'pause' } */
   var ST_KEY = 'mc-statut', ST = { cours: 'En cours', alire: 'À lire', fini: 'Terminée', pause: 'En pause' };
   function loadSt() {
@@ -139,6 +160,13 @@
       var row = b.closest ? b.closest('.rel') : null;
       if (row) row.classList.toggle('is-owned', on);
     }
+    var ss = document.querySelectorAll('select.tst');
+    for (var q = 0; q < ss.length; q++) {
+      var sl = ss[q], c = tmOf(sl.getAttribute('data-s'), sl.getAttribute('data-t'));
+      sl.value = c; sl.hidden = false;
+      var rw = sl.closest ? sl.closest('.rel') : null;
+      if (rw) { rw.classList.toggle('tm-p', c === 'p'); rw.classList.toggle('tm-a', c === 'a'); rw.classList.toggle('tm-l', c === 'l'); }
+    }
     var boxes = document.querySelectorAll('[data-coll]');
     for (var j = 0; j < boxes.length; j++) collBox(boxes[j].getAttribute('data-s'), boxes[j]);
   }
@@ -165,7 +193,18 @@
   document.addEventListener('click', function (e) {
     var b = e.target.closest ? e.target.closest('button.own') : null;
     if (!b) return;
-    setOwned(b.getAttribute('data-s'), b.getAttribute('data-t'), b.getAttribute('aria-pressed') !== 'true');
+    var on = b.getAttribute('aria-pressed') !== 'true', bk = b.getAttribute('data-s'), bt = b.getAttribute('data-t');
+    setOwned(bk, bt, on);
+    if (on && /^[ap]$/.test(tmOf(bk, bt))) setTm(bk, bt, '');
+    paintOwn();
+    if (window.mcRender) window.mcRender();
+  });
+  document.addEventListener('change', function (e) {
+    var s = e.target && e.target.classList && e.target.classList.contains('tst') ? e.target : null;
+    if (!s) return;
+    var k = s.getAttribute('data-s'), t = s.getAttribute('data-t');
+    setTm(k, t, s.value);
+    if ((s.value === 'p' || s.value === 'a') && isOwned(k, t)) setOwned(k, t, false); // précommander un tome = ne pas l'avoir encore
     paintOwn();
     if (window.mcRender) window.mcRender();
   });
@@ -268,6 +307,11 @@
       .sort(function (a, b) { return a.d < b.d ? -1 : a.d > b.d ? 1 : a.s < b.s ? -1 : 1; });
   }
 
+  function tstSelect(k, t) {
+    var s = h('select', { class: 'tst', 'data-s': k, 'data-t': t || '', 'aria-label': 'Statut de ce tome', hidden: 'hidden' }, [h('option', { value: '', text: 'Statut…' })]);
+    Object.keys(TM).forEach(function (c) { s.appendChild(h('option', { value: c, text: TM[c] })); });
+    return s;
+  }
   function rowEl(r) {
       var title = [h('strong', { text: r.s })];
       if (r.t) title.push(h('span', { class: 'tome', text: ' tome ' + r.t }));
@@ -279,6 +323,7 @@
       if (r.st === 'confirme') meta.push(h('span', { class: 'badge s-confirme', text: 'Date confirmée' }));
       if (/^https?:\/\//.test(r.u || '')) meta.push(h('a', { href: r.u, rel: 'noopener nofollow', text: 'Fiche éditeur' }));
       if (tnum(r.t) !== null) meta.push(h('button', { type: 'button', class: 'own', 'data-s': r.k, 'data-t': r.t || '', 'aria-pressed': 'false', hidden: 'hidden', text: 'Je l’ai' }));
+      if (tnum(r.t) !== null) meta.push(tstSelect(r.k, r.t));
       var kids = [h('div', { class: 'rel-main' }, [h('div', { class: 'rel-title' }, title), h('div', { class: 'meta' }, meta)])];
       if (covers) {
         var box = h('div', { class: 'cover', 'aria-hidden': r.c ? 'false' : 'true' });
@@ -451,6 +496,19 @@
       } else root.appendChild(h('p', { class: 'muted', text: 'Aucun épisode de tes animes cette semaine.' }));
     }
 
+    /* précommandés et à acheter (statuts choisis tome par tome, même hors séries suivies) */
+    [['p', 'Précommandés'], ['a', 'À acheter (ma liste)']].forEach(function (g) {
+      var sel = rows.filter(function (r) { return r.st !== 'annule' && tmOf(r.k, r.t) === g[0]; }).sort(function (a, b) { return a.d < b.d ? -1 : 1; });
+      if (!sel.length) return;
+      var tot = 0, np = 0;
+      sel.forEach(function (r) { if (typeof r.p === 'number') tot += r.p; else np++; });
+      root.appendChild(h('h2', { text: g[1] }));
+      root.appendChild(h('p', { class: 'budget', text: sel.length + (sel.length > 1 ? ' tomes' : ' tome') + (tot ? ' · ' + euro(tot) : '') + (np && tot ? ' (+ ' + np + ' sans prix)' : '') }));
+      var ulg = h('ul', { class: 'list panel' });
+      sel.forEach(function (r) { ulg.appendChild(rowEl(r)); });
+      root.appendChild(ulg);
+    });
+
     /* à acheter maintenant : tomes parus des séries dont la collection est renseignée */
     if (list.length) {
       var buy = rows.filter(function (r) {
@@ -537,7 +595,7 @@
     var fileMsg = h('span', { class: 'muted', role: 'status' });
     var expBtn = h('button', { type: 'button', class: 'chip', text: 'Exporter mes données (fichier)' });
     expBtn.addEventListener('click', function () {
-      var data = { app: 'prochain-tome', v: 1, suivi: list.slice(), own: encodeOwn(), anime: anime, statut: statut };
+      var data = { app: 'prochain-tome', v: 1, suivi: list.slice(), own: encodeOwn(), anime: anime, statut: statut, tome: tm };
       var blob = new Blob([JSON.stringify(data, null, 1)], { type: 'application/json' });
       var a = document.createElement('a'); a.href = URL.createObjectURL(blob);
       a.download = 'prochain-tome-sauvegarde-' + today + '.json';
@@ -559,6 +617,11 @@
           if (d.anime && typeof d.anime === 'object') Object.keys(d.anime).slice(0, 300).forEach(function (id) { if (/^\d{1,9}$/.test(id) && typeof d.anime[id] === 'string' && !anime[id]) { anime[id] = d.anime[id].slice(0, 200); na++; } });
           var nt = typeof d.own === 'string' ? decodeOwn(d.own.slice(0, 50000)) : 0;
           if (d.statut && typeof d.statut === 'object') Object.keys(d.statut).forEach(function (k) { if (/^[a-z0-9-]{1,100}$/.test(k) && ST[d.statut[k]] && !statut[k]) statut[k] = d.statut[k]; });
+          if (d.tome && typeof d.tome === 'object') Object.keys(d.tome).slice(0, 500).forEach(function (k) {
+            if (!/^[a-z0-9-]{1,100}$/.test(k) || !d.tome[k] || typeof d.tome[k] !== 'object') return;
+            Object.keys(d.tome[k]).slice(0, 2000).forEach(function (n) { if (/^\d{1,4}$/.test(n) && TM[d.tome[k][n]] && !(tm[k] && tm[k][n])) { (tm[k] = tm[k] || {})[n] = d.tome[k][n]; } });
+          });
+          saveTm();
           save(); saveA(); saveSt(); paint(); paintA(); paintOwn(); render();
           var m = document.getElementById('ajout-msg');
           if (m) m.textContent = 'Sauvegarde importée : ' + ns + ' série(s), ' + na + ' anime(s), ' + nt + ' tome(s) ajouté(s). Rien n’a été supprimé.';

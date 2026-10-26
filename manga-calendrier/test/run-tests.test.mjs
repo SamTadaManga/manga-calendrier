@@ -745,3 +745,18 @@ test('fiche série : séries proches (auteur/genres) et articles qui la citent',
   assert.doesNotMatch(a, /href="\/serie\/serie-fictive-gamma\//);
   assert.doesNotMatch(readFileSync(path.join(out, 'serie/serie-fictive-gamma/index.html'), 'utf8'), /Si tu aimes/);
 });
+
+test('statuts par tome : sélecteur dans le calendrier et sur la fiche série, script de gestion publié', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'tst-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  assert.match(readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8'), /<select class="tst"[^>]*>.*Précommandé/);
+  assert.match(readFileSync(path.join(out, 'manga/index.html'), 'utf8'), /<select class="tst"/);
+  const js = readFileSync(path.join(ROOT, 'scripts/suivi.js'), 'utf8');
+  assert.match(js, /mc-tome/);
+});
