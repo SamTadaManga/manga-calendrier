@@ -568,3 +568,6 @@ details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:80
 .tools{min-width:84px;min-height:38px;justify-content:flex-end}
 .filters[hidden],.views[hidden]{display:flex;visibility:hidden}
 .meta a{display:inline-block;padding:2px 0;min-height:24px;line-height:20px}
+
+.related{list-style:none;padding:0;margin:0 0 1rem;display:grid;gap:.4rem}
+.related li{padding:.35rem 0;border-bottom:1px solid var(--line,#ddd)}
