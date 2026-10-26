@@ -1123,8 +1123,8 @@ page('/recherche/', {
 /* ----------------------------------------------------------------- articles */
 {
   const SECTIONS = [
-    ['hebdo', 'Les rendez-vous de la semaine', 'Un récapitulatif chaque lundi : sorties manga et épisodes d\'anime des sept prochains jours.', 8],
     ['mensuel', 'Les sorties du mois', 'Tous les tomes annoncés pour le mois, par date.', 6],
+    ['hebdo', 'Les rendez-vous de la semaine', 'Un récapitulatif chaque lundi : sorties manga et épisodes d\'anime des sept prochains jours.', 8],
     ['quotidien', 'Le programme du jour', 'Publié chaque matin : ce qui sort aujourd\'hui en manga et en anime.', 10],
     ['changements', 'Changements de dates', 'Reports, avancées, annonces et retraits relevés dans les plannings des éditeurs.', 6],
     ['redac', 'Dossiers et actualités', '', 20],

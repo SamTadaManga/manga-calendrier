@@ -611,7 +611,7 @@ test('page des articles : séparation quotidien / hebdomadaire', () => {
   execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
   const h = readFileSync(path.join(out, 'articles/index.html'), 'utf8');
   assert.match(h, /id="t-hebdo"/); assert.match(h, /id="t-quotidien"/); assert.match(h, /id="t-mensuel"/);
-  assert.ok(h.indexOf('t-hebdo') < h.indexOf('id="t-quotidien"'));
+  assert.ok(h.indexOf('id="t-mensuel"') < h.indexOf('id="t-hebdo"') && h.indexOf('id="t-hebdo"') < h.indexOf('id="t-quotidien"'));
 });
 
 test('phase 2 : pages /semaine/ et /recherche/, moteur de résultats copié', () => {
