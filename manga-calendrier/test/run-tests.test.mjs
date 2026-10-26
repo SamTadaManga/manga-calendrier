@@ -116,7 +116,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(anime.episodes.every((e) => e.title && typeof e.airingAt === 'number'));
 
   const adaptJson = JSON.parse(read(dirs.DATA_DIR, 'adaptations.json'));
-  assert.deepEqual(adaptJson.series['serie-fictive-alpha'].i, { au: ['Auteur Test'], g: ['Action', 'Sci-Fi'], st: 'RELEASING', y: 2019 }, 'fiche auteur, genres, état');
+  assert.deepEqual(adaptJson.series['serie-fictive-alpha'].i, { au: ['Auteur Test'], sc: ['Auteur Test'], ar: ['Auteur Test'], g: ['Action', 'Sci-Fi'], st: 'RELEASING', y: 2019, v: 2 }, 'fiche auteur, genres, état');
   run('daily-articles.mjs');
   const animeMd = read(dirs.AUTO_DIR, 'anime-2026-10-12.md');
   assert.ok(animeMd.includes('02 h 30') && animeMd.includes('17 h 00') && animeMd.includes('23 h 30'));
@@ -729,7 +729,7 @@ test('fiche série : séries proches (auteur/genres) et articles qui la citent',
   cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
   const i = (au, g) => ({ a: [], i: { au, g, st: 'RELEASING', y: 2020 } });
   writeFileSync(path.join(data, 'adaptations.json'), JSON.stringify({ series: {
-    'serie-fictive-alpha': i(['Auteur Un'], ['Action', 'Fantasy']),
+    'serie-fictive-alpha': { ...i(['Auteur Un', 'Dessinateur Deux'], ['Action', 'Fantasy']), i: { au: ['Auteur Un', 'Dessinateur Deux'], sc: ['Auteur Un'], ar: ['Dessinateur Deux'], g: ['Action', 'Fantasy'], st: 'RELEASING', y: 2020, v: 2 } },
     'serie-fictive-beta': i(['Auteur Un'], ['Drama']),
     'serie-fictive-gamma': i(['Autre'], ['Romance']),
   } }));
@@ -741,6 +741,7 @@ test('fiche série : séries proches (auteur/genres) et articles qui la citent',
   execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
   const a = readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8');
   assert.match(a, /Si tu aimes/); assert.match(a, /class="carousel"/); assert.match(a, /href="\/serie\/serie-fictive-beta\/"/);
+  assert.match(a, /<dt>Scénario<\/dt><dd>Auteur Un<\/dd>/); assert.match(a, /<dt>Dessin<\/dt><dd>Dessinateur Deux<\/dd>/);
   assert.match(a, /À lire aussi/); assert.match(a, /Focus sur Série Fictive Alpha/);
   assert.doesNotMatch(a, /href="\/serie\/serie-fictive-gamma\//);
   assert.doesNotMatch(readFileSync(path.join(out, 'serie/serie-fictive-gamma/index.html'), 'utf8'), /Si tu aimes/);

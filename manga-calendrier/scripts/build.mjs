@@ -57,7 +57,11 @@ const infoBox = (name) => {
   const i = infoOf(name);
   if (!i) return '';
   const rows = [
-    i.au?.length ? ['Auteur' + (i.au.length > 1 ? 's' : ''), i.au.join(', ')] : null,
+    ...(() => {
+      const sc = i.sc || [], ar = i.ar || [];
+      if (sc.length && ar.length && sc.join('|') !== ar.join('|')) return [['Scénario', sc.join(', ')], ['Dessin', ar.join(', ')]];
+      return i.au?.length ? [['Auteur' + (i.au.length > 1 ? 's' : ''), i.au.join(', ')]] : [];
+    })(),
     i.g?.length ? ['Genres', i.g.map((x) => (genreOk(x) ? `<a href="/genre/${genreSlug(x)}/">${esc(GENRE_FR[x] || x)}</a>` : esc(GENRE_FR[x] || x))).join(', '), true] : null,
     i.st && PUB_ST[i.st] ? ['Publication au Japon', PUB_ST[i.st] + (i.y ? ` (depuis ${i.y})` : '')] : (i.y ? ['Début de la série', String(i.y)] : null),
   ].filter(Boolean);
