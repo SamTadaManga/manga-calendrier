@@ -682,3 +682,19 @@ test('visuels à partager : page et script publiés, lien dans le pied de page',
   assert.ok(existsSync(path.join(out, 'partager/index.html')) && existsSync(path.join(out, 'partager.js')));
   assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /href="\/partager\/"/);
 });
+
+test('pages éditeurs : index, page par éditeur, lien depuis la fiche série et sitemap', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'ed-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  assert.match(readFileSync(path.join(out, 'editeurs/index.html'), 'utf8'), /href="\/editeur\/glenat\/"/);
+  const g = readFileSync(path.join(out, 'editeur/glenat/index.html'), 'utf8');
+  assert.match(g, /Glénat : sorties manga/); assert.match(g, /BreadcrumbList/);
+  assert.match(readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8'), /href="\/editeur\/glenat\/"/);
+  assert.match(readFileSync(path.join(out, 'sitemap.xml'), 'utf8'), /\/editeur\/glenat\//);
+});

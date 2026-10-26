@@ -158,7 +158,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
@@ -650,7 +650,7 @@ ${animeBox}
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
-<p class="more"><a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
+<p class="more">${S.editeur && slugify(S.editeur) ? `<a href="/editeur/${slugify(S.editeur)}/">Autres sorties ${esc(S.editeur)}</a> · ` : ''}<a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
   }
   const letters = [...new Set(seriesList.map((S) => (slugify(S.name)[0] || '#').toUpperCase()))].sort();
@@ -668,6 +668,41 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
 ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série"></div>
 <p class="empty" id="aucun" hidden>Aucune série ne correspond.</p>${az}${FILTER_JS}` : '<p class="empty">Les séries apparaîtront après la première collecte.</p>'}`,
   });
+  /* ------------------------------------------------------------- pages éditeurs */
+  {
+    const pubMap = new Map();
+    for (const r of manga) if (r.editeur && r.statut !== 'annule') { if (!pubMap.has(r.editeur)) pubMap.set(r.editeur, []); pubMap.get(r.editeur).push(r); }
+    const pubs = [...pubMap].map(([name, rows]) => ({ name, k: slugify(name), rows: rows.sort((a, c) => a.date.localeCompare(c.date)) }))
+      .filter((p) => p.k).sort((a, c) => c.rows.filter((r) => r.date >= today).length - a.rows.filter((r) => r.date >= today).length || a.name.localeCompare(c.name, 'fr'));
+    for (const p of pubs) {
+      const up = p.rows.filter((r) => r.date >= today);
+      const fresh = up.filter(isFirstVolume);
+      const mine = seriesList.filter((S) => S.editeur === p.name);
+      const nextDay = up[0] ? frDate(up[0].date) : '';
+      const ld = siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
+        { '@type': 'ListItem', position: 2, name: 'Éditeurs', item: `${base}/editeurs/` },
+        { '@type': 'ListItem', position: 3, name: p.name, item: `${base}/editeur/${p.k}/` }] }).replace(/</g, '\\u003c')}</script>` : '';
+      page(`/editeur/${p.k}/`, {
+        title: `${p.name} : sorties manga et prochains tomes`,
+        description: `${plural(up.length, 'sortie à venir', 'sorties à venir')} chez ${p.name}${nextDay ? `, la prochaine le ${nextDay}` : ''}. Calendrier, nouvelles séries et liste des séries publiées.`,
+        extraHead: ld,
+        body: `<h1>${esc(p.name)} : sorties manga</h1>
+<p class="lead">${up.length ? `${esc(plural(up.length, 'sortie annoncée', 'sorties annoncées'))} chez ${esc(p.name)}, la prochaine le <strong>${esc(nextDay)}</strong>.` : `Aucune sortie n'est annoncée pour le moment chez ${esc(p.name)} dans nos plannings.`} Les dates viennent des plannings officiels et peuvent changer.</p>
+${fresh.length ? `<h2>Nouvelles séries</h2><ul class="list panel">${fresh.slice(0, 12).map((r) => releaseItem(r, true)).join('')}</ul>` : ''}
+${up.length ? `<h2>Prochaines sorties</h2><ul class="list panel">${up.slice(0, 40).map((r) => releaseItem(r, true)).join('')}</ul>${up.length > 40 ? `<p class="more muted">${up.length - 40} autres sorties : voir le <a href="/manga/">calendrier complet</a>.</p>` : ''}` : ''}
+${mine.length ? `<h2>Séries ${esc(p.name)} sur le site</h2><ul class="chiprow">${mine.map((S) => `<li><a class="chip" href="/serie/${S.k}/">${esc(S.name)}</a></li>`).join('')}</ul>` : ''}
+<p class="more">${p.k in PUBS ? `<a href="/agenda/${p.k}.ics">Ajouter les sorties ${esc(p.name)} à mon agenda</a> · ` : ''}<a href="/editeurs/">Tous les éditeurs</a> · <a href="/manga/">Calendrier manga</a></p>`,
+      });
+    }
+    page('/editeurs/', {
+      title: 'Éditeurs de manga : calendriers des sorties',
+      description: `Les sorties manga de ${pubs.length} éditeurs français : Glénat, Kana, Pika, Ki-oon, Akata et d'autres.`,
+      body: `<h1>Éditeurs de manga</h1><p class="lead">Le calendrier des sorties de chaque éditeur.</p><ul class="sgrid">${pubs.map((p) => `<li class="scard p-${pubKey(p.name)}"><a class="scard-link" href="/editeur/${p.k}/"><strong>${esc(p.name)}</strong><span class="muted">${esc(plural(p.rows.filter((r) => r.date >= today).length, 'sortie à venir', 'sorties à venir'))}</span></a></li>`).join('')}</ul>`,
+    });
+    SEO_URLS.push('/editeurs/', ...pubs.map((p) => `/editeur/${p.k}/`));
+  }
+
   SEO_URLS.push('/sorties-manga/', '/series/', ...months.map((mk) => `/sorties-manga/${monthSlug(mk)}/`), ...seriesList.map((S) => `/serie/${S.k}/`));
 }
 
