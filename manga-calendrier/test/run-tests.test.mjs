@@ -832,3 +832,18 @@ test('sélections éditoriales : pages de genres (≥3 séries), liens depuis la
   assert.match(readFileSync(path.join(out, 'genres/index.html'), 'utf8'), /href="\/genre\/action\/"/);
   assert.match(readFileSync(path.join(out, 'sitemap.xml'), 'utf8'), /\/genre\/action\//);
 });
+
+test('accueil : tuiles de jours cliquables vers /semaine/, blocs du jour en carrousel avec les couvertures', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'home-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr', showCovers: true }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const h = readFileSync(path.join(out, 'index.html'), 'utf8');
+  assert.match(h, /class="d-link" href="\/semaine\/#j-2026-10-12"/);
+  assert.match(h, /class="two stack"/);
+  assert.match(h, /<ul class="hscroll"/);
+});

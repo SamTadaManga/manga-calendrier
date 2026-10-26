@@ -602,3 +602,24 @@ ul.hist li{padding:.35rem 0;border-bottom:1px solid var(--line)}
   .rel-main>.rel-title,.rel>.rel-main .rel-title{padding-right:0}
   .rel:has(.rel-acts) .rel-title{padding-right:300px}
 }
+
+/* Accueil : tuiles de jours cliquables, blocs « du jour » en carrousel */
+.d-link{color:inherit;text-decoration:none;display:flex;flex-direction:column}
+.d-link::after{content:"";position:absolute;inset:0;z-index:0} /* toute la tuile devient cliquable */
+.day-panel{position:relative}
+a.d-line{position:relative;z-index:1}
+.day-panel:hover{box-shadow:4px 4px 0 var(--shadow)}
+.d-link:focus-visible::after{outline:3px solid var(--brand);outline-offset:-3px}
+.two.stack{display:block}
+.two.stack>div+div{margin-top:1.5rem}
+ul.hscroll{list-style:none;margin:0;padding:0 6px 12px 0;display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+ul.hscroll:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+ul.hscroll>li{flex:0 0 140px;scroll-snap-align:start;min-width:0}
+@media(min-width:760px){ul.hscroll>li{flex-basis:155px}}
+ul.hscroll .tile-cover{display:block}
+ul.hscroll .cover{aspect-ratio:2/3;width:100%;box-shadow:4px 4px 0 var(--shadow)}
+ul.hscroll .tile-body{display:flex;flex-direction:column;gap:4px;margin-top:8px;font-size:.9rem}
+ul.hscroll .t-title strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+ul.hscroll .t-shops{margin-top:2px}
+ul.hscroll .tile-body>*{align-self:flex-start;margin-left:0;margin-right:0}
+ul.hscroll .tile-body .follow,ul.hscroll .tile-body .afollow{margin-top:4px}
