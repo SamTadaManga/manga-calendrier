@@ -623,3 +623,12 @@ ul.hscroll .t-title strong{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-
 ul.hscroll .t-shops{margin-top:2px}
 ul.hscroll .tile-body>*{align-self:flex-start;margin-left:0;margin-right:0}
 ul.hscroll .tile-body .follow,ul.hscroll .tile-body .afollow{margin-top:4px}
+
+/* Accueil : raccourcis et sélections */
+.quick{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0 0;padding:0}
+.chiprow{display:flex;flex-wrap:wrap;gap:8px}
+@media(max-width:900px){
+  .hbar nav{flex:1 0 100%;order:3;display:flex;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px 2px}
+  .hbar nav::-webkit-scrollbar{display:none}
+  .hbar nav a{flex:0 0 auto}
+}

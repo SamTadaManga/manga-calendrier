@@ -83,7 +83,9 @@ const write = (rel, content) => {
 
 /* ----------------------------------------------------------------- layout */
 const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
-const NAV = [['/', 'Accueil'], ['/manga/', 'Manga'], ['/anime/', 'Anime'], ['/series/', 'Séries'], ['/articles/', 'Articles'], ['/mon-planning/', 'Mon planning'], ['/mes-animes/', 'Mes animes'], ['/changements/', 'Changements']];
+const NAV = [['/', 'Accueil'], ['/manga/', 'Sorties manga'], ['/anime/', 'Calendrier anime'], ['/series/', 'Séries'], ['/mon-planning/', 'Ma collection'], ['/articles/', 'Actualités'], ['/recherche/', 'Recherche']];
+// pages rattachées à une entrée du menu (pour la mettre en évidence)
+const NAV_ALIAS = { '/mes-animes/': '/anime/', '/changements/': '/articles/', '/genre/': '/series/', '/genres/': '/series/', '/series-terminees/': '/series/', '/serie/': '/series/', '/editeur/': '/manga/', '/editeurs/': '/manga/', '/sorties-manga/': '/manga/', '/semaine/': '/manga/' };
 const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 const reportEmail = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(config.legal?.contactEmail || '') ? config.legal.contactEmail : '';
@@ -121,7 +123,8 @@ function layout({ title, description, pathname, body, noindex = false, extraHead
   const fullTitle = pathname === '/' ? (`${config.siteName} : ${config.tagline}`.length <= 65 ? `${config.siteName} : ${config.tagline}` : `${config.siteName} : sorties manga en France et épisodes d'anime`) : (`${title} | ${config.siteName}`.length <= 62 ? `${title} | ${config.siteName}` : title);
   const canonical = siteUrlOk ? `${base}${pathname}` : '';
   const nav = NAV.map(([href, label]) => {
-    const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
+    const alias = Object.entries(NAV_ALIAS).find(([k]) => pathname.startsWith(k));
+    const active = href === '/' ? pathname === '/' : (pathname.startsWith(href) || (alias && alias[1] === href));
     return `<a href="${href}"${active ? ' aria-current="page"' : ''}>${label}</a>`;
   }).join('');
   return `<!doctype html>
@@ -165,7 +168,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/genres/">Genres</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a><a href="/changements/">Changements</a><a href="/mes-animes/">Mes animes</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/genres/">Genres</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
@@ -404,14 +407,13 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   }).join('');
   const body = `
 <section class="week" aria-labelledby="t-week">
-<div class="week-head"><h1 id="t-week">Les sorties de la semaine</h1>
+<div class="week-head"><h1 id="t-week">Sorties manga et anime, jour par jour</h1>
 <p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon et Akata. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
-<form class="home-search" action="/recherche/" method="get" role="search"><input type="search" name="q" placeholder="Chercher une série, un anime, un article" aria-label="Chercher sur le site" autocomplete="off"><button class="btn" type="submit">Chercher</button></form>
+<form class="home-search" action="/recherche/" method="get" role="search"><input type="search" name="q" placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"><button class="btn" type="submit">Chercher</button></form>
+<p class="quick"><a class="chip" href="/manga/">Calendrier manga</a><a class="chip" href="/anime/">Calendrier anime</a><a class="chip" href="/series/">Toutes les séries</a><a class="chip" href="/mon-planning/">Ma collection</a><a class="chip" href="/changements/">Changements de dates</a></p>
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
 <section class="pour-toi" id="pour-toi" aria-labelledby="t-pt" hidden><h2 id="t-pt">Pour toi cette semaine</h2><div id="pt-body"></div></section>
 <div class="since panel" id="since" hidden></div>
-<ul class="strip">${strip}</ul>
-<p class="more"><a href="/semaine/">Voir la semaine en détail</a></p>
 </section>
 <section class="two stack" aria-label="Aujourd'hui">
 <div>
@@ -429,10 +431,21 @@ ${todayEps.length
       : `<p class="empty">Le programme anime n'est pas disponible pour le moment${anime.generatedAt ? ` (dernière mise à jour réussie : ${esc(agoFr(anime.generatedAt))})` : ''}. Il revient automatiquement dès que la source répond. <a href="/etat/">État des données</a></p>`)}${todayEps.length && ANIME_STALE ? `<p class="muted more">Programme non actualisé depuis ${esc(agoFr(anime.generatedAt))}. <a href="/etat/">Détails</a></p>` : ''}
 </div>
 </section>
+<section aria-labelledby="t-days">
+<h2 id="t-days">Les sorties de la semaine</h2>
+<ul class="strip">${strip}</ul>
+<p class="more"><a href="/semaine/">Voir la semaine en détail</a></p>
+</section>
 ${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2>${shelf.length >= 6 ? `<ul class="shelf">${shelf.map(tile).join('')}</ul>` : `<ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
-${newShelf.length ? `<section><h2>Nouvelles séries à découvrir</h2>${showCovers ? `<ul class="shelf">${newShelf.map(tile).join('')}</ul>` : `<ul class="list panel">${newShelf.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/nouveautes/">Toutes les nouveautés</a></p></section>` : ''}
-${NL.on ? `<section class="nl-home panel"><h2>La newsletter du lundi</h2><p>Les sorties de la semaine dans ta boîte mail : manga, premiers épisodes d'anime, dates qui bougent.</p>${nlForm('nl-home')}</section>` : ''}
 ${recent.length ? `<section><h2>Derniers changements de date</h2><ul class="list panel">${recent.map(changeItem).join('')}</ul><p class="more"><a href="/changements/">Tous les changements</a></p></section>` : ''}
+${newShelf.length ? `<section><h2>Nouvelles séries à découvrir</h2>${showCovers ? `<ul class="shelf">${newShelf.map(tile).join('')}</ul>` : `<ul class="list panel">${newShelf.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/nouveautes/">Toutes les nouveautés</a></p></section>` : ''}
+${(() => {
+    const gs = [...GENRE_COUNT.keys()].filter(genreOk).sort((a, b) => GENRE_COUNT.get(b) - GENRE_COUNT.get(a)).slice(0, 8);
+    const guides = articles.filter((a) => a.kind === 'redac').slice(0, 3);
+    if (!gs.length && !guides.length) return '';
+    return `<section class="selections"><h2>Sélections et recommandations</h2>${gs.length ? `<p class="chiprow">${gs.map((g) => `<a class="chip" href="/genre/${genreSlug(g)}/">${esc(GENRE_FR[g])} <span class="n">${GENRE_COUNT.get(g)}</span></a>`).join('')}<a class="chip" href="/series-terminees/">À lire d'une traite</a><a class="chip" href="/genres/">Tous les genres</a></p>` : ''}${guides.length ? `<ul class="articles">${guides.map(articleItem).join('')}</ul>` : ''}</section>`;
+  })()}
+${NL.on ? `<section class="nl-home panel"><h2>La newsletter du lundi</h2><p>Les sorties de la semaine dans ta boîte mail : manga, premiers épisodes d'anime, dates qui bougent.</p>${nlForm('nl-home')}</section>` : ''}
 <section>
 <h2>Derniers articles</h2>
 ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p class="more"><a href="/articles/">Tous les articles</a></p>` : '<p class="empty">Les premiers articles arrivent bientôt.</p>'}

@@ -847,3 +847,23 @@ test('accueil : tuiles de jours cliquables vers /semaine/, blocs du jour en carr
   assert.match(h, /class="two stack"/);
   assert.match(h, /<ul class="hscroll"/);
 });
+
+test('accueil et navigation : menu demandé, ordre des blocs, raccourcis et sélections', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'nav-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const h = readFileSync(path.join(out, 'index.html'), 'utf8');
+  const nav = h.match(/<nav aria-label="Navigation principale">(.*?)<\/nav>/s)[1];
+  const labels = [...nav.matchAll(/>([^<]+)<\/a>/g)].map((m) => m[1]);
+  assert.deepEqual(labels, ['Accueil', 'Sorties manga', 'Calendrier anime', 'Séries', 'Ma collection', 'Actualités', 'Recherche']);
+  const pos = (t) => h.indexOf(t);
+  assert.ok(pos('role="search"') < pos('Anime du jour') && pos('Anime du jour') < pos('id="t-days"') && pos('id="t-days"') < pos('Derniers articles'));
+  assert.match(h, /class="quick"/);
+  // une fiche série met « Séries » en évidence
+  assert.match(readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8'), /href="\/series\/" aria-current="page"/);
+});
