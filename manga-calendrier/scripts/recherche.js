@@ -84,7 +84,7 @@
     input.value = typeof initial === 'string' ? initial : ''; render(); load(); input.focus();
   }
   window.mcSearchOpen = open;
-  function close() { if (!box) return; box.hidden = true; document.body.classList.remove('srch-open'); if (lastFocus && lastFocus.focus && !(lastFocus.closest && lastFocus.closest('.home-search'))) lastFocus.focus(); }
+  function close() { if (!box) return; box.hidden = true; document.body.classList.remove('srch-open'); if (lastFocus && lastFocus.focus && !(lastFocus.closest && lastFocus.closest('.home-search')) && !(lastFocus.hasAttribute && lastFocus.hasAttribute('data-gs'))) lastFocus.focus(); }
 
   function init() {
     var bar = document.querySelector('.site-header .tools');
@@ -94,11 +94,11 @@
       btn.addEventListener('click', open); bar.appendChild(btn);
     }
     // la barre de recherche de l'accueil ouvre la même recherche (suggestions, aperçu) que la loupe du bandeau
-    var hq = document.querySelector('.home-search input[type=search]');
-    if (hq) {
+    // (accueil, calendrier manga, calendrier anime)
+    [].forEach.call(document.querySelectorAll('.home-search input[type=search], input[type=search][data-gs]'), function (hq) {
       var go = function () { if (!box || box.hidden) open(hq.value); };
       hq.addEventListener('focus', go); hq.addEventListener('click', go);
-    }
+    });
     document.addEventListener('keydown', function (e) {
       if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
         var t = e.target, tag = t && t.tagName;
