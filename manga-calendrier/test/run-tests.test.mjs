@@ -778,3 +778,24 @@ test('fiche série : date estimée/confirmée et historique des changements de d
   assert.match(a, /Date (estimée|confirmée)/);
   assert.match(readFileSync(path.join(out, 'serie/serie-fictive-beta/index.html'), 'utf8'), /Aucun changement de date/);
 });
+
+test('sélections éditoriales : pages de genres (≥3 séries), liens depuis la fiche série, séries terminées', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'gen-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const i = (g, st) => ({ a: [], i: { au: [], g, st, y: 2020 } });
+  writeFileSync(path.join(data, 'adaptations.json'), JSON.stringify({ series: {
+    'serie-fictive-alpha': i(['Action', 'Drama'], 'FINISHED'), 'serie-fictive-beta': i(['Action'], 'RELEASING'), 'serie-fictive-gamma': i(['Action', 'Romance'], 'RELEASING'),
+  } }));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const g = readFileSync(path.join(out, 'genre/action/index.html'), 'utf8');
+  assert.match(g, /<h1>Mangas action<\/h1>/); assert.match(g, /3 séries action/); assert.match(g, /BreadcrumbList/);
+  assert.equal(existsSync(path.join(out, 'genre/drame')), false); // 1 seule série : pas de page
+  assert.match(readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8'), /href="\/genre\/action\/"/);
+  assert.match(readFileSync(path.join(out, 'genres/index.html'), 'utf8'), /href="\/genre\/action\/"/);
+  assert.match(readFileSync(path.join(out, 'sitemap.xml'), 'utf8'), /\/genre\/action\//);
+});

@@ -50,15 +50,18 @@ const ADAPT_ST = { RELEASING: 'en cours de diffusion', NOT_YET_RELEASED: 'à ven
 const infoOf = (name) => adaptations[slugify(name)]?.i || null;
 const GENRE_FR = { Action: 'Action', Adventure: 'Aventure', Comedy: 'Comédie', Drama: 'Drame', Ecchi: 'Ecchi', Fantasy: 'Fantasy', Horror: 'Horreur', 'Mahou Shoujo': 'Magical girl', Mecha: 'Mecha', Music: 'Musique', Mystery: 'Mystère', Psychological: 'Psychologique', Romance: 'Romance', 'Sci-Fi': 'Science-fiction', 'Slice of Life': 'Tranche de vie', Sports: 'Sport', Supernatural: 'Surnaturel', Thriller: 'Thriller' };
 const PUB_ST = { RELEASING: 'En cours de publication', FINISHED: 'Terminée', HIATUS: 'En pause', CANCELLED: 'Arrêtée', NOT_YET_RELEASED: 'À venir' };
+const genreSlug = (g) => slugify(GENRE_FR[g] || g);
+const GENRE_COUNT = (() => { const m = new Map(); for (const [k, v] of Object.entries(adaptations)) if (mangaSlugs.has(k) && Array.isArray(v?.i?.g)) for (const g of v.i.g) m.set(g, (m.get(g) || 0) + 1); return m; })();
+const genreOk = (g) => Boolean(GENRE_FR[g]) && (GENRE_COUNT.get(g) || 0) >= 3; // une page de genre n'existe qu'à partir de 3 séries
 const infoBox = (name) => {
   const i = infoOf(name);
   if (!i) return '';
   const rows = [
     i.au?.length ? ['Auteur' + (i.au.length > 1 ? 's' : ''), i.au.join(', ')] : null,
-    i.g?.length ? ['Genres', i.g.map((x) => GENRE_FR[x] || x).join(', ')] : null,
+    i.g?.length ? ['Genres', i.g.map((x) => (genreOk(x) ? `<a href="/genre/${genreSlug(x)}/">${esc(GENRE_FR[x] || x)}</a>` : esc(GENRE_FR[x] || x))).join(', '), true] : null,
     i.st && PUB_ST[i.st] ? ['Publication au Japon', PUB_ST[i.st] + (i.y ? ` (depuis ${i.y})` : '')] : (i.y ? ['Début de la série', String(i.y)] : null),
   ].filter(Boolean);
-  return rows.length ? `<dl class="facts">${rows.map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('')}</dl><p class="muted facts-src">Données : <a href="https://anilist.co" rel="noopener nofollow">AniList</a></p>` : '';
+  return rows.length ? `<dl class="facts">${rows.map(([k, v, raw]) => `<div><dt>${esc(k)}</dt><dd>${raw ? v : esc(v)}</dd></div>`).join('')}</dl><p class="muted facts-src">Données : <a href="https://anilist.co" rel="noopener nofollow">AniList</a></p>` : '';
 };
 const adaptOf = (name) => (Array.isArray(adaptations[slugify(name)]?.a) ? adaptations[slugify(name)].a : []);
 const eps = anime.episodes
@@ -162,7 +165,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/genres/">Genres</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
@@ -711,6 +714,50 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
 ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série"></div>
 <p class="empty" id="aucun" hidden>Aucune série ne correspond.</p>${az}${FILTER_JS}` : '<p class="empty">Les séries apparaîtront après la première collecte.</p>'}`,
   });
+  /* ------------------------------------------------------------- pages de genres et sélection « séries terminées » (sélections éditoriales construites à partir des données AniList) */
+  {
+    const infoGenres = (S) => (infoOf(S.name) || {}).g || [];
+    const genres = [...GENRE_COUNT.keys()].filter(genreOk).sort((a, b) => GENRE_COUNT.get(b) - GENRE_COUNT.get(a) || genreSlug(a).localeCompare(genreSlug(b)));
+    const cards = (list) => `<ul class="sgrid">${list.map(card).join('')}</ul>`;
+    const chips = (cur) => `<p class="chiprow">${genres.filter((g) => g !== cur).map((g) => `<a class="chip" href="/genre/${genreSlug(g)}/">${esc(GENRE_FR[g])} <span class="n">${GENRE_COUNT.get(g)}</span></a>`).join('')}</p>`;
+    const nextOf = (list) => list.filter((S) => S.next).sort((a, b) => a.next.date.localeCompare(b.next.date)).slice(0, 5);
+    for (const g of genres) {
+      const list = seriesList.filter((S) => infoGenres(S).includes(g));
+      if (list.length < 3) continue;
+      const gl = GENRE_FR[g], gs = genreSlug(g);
+      const finished = list.filter((S) => (infoOf(S.name) || {}).st === 'FINISHED').length;
+      const ongoing = list.filter((S) => (infoOf(S.name) || {}).st === 'RELEASING').length;
+      const upc = nextOf(list);
+      const intro = `${esc(plural(list.length, 'série', 'séries'))} ${esc(gl.toLowerCase())} ${list.length > 1 ? 'sont suivies' : 'est suivie'} dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata${list.filter((S) => S.next).length ? `, dont ${list.filter((S) => S.next).length} avec un prochain tome déjà annoncé` : ''}.${ongoing || finished ? ` ${ongoing ? esc(plural(ongoing, 'série est encore publiée au Japon', 'séries sont encore publiées au Japon')) : ''}${ongoing && finished ? ', ' : ''}${finished ? esc(plural(finished, 'série est terminée', 'séries sont terminées')) + ' (idéal pour lire d\'une traite)' : ''}.` : ''}`;
+      const soon = upc.length ? `<h2>Prochaines sorties en ${esc(gl.toLowerCase())}</h2><ul class="related">${upc.map((S) => `<li><a href="/serie/${S.k}/">${esc(S.name)}</a><span class="muted"> · ${S.next.tome ? `tome ${esc(S.next.tome)} · ` : ''}${esc(frShort(S.next.date))} · ${esc(S.editeur || '')}</span></li>`).join('')}</ul>` : '';
+      const ld = siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` }, { '@type': 'ListItem', position: 2, name: 'Genres', item: `${base}/genres/` }, { '@type': 'ListItem', position: 3, name: gl, item: `${base}/genre/${gs}/` }] }).replace(/</g, '\\u003c')}</script>` : '';
+      page(`/genre/${gs}/`, {
+        extraHead: ld,
+        title: `Mangas ${gl.toLowerCase()} : séries et prochains tomes`,
+        description: `${plural(list.length, 'série', 'séries')} manga ${gl.toLowerCase()} publiées en France : date du prochain tome, éditeur et séries terminées à lire d'une traite.`,
+        body: `<h1>Mangas ${esc(gl.toLowerCase())}</h1><p class="lead">${intro}</p>${soon}<h2>Toutes les séries ${esc(gl.toLowerCase())}</h2>${cards(list)}<h2>Autres genres</h2>${chips(g)}<p class="muted facts-src">Genres : <a href="https://anilist.co" rel="noopener nofollow">AniList</a>. Les dates viennent des plannings officiels des éditeurs.</p><p class="more"><a href="/genres/">Tous les genres</a> · <a href="/series/">Toutes les séries</a></p>`,
+      });
+      SEO_URLS.push(`/genre/${gs}/`);
+    }
+    if (genres.length) {
+      page('/genres/', {
+        title: 'Genres de manga : séries et prochains tomes',
+        description: `Parcours les mangas par genre (${genres.slice(0, 4).map((g) => GENRE_FR[g].toLowerCase()).join(', ')}…) et retrouve la date du prochain tome de chaque série.`,
+        body: `<h1>Genres de manga</h1><p class="lead">Choisis un genre pour voir les séries correspondantes, leur éditeur et la date de leur prochain tome.</p><p class="chiprow">${genres.map((g) => `<a class="chip" href="/genre/${genreSlug(g)}/">${esc(GENRE_FR[g])} <span class="n">${GENRE_COUNT.get(g)}</span></a>`).join('')}</p><p class="more"><a href="/series-terminees/">Séries terminées à lire d'une traite</a> · <a href="/series/">Toutes les séries</a></p>`,
+      });
+      SEO_URLS.push('/genres/');
+    }
+    const done = seriesList.filter((S) => (infoOf(S.name) || {}).st === 'FINISHED');
+    if (done.length >= 5) {
+      page('/series-terminees/', {
+        title: 'Mangas terminés à lire d\'une traite',
+        description: `${plural(done.length, 'série', 'séries')} manga terminées au Japon et publiées en France : lance-toi sans attendre les sorties, avec la date des derniers tomes.`,
+        body: `<h1>Mangas terminés à lire d'une traite</h1><p class="lead">${esc(plural(done.length, 'série suivie est terminée', 'séries suivies sont terminées'))} au Japon. Leur histoire est complète : il ne reste, selon les cas, que quelques tomes à paraître en France. ${done.filter((S) => S.next).length ? `${esc(plural(done.filter((S) => S.next).length, 'série a encore un tome annoncé', 'séries ont encore un tome annoncé'))}.` : ''}</p>${cards(done)}<p class="muted facts-src">Statut de publication : <a href="https://anilist.co" rel="noopener nofollow">AniList</a>.</p><p class="more"><a href="/genres/">Parcourir par genre</a> · <a href="/series/">Toutes les séries</a></p>`,
+      });
+      SEO_URLS.push('/series-terminees/');
+    }
+  }
   /* ------------------------------------------------------------- pages éditeurs */
   {
     const pubMap = new Map();
