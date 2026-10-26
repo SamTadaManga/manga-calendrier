@@ -797,7 +797,8 @@ test('compteur de clics : liens marqués, script publié, Worker (enregistrement
   const kv = { get: async (k) => store.get(k) ?? null, put: async (k, v) => { store.set(k, v); }, list: async ({ prefix }) => ({ keys: [...store.keys()].filter((k) => k.startsWith(prefix)).map((name) => ({ name })), list_complete: true }) };
   const e = { CLICS: kv, STATS_KEY: 'secret-test-key' };
   const post = (body, headers = {}) => w.default.fetch(new Request('https://exemple.fr/api/clic', { method: 'POST', body: JSON.stringify(body), headers }), e);
-  assert.equal((await post({ sh: 'amazon', k: 'serie-fictive-alpha', p: 'serie' })).status, 204);
+  const r1 = await post({ sh: 'amazon', k: 'serie-fictive-alpha', p: 'serie' });
+  assert.equal(r1.status, 204); assert.equal(r1.headers.get('X-Clic'), 'ok');
   await post({ sh: 'amazon', k: 'serie-fictive-alpha', p: 'serie' });
   await post({ sh: 'fnac', k: 'serie-fictive-beta', p: 'manga' });
   await post({ sh: 'pirate', k: 'x', p: 'serie' });              // boutique inconnue

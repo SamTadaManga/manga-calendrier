@@ -67,13 +67,18 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     if (url.pathname === '/api/clic' && request.method === 'POST') {
+      // La réponse est toujours 204 (un compteur ne doit jamais gêner la navigation) ; l'en-tête X-Clic indique ce qui s'est passé : ok, ignore, nokv ou erreur
+      let etat = 'ignore';
       try {
         const origin = request.headers.get('Origin');
-        if (origin && new URL(origin).host !== url.host) return new Response(null, { status: 204 });
-        const text = await request.text();
-        if (text.length < 400 && env.CLICS) await record(env, JSON.parse(text));
-      } catch { /* un compteur ne doit jamais gêner la navigation */ }
-      return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store' } });
+        if (origin && new URL(origin).host !== url.host) etat = 'origine';
+        else if (!env.CLICS) etat = 'nokv';
+        else {
+          const text = await request.text();
+          etat = text.length < 400 && await record(env, JSON.parse(text)) ? 'ok' : 'invalide';
+        }
+      } catch (err) { etat = 'erreur'; console.error('clic', err && err.message); }
+      return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store', 'X-Clic': etat } });
     }
     if (url.pathname === '/api/clics' && request.method === 'GET') {
       if (!env.STATS_KEY || !env.CLICS || !sameSecret(url.searchParams.get('cle') || '', String(env.STATS_KEY))) return new Response('Introuvable', { status: 404 });
