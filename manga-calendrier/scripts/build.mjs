@@ -476,7 +476,7 @@ function apply(){var t=(q.value||'').toLowerCase().trim(),any=nAct(),shown=0;
 [].forEach.call(document.querySelectorAll('[data-q]'),function(li){var ok=okItem(li)&&(!t||li.dataset.q.indexOf(t)>-1);li.hidden=!ok;if(ok)shown++;});
 [].forEach.call(document.querySelectorAll('[data-group]'),function(g){g.hidden=![].some.call(g.querySelectorAll('[data-q]'),function(l){return !l.hidden;});});
 chips.forEach(function(c){var k=c.dataset.chip;c.setAttribute('aria-pressed',k==='tous'?String(!any):String(!!(act[at(c)]&&act[at(c)][k])));});
-if(none)none.hidden=shown>0;}
+if(none)none.hidden=shown>0;var fc=document.getElementById('fcount');if(fc){fc.textContent=any;fc.hidden=!any;}}
 chips.forEach(function(c){c.addEventListener('click',function(){var k=c.dataset.chip,a=at(c);if(k==='tous')act={};else{act[a]=act[a]||{};if(act[a][k])delete act[a][k];else act[a][k]=1;}apply();});});
 q.addEventListener('input',apply);
 var SK='mc-f:'+location.pathname;
@@ -585,7 +585,7 @@ var _ap2=apply;apply=function(){if(tpl&&((q.value||'').trim()||nAct())){loadMore
   const body = `
 <h1>Calendrier des sorties manga</h1>
 <p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.${mangaUpdatedIso ? ` <span class="muted">Mis à jour ${esc(agoFr(mangaUpdatedIso))}. <a href="/etat/">État des données</a></span>` : ''}</p>
-${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}${stChips ? `<span class="muted fsep">Statut :</span>${stChips}` : ''}${tyChips.split('data-chip').length > 2 ? `<span class="muted fsep">Type :</span>${tyChips}` : ''}</div>
+${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série"><details class="fdet" id="fdet"><summary>Filtres <span class="n" id="fcount" hidden></span></summary><div class="fpanel"><p class="fgrp"><span class="muted fsep">Éditeur</span>${chips}</p>${stChips ? `<p class="fgrp"><span class="muted fsep">Statut</span>${stChips}</p>` : ''}${tyChips.split('data-chip').length > 2 ? `<p class="fgrp"><span class="muted fsep">Type</span>${tyChips}</p>` : ''}</div></details></div>
 ${monthJump}
 <div class="views" id="vues" role="group" aria-label="Affichage" hidden><span class="muted">Affichage :</span>
 <button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button><button type="button" class="chip jump-today" id="auj">Aujourd'hui</button></div>
