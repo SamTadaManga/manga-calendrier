@@ -190,6 +190,9 @@ const altKey = (r) => `s:${slugify(r.serie)}|${r.tome}`;
 export function loadAllManga(dir) {
   const manual = loadManga(path.join(dir, 'manga.csv'));
   const auto = loadManga(path.join(dir, 'manga-auto.csv'));
+  // Complément Google Books : passe après toutes les autres sources (même ISBN ou même série/tome = ignoré)
+  const autoKeys = new Set(auto.flatMap((r) => (r.tome ? [keyOf(r), altKey(r)] : [keyOf(r)])));
+  auto.push(...loadManga(path.join(dir, 'manga-extra.csv')).filter((r) => ![keyOf(r), ...(r.tome ? [altKey(r)] : [])].some((k) => autoKeys.has(k))));
   const taken = new Set(manual.flatMap((r) => (r.tome ? [keyOf(r), altKey(r)] : [keyOf(r)])));
   const seen = new Set();
   const autoCover = new Map();
@@ -301,6 +304,15 @@ export function parseFrontmatter(text) {
 }
 
 // Articles : content/articles (rédigés) + content/auto (générés). Les fichiers commençant par _ sont ignorés.
+// Type d'un article, déduit du nom de fichier (les articles rédigés à la main sont « redac »)
+export function articleKind(slug, auto) {
+  if (!auto) return 'redac';
+  if (/^(manga|anime)-semaine-/.test(slug)) return 'hebdo';
+  if (/^manga-mois-/.test(slug)) return 'mensuel';
+  if (/^manga-changements-/.test(slug)) return 'changements';
+  return 'quotidien';
+}
+
 export function loadArticles(dirs, { includeDrafts = false } = {}) {
   const out = [];
   const seen = new Set();
@@ -315,7 +327,7 @@ export function loadArticles(dirs, { includeDrafts = false } = {}) {
       const slug = slugify(f.replace(/\.md$/, ''));
       if (!slug || seen.has(slug)) continue;
       seen.add(slug);
-      out.push({ slug, title: data.title, date, description: data.description || '', auto: String(data.auto).toLowerCase() === 'true', body });
+      out.push({ slug, title: data.title, date, description: data.description || '', auto: String(data.auto).toLowerCase() === 'true', kind: articleKind(slug, String(data.auto).toLowerCase() === 'true'), body });
     }
   }
   return out.sort((a, b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug));

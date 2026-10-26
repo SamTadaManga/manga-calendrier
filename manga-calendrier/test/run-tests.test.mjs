@@ -590,3 +590,20 @@ test('page /etat/ et message anime périmé', () => {
   try { execFileSync('node', [path.join(ROOT, 'scripts/check-status.mjs')], { env, stdio: 'pipe' }); } catch { failed = true; }
   assert.ok(failed);
 });
+
+test('page des articles : séparation quotidien / hebdomadaire', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'art-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const auto = path.join(tmp, 'auto'); mkdirSync(auto);
+  const fm = (t) => `---\ntitle: "${t}"\ndate: 2026-10-12\ndescription: "d"\nauto: true\ndraft: false\n---\n\nTexte\n`;
+  writeFileSync(path.join(auto, 'manga-2026-10-12.md'), fm('Jour'));
+  writeFileSync(path.join(auto, 'manga-semaine-2026-10-12.md'), fm('Semaine'));
+  writeFileSync(path.join(auto, 'manga-mois-2026-11.md'), fm('Mois'));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, ARTICLES_DIR: path.join(tmp, 'none'), AUTO_DIR: auto, NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const h = readFileSync(path.join(out, 'articles/index.html'), 'utf8');
+  assert.match(h, /id="t-hebdo"/); assert.match(h, /id="t-quotidien"/); assert.match(h, /id="t-mensuel"/);
+  assert.ok(h.indexOf('t-hebdo') < h.indexOf('id="t-quotidien"'));
+});

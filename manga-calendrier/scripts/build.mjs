@@ -320,8 +320,10 @@ function animeRow(e) {
     + `${chips ? `<div class="shops"><span class="shops-l">Regarder</span>${chips}</div>` : ''}</div></li>`;
 }
 
+const KIND_LABEL = { quotidien: 'Quotidien', hebdo: 'Hebdomadaire', mensuel: 'Mensuel', changements: 'Changements', redac: 'Rédaction' };
+const kindBadge = (a) => `<span class="kind k-${a.kind}">${KIND_LABEL[a.kind] || ''}</span>`;
 const articleItem = (a) =>
-  `<li><time class="muted" datetime="${a.date}">${esc(frShort(a.date))}</time><div><a href="/articles/${a.slug}/">${esc(a.title)}</a>${a.description ? `<p class="notes">${esc(a.description)}</p>` : ''}</div></li>`;
+  `<li><time class="muted" datetime="${a.date}">${esc(frShort(a.date))}</time><div>${kindBadge(a)} <a href="/articles/${a.slug}/">${esc(a.title)}</a>${a.description ? `<p class="notes">${esc(a.description)}</p>` : ''}</div></li>`;
 
 const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   .map((k) => `<i class="dot p-${k}" title="${esc(PUBS[k] || 'Autres éditeurs')}"></i>`).join('');
@@ -853,10 +855,20 @@ ${names.length ? `<h2>Sources</h2><div class="tbl-wrap"><table class="status-tab
 
 /* ----------------------------------------------------------------- articles */
 {
+  const SECTIONS = [
+    ['hebdo', 'Les rendez-vous de la semaine', 'Un récapitulatif chaque lundi : sorties manga et épisodes d\'anime des sept prochains jours.', 8],
+    ['mensuel', 'Les sorties du mois', 'Tous les tomes annoncés pour le mois, par date.', 6],
+    ['quotidien', 'Le programme du jour', 'Publié chaque matin : ce qui sort aujourd\'hui en manga et en anime.', 10],
+    ['changements', 'Changements de dates', 'Reports, avancées, annonces et retraits relevés dans les plannings des éditeurs.', 6],
+    ['redac', 'Dossiers et actualités', '', 20],
+  ];
+  const groups = SECTIONS.map(([k, t, d, n]) => ({ k, t, d, n, list: articles.filter((a) => a.kind === k) })).filter((g) => g.list.length);
+  const nav = groups.length > 1 ? `<nav class="kind-nav" aria-label="Types d'articles">${groups.map((g) => `<a href="#t-${g.k}">${esc(g.t)} <span class="badge">${g.list.length}</span></a>`).join('')}</nav>` : '';
+  const sectionHtml = groups.map((g) => `<section class="art-sec" id="t-${g.k}"><h2>${esc(g.t)}</h2>${g.d ? `<p class="muted">${esc(g.d)}</p>` : ''}<ul class="articles">${g.list.slice(0, g.n).map(articleItem).join('')}</ul>${g.list.length > g.n ? `<details class="older"><summary>Voir les ${g.list.length - g.n} plus anciens</summary><ul class="articles">${g.list.slice(g.n).map(articleItem).join('')}</ul></details>` : ''}</section>`).join('');
   page('/articles/', {
     title: 'Articles',
-    description: 'Les actualités et programmes du jour : sorties manga, épisodes d\'anime.',
-    body: `<h1>Articles</h1>${articles.length ? `<ul class="articles">${articles.map(articleItem).join('')}</ul>` : '<p class="empty">Aucun article pour le moment.</p>'}`,
+    description: 'Programme du jour, récapitulatifs de la semaine et du mois : sorties manga et épisodes d\'anime.',
+    body: `<h1>Articles</h1>${nav}${articles.length ? sectionHtml : '<p class="empty">Aucun article pour le moment.</p>'}`,
   });
   for (const a of articles) {
     const ld = JSON.stringify({
@@ -866,7 +878,7 @@ ${names.length ? `<h2>Sources</h2><div class="tbl-wrap"><table class="status-tab
     page(`/articles/${a.slug}/`, {
       title: a.title,
       description: a.description || a.title,
-      body: `<article class="post"><p class="muted"><time datetime="${a.date}">${esc(frDate(a.date))}</time></p><h1>${esc(a.title)}</h1>\n${markdown(a.body)}</article>\n<p class="more"><a href="/articles/">Tous les articles</a></p>`,
+      body: `<article class="post"><p class="muted">${kindBadge(a)} <time datetime="${a.date}">${esc(frDate(a.date))}</time></p><h1>${esc(a.title)}</h1>\n${markdown(a.body)}</article>\n<p class="more"><a href="/articles/">Tous les articles</a></p>`,
       extraHead: `<script type="application/ld+json">${ld}</script>`,
     });
   }
