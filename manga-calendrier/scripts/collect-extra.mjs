@@ -68,7 +68,8 @@ async function fetchText(url, fixtureName, { robots = true } = {}) {
   if (robots && !robotsAllows(await robotsOf(u.origin), u.pathname)) return { status: 0, text: '', blocked: true };
   await sleep(1800);
   const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: '*/*' }, redirect: 'follow' });
-  return { status: res.status, text: res.ok ? await res.text() : '' };
+  const body = await res.text().catch(() => '');
+  return { status: res.status, text: res.ok ? body : '', err: res.ok ? '' : body.replace(/\s+/g, ' ').slice(0, 200) };
 }
 
 /* ----------------------------------------------------------- piste 1 : Google Books */
@@ -108,13 +109,25 @@ for (const pub of PUBLISHERS) {
   let seenItems = 0;
   if (!quota) {
     try {
+      // plusieurs formulations de la requête : on garde la première qui renvoie des livres
+      const variants = [
+        (n) => `q=inpublisher:%22${encodeURIComponent(pub.query)}%22&orderBy=newest&printType=books&langRestrict=fr&maxResults=40&startIndex=${n * 40}`,
+        (n) => `q=inpublisher:%22${encodeURIComponent(pub.query)}%22&printType=books&maxResults=40&startIndex=${n * 40}`,
+        (n) => `q=inpublisher:${encodeURIComponent(pub.query.split(' ')[0])}&printType=books&maxResults=40&startIndex=${n * 40}`,
+      ];
+      let vi = 0;
       for (let page = 0; page < 3 && !quota; page++) {
-        const url = `https://www.googleapis.com/books/v1/volumes?q=inpublisher:%22${encodeURIComponent(pub.query)}%22&orderBy=newest&printType=books&langRestrict=fr&maxResults=40&startIndex=${page * 40}${KEY ? `&key=${encodeURIComponent(KEY)}` : ''}`;
-        const r = await fetchText(url, `google_${slug(pub.editeur)}_${page + 1}.json`, { robots: false });
-        if (r.status === 429 || r.status === 403) { quota = true; console.log(`Google Books : limite de requêtes atteinte (code ${r.status}), reprise à la prochaine exécution.`); break; }
-        if (r.status !== 200) { console.log(`${pub.editeur} : Google Books a répondu ${r.status}`); break; }
-        answered++;
-        const json = JSON.parse(r.text);
+        let json = null;
+        for (; vi < variants.length && !json; vi++) {
+          const url = `https://www.googleapis.com/books/v1/volumes?${variants[vi](page)}${KEY ? `&key=${encodeURIComponent(KEY)}` : ''}`;
+          const r = await fetchText(url, `google_${slug(pub.editeur)}_${page + 1}.json`, { robots: false });
+          if (r.status === 429) { quota = true; console.log(`Google Books : limite de requêtes atteinte (code ${r.status}), reprise à la prochaine exécution.`); break; }
+          if (r.status !== 200) { console.log(`${pub.editeur} : Google Books a répondu ${r.status} — ${r.err || 'sans détail'}`); if (r.status === 403 || r.status === 400) { quota = true; } break; }
+          answered++;
+          const j = JSON.parse(r.text);
+          if ((j.items || []).length || vi === variants.length - 1) { json = j; if (page === 0) console.log(`${pub.editeur} : requête n°${vi + 1}, ${j.totalItems ?? 0} résultat(s) annoncé(s), ${(j.items || []).length} reçu(s)`); break; }
+        }
+        if (!json) break;
         seenItems += (json.items || []).length;
         rows.push(...booksToRows(json, pub, { first: today, lastDay: last }, diagAll));
         if ((json.items || []).length < 40) break;
