@@ -11,6 +11,6 @@ Voici ce qui a bougé dans les plannings manga des éditeurs le samedi 17 octobr
 ## Retirés du planning
 
 - **RedFlower tome 3** (Glénat) : n'apparaît plus au planning de l'éditeur (était prévu le mer. 18 nov.) ([fiche éditeur](https://www.glenat.com/glenat-manga/redflower-tome-03-9782344053508/))
-  → [Page de la série](/serie/redflower/) · [Calendrier manga](/manga/)
+  → [Calendrier manga](/manga/)
 
 Les éditeurs peuvent corriger leurs dates à tout moment : la fiche de chaque tome fait foi.

@@ -213,7 +213,7 @@ if (weekdayOfKey(today) === 1) {
 {
   const evs = readChanges(path.join(P.dataDir, 'changes.json')).events.filter((e) => e.day === today);
   const name = (e) => `**${e.s}${e.t ? ` tome ${e.t}` : ''}** (${e.e})`;
-  const src = (e) => (/^https?:\/\//.test(e.u || '') ? ` ([fiche éditeur](${e.u}))` : '') + (slugify(e.s) ? `\n  → [Page de la série](/serie/${slugify(e.s)}/) · [Calendrier manga](/manga/)` : '');
+  const src = (e) => (/^https?:\/\//.test(e.u || '') ? ` ([fiche éditeur](${e.u}))` : '') + (slugify(e.s) && mangaSlugs.has(slugify(e.s)) ? `\n  → [Page de la série](/serie/${slugify(e.s)}/) · [Calendrier manga](/manga/)` : '');
   const groups = [
     ['Reportés', evs.filter((e) => e.type === 'date' && e.to > e.from), (e) => `- ${name(e)} : du ${frShort(e.from)} au ${frShort(e.to)}${src(e)}`],
     ['Avancés', evs.filter((e) => e.type === 'date' && e.to < e.from), (e) => `- ${name(e)} : du ${frShort(e.from)} au ${frShort(e.to)}${src(e)}`],
