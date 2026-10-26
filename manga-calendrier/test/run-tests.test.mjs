@@ -760,3 +760,21 @@ test('statuts par tome : sélecteur dans le calendrier et sur la fiche série, s
   const js = readFileSync(path.join(ROOT, 'scripts/suivi.js'), 'utf8');
   assert.match(js, /mc-tome/);
 });
+
+test('fiche série : date estimée/confirmée et historique des changements de date', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'hist-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  writeFileSync(path.join(data, 'changes.json'), JSON.stringify({ version: 1, since: '2026-10-01', updated: '2026-10-11', seen: {}, events: [
+    { day: '2026-10-10', type: 'date', k: 'x', e: 'Glénat', s: 'Série Fictive Alpha', t: '1', from: '2026-11-01', to: '2026-11-09' },
+  ] }));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const a = readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8');
+  assert.match(a, /Historique des dates \(1\)/); assert.match(a, /Reporté de 8 jours/);
+  assert.match(a, /Date (estimée|confirmée)/);
+  assert.match(readFileSync(path.join(out, 'serie/serie-fictive-beta/index.html'), 'utf8'), /Aucun changement de date/);
+});
