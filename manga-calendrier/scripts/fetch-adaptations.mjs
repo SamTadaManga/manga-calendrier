@@ -50,10 +50,13 @@ export function pickInfo(media, slug) {
   const m = (media || []).find((x) => namesOf(x).includes(slug));
   if (!m) return null;
   const au = [...new Set((m.staff?.edges || []).filter((e) => AUTHOR_ROLE.test(e?.role || '')).map((e) => String(e.node?.name?.full || '').trim()).filter(Boolean))].slice(0, 4);
+  // Rôles distincts : « Story & Art » = une seule personne qui écrit et dessine ; « Story » = scénario ; « Art » = dessin
+  const who = (re) => [...new Set((m.staff?.edges || []).filter((e) => re.test(e?.role || '')).map((e) => String(e.node?.name?.full || '').trim()).filter(Boolean))].slice(0, 3);
+  const both = who(/story\s*&\s*art/i), sc = [...new Set([...both, ...who(/^story$/i)])], ar = [...new Set([...both, ...who(/^art$/i)])];
   const g = (m.genres || []).map((x) => String(x)).filter((x) => /^[A-Za-z' -]{2,30}$/.test(x)).slice(0, 5);
   const st = ['RELEASING', 'FINISHED', 'HIATUS', 'CANCELLED', 'NOT_YET_RELEASED'].includes(m.status) ? m.status : '';
   const y = Number.isInteger(m.startDate?.year) && m.startDate.year > 1900 && m.startDate.year < 2100 ? m.startDate.year : 0;
-  return au.length || g.length || st || y ? { au, g, st, y } : null;
+  return au.length || g.length || st || y ? { au, ...(sc.length || ar.length ? { sc, ar } : {}), g, st, y, v: 2 } : null;
 }
 
 async function search(term, attempt = 1) {
@@ -95,6 +98,7 @@ for (const r of loadAllManga(P.dataDir)) {
 }
 const stale = (e) => {
   if (!e || !('i' in e)) return true;
+  if (e.i && !e.i.v) return true; // anciennes fiches : relues pour séparer scénario et dessin
   const age = e.a?.length ? (e.a.some((x) => x.st !== 'FINISHED') ? 7 : 60) : 21;
   return e.c <= addDays(today, -age);
 };
