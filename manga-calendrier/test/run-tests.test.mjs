@@ -779,6 +779,38 @@ test('fiche série : date estimée/confirmée et historique des changements de d
   assert.match(readFileSync(path.join(out, 'serie/serie-fictive-beta/index.html'), 'utf8'), /Aucun changement de date/);
 });
 
+test('compteur de clics : liens marqués, script publié, Worker (enregistrement, validation, rapport protégé)', async () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'clic-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const html = readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8');
+  assert.match(html, /data-sh="amazon" data-k="serie-fictive-alpha"/);
+  assert.match(html, /clic\.js/);
+  assert.ok(readFileSync(path.join(out, 'clic.js'), 'utf8').includes('/api/clic'));
+  const w = await import(path.join(ROOT, 'worker/index.js'));
+  const store = new Map();
+  const kv = { get: async (k) => store.get(k) ?? null, put: async (k, v) => { store.set(k, v); }, list: async ({ prefix }) => ({ keys: [...store.keys()].filter((k) => k.startsWith(prefix)).map((name) => ({ name })), list_complete: true }) };
+  const e = { CLICS: kv, STATS_KEY: 'secret-test-key' };
+  const post = (body, headers = {}) => w.default.fetch(new Request('https://exemple.fr/api/clic', { method: 'POST', body: JSON.stringify(body), headers }), e);
+  assert.equal((await post({ sh: 'amazon', k: 'serie-fictive-alpha', p: 'serie' })).status, 204);
+  await post({ sh: 'amazon', k: 'serie-fictive-alpha', p: 'serie' });
+  await post({ sh: 'fnac', k: 'serie-fictive-beta', p: 'manga' });
+  await post({ sh: 'pirate', k: 'x', p: 'serie' });              // boutique inconnue
+  await post({ sh: 'amazon', k: 'Pas Valide!', p: 'serie' });      // série invalide
+  await post({ sh: 'amazon', k: 'x', p: 'serie' }, { Origin: 'https://autre-site.fr' }); // autre origine
+  assert.equal(store.size, 2);
+  assert.equal((await w.default.fetch(new Request('https://exemple.fr/api/clics?cle=mauvais'), e)).status, 404);
+  const rep = await w.default.fetch(new Request('https://exemple.fr/api/clics?cle=secret-test-key&json=1'), e);
+  const j = await rep.json();
+  assert.equal(j.total, 3); assert.deepEqual(j.shops[0], ['amazon', 2]);
+  assert.match(await (await w.default.fetch(new Request('https://exemple.fr/api/clics?cle=secret-test-key'), e)).text(), /serie-fictive-alpha/);
+});
+
 test('sélections éditoriales : pages de genres (≥3 séries), liens depuis la fiche série, séries terminées', () => {
   const tmp = mkdtempSync(path.join(os.tmpdir(), 'gen-'));
   const data = path.join(tmp, 'data'); mkdirSync(data);
