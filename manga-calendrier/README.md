@@ -18,15 +18,22 @@ API AniList (épisodes d'anime) ────┘
 - `site.config.json` : nom du site, adresse, mentions légales.
 - `scripts/` : le code (récupération des données, articles du jour, construction du site).
 
-## Mise en ligne (une seule fois)
+## Mise en ligne
 
-1. **Cloudflare Pages** : dashboard Cloudflare → *Workers & Pages* → *Create* → onglet *Pages* → *Connect to Git* → choisis ce dépôt.
-   - Framework preset : *None*
-   - Build command : `npm run build`
-   - Build output directory : `dist`
-2. Une fois le site créé, note son adresse (`https://xxx.pages.dev`) et mets-la dans `site.config.json` (`siteUrl`). Le site refait une construction tout seul.
-3. Complète les **mentions légales** dans `site.config.json` (nom, e-mail, directeur de publication). Vérifie aussi l'adresse de l'hébergeur sur le site de Cloudflare.
-4. Onglet **Actions** de ce dépôt → *Mise à jour quotidienne* → *Run workflow* : cela remplit le calendrier anime et crée les premiers articles.
+Le site tourne sur **Cloudflare Workers** (fichiers statiques + un petit Worker pour le compteur de clics). Le déploiement est fait par GitHub Actions (`.github/workflows/deploy.yml`, commande `wrangler deploy`), pas par Cloudflare Builds (désactivé).
+
+1. Secrets GitHub nécessaires (*Settings → Secrets and variables → Actions*) : `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`. Facultatifs : `MANGA_CSV_URL`, `GOOGLE_BOOKS_API_KEY`, `DEEPL_API_KEY`, `ANTHROPIC_API_KEY`, `MYMEMORY_EMAIL`.
+2. Le domaine (`siteUrl` dans `site.config.json`) est rattaché au Worker dans Cloudflare.
+3. Complète les **mentions légales** dans `site.config.json`.
+4. Onglet **Actions** → *Mise à jour quotidienne* → *Run workflow* pour remplir les données. Le déploiement suit tout seul à chaque mise à jour et à chaque fusion sur `main`.
+
+## Sécurité, sauvegarde, alertes
+
+- **Où sont les données** : tout est dans ce dépôt (`data/`, `content/`, `site.config.json`), avec l'historique git. Revenir en arrière : *Revert* sur le commit fautif, ou *Actions → Run workflow*.
+- **Sauvegarde** : le workflow *Sauvegarde hebdomadaire* (dimanche) archive `data/`, `content/` et la config ; le fichier se télécharge 90 jours dans *Actions → l'exécution → Artifacts*.
+- **Alertes** : si la mise à jour, le déploiement ou la sauvegarde échoue, un ticket « Alerte : … » s'ouvre dans l'onglet *Issues* (GitHub t'envoie un e-mail). Un échec répété complète le même ticket ; ferme-le quand c'est réglé. La page `/etat/` du site montre la fraîcheur de chaque source.
+- **Secrets** : ne les colle jamais dans un fichier, une issue ou une conversation. Si un jeton Cloudflare a fuité : Cloudflare → *My Profile → API Tokens* → *Roll*, puis mets le nouveau dans le secret GitHub. Le rapport de clics (`/api/clics?cle=…`) est protégé par le secret `STATS_KEY` du Worker.
+- **Données personnelles** : la collection, les séries suivies et les statuts restent dans le navigateur des visiteurs (aucun compte, rien n'est envoyé). Le site ne dépose pas de cookie de suivi.
 
 ## Utilisation au quotidien
 
@@ -86,6 +93,8 @@ Boutons « Par jour / Par éditeur / Par série » au-dessus de la liste. Le cho
 Générées automatiquement à chaque build : `/sorties-manga/` (index) et `/sorties-manga/novembre-2026/` (une page par mois), `/series/` (index A à Z avec recherche) et `/serie/<nom>/` (« Prochain tome de … », avec date du prochain tome, tomes à venir et déjà parus). Toutes sont dans le sitemap et liées depuis les listes de sorties.
 
 ## Ma collection
+La page `/ma-collection/` (onglet du menu) affiche tes séries avec statistiques, recherche, tri, filtres (manquants, à jour, précommandés, à acheter, à lire), progression par série et export/import CSV (`scripts/collection.js`). Les statuts par tome sont : À acheter, Précommandé, À lire, Lu. Mon planning reste accessible dans le pied de page (agenda, budget du mois, sauvegarde complète).
+
 Bouton « Je l'ai » sur chaque tome numéroté, et « Je possède les tomes 1 à N » sur chaque page de série et dans Mon planning. Mon planning affiche les tomes déjà parus qu'il reste à acheter (pour les séries dont la collection est renseignée) et exclut les tomes possédés du budget du mois. Tout est gardé dans le navigateur (`mc-own`) ; une sauvegarde texte permet de transférer la collection d'un appareil à l'autre.
 
 ## Badges « nouveautés »
@@ -105,6 +114,9 @@ Touche `/` ou loupe dans l'en-tête : séries manga, animes de la semaine et art
 - « Signaler une erreur » (pied de page et pages série) : utilise `legal.contactEmail` si c'est une vraie adresse (le lien prérempli contient la page concernée). Tu peux aussi mettre `"reportUrl": "https://…"` (formulaire, page GitHub Issues) dans `site.config.json`, qui a la priorité. Sans l'un ni l'autre, le lien n'apparaît pas.
 - Bouton clair/sombre dans l'en-tête : le choix est gardé dans le navigateur, sinon on suit le réglage de l'appareil.
 - Mon planning : quand aucune série n'est suivie, des suggestions s'affichent.
+
+## Dossiers éditoriaux automatiques
+`scripts/dossiers-auto.mjs` (lancé chaque nuit) écrit, pour le mois en cours et le suivant, des dossiers factuels sans IA dans `content/auto/` : nouvelles séries (genres, auteur, résumé de l'éditeur), éditions spéciales, sorties par éditeur (dès 4 sorties) et sélection tournante de séries terminées. Datés du 1er du mois, ils apparaissent dans la section « Dossiers du mois » de `/articles/`. Ne les modifie pas à la main : ils sont réécrits quand les données changent.
 
 ## Articles récapitulatifs automatiques
 En plus des articles du jour : le lundi, « Manga : les sorties de la semaine » (avec les nouvelles séries et le rappel des changements de la semaine passée) et « Anime : la semaine » (premiers épisodes, séries les plus suivies) ; le 1er du mois, « Manga : les sorties d'<mois> » (tomes par éditeur, nouvelles séries, lien vers la page du mois).

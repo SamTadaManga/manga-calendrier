@@ -84,3 +84,21 @@ jobs:
           exit 1
       - name: Contrôle de fraîcheur des sources
         run: node scripts/check-status.mjs
+  alerte:
+    # Si la mise à jour échoue, ouvre (ou complète) un ticket : GitHub t'envoie alors un e-mail
+    needs: update
+    if: failure()
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Ouvrir ou compléter le ticket d'alerte
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          TITLE="Alerte : la mise à jour quotidienne a échoué"
+          N=$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
+          BODY="La mise à jour a échoué le $(date -u +%F) : $RUN_URL"
+          if [ -n "$N" ]; then gh issue comment "$N" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+          else gh issue create --repo "$GITHUB_REPOSITORY" --title "$TITLE" --body "$BODY (ce ticket se complète à chaque nouvel échec ; ferme-le quand c'est réglé)"; fi
