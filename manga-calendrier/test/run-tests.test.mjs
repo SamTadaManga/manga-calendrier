@@ -671,3 +671,14 @@ test('analytics Cloudflare : balise seulement avec un jeton valide', () => {
   assert.ok(go({ cloudflareToken: 'a'.repeat(32) }, 'on').includes('static.cloudflareinsights.com/beacon.min.js'));
   assert.ok(!go({ cloudflareToken: 'pas-valide"><script>' }, 'off').includes('cloudflareinsights'));
 });
+
+test('visuels à partager : page et script publiés, lien dans le pied de page', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'pt-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  assert.ok(existsSync(path.join(out, 'partager/index.html')) && existsSync(path.join(out, 'partager.js')));
+  assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /href="\/partager\/"/);
+});

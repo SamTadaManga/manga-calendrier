@@ -558,3 +558,8 @@ details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:80
 .facts dd{margin:0;font-weight:700}
 .facts-src{margin:2px 0 10px;font-size:.8rem}
 .fsep{align-self:center;margin-left:6px}
+
+.partage-canvas{display:block;width:min(100%,420px);height:auto;border:3px solid var(--edge);box-shadow:6px 6px 0 var(--shadow);margin:14px 0}
+.p-lab{display:flex;flex-direction:column;gap:2px;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+.p-lab select{font:inherit;font-size:1rem;font-weight:700;text-transform:none;letter-spacing:0;padding:6px 8px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);color:var(--ink)}
+#partage-app textarea{width:100%;max-width:640px;font:inherit;padding:8px;border:2px solid var(--edge);background:var(--panel);color:var(--ink)}

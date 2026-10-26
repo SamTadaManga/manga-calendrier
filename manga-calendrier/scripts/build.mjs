@@ -158,7 +158,7 @@ ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
-<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
+<p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
@@ -969,6 +969,17 @@ ${names.length ? `<h2>Sources</h2><div class="tbl-wrap"><table class="status-tab
   SEO_URLS.push('/semaine/');
 }
 
+/* ------------------------------------------------------- visuels à partager */
+page('/partager/', {
+  title: 'Visuels à partager',
+  description: 'Génère une image prête à poster : sorties manga de la semaine, nouvelles séries, anime de la semaine.',
+  body: `<h1>Visuels à partager</h1>
+<p class="lead">Choisis un visuel, un format et télécharge l'image à poster sur Instagram, TikTok ou Pinterest. Elle est dessinée dans ton navigateur à partir des données du jour.</p>
+<div id="partage-app"><p class="empty">Cette page a besoin de JavaScript pour créer les images.</p></div>
+<script src="${av('partager.js')}" defer></script>`,
+});
+SEO_URLS.push('/partager/');
+
 /* ------------------------------------------------------- page de recherche */
 page('/recherche/', {
   title: 'Recherche',
@@ -1146,7 +1157,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));
 }
-for (const f of ['visite.js', 'recherche.js', 'resultats.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['visite.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
