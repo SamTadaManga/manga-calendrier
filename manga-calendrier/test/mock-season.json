@@ -1,0 +1,95 @@
+{
+ "WINTER-2026": [],
+ "SPRING-2026": [],
+ "SUMMER-2026": [],
+ "FALL-2026": [
+  {
+   "id": 9001,
+   "format": "TV",
+   "status": "RELEASING",
+   "episodes": 12,
+   "popularity": 9000,
+   "siteUrl": "https://anilist.co/anime/9001",
+   "coverImage": {
+    "large": "https://s4.anilist.co/x.jpg"
+   },
+   "genres": [
+    "Action",
+    "Fantasy"
+   ],
+   "title": {
+    "romaji": "Saison Test Un",
+    "english": "Season Test One",
+    "native": ""
+   },
+   "startDate": {
+    "year": 2026,
+    "month": 10,
+    "day": 4
+   },
+   "externalLinks": [
+    {
+     "site": "Crunchyroll",
+     "url": "https://www.crunchyroll.com/series/T1",
+     "type": "STREAMING",
+     "isDisabled": false
+    }
+   ]
+  },
+  {
+   "id": 9002,
+   "format": "MUSIC",
+   "status": "RELEASING",
+   "title": {
+    "romaji": "Pas un anime"
+   },
+   "startDate": {
+    "year": 2026
+   }
+  },
+  {
+   "id": 9003,
+   "format": "MOVIE",
+   "status": "NOT_YET_RELEASED",
+   "episodes": 1,
+   "siteUrl": "http://evil.example",
+   "coverImage": {
+    "large": "http://evil/x.jpg"
+   },
+   "genres": [],
+   "title": {
+    "romaji": "Film Test",
+    "english": null,
+    "native": ""
+   },
+   "startDate": {
+    "year": 2026,
+    "month": 11,
+    "day": 0
+   },
+   "externalLinks": []
+  }
+ ],
+ "WINTER-2027": [
+  {
+   "id": 9004,
+   "format": "TV",
+   "status": "NOT_YET_RELEASED",
+   "episodes": null,
+   "genres": [
+    "Comedy"
+   ],
+   "title": {
+    "romaji": "Hiver Test",
+    "english": null,
+    "native": ""
+   },
+   "startDate": {
+    "year": 2027,
+    "month": 1,
+    "day": 8
+   },
+   "externalLinks": []
+  }
+ ]
+}

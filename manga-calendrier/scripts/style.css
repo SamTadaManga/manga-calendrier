@@ -557,3 +557,4 @@ details.older{margin-top:8px}details.older summary{cursor:pointer;font-weight:80
 .facts dt{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
 .facts dd{margin:0;font-weight:700}
 .facts-src{margin:2px 0 10px;font-size:.8rem}
+.fsep{align-self:center;margin-left:6px}

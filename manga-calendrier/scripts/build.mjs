@@ -309,7 +309,7 @@ function releaseItem(r, showDate = false) {
   const alt = `Couverture de ${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
   const cover = showCovers ? `<div class="cover" aria-hidden="${r.cover ? 'false' : 'true'}">${r.cover ? `<img class="cover-img" src="${esc(r.cover)}" alt="${esc(alt)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer">` : ''}</div>` : '';
   const coverLink = cover && slugify(r.serie) ? `<a class="rel-cover" href="/serie/${slugify(r.serie)}/" aria-label="${esc(r.serie)} : page de la série" tabindex="-1">${cover}</a>` : cover;
-  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
+  return `<li class="rel p-${pk}${r.date < today ? ' past' : ''}${showCovers ? ' has-cover' : ''}" data-pub="${pk}" data-st="${r.date <= today ? 'dispo' : (mv && mv.to === r.date && mv.to > mv.from ? 'reporte' : r.statut)}" data-nw="${isNewSeries(r) ? 1 : 0}" data-q="${esc(q)}" data-d="${r.date}" data-df="${esc(frShort(r.date))}" data-s="${esc(r.serie)}">${coverLink}<div class="rel-main"><button type="button" class="follow" data-s="${esc(slugify(r.serie))}" data-n="${esc(r.serie)}" hidden>Suivre</button><div class="rel-title"><strong>${serieLink(r.serie)}</strong>${r.tome ? ` <span class="tome">tome ${esc(r.tome)}</span>` : ''}${ed ? ` <span class="ed">${esc(ed)}</span>` : ''}</div>`
     + `<div class="meta">${meta}</div>${buyBox(r)}${adaptLine(r.serie)}${r.notes && r.notes !== 'Collecte automatique' ? `<p class="notes">${esc(r.notes)}</p>` : ''}</div></li>`;
 }
 
@@ -422,17 +422,21 @@ ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem
 const FILTER_JS = `<script>
 (function(){var bar=document.getElementById('filtres');if(!bar)return;bar.hidden=false;
 var q=document.getElementById('f'),chips=[].slice.call(bar.querySelectorAll('[data-chip]')),act={},none=document.getElementById('aucun');
-function hit(v){return v.split(' ').some(function(k){return act[k];});}
-function apply(){var t=(q.value||'').toLowerCase().trim(),any=Object.keys(act).length,shown=0;
-[].forEach.call(document.querySelectorAll('[data-q]'),function(li){var ok=(!any||!li.dataset.pub||hit(li.dataset.pub))&&(!t||li.dataset.q.indexOf(t)>-1);li.hidden=!ok;if(ok)shown++;});
+var at=function(c){return c.dataset.attr||'pub';},nAct=function(){return Object.keys(act).reduce(function(n,a){return n+Object.keys(act[a]).length;},0);};
+function okItem(li){var a,keys;for(a in act){keys=Object.keys(act[a]);if(!keys.length)continue;
+if(a==='nw'){if(li.dataset.nw!=='1')return false;}
+else if(a==='st'){if(!act.st[li.dataset.st])return false;}
+else if(li.dataset.pub&&!li.dataset.pub.split(' ').some(function(k){return act.pub[k];}))return false;}return true;}
+function apply(){var t=(q.value||'').toLowerCase().trim(),any=nAct(),shown=0;
+[].forEach.call(document.querySelectorAll('[data-q]'),function(li){var ok=okItem(li)&&(!t||li.dataset.q.indexOf(t)>-1);li.hidden=!ok;if(ok)shown++;});
 [].forEach.call(document.querySelectorAll('[data-group]'),function(g){g.hidden=![].some.call(g.querySelectorAll('[data-q]'),function(l){return !l.hidden;});});
-chips.forEach(function(c){var k=c.dataset.chip;c.setAttribute('aria-pressed',k==='tous'?String(!any):String(!!act[k]));});
+chips.forEach(function(c){var k=c.dataset.chip;c.setAttribute('aria-pressed',k==='tous'?String(!any):String(!!(act[at(c)]&&act[at(c)][k])));});
 if(none)none.hidden=shown>0;}
-chips.forEach(function(c){c.addEventListener('click',function(){var k=c.dataset.chip;if(k==='tous')act={};else if(act[k])delete act[k];else act[k]=1;apply();});});
+chips.forEach(function(c){c.addEventListener('click',function(){var k=c.dataset.chip,a=at(c);if(k==='tous')act={};else{act[a]=act[a]||{};if(act[a][k])delete act[a][k];else act[a][k]=1;}apply();});});
 q.addEventListener('input',apply);
 var SK='mc-f:'+location.pathname;
-try{var sf=JSON.parse(localStorage.getItem(SK)||'null');if(sf){if(sf.q)q.value=sf.q;(sf.a||[]).forEach(function(k){if(chips.some(function(c){return c.dataset.chip===k;}))act[k]=1;});if(sf.q||(sf.a||[]).length)apply();}}catch(e){}
-var _ap=apply;apply=function(){_ap();try{var a=Object.keys(act);if(!q.value&&!a.length)localStorage.removeItem(SK);else localStorage.setItem(SK,JSON.stringify({q:q.value,a:a}));}catch(e){}};
+try{var sf=JSON.parse(localStorage.getItem(SK)||'null');if(sf){if(sf.q)q.value=sf.q;(sf.a||[]).forEach(function(s){var p=String(s).split(':'),a=p.length>1?p[0]:'pub',k=p.length>1?p[1]:p[0];if(chips.some(function(c){return c.dataset.chip===k&&at(c)===a;})){act[a]=act[a]||{};act[a][k]=1;}});if(sf.q||nAct())apply();}}catch(e){}
+var _ap=apply;apply=function(){_ap();try{var a=[];Object.keys(act).forEach(function(x){Object.keys(act[x]).forEach(function(k){a.push(x+':'+k);});});if(!q.value&&!a.length)localStorage.removeItem(SK);else localStorage.setItem(SK,JSON.stringify({q:q.value,a:a}));}catch(e){}};
 var vb=document.getElementById('vues'),alt=null,NAMES=${JSON.stringify(PUBS)};
 function mk(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt)e.textContent=txt;return e;}
 function group(title,cls,items,span){var g=mk('section','daygroup');g.setAttribute('data-group','');var h=mk('h3','chip-day '+cls,title);if(span)h.appendChild(mk('span','now',span));g.appendChild(h);var ul=mk('ul','list panel');items.forEach(function(li){var c=li.cloneNode(true);c.hidden=false;var m=c.querySelector('.meta');if(m&&c.dataset.df){var t=mk('time','',c.dataset.df);t.setAttribute('datetime',c.dataset.d);m.insertBefore(t,m.firstChild);}ul.appendChild(c);});g.appendChild(ul);return g;}
@@ -509,10 +513,18 @@ target.classList.remove('flash');void target.offsetWidth;target.classList.add('f
   const chips = ['<button type="button" class="chip" data-chip="tous" aria-pressed="true">Tous</button>']
     .concat(order.map((k) => `<button type="button" class="chip" data-chip="${k}" aria-pressed="false"><i class="dot p-${k}"></i>${esc(PUBS[k] || 'Autres')} <span class="n">${counts.get(k)}</span></button>`)).join('');
 
+  const stCount = (f) => rows.filter(f).length;
+  const stChips = [
+    ['dispo', 'Disponible', (r) => r.date <= today],
+    ['annonce', 'Annoncé', (r) => r.date > today && r.statut === 'annonce'],
+    ['confirme', 'Confirmé', (r) => r.date > today && r.statut === 'confirme'],
+    ['reporte', 'Reporté', (r) => r.date > today && (r.statut === 'reporte' || ((m) => m && m.to === r.date && m.to > m.from)(moves.get(keyOf(r))))],
+  ].filter(([, , f]) => stCount(f)).map(([k, l, f]) => `<button type="button" class="chip" data-chip="${k}" data-attr="st" aria-pressed="false">${l} <span class="n">${stCount(f)}</span></button>`).join('')
+    + (rows.some((r) => isNewSeries(r)) ? `<button type="button" class="chip" data-chip="1" data-attr="nw" aria-pressed="false">Nouvelles séries <span class="n">${rows.filter((r) => isNewSeries(r)).length}</span></button>` : '');
   const body = `
 <h1>Calendrier des sorties manga</h1>
 <p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.${mangaUpdatedIso ? ` <span class="muted">Mis à jour ${esc(agoFr(mangaUpdatedIso))}. <a href="/etat/">État des données</a></span>` : ''}</p>
-${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}</div>
+${rows.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher une série" aria-label="Chercher une série">${chips}${stChips ? `<span class="muted fsep">Statut :</span>${stChips}` : ''}</div>
 <div class="views" id="vues" role="group" aria-label="Affichage" hidden><span class="muted">Affichage :</span>
 <button type="button" class="chip" data-view="jour" aria-pressed="true">Par jour</button><button type="button" class="chip" data-view="editeur" aria-pressed="false">Par éditeur</button><button type="button" class="chip" data-view="serie" aria-pressed="false">Par série</button><button type="button" class="chip jump-today" id="auj">Aujourd'hui</button></div>
 <p class="empty" id="aucun" hidden>Aucune sortie ne correspond à ce filtre.</p>
@@ -841,9 +853,35 @@ ${eps.length ? `<nav class="jumps" aria-label="Aller à un jour">${jump}</nav>
 <div class="filters" id="filtres" hidden><input type="search" id="f" placeholder="Chercher un anime" aria-label="Chercher un anime">${platChips}</div>
 <p class="empty" id="aucun" hidden>Aucun épisode ne correspond à cette recherche.</p>
 ${sections}` : '<p class="empty">Les données apparaîtront après la première mise à jour automatique.</p>'}
-<p class="more muted">${updated ? `Mis à jour le ${esc(updated)}. ` : ''}<a href="/anime.ics">Ajouter à mon agenda (anime.ics)</a></p>
+<p class="more muted">${updated ? `Mis à jour le ${esc(updated)}. ` : ''}<a href="/anime/saison/">Anime de la saison</a> · <a href="/anime.ics">Ajouter à mon agenda (anime.ics)</a></p>
 ${eps.length ? FILTER_JS : ''}`;
   page('/anime/', { title: "Épisodes d'anime de la semaine", description: "Programme des épisodes d'anime de la semaine, horaires à l'heure de Paris.", body });
+}
+
+/* ------------------------------------------------------------ anime par saison */
+{
+  const SAISON = (() => { try { return JSON.parse(readFileSync(path.join(P.dataDir, 'saison.json'), 'utf8')); } catch { return null; } })();
+  const SEASON_FR = { WINTER: 'Hiver', SPRING: 'Printemps', SUMMER: 'Été', FALL: 'Automne' };
+  const ST_SEASON = { RELEASING: 'En cours', NOT_YET_RELEASED: 'À venir', FINISHED: 'Terminé' };
+  const FORMAT_FR = { TV: 'Série TV', TV_SHORT: 'Format court', ONA: 'Web', MOVIE: 'Film' };
+  const GENRES_ANIME = { ...GENRE_FR, Comedy: 'Comédie' };
+  const internal = new Map();
+  for (const e of eps) if (!internal.has(e.mediaId)) internal.set(e.mediaId, animeHref(e));
+  const card = (a) => {
+    const href = internal.get(a.id) || a.u;
+    const dt = a.d && a.d[1] ? `${a.d[2] ? `${a.d[2]} ` : ''}${['', 'janv.', 'févr.', 'mars', 'avr.', 'mai', 'juin', 'juil.', 'août', 'sept.', 'oct.', 'nov.', 'déc.'][a.d[1]]} ${a.d[0]}` : '';
+    const chips = streamChips({ stream: a.s });
+    const title = href ? `<a href="${esc(href)}"${internal.has(a.id) ? '' : ' rel="noopener nofollow" target="_blank"'}>${esc(a.t)}</a>` : esc(a.t);
+    return `<li class="rel anime-row${showCovers && a.c ? ' has-cover' : ''}" data-q="${esc(a.t.toLowerCase())}">${showCovers && a.c ? `<div class="cover"><img class="cover-img" src="${esc(a.c)}" alt="Affiche de ${esc(a.t)}" width="60" height="90" loading="lazy" decoding="async" referrerpolicy="no-referrer"></div>` : ''}<div class="rel-main"><div class="rel-title"><strong>${title}</strong></div><div class="meta"><span>${esc(FORMAT_FR[a.f] || '')}${a.n ? ` · ${a.n} épisode${a.n > 1 ? 's' : ''}` : ''}</span>${dt ? `<span>${a.st === 'RELEASING' || a.st === 'FINISHED' ? 'Débuté' : 'Prévu'} : ${esc(dt)}</span>` : ''}${ST_SEASON[a.st] ? `<span class="badge">${ST_SEASON[a.st]}</span>` : ''}${a.g?.length ? `<span class="muted">${esc(a.g.map((x) => GENRES_ANIME[x] || x).join(', '))}</span>` : ''}</div>${chips ? `<div class="streams">${chips}</div>` : ''}</div></li>`;
+  };
+  const sections = (SAISON?.seasons || []).map((s) => `<section class="art-sec" id="s-${s.season.toLowerCase()}-${s.year}"><h2>${SEASON_FR[s.season]} ${s.year}</h2><ul class="list panel eps">${s.items.map(card).join('')}</ul></section>`).join('');
+  const nav = (SAISON?.seasons || []).length > 1 ? `<nav class="kind-nav" aria-label="Saisons">${SAISON.seasons.map((s) => `<a href="#s-${s.season.toLowerCase()}-${s.year}">${SEASON_FR[s.season]} ${s.year}</a>`).join('')}</nav>` : '';
+  page('/anime/saison/', {
+    title: 'Anime de la saison',
+    description: 'Les anime de la saison en cours et de la suivante : formats, dates de début, plateformes de streaming.',
+    body: `<h1>Anime de la saison</h1><p class="lead">Les séries les plus suivies de la saison en cours et de la suivante. Dates de début au Japon ; la disponibilité en France dépend des plateformes. <a href="/anime/">Programme de la semaine</a></p>${nav}${sections || '<p class="empty">La liste des saisons apparaîtra après la prochaine mise à jour automatique.</p>'}<p class="muted">Données : <a href="https://anilist.co" rel="noopener nofollow">AniList</a>.</p>`,
+  });
+  SEO_URLS.push('/anime/saison/');
 }
 
 /* ------------------------------------------------------------ état des données */

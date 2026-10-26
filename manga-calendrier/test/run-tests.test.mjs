@@ -110,6 +110,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
 
   run('fetch-anime.mjs', '--from-file', path.join(ROOT, 'test/mock-anilist.json'));
   run('fetch-adaptations.mjs', '--from-file', path.join(ROOT, 'test/mock-adaptations.json'));
+  run('fetch-season.mjs', '--from-file', path.join(ROOT, 'test/mock-season.json'));
   const anime = JSON.parse(read(dirs.DATA_DIR, 'anime.json'));
   assert.equal(anime.episodes.length, 6, 'filtre : adulte, Chine, musique, hier et hors fenêtre exclus');
   assert.ok(anime.episodes.every((e) => e.title && typeof e.airingAt === 'number'));
@@ -150,6 +151,8 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   const mp = read(dist('manga/index.html'));
   assert.ok(mp.includes('Adapté en anime') && mp.includes('Alpha Season 2') && mp.includes('crunchyroll.com/series/ALPHA') && !mp.includes('evil.example'), 'adaptation sous les tomes');
   const sp = read(dist('serie/serie-fictive-alpha/index.html'));
+  const seasonPage = read(dist('anime/saison/index.html'));
+  assert.ok(seasonPage.includes('Season Test One') && seasonPage.includes('Hiver 2027') && !seasonPage.includes('Pas un anime') && !seasonPage.includes('evil'), 'page saison filtrée');
   assert.ok(sp.includes('class="facts"') && sp.includes('Auteur Test') && sp.includes('Science-fiction') && !sp.includes('Pas Un Auteur'), 'fiche série : auteur et genres AniList');
   assert.ok(sp.includes('Alpha Old') && sp.includes('en cours de diffusion') && sp.includes('Prochain épisode'), 'encadré de la page série');
   assert.ok(read(dirs.OUT_DIR, 'index.html').includes('id="pour-toi"') && existsSync(dist('data/anime-week.json')), 'section Pour toi et données anime');
