@@ -2,13 +2,14 @@
   "siteName": "Prochain Tome",
   "tagline": "Quand sort le prochain tome ? Les sorties manga en France (Glénat, Kana, Pika, Ki-oon) et les épisodes d'anime de la semaine, jour par jour.",
   "siteUrl": "https://prochaintome.fr",
+  "shops": { "amazon": { "tag": "prochaintome-21" } },
   "description": "Les sorties manga en France et les épisodes d'anime de la semaine, jour par jour.",
   "autoPublish": true,
   "showCovers": true,
-  "launched": false,
+  "launched": true,
   "legal": {
     "editorName": "Sam Tada",
-    "contactEmail": "tada.ebook@gmail.com",
+    "contactEmail": "contact@prochaintome.fr",
     "publicationDirector": "Sam Tada",
     "hostName": "Cloudflare, Inc.",
     "hostAddress": "101 Townsend Street, San Francisco, CA 94107, États-Unis"
