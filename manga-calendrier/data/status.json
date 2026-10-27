@@ -19,24 +19,6 @@
    "lastSuccessCount": 80,
    "fails": 0
   },
-  "Complément · Flux RSS": {
-   "lastRun": "2026-10-27T16:10:41.970Z",
-   "ok": true,
-   "count": 2,
-   "note": "",
-   "lastSuccess": "2026-10-27T16:10:41.970Z",
-   "lastSuccessCount": 2,
-   "fails": 0
-  },
-  "Complément · Google Books": {
-   "lastRun": "2026-10-27T16:09:41.289Z",
-   "ok": true,
-   "count": 0,
-   "note": "répond, mais aucun tome daté dans les 2 mois",
-   "lastSuccess": "2026-10-27T16:09:41.289Z",
-   "lastSuccessCount": 0,
-   "fails": 0
-  },
   "Manga · Akata": {
    "lastRun": "2026-10-27T16:08:05.421Z",
    "ok": true,

@@ -180,15 +180,29 @@ const SOURCES = [
   {
     editeur: 'Kazé',
     async run() {
-      const json = await get('https://kazemanga.fr/collections/a-venir/products.json?limit=100', { json: true });
-      if (!json) throw new Error('liste « à venir » introuvable (robots.txt ou page absente)');
+      // La collection « à venir » est souvent vide ou périmée : on lit tout le catalogue (JSON, 250 produits par page)
+      // et on ne garde que les produits créés récemment, qui sont ceux dont la parution est proche.
+      const all = [];
+      for (let page = 1; page <= 8; page++) {
+        const j = await get(`https://kazemanga.fr/products.json?limit=250&page=${page}`, { json: true });
+        const got = j ? parseKazeProducts(j) : [];
+        if (!got.length) break;
+        all.push(...got);
+        if (got.length < 250) break;
+      }
+      const venir = await get('https://kazemanga.fr/collections/a-venir/products.json?limit=100', { json: true });
+      const known = new Set(all.map((p) => p.handle));
+      if (venir) all.push(...parseKazeProducts(venir).filter((p) => !known.has(p.handle)));
+      if (!all.length) throw new Error('catalogue introuvable (robots.txt ou page absente)');
+      const recent = addDays(today, -150);
+      const list = all.filter((p) => !p.created || p.created >= recent);
       // les dates déjà lues sont gardées d'un jour à l'autre : on ne recharge que les fiches nouvelles
       const cacheFile = path.join(P.dataDir, 'kaze-dates.json');
       let cache = {};
       try { cache = JSON.parse(readFileSync(cacheFile, 'utf8')); } catch { /* premier passage */ }
       const rows = [];
       let fetched = 0;
-      for (const prod of parseKazeProducts(json)) {
+      for (const prod of list) {
         let date = cache[prod.handle]?.date;
         if (!date && fetched < 60) {
           fetched++;
@@ -198,9 +212,9 @@ const SOURCES = [
         }
         if (date) rows.push(kazeRow(prod, date));
       }
-      console.log(`  Kazé : ${parseKazeProducts(json).length} produits dans « à venir », ${rows.length} avec une date de parution`);
+      console.log(`  Kazé : ${all.length} produits au catalogue, ${list.length} récents, ${rows.length} avec une date de parution`);
       for (const k of Object.keys(cache)) if (cache[k].date < addDays(today, -60)) delete cache[k];
-      if (!rows.length) throw new Error(`${parseKazeProducts(json).length} produit(s) listé(s), aucune date de parution lue sur les fiches`);
+      if (!rows.length) throw new Error(`${list.length} produit(s) récent(s) sur ${all.length}, aucune date de parution lue sur les fiches`);
       mkdirSync(P.dataDir, { recursive: true });
       const out = JSON.stringify(cache, null, 1) + '\n';
       if (!existsSync(cacheFile) || readFileSync(cacheFile, 'utf8') !== out) writeFileSync(cacheFile, out);

@@ -244,24 +244,6 @@ test('robots.txt : Disallow, Allow plus précis, page HTML = autorisé', () => {
   assert.equal(parseKioon({ volumes: [{ serie_title: 'X', date: 'pas une date' }] }).length, 0);
 });
 
-test('collecte de complément : Google Books et flux RSS (données simulées)', () => {
-  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mx-'));
-  const env = { ...process.env, DATA_DIR: tmp, NOW: '2026-10-12T07:00:00Z', EXTRA_FIXTURES: path.join(ROOT, 'test/fixtures/extra') };
-  const out = execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-extra.mjs')], { env, encoding: 'utf8' });
-  assert.ok(/Mangetsu : 2/.test(out) && /Delcourt : 1/.test(out), out);
-  const csv = readFileSync(path.join(tmp, 'manga-extra.csv'), 'utf8');
-  assert.ok(csv.includes('Sujet Test,3') && csv.includes('Autre Série,12') && csv.includes('Manga Delcourt,5'), csv);
-  assert.ok(!csv.includes('Voisin') && !csv.includes('Floue') && !csv.includes('Vieux') && !csv.includes('Franco-belge'), 'filtres : éditeur, date incomplète, passé, BD');
-  assert.ok(/Flux RSS : 1 annonce/.test(out), out);
-  const rev = readFileSync(path.join(tmp, 'annonces-a-verifier.csv'), 'utf8');
-  assert.ok(rev.includes('2026-11-12') && rev.includes('Nouveau manga annoncé') && !rev.includes('Interview'), rev);
-  // fusion : le complément passe après la collecte principale et la saisie manuelle
-  writeFileSync(path.join(tmp, 'manga.csv'), 'Date de sortie,Éditeur,Série,Tome\n2026-11-12,Mangetsu,Sujet Test,3\n');
-  const all = loadAllManga(tmp);
-  assert.equal(all.filter((r) => r.serie === 'Sujet Test').length, 1);
-  assert.ok(all.some((r) => r.serie === 'Manga Delcourt'));
-});
-
 test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () => {
   const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
   const env = { ...process.env, DATA_DIR: tmp, NOW: '2026-10-12T07:00:00Z', COLLECT_FIXTURES: path.join(ROOT, 'test/fixtures/publishers') };
@@ -443,6 +425,9 @@ test('pages par mois, par série et index : générées, liées et dans le sitem
   assert.ok(links.length > 0, 'index des séries');
   for (const k of links) assert.ok(existsSync(path.join(tmp, 'dist/serie', k, 'index.html')), `page série ${k}`);
   assert.match(rd(`serie/${links[0]}/index.html`), /Prochain tome de/);
+  const meta = (f) => ({ t: (rd(f).match(/<title>(.*?)<\/title>/) || [])[1], d: (rd(f).match(/name="description" content="(.*?)"/) || [])[1] });
+  const withNext = links.map((k) => meta(`serie/${k}/index.html`)).find((m) => /sortie le \d/.test(m.t));
+  assert.ok(withNext && /tome \d+ : /.test(withNext.t) && /Prochain tome de/.test(withNext.d) && withNext.d.length <= 160, 'titre avec tome et date, description avec « prochain tome »');
   assert.match(rd(`serie/${links[0]}/index.html`), /data-coll/);
   assert.match(rd('manga/index.html'), /class="own"/);
   const monthLinks = [...rd('sorties-manga/index.html').matchAll(/href="\/sorties-manga\/([a-z]+-\d{4})\/"/g)].map((m) => m[1]);

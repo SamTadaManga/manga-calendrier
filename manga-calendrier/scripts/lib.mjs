@@ -68,6 +68,8 @@ export const weekdayOfKey = (key) => new Date(`${key}T12:00:00Z`).getUTCDay(); /
 const keyDate = (key) => new Date(`${key}T12:00:00Z`);
 export const frDate = (key) =>
   new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(keyDate(key));
+export const frLongDate = (key) =>
+  new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(keyDate(key)).replace(/^1 /, '1er ');
 export const frDayMonth = (key) =>
   new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' }).format(keyDate(key));
 export const frShort = (key) =>
@@ -190,9 +192,6 @@ const altKey = (r) => `s:${slugify(r.serie)}|${r.tome}`;
 export function loadAllManga(dir) {
   const manual = loadManga(path.join(dir, 'manga.csv'));
   const auto = loadManga(path.join(dir, 'manga-auto.csv'));
-  // Complément Google Books : passe après toutes les autres sources (même ISBN ou même série/tome = ignoré)
-  const autoKeys = new Set(auto.flatMap((r) => (r.tome ? [keyOf(r), altKey(r)] : [keyOf(r)])));
-  auto.push(...loadManga(path.join(dir, 'manga-extra.csv')).filter((r) => ![keyOf(r), ...(r.tome ? [altKey(r)] : [])].some((k) => autoKeys.has(k))));
   const taken = new Set(manual.flatMap((r) => (r.tome ? [keyOf(r), altKey(r)] : [keyOf(r)])));
   const seen = new Set();
   const autoCover = new Map();

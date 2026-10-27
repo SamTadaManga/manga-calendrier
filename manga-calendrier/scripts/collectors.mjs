@@ -158,7 +158,7 @@ export function parseKazeProducts(json) {
     const prix = parseFloat(v.price);
     const img = String((p.images || [])[0]?.src || v.featured_image?.src || '');
     const cover = /^https:\/\/cdn\.shopify\.com\//.test(img) ? img + (img.includes('?') ? '&' : '?') + 'width=360' : '';
-    out.push({ handle: String(p.handle).replace(/[^A-Za-z0-9-]/g, ''), title: decode(p.title), isbn, prix: Number.isFinite(prix) && prix > 0 ? prix : null, cover });
+    out.push({ created: String(p.created_at || '').slice(0, 10), handle: String(p.handle).replace(/[^A-Za-z0-9-]/g, ''), title: decode(p.title), isbn, prix: Number.isFinite(prix) && prix > 0 ? prix : null, cover });
   }
   return out;
 }
