@@ -624,7 +624,7 @@ test('phase 2 : pages /semaine/ et /recherche/, moteur de résultats copié', ()
   assert.ok(existsSync(path.join(out, 'semaine/index.html')));
   assert.ok(existsSync(path.join(out, 'resultats.js')));
   assert.match(readFileSync(path.join(out, 'recherche/index.html'), 'utf8'), /noindex/);
-  assert.match(readFileSync(path.join(out, 'index.html'), 'utf8'), /action="\/recherche\/"/);
+  assert.doesNotMatch(readFileSync(path.join(out, 'index.html'), 'utf8'), /class="home-search"/);
 });
 
 test('goodies : lien produit direct avec tag quand data/goodies.csv existe, sinon recherche', () => {
@@ -868,7 +868,8 @@ test('accueil et navigation : menu demandé, ordre des blocs, raccourcis et sél
   const labels = [...nav.matchAll(/>([^<]+)<\/a>/g)].map((m) => m[1]);
   assert.deepEqual(labels, ['Accueil', 'Sorties manga', 'Calendrier anime', 'Séries', 'Ma collection', 'Actualités']);
   const pos = (t) => h.indexOf(t);
-  assert.ok(pos('role="search"') < pos('Anime du jour') && pos('Anime du jour') < pos('id="t-days"') && pos('id="t-days"') < pos('Derniers articles'));
+  assert.doesNotMatch(h, /role="search"/);
+  assert.ok(pos('id="t-days"') < pos('id="pour-toi"') && pos('id="pour-toi"') < pos('Anime du jour') && pos('Anime du jour') < pos('Derniers articles'), 'sorties de la semaine en tête, avant « Pour toi »');
   assert.doesNotMatch(h, /class="quick"/);
   // une fiche série met « Séries » en évidence
   assert.match(readFileSync(path.join(out, 'serie/serie-fictive-alpha/index.html'), 'utf8'), /href="\/series\/" aria-current="page"/);

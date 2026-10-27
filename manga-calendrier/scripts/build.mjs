@@ -424,8 +424,12 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
 <section class="week" aria-labelledby="t-week">
 <div class="week-head"><h1 id="t-week">Sorties manga et anime, jour par jour</h1>
 <p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon et Akata. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
-<form class="home-search" action="/recherche/" method="get" role="search"><input type="search" name="q" placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"><button class="btn" type="submit">Chercher</button></form>
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
+<section aria-labelledby="t-days">
+<h2 id="t-days">Les sorties de la semaine</h2>
+<ul class="strip">${strip}</ul>
+<p class="more"><a href="/semaine/">Voir la semaine en détail</a></p>
+</section>
 <section class="pour-toi" id="pour-toi" aria-labelledby="t-pt" hidden><h2 id="t-pt">Pour toi cette semaine</h2><div id="pt-body"></div></section>
 <div class="since panel" id="since" hidden></div>
 </section>
@@ -444,11 +448,6 @@ ${todayEps.length
       ? '<p class="empty">Aucun épisode n\'est prévu aujourd\'hui. <a href="/anime/">Voir la semaine</a></p>'
       : `<p class="empty">Le programme anime n'est pas disponible pour le moment${anime.generatedAt ? ` (dernière mise à jour réussie : ${esc(agoFr(anime.generatedAt))})` : ''}. Il revient automatiquement dès que la source répond. <a href="/etat/">État des données</a></p>`)}${todayEps.length && ANIME_STALE ? `<p class="muted more">Programme non actualisé depuis ${esc(agoFr(anime.generatedAt))}. <a href="/etat/">Détails</a></p>` : ''}
 </div>
-</section>
-<section aria-labelledby="t-days">
-<h2 id="t-days">Les sorties de la semaine</h2>
-<ul class="strip">${strip}</ul>
-<p class="more"><a href="/semaine/">Voir la semaine en détail</a></p>
 </section>
 ${mangaNext.length ? `<section><h2>Prochaines sorties manga</h2>${shelf.length >= 6 ? `<ul class="shelf">${shelf.map(tile).join('')}</ul>` : `<ul class="list panel">${mangaNext.map((r) => releaseItem(r, true)).join('')}</ul>`}<p class="more"><a href="/manga/">Tout le calendrier manga</a></p></section>` : ''}
 ${recent.length ? `<section><h2>Derniers changements de date</h2><ul class="list panel">${recent.map(changeItem).join('')}</ul><p class="more"><a href="/changements/">Tous les changements</a></p></section>` : ''}
