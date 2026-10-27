@@ -679,3 +679,6 @@ ul.hscroll .t-title{min-height:calc(3 * 1.3em)}
 ul.hscroll .t-title .tome{display:block;color:var(--muted);font-size:.9rem}
 ul.hscroll .t-shops{margin-top:auto;width:100%;align-self:stretch}
 ul.hscroll .tile-body>.t-shops{padding-top:4px}
+
+/* Longues listes (calendrier, mois, séries) : le navigateur ne dessine que ce qui est proche de l'écran */
+.list>.rel,.daygroup,.scard{content-visibility:auto;contain-intrinsic-size:auto 160px}

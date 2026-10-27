@@ -90,7 +90,6 @@ const safeUrl = (u) => (/^https?:\/\//i.test(u || '') ? u : '');
 const NAV = [['/', 'Accueil'], ['/manga/', 'Sorties manga'], ['/anime/', 'Calendrier anime'], ['/series/', 'Séries'], ['/ma-collection/', 'Ma collection'], ['/articles/', 'Actualités']];
 // pages rattachées à une entrée du menu (pour la mettre en évidence)
 const NAV_ALIAS = { '/mon-planning/': '/ma-collection/', '/mes-animes/': '/anime/', '/changements/': '/articles/', '/genre/': '/series/', '/genres/': '/series/', '/series-terminees/': '/series/', '/serie/': '/series/', '/editeur/': '/manga/', '/editeurs/': '/manga/', '/sorties-manga/': '/manga/', '/semaine/': '/manga/' };
-const FAVICON = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' fill='%23fff' stroke='%2312131a' stroke-width='3'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%232540e8'/%3E%3C/svg%3E";
 
 const reportEmail = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/.test(config.legal?.contactEmail || '') ? config.legal.contactEmail : '';
 const reportUrl = /^https:\/\//.test(config.reportUrl || '') ? config.reportUrl : '';
@@ -152,7 +151,10 @@ ${canonical ? `<meta property="og:url" content="${esc(canonical)}">` : ''}
 ${image ? '' : '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'}
 ${image ? '' : `<meta property="og:image:alt" content="${esc(config.siteName)} : ${esc(config.tagline)}">`}
 <meta name="twitter:card" content="${image ? 'summary' : 'summary_large_image'}">
-<link rel="icon" href="${FAVICON}">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
+<link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/icon.svg" sizes="any">
 <link rel="preload" href="/fonts/dela-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="/fonts/zen-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="/fonts/zen-900.woff" as="font" type="font/woff" crossorigin>
@@ -189,7 +191,8 @@ function animeNotice() {
   if (!anime.generatedAt) return '<p class="notice warn" role="status">Le programme des épisodes n\'a pas encore pu être récupéré. Il apparaîtra dès que la source (AniList) répondra.</p>';
   return `<p class="notice warn" role="status">Le programme n'a pas pu être actualisé depuis ${esc(agoFr(anime.generatedAt))} (source AniList indisponible). Les épisodes affichés viennent de la dernière mise à jour réussie, le ${esc(stampFr(anime.generatedAt))} : les horaires peuvent avoir changé. <a href="/etat/">État des données</a></p>`;
 }
-const page = (pathname, opts) => write(`${pathname.replace(/^\//, '')}index.html`, layout({ ...opts, pathname }));
+const eagerTop = (html) => { let n = 0; return html.replace(/<img class="cover-img"([^>]*?) loading="lazy"/g, (m, a) => (n++ < 2 ? `<img class="cover-img"${a} loading="eager" fetchpriority="high"` : m)); };
+const page = (pathname, opts) => write(`${pathname.replace(/^\//, '')}index.html`, eagerTop(layout({ ...opts, pathname })));
 
 /* ------------------------------------------------------------- composants */
 const SEO_URLS = [];
@@ -464,7 +467,7 @@ ${NL.on ? `<section class="nl-home panel"><h2>La newsletter du lundi</h2><p>Les 
 ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p class="more"><a href="/articles/">Tous les articles</a></p>` : '<p class="empty">Les premiers articles arrivent bientôt.</p>'}
 </section>`;
   page('/', { title: config.siteName, description: config.description, body,
-    extraHead: siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.siteName, url: `${base}/`, inLanguage: 'fr', potentialAction: { '@type': 'SearchAction', target: `${base}/recherche/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } }).replace(/</g, '\\u003c')}</script>` : '' });
+    extraHead: siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.siteName, alternateName: ['ProchainTome', 'prochaintome.fr'], url: `${base}/`, inLanguage: 'fr', publisher: { '@type': 'Organization', name: config.siteName, url: `${base}/`, logo: { '@type': 'ImageObject', url: `${base}/icon-512.png`, width: 512, height: 512 } }, potentialAction: { '@type': 'SearchAction', target: `${base}/recherche/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } }).replace(/</g, '\\u003c')}</script>` : '' });
 }
 
 /* ------------------------------------------------------- filtres (partagés) */
@@ -604,6 +607,13 @@ ${rows.length ? FILTER_JS : ''}`;
 }
 
 
+/* Données structurées : liste de tomes (page de mois, d'éditeur) */
+const bookLd = (r) => ({ '@type': 'Book', name: mangaLabel(r), ...(slugify(r.serie) && mangaSlugs.has(slugify(r.serie)) ? { url: `${base}/serie/${slugify(r.serie)}/` } : {}),
+  ...(isIsbn13(r.isbn) ? { isbn: r.isbn } : {}), datePublished: r.date, inLanguage: 'fr', bookFormat: 'https://schema.org/Paperback',
+  ...(r.editeur ? { publisher: { '@type': 'Organization', name: r.editeur } } : {}), ...(showCovers && /^https:\/\//.test(r.cover || '') ? { image: r.cover } : {}) });
+const listLd = (rows, url, name, max = 100) => siteUrlOk && rows.length ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name, url: `${base}${url}`, inLanguage: 'fr',
+  mainEntity: { '@type': 'ItemList', numberOfItems: rows.length, itemListElement: rows.slice(0, max).map((r, i) => ({ '@type': 'ListItem', position: i + 1, item: bookLd(r) })) } }).replace(/</g, '\\u003c')}</script>` : '';
+
 /* ------------------------------------------- pages par mois et par série (référencement) */
 {
   const live = manga.filter((r) => r.statut !== 'annule' && r.date);
@@ -628,10 +638,12 @@ ${rows.length ? FILTER_JS : ''}`;
     const legend = [...counts].map(([k, n]) => `<span class="legend"><i class="dot p-${k}"></i>${esc(PUBS[k] || 'Autres éditeurs')} ${n}</span>`).join('');
     page(`/sorties-manga/${monthSlug(mk)}/`, {
       title: `Sorties manga ${label} : tous les tomes`,
+      extraHead: listLd(rows, `/sorties-manga/${monthSlug(mk)}/`, `Sorties manga de ${label}`),
       description: `${plural(rows.length, 'tome', 'tomes')} manga au programme en ${label}${pubsLine(rows)} : dates de sortie, éditeurs et prix.`,
       body: `<h1>Sorties manga de ${esc(label)}</h1>
 <p class="lead">${esc(plural(rows.length, 'tome sort', 'tomes sortent'))} en France en ${esc(label)}${esc(pubsLine(rows))}. Les dates viennent des plannings officiels des éditeurs et peuvent bouger.</p>
 <p class="legendrow">${legend}</p>
+<p class="chiprow" aria-label="Éditeurs">${[...new Set(rows.map((r) => r.editeur).filter((e) => e && slugify(e)))].sort((a, c) => a.localeCompare(c, 'fr')).map((e) => `<a class="chip" href="/editeur/${slugify(e)}/">${esc(e)}</a>`).join('')}</p>
 ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2><ul class="list panel">${rows.filter((r) => r.date === d).map((r) => releaseItem(r)).join('')}</ul></div>`).join('\n')}
 <p class="chiprow">${nav}<a class="chip" href="/sorties-manga/">Tous les mois</a><a class="chip" href="/manga/">Calendrier</a></p>`,
     });
@@ -724,7 +736,11 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       { '@context': 'https://schema.org', '@type': 'ComicSeries', name: S.name, inLanguage: 'fr', url: `${base}/serie/${S.k}/`,
         ...(S.editeur ? { publisher: { '@type': 'Organization', name: S.editeur } } : {}),
         ...((infoOf(S.name) || {}).au?.length ? { author: infoOf(S.name).au.map((x) => ({ '@type': 'Person', name: x })) } : {}),
-        ...(n && isIsbn13(n.isbn) ? { hasPart: { '@type': 'Book', name: mangaLabel(n), isbn: n.isbn, datePublished: n.date, bookFormat: 'https://schema.org/Paperback' } } : {}) },
+        ...(() => {
+          const live = S.rows.filter((r) => r.statut !== 'annule' && r.date);
+          const parts = [...live.filter((r) => r.date < today).slice(-2), ...live.filter((r) => r.date >= today).slice(0, 10)];
+          return parts.length ? { hasPart: parts.map((r) => ({ ...bookLd(r), url: `${base}/serie/${S.k}/` })) } : {};
+        })() },
     ]).replace(/</g, '\\u003c')}</script>` : '';
     page(`/serie/${S.k}/`, {
       extraHead: serieLd,
@@ -829,11 +845,12 @@ ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="sea
       page(`/editeur/${p.k}/`, {
         title: `${p.name} : sorties manga et prochains tomes`,
         description: `${plural(up.length, 'sortie à venir', 'sorties à venir')} chez ${p.name}${nextDay ? `, la prochaine le ${nextDay}` : ''}. Calendrier, nouvelles séries et liste des séries publiées.`,
-        extraHead: ld,
+        extraHead: ld + listLd(up, `/editeur/${p.k}/`, `${p.name} : prochaines sorties manga`, 60),
         body: `<h1>${esc(p.name)} : sorties manga</h1>
 <p class="lead">${up.length ? `${esc(plural(up.length, 'sortie annoncée', 'sorties annoncées'))} chez ${esc(p.name)}, la prochaine le <strong>${esc(nextDay)}</strong>.` : `Aucune sortie n'est annoncée pour le moment chez ${esc(p.name)} dans nos plannings.`} Les dates viennent des plannings officiels et peuvent changer.</p>
 ${fresh.length ? `<h2>Nouvelles séries</h2><ul class="list panel">${fresh.slice(0, 12).map((r) => releaseItem(r, true)).join('')}</ul>` : ''}
 ${up.length ? `<h2>Prochaines sorties</h2><ul class="list panel">${up.slice(0, 40).map((r) => releaseItem(r, true)).join('')}</ul>${up.length > 40 ? `<p class="more muted">${up.length - 40} autres sorties : voir le <a href="/manga/">calendrier complet</a>.</p>` : ''}` : ''}
+${(() => { const mk = [...new Set(up.map((r) => r.date.slice(0, 7)))]; return mk.length ? `<h2>Sorties ${esc(p.name)} par mois</h2><p class="chiprow">${mk.map((m) => `<a class="chip" href="/sorties-manga/${slugify(frMonth(`${m}-01`))}/">${esc(ucfirst(frMonth(`${m}-01`)))}</a>`).join('')}</p>` : ''; })()}
 ${mine.length ? `<h2>Séries ${esc(p.name)} sur le site</h2><ul class="chiprow">${mine.map((S) => `<li><a class="chip" href="/serie/${S.k}/">${esc(S.name)}</a></li>`).join('')}</ul>` : ''}
 <p class="more">${p.k in PUBS ? `<a href="/agenda/${p.k}.ics">Ajouter les sorties ${esc(p.name)} à mon agenda</a> · ` : ''}<a href="/editeurs/">Tous les éditeurs</a> · <a href="/manga/">Calendrier manga</a></p>`,
       });
@@ -1376,7 +1393,7 @@ write('data/recent.json', JSON.stringify({
   }));
 }
 for (const f of ['collection.js', 'visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
-for (const f of ['icon-192.png', 'icon-512.png', 'og.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
+for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
   start_url: '/', scope: '/', display: 'standalone', background_color: '#f4f1ff', theme_color: '#ffd21f',
@@ -1386,7 +1403,7 @@ if (siteUrlOk) {
   const items = articles.slice(0, 20).map((a) => `<item><title>${esc(a.title)}</title><link>${esc(`${base}/articles/${a.slug}/`)}</link><guid isPermaLink="true">${esc(`${base}/articles/${a.slug}/`)}</guid><pubDate>${new Date(`${a.date}T07:00:00Z`).toUTCString()}</pubDate><description>${esc(a.description || a.title)}</description></item>`).join('\n');
   write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0"><channel><title>${esc(config.siteName)}</title><link>${esc(base + '/')}</link><description>${esc(config.description)}</description><language>fr</language>\n${items}\n</channel></rss>\n`);
 }
-write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/sw.js\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n');
+write('_headers', '/*\n  X-Content-Type-Options: nosniff\n  Referrer-Policy: strict-origin-when-cross-origin\n/sw.js\n  Cache-Control: no-cache\n/data/*\n  Cache-Control: no-cache\n/fonts/*\n  Cache-Control: public, max-age=31536000, immutable\n/favicon*\n  Cache-Control: public, max-age=86400\n/icon*\n  Cache-Control: public, max-age=86400\n');
 for (const f of ['dela-400', 'zen-400', 'zen-700', 'zen-900']) write(`fonts/${f}.woff`, readFileSync(path.join(SCRIPTS, 'assets', 'fonts', `${f}.woff`)));
 write('fonts/LICENSE.txt', readFileSync(path.join(SCRIPTS, 'assets', 'fonts', 'LICENSE.txt'), 'utf8'));
 write('style.css', readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'style.css'), 'utf8'));
