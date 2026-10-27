@@ -11,7 +11,7 @@ API AniList (épisodes d'anime) ────┘
 ```
 
 - `data/manga.csv` : tes sorties manga saisies à la main (copie de ton Google Sheets). **Elles priment toujours.**
-- `data/manga-auto.csv` : sorties collectées automatiquement chaque jour sur les plannings de Glénat, Kana, Pika, Ki-oon et Akata (statut « Annoncé »). Ne le modifie pas : il est réécrit. Pour corriger une ligne, ajoute-la dans ton Google Sheets (même ISBN, ou même série + tome) : la tienne remplace l'automatique.
+- `data/manga-auto.csv` : sorties collectées automatiquement chaque jour sur les plannings de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt (dont Tonkam), Soleil et Kazé (statut « Annoncé »). Ne le modifie pas : il est réécrit. Pour corriger une ligne, ajoute-la dans ton Google Sheets (même ISBN, ou même série + tome) : la tienne remplace l'automatique.
 - `data/anime.json` : le programme anime des 8 prochains jours, mis à jour chaque jour.
 - `content/articles/` : **tes** articles (fichiers `.md`). Voir `_modele-article.md`.
 - `content/auto/` : les articles générés automatiquement. Ne les modifie pas : ils sont réécrits à chaque mise à jour.
@@ -50,7 +50,7 @@ Chaque jour : épisodes d'anime du jour, sorties manga du jour, et le lundi les 
 
 ## Collecte automatique des éditeurs
 
-`scripts/collect-manga.mjs` lit chaque jour (≈ 15 requêtes, 2 s d'intervalle, robots.txt respecté) le mois en cours et les 2 suivants sur : le planning Glénat Manga, le planning Kana, le planning Pika, l'API du planning de Ki-oon et le planning Akata. Il n'enregistre que des faits (titre, tome, date, ISBN, prix si disponible, lien) : aucune image ni texte éditorial.
+`scripts/collect-manga.mjs` lit chaque jour (≈ 25 requêtes, 2 s d'intervalle, robots.txt respecté) le mois en cours et les 2 suivants sur : le planning Glénat Manga, le planning Kana, le planning Pika, l'API du planning de Ki-oon, le planning Akata, les pages « à paraître » mangas de Delcourt et de Soleil (même gabarit ; seules les fiches /mangas/ sont gardées) et la boutique Kazé (liste JSON + date lue sur chaque fiche, mémorisée dans `data/kaze-dates.json` pour ne recharger que les nouveautés). Il n'enregistre que des faits (titre, tome, date, ISBN, prix si disponible, lien) : aucune image ni texte éditorial.
 - Si un éditeur change sa page et que plus rien n'est trouvé, ses anciennes lignes sont conservées et la mise à jour continue (le journal de l'onglet *Actions* l'indique : « 0 trouvée »). Il faudra alors corriger le fichier `scripts/collectors.mjs`.
 - Les dates des plannings d'éditeurs peuvent bouger : mentionne-les comme « annoncées ». Vérifie les conditions d'utilisation de chaque site si ton site devient commercial.
 - Test hors ligne : `npm test`.
