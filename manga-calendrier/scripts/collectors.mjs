@@ -168,6 +168,52 @@ export function kazeRow(prod, date) {
   return { date, editeur: 'Kazé', serie, tome, titre, isbn: prod.isbn, prix: prod.prix, source: `https://kazemanga.fr/products/${prod.handle}`, cover: '' };
 }
 
+/* BDbase (agrégateur) : pour les éditeurs sans planning exploitable (Kurokawa, Meian, Mangetsu).
+   La page éditeur liste des cartes ; celles à paraître portent « Sortie le JJ/MM ». Date complète, ISBN, éditeur et série
+   se lisent ensuite dans les données structurées (JSON-LD « Book ») de chaque fiche. */
+export function parseBdbaseList(html) {
+  const out = [];
+  const seen = new Set();
+  const re = /<span class="upcoming">\s*Sortie le\s*(\d{2})\/(\d{2})\s*<\/span>[\s\S]*?<a href="(\/manga\/[a-z0-9-]+)"/g;
+  let m;
+  while ((m = re.exec(html))) {
+    if (seen.has(m[3])) continue;
+    seen.add(m[3]);
+    out.push({ path: m[3], jour: m[1], mois: m[2] });
+  }
+  return out;
+}
+export function parseBdbaseFiche(html, { editeur }) {
+  let book = null;
+  let crumbs = [];
+  for (const m of String(html).matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g)) {
+    let j;
+    try { j = JSON.parse(m[1]); } catch { continue; }
+    for (const node of Array.isArray(j) ? j : [j]) {
+      if (node?.mainEntity?.['@type'] === 'Book') book = node.mainEntity;
+      if (node?.['@type'] === 'Book') book = node;
+      if (node?.breadcrumb?.itemListElement) crumbs = node.breadcrumb.itemListElement;
+    }
+  }
+  if (!book) return null;
+  const pub = String(book.publisher?.name || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const want = String(editeur).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  if (!pub.includes(want)) return null;
+  const date = /^\d{4}-\d{2}-\d{2}$/.test(book.datePublished || '') ? book.datePublished : null;
+  if (!date || !book.name) return null;
+  const names = crumbs.map((c) => decode(c?.item?.name || ''));
+  let serie = '';
+  let tome = '';
+  if (names.length >= 4 && /^\d+$/.test(names[3])) { serie = names[2]; tome = names[3]; }
+  else {
+    const t = decode(book.name);
+    const n = t.match(/^(.*?)[\s,]+(?:vol\.?\s*)?0*(\d+)$/i);
+    if (n && n[1]) { serie = n[1].trim(); tome = n[2]; } else serie = t;
+  }
+  const full = decode(book.name);
+  return { date, editeur, serie, tome, titre: full === serie || full === `${serie} ${tome}` ? '' : full, isbn: isbnOf(String(book.isbn || '').replace(/-/g, '')), prix: null, source: String(book.url || '').startsWith('https://www.bdbase.fr/') ? book.url : '', cover: '' };
+}
+
 /* robots.txt minimal : groupe « User-agent: * », règles Allow/Disallow, la plus longue gagne. */
 /* Akata : une page par mois ; chaque sortie est un lien /publications/<slug> précédé d'une date JJ/MM/AAAA.
    Analyse tolérante : on parcourt la page dans l'ordre, chaque lien reçoit la dernière date vue. */
