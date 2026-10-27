@@ -279,6 +279,11 @@ test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () =
   assert.ok(csv.includes('"Sing ""Yesterday"" for Me",9') && csv.includes('2026-12-03,Delcourt'), 'dates JJ.MM.AAAA et entités décodées');
   assert.ok(csv.includes('2026-10-15,Delcourt,The Brave Wish Revenging,15'), 'fiche à fenêtre modale conservée');
   assert.ok(csv.includes('2026-10-26,Kazé,Vavam Vampire,8,,9782820355218,"7,99"') && !csv.includes('Vieille Série'), 'Kazé : date de la fiche, prix, hors fenêtre exclu');
+  // Kurokawa, Meian, Mangetsu via BDbase : fiches lues une fois, autres éditeurs écartés
+  assert.ok(/Kurokawa : 1/.test(out) && /Mangetsu : 2/.test(out), out);
+  assert.ok(csv.includes('2026-11-12,Kurokawa,Chainsaw Man,19,,9782368099991') && !csv.includes('Autre Série'), 'fiche d\'un autre éditeur écartée');
+  assert.ok(csv.includes('"Ao Ashi, playmaker",37') && csv.includes('One-shot Mangetsu,,,9782377700024'), 'série et tome lus dans le fil d\'Ariane');
+  assert.ok(existsSync(path.join(tmp, 'bdbase-fiches.json')) && existsSync(path.join(tmp, 'kaze-dates.json')));
   // 2e passage identique : rien ne change
   execFileSync(process.execPath, [path.join(ROOT, 'scripts/collect-manga.mjs')], { env, encoding: 'utf8' });
   assert.equal(readFileSync(path.join(tmp, 'manga-auto.csv'), 'utf8'), csv);

@@ -1,4 +1,4 @@
-// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé) -> data/manga-auto.csv
+// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé ; Kurokawa, Meian, Mangetsu via BDbase) -> data/manga-auto.csv
 // Politesse : User-Agent qui s'identifie, robots.txt respecté, ~15 requêtes par jour, 2 s entre deux requêtes.
 // Si un éditeur ne répond pas ou change sa page, ses anciennes lignes sont conservées et le reste continue.
 //
@@ -9,7 +9,7 @@ import path from 'node:path';
 import { paths, now, parisKey, addDays, loadManga } from './lib.mjs';
 import { readChanges, updateChanges, serializeChanges } from './changes.mjs';
 import { recordStatus } from './status.mjs';
-import { parseHachette, parseKana, parseKioon, parseAkata, parseDrupalEditeur, parseKazeProducts, parseKazeDate, kazeRow, robotsAllows } from './collectors.mjs';
+import { parseHachette, parseKana, parseKioon, parseAkata, parseDrupalEditeur, parseKazeProducts, parseKazeDate, kazeRow, parseBdbaseList, parseBdbaseFiche, robotsAllows } from './collectors.mjs';
 
 const P = paths();
 const today = parisKey(now());
@@ -76,6 +76,33 @@ async function drupalRun(editeur, origin) {
     fresh.forEach((r) => known.add(r.isbn || r.source));
     rows.push(...fresh);
   }
+  return rows;
+}
+
+// Kurokawa, Meian, Mangetsu : pas de planning exploitable chez eux, on passe par la page éditeur de BDbase.
+// Les fiches (date, ISBN) sont mémorisées dans data/bdbase-fiches.json et relues au plus une fois par semaine.
+async function bdbaseRun(editeur, slug) {
+  const html = await get(`https://www.bdbase.fr/editeurs/${slug}`);
+  if (!html) return [];
+  const cacheFile = path.join(P.dataDir, 'bdbase-fiches.json');
+  let cache = {};
+  try { cache = JSON.parse(readFileSync(cacheFile, 'utf8')); } catch { /* premier passage */ }
+  const rows = [];
+  let fetched = 0;
+  for (const card of parseBdbaseList(html)) {
+    let hit = cache[card.path];
+    if ((!hit || hit.vu < addDays(today, -7)) && fetched < 40) {
+      fetched++;
+      const page = await get(`https://www.bdbase.fr${card.path}`);
+      const row = page ? parseBdbaseFiche(page, { editeur }) : null;
+      if (row) { hit = { vu: today, row }; cache[card.path] = hit; }
+    }
+    if (hit?.row?.editeur === editeur) rows.push(hit.row);
+  }
+  for (const k of Object.keys(cache)) if (cache[k].vu < addDays(today, -60)) delete cache[k];
+  mkdirSync(P.dataDir, { recursive: true });
+  const out = JSON.stringify(cache, null, 1) + '\n';
+  if (!existsSync(cacheFile) || readFileSync(cacheFile, 'utf8') !== out) writeFileSync(cacheFile, out);
   return rows;
 }
 
@@ -178,6 +205,9 @@ const SOURCES = [
       return rows;
     },
   },
+  { editeur: 'Kurokawa', run: () => bdbaseRun('Kurokawa', 'kurokawa') },
+  { editeur: 'Meian', run: () => bdbaseRun('Meian', 'meian') },
+  { editeur: 'Mangetsu', run: () => bdbaseRun('Mangetsu', 'mangetsu') },
 ];
 
 /* ------------------------------------------------------------- exécution */
