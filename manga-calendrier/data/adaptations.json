@@ -3536,7 +3536,586 @@
     "y": 1998,
     "v": 2
    }
+  },
+  "alice-in-borderland-perfect-edition": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "all-guy-s-mixer": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "animal-crossing-new-horizons-le-journal-de-l-ile": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "ayakashi-triangle": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 142849,
+     "t": "Ayakashi Triangle",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/142849",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GZJH3D0X5/ayakashi-triangle"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81680115"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Kentarou Yabuki"
+    ],
+    "sc": [
+     "Kentarou Yabuki"
+    ],
+    "ar": [
+     "Kentarou Yabuki"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Ecchi",
+     "Romance",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "blue-box": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Kouji Miura"
+    ],
+    "sc": [
+     "Kouji Miura"
+    ],
+    "ar": [
+     "Kouji Miura"
+    ],
+    "g": [
+     "Romance",
+     "Sports"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "ceux-dont-il-ne-faut-pas-tomber-amoureuse": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "dans-l-ombre-de-la-reine": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Ai Kozaki"
+    ],
+    "sc": [
+     "Ai Kozaki"
+    ],
+    "ar": [
+     "Ai Kozaki"
+    ],
+    "g": [
+     "Drama"
+    ],
+    "st": "RELEASING",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "die-and-retry": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "fans-des-sylvanian-families": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Kuko Okano"
+    ],
+    "sc": [
+     "Kuko Okano"
+    ],
+    "ar": [
+     "Kuko Okano"
+    ],
+    "g": [
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "flying-ben-edition-prestige": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "hayao-miyazaki-daydream-notes": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "innocent-bleu": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "l-archange-de-la-decapitation": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "le-jeu-de-la-mort": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Sora Mizuki"
+    ],
+    "sc": [
+     "Sora Mizuki"
+    ],
+    "ar": [
+     "Sora Mizuki"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2017,
+    "v": 2
+   }
+  },
+  "le-temps-n-efface-jamais-le-premier-amour": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "legende-vivante": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "love-coach-koigakubo-kun": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "mission-in-the-apocalypse": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Haruo Iwamune"
+    ],
+    "sc": [
+     "Haruo Iwamune"
+    ],
+    "ar": [
+     "Haruo Iwamune"
+    ],
+    "g": [
+     "Mystery",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2022,
+    "v": 2
+   }
+  },
+  "mon-coloc-est-une-gameuse": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Renjuurou Kindaichi"
+    ],
+    "sc": [
+     "Renjuurou Kindaichi"
+    ],
+    "ar": [
+     "Renjuurou Kindaichi"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2014,
+    "v": 2
+   }
+  },
+  "nana-replay-coffret": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "no-longer-a-rank-party": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "pandora-seven": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Kayashima Yuta"
+    ],
+    "sc": [
+     "Kayashima Yuta"
+    ],
+    "ar": [
+     "Kayashima Yuta"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy",
+     "Mystery",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "plum-un-amour-de-chat": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Natsumi Hoshino"
+    ],
+    "sc": [
+     "Natsumi Hoshino"
+    ],
+    "ar": [
+     "Natsumi Hoshino"
+    ],
+    "g": [
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2008,
+    "v": 2
+   }
+  },
+  "reincarne-dans-un-autre-monde": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "rhapsody-in-red": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Muku Amida"
+    ],
+    "sc": [
+     "Muku Amida"
+    ],
+    "ar": [
+     "Muku Amida"
+    ],
+    "g": [
+     "Drama",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "sans-experience": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "shinobi-undercover": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Santa Mitarashi",
+     "Ippon Takegushi"
+    ],
+    "sc": [
+     "Ippon Takegushi"
+    ],
+    "ar": [
+     "Santa Mitarashi"
+    ],
+    "g": [
+     "Action",
+     "Comedy"
+    ],
+    "st": "RELEASING",
+    "y": 2024,
+    "v": 2
+   }
+  },
+  "sing-yesterday-for-me": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 109020,
+     "t": "SING \"YESTERDAY\" FOR ME",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/109020",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/sing-yesterday-for-me"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81266992"
+      }
+     ]
+    },
+    {
+     "id": 117496,
+     "t": "Yesterday wo Utatte Extras",
+     "st": "FINISHED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/117496",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Kei Toume"
+    ],
+    "sc": [
+     "Kei Toume"
+    ],
+    "ar": [
+     "Kei Toume"
+    ],
+    "g": [
+     "Drama",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 1997,
+    "v": 2
+   }
+  },
+  "super-mario-manga-adventures": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "switch-girl-edition-double": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "teacher-killer": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "the-jojolands": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Hirohiko Araki"
+    ],
+    "sc": [
+     "Hirohiko Araki"
+    ],
+    "ar": [
+     "Hirohiko Araki"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "ton-toutou-ou-moi": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "yaiba-complete-edition": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "2-5-dimensional-seduction": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 185515,
+     "t": "2.5-jigen no Ririsa 2nd Season",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/185515",
+     "s": []
+    },
+    {
+     "id": 158559,
+     "t": "2.5 Dimensional Seduction",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/158559",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GP5HJ845X/25-dimensional-seduction"
+      },
+      {
+       "n": "Prime Video",
+       "u": "https://www.primevideo.com/detail/25-Dimensional-Seduction/0RPPVG8WFKOLFZQREHL7L748WG"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81909977"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuu Hashimoto"
+    ],
+    "sc": [
+     "Yuu Hashimoto"
+    ],
+    "ar": [
+     "Yuu Hashimoto"
+    ],
+    "g": [
+     "Comedy",
+     "Ecchi",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2019,
+    "v": 2
+   }
+  },
+  "back-from-hell": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "escape-ray": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Geon-U"
+    ],
+    "sc": [
+     "Geon-U"
+    ],
+    "ar": [
+     "Geon-U"
+    ],
+    "g": [
+     "Action",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "eternal-covenant": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Hae-Jin"
+    ],
+    "sc": [
+     "Hae-Jin"
+    ],
+    "ar": [
+     "Hae-Jin"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "par-dela-les-neiges-eternelles": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "the-brave-wish-revenging": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Akira Sakamoto",
+     "Manimani Ononata"
+    ],
+    "sc": [
+     "Akira Sakamoto"
+    ],
+    "ar": [
+     "Akira Sakamoto"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2019,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-10-27T14:40:02.177Z"
+ "generatedAt": "2026-10-27T15:16:17.092Z"
 }

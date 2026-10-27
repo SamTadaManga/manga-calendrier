@@ -24,10 +24,10 @@ Kana · action, drame, fantasy · Tunakan Suda · depuis 2022
 
 Akata · comédie, tranche de vie · Shundei · depuis 2014
 
-## [Qui a vu le paon danser ?](/serie/qui-a-vu-le-paon-danser/)
+## [Pandora Seven](/serie/pandora-seven/)
 
-Akata · mystère · Rito Asami et Tom Bertrand · depuis 2022
+Soleil · action, aventure, fantasy · Kayashima Yuta · depuis 2021
 
-## [Komi cherche ses mots](/serie/komi-cherche-ses-mots/)
+## [2.5 Dimensional Seduction](/serie/2-5-dimensional-seduction/)
 
-Pika · comédie, romance, tranche de vie · Tomohito Oda et Erwan Lossois · depuis 2016
+Soleil · comédie, ecchi, romance · Yuu Hashimoto · depuis 2019

@@ -1,12 +1,12 @@
 ---
 title: "Éditions collector, coffrets et éditions spéciales manga de novembre 2026"
 date: 2026-11-01
-description: "10 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
+description: "14 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
 auto: true
 draft: false
 ---
 
-10 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
+14 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
 
 ## Collectors
 
@@ -16,6 +16,8 @@ draft: false
 ## Coffrets
 
 - **L'Atelier des Sorciers Coffret tome 1** (Pika) : mer. 4 nov. · [la série](/serie/l-atelier-des-sorciers-coffret/)
+- **Blue Box tome 13** (Delcourt) : jeu. 19 nov. · [la série](/serie/blue-box/)
+- **Nana Replay - Coffret tome 11** (Delcourt) : jeu. 19 nov. · [la série](/serie/nana-replay-coffret/)
 
 ## Artbooks et guides
 
@@ -25,8 +27,10 @@ draft: false
 
 - **Bleach Deluxe tome 2** (Glénat) : mer. 4 nov. · [la série](/serie/bleach-deluxe/)
 - **Dragon Ball - Full Color - Freezer tome 3** (Glénat) : mer. 4 nov. · [la série](/serie/dragon-ball-full-color-freezer/)
+- **Flying Ben - Édition prestige** (Delcourt) : jeu. 12 nov. · [la série](/serie/flying-ben-edition-prestige/)
 - **Berserk - Tarot** (Glénat) : mer. 18 nov. · [la série](/serie/berserk-tarot/)
 - **Berserk Prestige tome 7** (Glénat) : mer. 18 nov. · [la série](/serie/berserk-prestige/)
+- **Alice in Borderland Perfect Edition tome 2** (Delcourt) : jeu. 19 nov. · [la série](/serie/alice-in-borderland-perfect-edition/)
 
 ## Éditions spéciales
 
