@@ -183,7 +183,7 @@ export function parseBdbaseList(html) {
   }
   return out;
 }
-export function parseBdbaseFiche(html, { editeur }) {
+export function parseBdbaseFiche(html, { editeur, match = editeur }) {
   let book = null;
   let crumbs = [];
   for (const m of String(html).matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/g)) {
@@ -197,7 +197,7 @@ export function parseBdbaseFiche(html, { editeur }) {
   }
   if (!book) return null;
   const pub = String(book.publisher?.name || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  const want = String(editeur).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const want = String(match).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
   if (!pub.includes(want)) return null;
   const date = /^\d{4}-\d{2}-\d{2}$/.test(book.datePublished || '') ? book.datePublished : null;
   if (!date || !book.name) return null;
