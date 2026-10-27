@@ -81,7 +81,7 @@ async function drupalRun(editeur, origin) {
 
 // Kurokawa, Meian, Mangetsu : pas de planning exploitable chez eux, on passe par la page éditeur de BDbase.
 // Les fiches (date, ISBN) sont mémorisées dans data/bdbase-fiches.json et relues au plus une fois par semaine.
-async function bdbaseRun(editeur, slug) {
+async function bdbaseRun(editeur, slug, match = editeur) {
   const html = await get(`https://www.bdbase.fr/editeurs/${slug}`);
   if (!html) return [];
   const cacheFile = path.join(P.dataDir, 'bdbase-fiches.json');
@@ -94,7 +94,7 @@ async function bdbaseRun(editeur, slug) {
     if ((!hit || hit.vu < addDays(today, -7)) && fetched < 40) {
       fetched++;
       const page = await get(`https://www.bdbase.fr${card.path}`);
-      const row = page ? parseBdbaseFiche(page, { editeur }) : null;
+      const row = page ? parseBdbaseFiche(page, { editeur, match }) : null;
       if (row) { hit = { vu: today, row }; cache[card.path] = hit; }
     }
     if (hit?.row?.editeur === editeur) rows.push(hit.row);
@@ -208,6 +208,8 @@ const SOURCES = [
   { editeur: 'Kurokawa', run: () => bdbaseRun('Kurokawa', 'kurokawa') },
   { editeur: 'Meian', run: () => bdbaseRun('Meian', 'meian') },
   { editeur: 'Mangetsu', run: () => bdbaseRun('Mangetsu', 'mangetsu') },
+  // Panini renvoie les robots vers une file d'attente (Queue-it) : on ne la contourne pas. BDbase range Panini Manga sous « Panini Comics » ; seules les fiches /manga/ sont lues.
+  { editeur: 'Panini Manga', run: () => bdbaseRun('Panini Manga', 'panini-comics', 'panini') },
 ];
 
 /* ------------------------------------------------------------- exécution */
