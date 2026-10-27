@@ -166,7 +166,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(fiche.includes('Où regarder') && fiche.includes('Regarder sur Crunchyroll') && !fiche.includes('evil.example'), 'fiche anime avec liens de streaming');
   assert.ok(dist('theme.js') && existsSync(dist('theme.js')) && existsSync(dist('agenda/kana.ics')), 'thème et agendas par éditeur');
   const sp0 = read(dist('serie/serie-fictive-alpha/index.html'));
-  assert.ok(sp0.includes('class="shops') && sp0.includes('https://www.amazon.fr/dp/2000000010') && sp0.includes('fnac.com/SearchResult') && sp0.includes('cultura.com') && sp0.includes('bdfugue.com'), "liens d'achat par ISBN");
+  assert.ok(sp0.includes('class="shops') && sp0.includes('https://www.amazon.fr/dp/2000000010') && !sp0.includes('fnac.com') && sp0.includes('cultura.com') && sp0.includes('bdfugue.com'), "liens d'achat par ISBN");
   assert.ok(!sp0.includes('sponsored') && !sp0.includes('affil-note') && !read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('id="affiliation"'), "pas de mention d'affiliation sans lien d'affiliation");
   const cfg0 = JSON.parse(readFileSync(dirs.CONFIG_FILE, 'utf8'));
   const withShops = (shops) => { writeFileSync(dirs.CONFIG_FILE, JSON.stringify({ ...cfg0, shops })); run('build.mjs'); };
@@ -175,10 +175,10 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(homeP.includes('class="stream shop'), 'accueil : boutons d\'achat');
   let sp1;
   try {
-    withShops({ fnac: { affiliate: 'https://track.example/c?u={urlenc}' }, cultura: { enabled: false } });
+    withShops({ bdfugue: { affiliate: 'https://track.example/c?u={urlenc}' }, cultura: { enabled: false } });
     sp1 = read(dist('serie/serie-fictive-alpha/index.html'));
   } finally { writeFileSync(dirs.CONFIG_FILE, JSON.stringify(cfg0)); }
-  assert.ok(sp1.includes('https://track.example/c?u=https%3A%2F%2Fwww.fnac.com') && sp1.includes('rel="sponsored nofollow noopener"') && sp1.includes('class="stream shop') && !sp1.includes('cultura.com') && sp1.includes('affil-note'), "lien d'affiliation remplaçable, boutique désactivable, mention affichée");
+  assert.ok(sp1.includes('https://track.example/c?u=https%3A%2F%2Fwww.bdfugue.com') && sp1.includes('rel="sponsored nofollow noopener"') && sp1.includes('class="stream shop') && !sp1.includes('cultura.com') && sp1.includes('affil-note'), "lien d'affiliation remplaçable, boutique désactivable, mention affichée");
   assert.ok(read(dirs.OUT_DIR, 'mentions-legales/index.html').includes('id="affiliation"'), "mention légale d'affiliation");
   withShops({ amazon: { tag: 'prochaintome-21' } });
   const spA = read(dist('serie/serie-fictive-alpha/index.html'));
@@ -194,7 +194,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
   assert.ok(!read(dist('serie/serie-fictive-alpha/index.html')).includes('goodies'), 'pas de goodies sans Amazon');
   assert.equal(bu(amz, '9791032723999'), 'https://www.amazon.fr/s?k=9791032723999&i=stripbooks&tag=prochaintome-21', 'ISBN en 979 : recherche + tag');
   try {
-    withShops({ fnac: { affiliate: 'javascript:alert(1)' } });
+    withShops({ bdfugue: { affiliate: 'javascript:alert(1)' } });
     assert.ok(!read(dist('serie/serie-fictive-alpha/index.html')).includes('javascript:'), "lien d'affiliation non https refusé");
   } finally { writeFileSync(dirs.CONFIG_FILE, JSON.stringify(cfg0)); }
   run('build.mjs');
