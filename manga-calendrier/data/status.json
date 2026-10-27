@@ -2,146 +2,146 @@
  "version": 1,
  "sources": {
   "Anime · AniList": {
-   "lastRun": "2026-10-27T15:59:38.647Z",
+   "lastRun": "2026-10-27T16:10:53.832Z",
    "ok": true,
    "count": 110,
    "note": "",
-   "lastSuccess": "2026-10-27T15:59:38.647Z",
+   "lastSuccess": "2026-10-27T16:10:53.832Z",
    "lastSuccessCount": 110,
    "fails": 0
   },
   "Anime · Saisons AniList": {
-   "lastRun": "2026-10-27T15:59:34.748Z",
+   "lastRun": "2026-10-27T16:10:48.520Z",
    "ok": true,
    "count": 80,
    "note": "",
-   "lastSuccess": "2026-10-27T15:59:34.748Z",
+   "lastSuccess": "2026-10-27T16:10:48.520Z",
    "lastSuccessCount": 80,
    "fails": 0
   },
   "Complément · Flux RSS": {
-   "lastRun": "2026-10-27T15:59:29.096Z",
+   "lastRun": "2026-10-27T16:10:41.970Z",
    "ok": true,
    "count": 2,
    "note": "",
-   "lastSuccess": "2026-10-27T15:59:29.096Z",
+   "lastSuccess": "2026-10-27T16:10:41.970Z",
    "lastSuccessCount": 2,
    "fails": 0
   },
   "Complément · Google Books": {
-   "lastRun": "2026-10-27T15:58:34.346Z",
+   "lastRun": "2026-10-27T16:09:41.289Z",
    "ok": true,
    "count": 0,
    "note": "répond, mais aucun tome daté dans les 2 mois",
-   "lastSuccess": "2026-10-27T15:58:34.346Z",
+   "lastSuccess": "2026-10-27T16:09:41.289Z",
    "lastSuccessCount": 0,
    "fails": 0
   },
   "Manga · Akata": {
-   "lastRun": "2026-10-27T15:56:56.423Z",
+   "lastRun": "2026-10-27T16:08:05.421Z",
    "ok": true,
    "count": 31,
    "note": "",
-   "lastSuccess": "2026-10-27T15:56:56.423Z",
+   "lastSuccess": "2026-10-27T16:08:05.421Z",
    "lastSuccessCount": 31,
    "fails": 0
   },
   "Manga · Delcourt": {
-   "lastRun": "2026-10-27T15:57:03.356Z",
+   "lastRun": "2026-10-27T16:08:11.672Z",
    "ok": true,
    "count": 27,
    "note": "",
-   "lastSuccess": "2026-10-27T15:57:03.356Z",
+   "lastSuccess": "2026-10-27T16:08:11.672Z",
    "lastSuccessCount": 27,
    "fails": 0
   },
   "Manga · Glénat": {
-   "lastRun": "2026-10-27T15:56:22.240Z",
+   "lastRun": "2026-10-27T16:07:31.258Z",
    "ok": true,
    "count": 19,
    "note": "",
-   "lastSuccess": "2026-10-27T15:56:22.240Z",
+   "lastSuccess": "2026-10-27T16:07:31.258Z",
    "lastSuccessCount": 19,
    "fails": 0
   },
   "Manga · Kana": {
-   "lastRun": "2026-10-27T15:56:29.469Z",
+   "lastRun": "2026-10-27T16:07:38.198Z",
    "ok": true,
    "count": 46,
    "note": "",
-   "lastSuccess": "2026-10-27T15:56:29.469Z",
+   "lastSuccess": "2026-10-27T16:07:38.198Z",
    "lastSuccessCount": 46,
    "fails": 0
   },
   "Manga · Kazé": {
-   "lastRun": "2026-10-27T15:57:29.204Z",
+   "lastRun": "2026-10-27T16:08:37.627Z",
    "ok": false,
    "count": 0,
    "note": "aucune sortie trouvée, 0 ancienne(s) conservée(s)",
    "lastSuccess": null,
    "lastSuccessCount": null,
-   "fails": 4
+   "fails": 5
   },
   "Manga · Ki-oon": {
-   "lastRun": "2026-10-27T15:56:50.327Z",
+   "lastRun": "2026-10-27T16:07:59.369Z",
    "ok": true,
    "count": 28,
    "note": "",
-   "lastSuccess": "2026-10-27T15:56:50.327Z",
+   "lastSuccess": "2026-10-27T16:07:59.369Z",
    "lastSuccessCount": 28,
    "fails": 0
   },
   "Manga · Kurokawa": {
-   "lastRun": "2026-10-27T15:57:31.358Z",
+   "lastRun": "2026-10-27T16:08:39.870Z",
    "ok": true,
    "count": 12,
    "note": "",
-   "lastSuccess": "2026-10-27T15:57:31.358Z",
+   "lastSuccess": "2026-10-27T16:08:39.870Z",
    "lastSuccessCount": 12,
    "fails": 0
   },
   "Manga · Mangetsu": {
-   "lastRun": "2026-10-27T15:57:35.302Z",
+   "lastRun": "2026-10-27T16:08:43.845Z",
    "ok": true,
    "count": 12,
    "note": "",
-   "lastSuccess": "2026-10-27T15:57:35.302Z",
+   "lastSuccess": "2026-10-27T16:08:43.845Z",
    "lastSuccessCount": 12,
    "fails": 0
   },
   "Manga · Meian": {
-   "lastRun": "2026-10-27T15:57:33.200Z",
+   "lastRun": "2026-10-27T16:08:41.723Z",
    "ok": true,
    "count": 11,
    "note": "",
-   "lastSuccess": "2026-10-27T15:57:33.200Z",
+   "lastSuccess": "2026-10-27T16:08:41.723Z",
    "lastSuccessCount": 11,
    "fails": 0
   },
   "Manga · Panini Manga": {
-   "lastRun": "2026-10-27T15:57:37.621Z",
+   "lastRun": "2026-10-27T16:08:45.968Z",
    "ok": true,
    "count": 2,
    "note": "",
-   "lastSuccess": "2026-10-27T15:57:37.621Z",
+   "lastSuccess": "2026-10-27T16:08:45.968Z",
    "lastSuccessCount": 2,
    "fails": 0
   },
   "Manga · Pika": {
-   "lastRun": "2026-10-27T15:56:44.314Z",
+   "lastRun": "2026-10-27T16:07:53.317Z",
    "ok": true,
    "count": 61,
    "note": "",
-   "lastSuccess": "2026-10-27T15:56:44.314Z",
+   "lastSuccess": "2026-10-27T16:07:53.317Z",
    "lastSuccessCount": 61,
    "fails": 0
   },
   "Manga · Soleil": {
-   "lastRun": "2026-10-27T15:57:07.105Z",
+   "lastRun": "2026-10-27T16:08:15.655Z",
    "ok": true,
    "count": 14,
    "note": "",
-   "lastSuccess": "2026-10-27T15:57:07.105Z",
+   "lastSuccess": "2026-10-27T16:08:15.655Z",
    "lastSuccessCount": 14,
    "fails": 0
   }
