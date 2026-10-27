@@ -1,4 +1,4 @@
-// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé ; Kurokawa, Meian, Mangetsu via BDbase) -> data/manga-auto.csv
+// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil ; Kazé, Kurokawa, Meian, Mangetsu, Panini Manga via BDbase) -> data/manga-auto.csv
 // Politesse : User-Agent qui s'identifie, robots.txt respecté, ~15 requêtes par jour, 2 s entre deux requêtes.
 // Si un éditeur ne répond pas ou change sa page, ses anciennes lignes sont conservées et le reste continue.
 //
@@ -9,7 +9,7 @@ import path from 'node:path';
 import { paths, now, parisKey, addDays, loadManga } from './lib.mjs';
 import { readChanges, updateChanges, serializeChanges } from './changes.mjs';
 import { recordStatus } from './status.mjs';
-import { parseHachette, parseKana, parseKioon, parseAkata, parseDrupalEditeur, parseKazeProducts, parseKazeDate, kazeRow, parseBdbaseList, parseBdbaseFiche, robotsAllows } from './collectors.mjs';
+import { parseHachette, parseKana, parseKioon, parseAkata, parseDrupalEditeur, parseKazeProducts, parseBdbaseList, parseBdbaseFiche, robotsAllows } from './collectors.mjs';
 
 const P = paths();
 const today = parisKey(now());
@@ -178,47 +178,28 @@ const SOURCES = [
     run: () => drupalRun('Soleil', 'https://www.editions-soleil.fr'),
   },
   {
+    // Kazé : les sorties à venir viennent de BDbase (le catalogue de la boutique compte des milliers de titres sans date de parution
+    // dans la liste) ; la boutique kazemanga.fr sert ensuite à retrouver le prix, la couverture et le lien de chaque tome par son ISBN.
     editeur: 'Kazé',
     async run() {
-      // La collection « à venir » est souvent vide ou périmée : on lit tout le catalogue (JSON, 250 produits par page)
-      // et on ne garde que les produits créés récemment, qui sont ceux dont la parution est proche.
-      const all = [];
-      for (let page = 1; page <= 8; page++) {
+      const rows = await bdbaseRun('Kazé', 'kaze');
+      if (!rows.length) return rows;
+      const shop = new Map();
+      for (let page = 1; page <= 20; page++) {
         const j = await get(`https://kazemanga.fr/products.json?limit=250&page=${page}`, { json: true });
         const got = j ? parseKazeProducts(j) : [];
-        if (!got.length) break;
-        all.push(...got);
+        got.forEach((p) => p.isbn && shop.set(p.isbn, p));
         if (got.length < 250) break;
       }
-      const venir = await get('https://kazemanga.fr/collections/a-venir/products.json?limit=100', { json: true });
-      const known = new Set(all.map((p) => p.handle));
-      if (venir) all.push(...parseKazeProducts(venir).filter((p) => !known.has(p.handle)));
-      if (!all.length) throw new Error('catalogue introuvable (robots.txt ou page absente)');
-      const recent = addDays(today, -150);
-      const list = all.filter((p) => !p.created || p.created >= recent);
-      // les dates déjà lues sont gardées d'un jour à l'autre : on ne recharge que les fiches nouvelles
-      const cacheFile = path.join(P.dataDir, 'kaze-dates.json');
-      let cache = {};
-      try { cache = JSON.parse(readFileSync(cacheFile, 'utf8')); } catch { /* premier passage */ }
-      const rows = [];
-      let fetched = 0;
-      for (const prod of list) {
-        let date = cache[prod.handle]?.date;
-        if (!date && fetched < 60) {
-          fetched++;
-          const html = await get(`https://kazemanga.fr/products/${prod.handle}`);
-          date = html ? parseKazeDate(html) : null;
-          if (date) cache[prod.handle] = { date, vu: today };
-        }
-        if (date) rows.push(kazeRow(prod, date));
-      }
-      console.log(`  Kazé : ${all.length} produits au catalogue, ${list.length} récents, ${rows.length} avec une date de parution`);
-      for (const k of Object.keys(cache)) if (cache[k].date < addDays(today, -60)) delete cache[k];
-      if (!rows.length) throw new Error(`${list.length} produit(s) récent(s) sur ${all.length}, aucune date de parution lue sur les fiches`);
-      mkdirSync(P.dataDir, { recursive: true });
-      const out = JSON.stringify(cache, null, 1) + '\n';
-      if (!existsSync(cacheFile) || readFileSync(cacheFile, 'utf8') !== out) writeFileSync(cacheFile, out);
-      return rows;
+      let matched = 0;
+      const out = rows.map((r) => {
+        const p = shop.get(r.isbn);
+        if (!p) return r;
+        matched++;
+        return { ...r, prix: p.prix ?? r.prix, cover: p.cover || r.cover, source: `https://kazemanga.fr/products/${p.handle}` };
+      });
+      console.log(`  Kazé : ${rows.length} sorties à venir, ${matched} retrouvées dans la boutique (prix, couverture)`);
+      return out;
     },
   },
   { editeur: 'Kurokawa', run: () => bdbaseRun('Kurokawa', 'kurokawa') },
