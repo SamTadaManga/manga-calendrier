@@ -166,7 +166,7 @@ ${siteUrlOk ? `<link rel="alternate" type="application/rss+xml" title="${esc(con
 ${extraHead}
 ${ANALYTICS}
 </head>
-<body>
+<body${pathname === '/404.html' ? ' data-404' : ''}>
 <a class="skip" href="#contenu">Aller au contenu</a>
 <header class="site-header"><div class="wrap hbar"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>${esc(config.siteName)}</a><div class="tools"></div><nav aria-label="Navigation principale">${nav}</nav></div></header>
 <main class="wrap" id="contenu">
@@ -177,6 +177,7 @@ ${body}
 <p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a><a href="/changements/">Changements</a><a href="/mes-animes/">Mes animes</a><a href="/mon-planning/">Mon planning</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/genres/">Genres</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
+<script src="${av('mesure.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
 <script src="${av('clic.js')}" defer></script>
 <script src="${av('recherche.js')}" defer></script>
@@ -1328,7 +1329,10 @@ else{msg.select();done('Sélectionne et copie le texte.');}});
 <h2>Données et contenus</h2>
 <p>Les horaires des épisodes d'anime proviennent de l'API AniList. Les dates de sortie des mangas sont relevées auprès des sources officielles des éditeurs et peuvent évoluer. Les titres, marques et visuels cités appartiennent à leurs propriétaires respectifs. Ce site n'est affilié à aucun éditeur ni à aucune plateforme.</p>
 <h2>Cookies et données personnelles</h2>
-<p>Ce site ne dépose pas de cookies.${ANALYTICS ? ' La fréquentation est mesurée avec Cloudflare Web Analytics, un outil sans cookie qui ne crée aucun profil individuel : il compte les pages vues, les pays et les navigateurs de façon agrégée, sans stocker d’adresse IP.' : ''}${NL.on ? '' : ' Il ne collecte pas de données personnelles.'}${showCovers ? ' Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.' : ''}</p>
+<p>Ce site ne dépose pas de cookies.${ANALYTICS ? ' La fréquentation est aussi mesurée avec Cloudflare Web Analytics, un outil sans cookie qui ne crée aucun profil individuel : il compte les pages vues, les pays et les navigateurs de façon agrégée, sans stocker d’adresse IP.' : ''}</p>
+<h2 id="mesure">Mesure d'audience</h2>
+<p>Pour savoir quelles pages sont utiles, le site mesure sa fréquentation avec son propre outil, sans cookie et sans transmettre de données à des tiers. Pour chaque page vue sont enregistrés : la page, le site d'où tu viens, le pays (déduit par l'hébergeur), le type d'appareil, le navigateur et le système, le temps passé sur la page et la part de la page parcourue, ainsi que les termes tapés dans la recherche du site. Ton adresse IP n'est jamais enregistrée : elle sert seulement, le jour même, à calculer une empreinte anonyme qui permet de compter les visiteurs uniques ; la clé de calcul est détruite chaque jour, si bien qu'il devient impossible de relier une visite à une personne ou à une autre journée. Ces données servent uniquement à produire des statistiques pour l'éditeur du site et sont supprimées au bout de 13 mois. Rien n'est mesuré si ton navigateur envoie « Ne pas me suivre ». Tu peux aussi <a href="/?mesure=non" rel="nofollow">refuser la mesure sur cet appareil</a> (et <a href="/?mesure=oui" rel="nofollow">l'accepter à nouveau</a>).</p>
+${showCovers ? '<p>Les couvertures des tomes et les affiches d’anime sont affichées depuis les serveurs des éditeurs, de leurs diffuseurs ou d’AniList : en consultant une page qui en contient, votre navigateur leur transmet votre adresse IP, comme pour toute image hébergée ailleurs.</p>' : ''}
 ${AFFILIATE_ON ? `<h2 id="affiliation">Liens d'affiliation</h2>
 <p>Certains liens d'achat (${esc(SHOPLIST.filter((x) => x.sponsored).map((x) => x.name).join(', '))}) sont des liens d'affiliation : si tu achètes après avoir cliqué, le site peut percevoir une commission, sans que le prix change pour toi. Ces liens sont signalés sur les pages concernées et n'influencent pas les dates ni les informations publiées. Pour savoir quels liens sont utiles, le site compte les clics sur les boutons d'achat de façon anonyme : seuls la boutique, la série, la page et le jour sont enregistrés, sans cookie, sans adresse IP et sans identifiant. Rien n'est compté si ton navigateur envoie « Ne pas me suivre ».</p>
 ${SHOPLIST.some((x) => x.id === 'amazon' && x.sponsored) ? `<p>En tant que Partenaire Amazon, je réalise un bénéfice sur les achats remplissant les conditions requises.</p>
@@ -1404,7 +1408,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));
 }
-for (const f of ['collection.js', 'visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['collection.js', 'mesure.js', 'visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',

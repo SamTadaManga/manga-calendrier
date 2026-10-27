@@ -35,6 +35,13 @@ Le site tourne sur **Cloudflare Workers** (fichiers statiques + un petit Worker 
 - **Secrets** : ne les colle jamais dans un fichier, une issue ou une conversation. Si un jeton Cloudflare a fuité : Cloudflare → *My Profile → API Tokens* → *Roll*, puis mets le nouveau dans le secret GitHub. Le rapport de clics (`/api/clics?cle=…`) est protégé par le secret `STATS_KEY` du Worker.
 - **Données personnelles** : la collection, les séries suivies et les statuts restent dans le navigateur des visiteurs (aucun compte, rien n'est envoyé). Le site ne dépose pas de cookie de suivi.
 
+## Statistiques de visite (tableau de bord privé)
+- **Adresse** : https://prochaintome.fr/api/tableau — la page demande la clé `STATS_KEY` (la même que pour le rapport de clics) et la garde dans le navigateur. Fonctionne sur ordinateur et téléphone.
+- **Chiffres** : visiteurs uniques, visites, pages vues, durée moyenne de visite, pages par visite, rebond, visites engagées, nouveaux visiteurs, évolution jour par jour (avec la période précédente), heures et jours de visite, pages les plus vues (temps moyen, part lue, chargement), rubriques, pages d'entrée et de sortie, canaux, sites référents, campagnes (`?utm_source=`), pays, appareils, navigateurs, systèmes, recherches tapées sur le site, pages introuvables, clics d'achat, visiteurs en ce moment.
+- **Fonctionnement** : `scripts/mesure.js` envoie la page vue puis le temps passé (onglet visible) à `/api/vu` ; le Worker les range dans une base SQLite (Durable Object `Audience`, offre gratuite Cloudflare), voir `worker/audience.js`. Aucun cookie, l'adresse IP n'est jamais stockée (empreinte du jour avec une clé détruite chaque nuit), données gardées 13 mois.
+- **Tes propres visites** : ouvrir le tableau de bord exclut ce navigateur des statistiques. Sur un autre appareil, ouvre une fois https://prochaintome.fr/?mesure=non (et `?mesure=oui` pour annuler).
+- Cloudflare Web Analytics reste actif en parallèle (utile pour les Core Web Vitals).
+
 ## Utilisation au quotidien
 
 - **Sorties manga** : remplis le Google Sheets (modèle fourni). Pour une mise à jour automatique :

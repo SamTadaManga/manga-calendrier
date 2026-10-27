@@ -3,6 +3,15 @@
 // GET  /api/clics  : rapport lisible, protégé par le secret STATS_KEY (?cle=...)
 // Les compteurs sont stockés dans KV (liaison CLICS) : une clé par jour, boutique, série et type de page.
 // Le reste du site est servi tel quel par Cloudflare (run_worker_first ne concerne que /api/*).
+// Mesure d'audience (voir worker/audience.js) :
+// POST /api/vu      : une page vue ({e:'v'}) ou le temps passé dessus ({e:'f'})
+// GET  /api/stats   : statistiques JSON, protégées par STATS_KEY (en-tête X-Cle)
+// GET  /api/tableau : tableau de bord privé (la page demande la clé, gardée sur l'appareil)
+
+import { Audience, BOT, cleanEvent, parisParts, shiftDay } from './audience.js';
+import { TABLEAU } from './tableau.js';
+
+export { Audience };
 
 export const SHOPS = ['amazon', 'fnac', 'cultura', 'bdfugue', 'goodies'];
 export const PAGES = ['home', 'manga', 'serie', 'anime', 'mon-planning', 'recherche', 'editeur', 'sorties-manga', 'semaine', 'articles', 'autre'];
@@ -63,9 +72,68 @@ ${table('Par boutique', s.shops)}${table('Par type de page', s.pages)}${table('S
 
 const sameSecret = (a, b) => { if (!a || !b || a.length !== b.length) return false; let r = 0; for (let i = 0; i < a.length; i++) r |= a.charCodeAt(i) ^ b.charCodeAt(i); return r === 0; };
 
+const audience = (env) => env.AUDIENCE.get(env.AUDIENCE.idFromName('prochaintome'));
+const PERIODES = { jour: 1, 7: 7, 30: 30, 90: 90, 365: 365 };
+export function periode(params, now = Date.now()) {
+  const today = parisParts(now).jour;
+  const ok = (d) => /^\d{4}-\d{2}-\d{2}$/.test(d || '');
+  let de = params.get('de'); let a = params.get('a');
+  if (ok(de) && ok(a) && de <= a && a <= today) {
+    if (shiftDay(de, 400) < a) de = shiftDay(a, -400);
+    return { de, a };
+  }
+  if (params.get('p') === 'hier') { const h = shiftDay(today, -1); return { de: h, a: h }; }
+  const n = PERIODES[params.get('p')] || 30;
+  return { de: shiftDay(today, -(n - 1)), a: today };
+}
+
+async function vu(request, env, ctx, url) {
+  const origin = request.headers.get('Origin');
+  if (origin && new URL(origin).host !== url.host) return 'origine';
+  if (!env.AUDIENCE) return 'nodo';
+  const ua = request.headers.get('User-Agent') || '';
+  if (!ua || BOT.test(ua)) return 'robot';
+  const text = await request.text();
+  if (text.length > 1000) return 'invalide';
+  const ev = cleanEvent(JSON.parse(text));
+  if (!ev) return 'invalide';
+  const meta = { now: Date.now(), ip: request.headers.get('CF-Connecting-IP') || '', ua, pays: (request.cf && request.cf.country) || 'XX', host: url.host };
+  const p = audience(env).fetch('https://audience/event', { method: 'POST', body: JSON.stringify({ ev, meta }) });
+  if (ctx && ctx.waitUntil) ctx.waitUntil(p.catch((err) => console.error('vu', err && err.message))); else await p;
+  return 'ok';
+}
+
+async function stats(env, url) {
+  const { de, a } = periode(url.searchParams);
+  const r = await audience(env).fetch(`https://audience/stats?de=${de}&a=${a}&now=${Date.now()}`);
+  const out = await r.json();
+  if (env.CLICS) {
+    const rows = (await collect(env)).filter((x) => x.d >= de && x.d <= a);
+    const s = summarize(rows, a);
+    out.clics = { total: s.total, boutiques: s.shops, series: s.series.slice(0, 15), pages: s.pages };
+  }
+  return out;
+}
+
+const NOSTORE = { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' };
+
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    if (url.pathname === '/api/vu' && request.method === 'POST') {
+      let etat;
+      try { etat = await vu(request, env, ctx, url); } catch (err) { etat = 'erreur'; console.error('vu', err && err.message); }
+      return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store', 'X-Vu': etat } });
+    }
+    if (url.pathname === '/api/stats' && request.method === 'GET') {
+      if (!env.STATS_KEY || !env.AUDIENCE || !sameSecret(request.headers.get('X-Cle') || '', String(env.STATS_KEY))) return new Response('Introuvable', { status: 404, headers: NOSTORE });
+      return Response.json(await stats(env, url), { headers: NOSTORE });
+    }
+    if (url.pathname === '/api/tableau' || url.pathname === '/api/tableau/') {
+      return new Response(TABLEAU, { headers: { 'content-type': 'text/html; charset=utf-8', ...NOSTORE,
+        'Content-Security-Policy': "default-src 'self'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; frame-ancestors 'none'",
+        'Referrer-Policy': 'no-referrer' } });
+    }
     if (url.pathname === '/api/clic' && request.method === 'POST') {
       // La réponse est toujours 204 (un compteur ne doit jamais gêner la navigation) ; l'en-tête X-Clic indique ce qui s'est passé : ok, ignore, nokv ou erreur
       let etat = 'ignore';

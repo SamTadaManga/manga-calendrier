@@ -486,7 +486,7 @@ test('newsletter : formulaire et mentions seulement si formAction est renseigné
   };
   const off = build({}, 'off');
   assert.ok(!off('index.html').includes('nl-form') && !off('newsletter/index.html').includes('<form') && off('newsletter/index.html').includes('noindex'));
-  assert.ok(off('mentions-legales/index.html').includes('ne collecte pas de données personnelles'));
+  assert.ok(!off('mentions-legales/index.html').includes('id="newsletter"'));
   const on = build({ newsletter: { formAction: 'https://exemple.com/s', emailField: 'fields[email]', provider: 'MailerLite' } }, 'on');
   assert.ok(on('index.html').includes('nl-form') && on('newsletter/index.html').includes('action="https://exemple.com/s"') && on('newsletter/index.html').includes('name="fields[email]"'));
   assert.ok(on('mentions-legales/index.html').includes('à MailerLite') && !on('mentions-legales/index.html').includes('ne collecte pas'));
@@ -959,4 +959,92 @@ test('accueil : boutons de streaming sur les tuiles anime du jour ; articles : s
   const arts = readFileSync(path.join(out, 'articles/index.html'), 'utf8');
   assert.match(arts, /<select id="art-type">/); assert.match(arts, /id="t-quotidien"|id="t-redac"/);
   assert.match(readFileSync(path.join(out, 'articles/auto/index.html'), 'utf8'), /<span class="art-acts"><a class="chip"[^>]*>Calendrier manga<\/a><a class="chip"[^>]*>Page de la série<\/a><\/span>/);
+});
+
+test('mesure d\'audience : visiteurs uniques, visites, durée, rebond, recherches, 404 et API protégée', async () => {
+  const { DatabaseSync } = await import('node:sqlite');
+  const a = await import(path.join(ROOT, 'worker/audience.js'));
+  const db = new DatabaseSync(':memory:');
+  const sql = (q, ...p) => { const st = db.prepare(q); return /^\s*(SELECT|WITH)/i.test(q) ? st.all(...p).map((r) => ({ ...r })) : (st.run(...p), []); };
+  const store = new a.AudienceStore(sql); store.init();
+  const T0 = Date.parse('2026-10-27T09:00:00Z'); // 10 h à Paris
+  const UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Mobile/15E148 Safari/604.1';
+  const UA2 = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/140.0 Safari/537.36';
+  const m = (now, ip = '1.1.1.1', ua = UA) => ({ now, ip, ua, pays: 'FR', host: 'exemple.fr' });
+  const ev = (o) => a.cleanEvent(o);
+  // visiteur 1 : 2 pages, 40 s puis 20 s ; arrive de Google
+  await store.event(ev({ e: 'v', id: 'aaaaaaaa1', p: '/', r: 'www.google.com', n: 1, w: 390 }), m(T0));
+  await store.event(ev({ e: 'f', id: 'aaaaaaaa1', d: 40000, sc: 80, c: 900 }), m(T0 + 40000));
+  await store.event(ev({ e: 'v', id: 'aaaaaaaa2', p: '/recherche/', q: '  One   PIECE ' }), m(T0 + 60000));
+  await store.event(ev({ e: 'f', id: 'aaaaaaaa2', d: 20000, sc: 100 }), m(T0 + 80000));
+  await store.event(ev({ e: 'f', id: 'aaaaaaaa2', d: 15000 }), m(T0 + 90000)); // envoi plus ancien : ignoré
+  // visiteur 2 : une page introuvable (rebond), direct
+  await store.event(ev({ e: 'v', id: 'bbbbbbbb1', p: '/vieux-lien/', x: 1 }), m(T0 + 5000, '2.2.2.2', UA2));
+  // visiteur 1 revient 2 h plus tard : nouvelle visite, même visiteur
+  await store.event(ev({ e: 'v', id: 'aaaaaaaa3', p: '/serie/x/', r: 'exemple.org' }), m(T0 + 2 * 3600e3));
+  assert.equal(await store.event(ev({ e: 'v', id: 'aaaaaaaa3', p: '/serie/x/' }), m(T0 + 2 * 3600e3)), 'doublon');
+  assert.equal(ev({ e: 'v', id: 'x', p: '/' }), null);           // identifiant invalide
+  assert.equal(ev({ e: 'v', id: 'cccccccc1', p: 'http://x' }), null); // chemin invalide
+  const s = store.stats('2026-10-27', '2026-10-27', T0 + 2 * 3600e3 + 1000);
+  assert.equal(s.totaux.visiteurs, 2);
+  assert.equal(s.totaux.sessions, 3);
+  assert.equal(s.totaux.vues, 4);
+  assert.equal(Math.round(s.totaux.rebond * 3), 2);               // 2 visites sur 3 n'ont qu'une page
+  assert.equal(s.totaux.dureeMoy, 20000);                           // (60 s + 0 + 0) / 3
+  assert.deepEqual(s.recherches, [{ cle: 'one piece', n: 1 }]);
+  assert.equal(s.introuvables[0].cle, '/vieux-lien/');
+  assert.ok(!s.pages.some((p) => p.cle === '/vieux-lien/'));
+  assert.deepEqual(s.canaux.map((c) => c.cle).sort(), ['Accès direct', 'Autres sites', 'Moteurs de recherche']);
+  assert.equal(s.appareils.find((x) => x.cle === 'Mobile').n, 2);
+  assert.equal(s.heures.find((h) => h.cle === 10).vues, 3);
+  assert.equal(s.direct.visiteurs, 1);
+  assert.equal(s.pages.find((p) => p.cle === '/').scroll, 80);
+  // pas d'adresse IP dans la base
+  assert.ok(!JSON.stringify(sql('SELECT * FROM vues')).includes('1.1.1.1'));
+  assert.ok(!JSON.stringify(sql('SELECT * FROM sessions')).includes('2.2.2.2'));
+  // le lendemain : nouveau sel, l'ancien est détruit, le même visiteur a une autre empreinte
+  const vAvant = sql('SELECT v FROM vues WHERE id = ?', 'aaaaaaaa1')[0].v;
+  await store.event(ev({ e: 'v', id: 'aaaaaaaa4', p: '/' }), m(T0 + 86400e3));
+  assert.equal(sql('SELECT COUNT(*) AS n FROM sel')[0].n, 1);
+  assert.notEqual(sql('SELECT v FROM vues WHERE id = ?', 'aaaaaaaa4')[0].v, vAvant);
+  assert.equal(a.canal('', 'tiktok'), 'Campagnes'); assert.equal(a.canal('l.facebook.com', ''), 'Réseaux sociaux');
+  assert.equal(a.parseUA(UA2).nav, 'Chrome'); assert.equal(a.parseUA(UA).os, 'iOS');
+
+  // Worker : /api/vu passe au Durable Object, /api/stats exige la clé, /api/tableau sert la page
+  const w = await import(path.join(ROOT, 'worker/index.js'));
+  const seen = [];
+  const env = { STATS_KEY: 'k-test', AUDIENCE: { idFromName: () => 'id', get: () => ({ fetch: async (u, init) => {
+    if (String(u).includes('/event')) { seen.push(JSON.parse(init.body)); return new Response('ok'); }
+    return Response.json({ totaux: {}, de: new URL(u).searchParams.get('de') });
+  } }) } };
+  const post = (body, ua = UA) => w.default.fetch(new Request('https://exemple.fr/api/vu', { method: 'POST', body: JSON.stringify(body), headers: { 'User-Agent': ua, 'CF-Connecting-IP': '9.9.9.9' } }), env);
+  assert.equal((await post({ e: 'v', id: 'dddddddd1', p: '/' })).headers.get('X-Vu'), 'ok');
+  assert.equal((await post({ e: 'v', id: 'dddddddd2', p: '/' }, 'Googlebot/2.1')).headers.get('X-Vu'), 'robot');
+  assert.equal((await post({ e: 'v', id: 'z', p: '/' })).headers.get('X-Vu'), 'invalide');
+  assert.equal(seen.length, 1); assert.equal(seen[0].meta.ip, '9.9.9.9');
+  assert.equal((await w.default.fetch(new Request('https://exemple.fr/api/stats', { headers: { 'X-Cle': 'mauvaise' } }), env)).status, 404);
+  const ok = await w.default.fetch(new Request('https://exemple.fr/api/stats?p=7', { headers: { 'X-Cle': 'k-test' } }), env);
+  assert.equal(ok.status, 200); assert.match((await ok.json()).de, /^\d{4}-\d{2}-\d{2}$/);
+  const tb = await w.default.fetch(new Request('https://exemple.fr/api/tableau'), env);
+  assert.match(await tb.text(), /Audience Prochain Tome/); assert.match(tb.headers.get('X-Robots-Tag'), /noindex/);
+  assert.deepEqual(w.periode(new URLSearchParams('de=2026-10-01&a=2026-10-05'), T0), { de: '2026-10-01', a: '2026-10-05' });
+  assert.deepEqual(w.periode(new URLSearchParams('p=hier'), T0), { de: '2026-10-26', a: '2026-10-26' });
+});
+
+test('mesure d\'audience : script inclus sur toutes les pages, 404 marquée, mentions légales à jour', () => {
+  const tmp = mkdtempSync(path.join(os.tmpdir(), 'mes-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json'); writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.fr' }));
+  const out = path.join(tmp, 'out');
+  const env = { ...process.env, DATA_DIR: data, OUT_DIR: out, CONFIG_FILE: cfg, ARTICLES_DIR: path.join(tmp, 'n'), AUTO_DIR: path.join(tmp, 'n2'), NOW: '2026-10-12T07:00:00Z' };
+  execFileSync('node', [path.join(ROOT, 'scripts/build.mjs')], { env, stdio: 'pipe' });
+  const h = readFileSync(path.join(out, 'index.html'), 'utf8');
+  assert.ok(h.indexOf('mesure.js') > 0 && h.indexOf('mesure.js') < h.indexOf('visite.js'), 'mesure.js avant visite.js (lecture de mc-visit)');
+  assert.match(readFileSync(path.join(out, '404.html'), 'utf8'), /<body data-404>/);
+  assert.ok(readFileSync(path.join(out, 'mesure.js'), 'utf8').includes('/api/vu'));
+  const ml = readFileSync(path.join(out, 'mentions-legales/index.html'), 'utf8');
+  assert.match(ml, /id="mesure"/); assert.match(ml, /mesure=non/);
+  assert.match(readFileSync(path.join(out, 'sw.js'), 'utf8'), /\/api\//);
 });
