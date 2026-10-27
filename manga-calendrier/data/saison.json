@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-27T03:48:23.278Z",
+ "generatedAt": "2026-10-27T14:40:07.902Z",
  "seasons": [
   {
    "season": "FALL",
@@ -402,30 +402,6 @@
      "s": []
     },
     {
-     "id": 185756,
-     "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      9,
-      27
-     ],
-     "u": "https://anilist.co/anime/185756",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185756-xPCl0RyQ7fXD.jpg",
-     "g": [
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GG5H5XQMD/as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world"
-      }
-     ]
-    },
-    {
      "id": 206814,
      "t": "Dragon Ball Super: Beerus",
      "f": "TV",
@@ -451,6 +427,30 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00389311/dragon-ball-super-beerus"
+      }
+     ]
+    },
+    {
+     "id": 185756,
+     "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      9,
+      27
+     ],
+     "u": "https://anilist.co/anime/185756",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185756-xPCl0RyQ7fXD.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GG5H5XQMD/as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world"
       }
      ]
     },
@@ -543,6 +543,29 @@
      "s": []
     },
     {
+     "id": 191788,
+     "t": "Aoashi Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 24,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/191788",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191788-XC6F24LdX6a4.jpg",
+     "g": [
+      "Sports"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/aoashi"
+      }
+     ]
+    },
+    {
      "id": 152677,
      "t": "The Detective Is Already Dead Season 2",
      "f": "TV",
@@ -564,29 +587,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/the-detective-is-already-dead"
-      }
-     ]
-    },
-    {
-     "id": 191788,
-     "t": "Aoashi Season 2",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 24,
-     "d": [
-      2026,
-      10,
-      4
-     ],
-     "u": "https://anilist.co/anime/191788",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191788-XC6F24LdX6a4.jpg",
-     "g": [
-      "Sports"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/aoashi"
       }
      ]
     },
@@ -616,31 +616,6 @@
      ]
     },
     {
-     "id": 204389,
-     "t": "A Wild Last Boss Appeared! Season 2",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      9,
-      26
-     ],
-     "u": "https://anilist.co/anime/204389",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204389-jCoFCeTthDMy.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00361955/a-wild-last-boss-appeared"
-      }
-     ]
-    },
-    {
      "id": 169581,
      "t": "Magical Explorer",
      "f": "ONA",
@@ -662,6 +637,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
+      }
+     ]
+    },
+    {
+     "id": 204389,
+     "t": "A Wild Last Boss Appeared! Season 2",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      9,
+      26
+     ],
+     "u": "https://anilist.co/anime/204389",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204389-jCoFCeTthDMy.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00361955/a-wild-last-boss-appeared"
       }
      ]
     },
@@ -741,30 +741,6 @@
      ]
     },
     {
-     "id": 209502,
-     "t": "The Cold Sato-san is Only Sweet to Me",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/209502",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
-     "g": [
-      "Comedy",
-      "Romance"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
-      }
-     ]
-    },
-    {
      "id": 209219,
      "t": "So What's Wrong with Getting Reborn as a Goblin?",
      "f": "ONA",
@@ -786,6 +762,30 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
+      }
+     ]
+    },
+    {
+     "id": 209502,
+     "t": "The Cold Sato-san is Only Sweet to Me",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/209502",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
+     "g": [
+      "Comedy",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
       }
      ]
     },
@@ -848,30 +848,6 @@
      ]
     },
     {
-     "id": 206401,
-     "t": "FX Fighter Kurumi-chan",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      1
-     ],
-     "u": "https://anilist.co/anime/206401",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
-     "g": [
-      "Drama",
-      "Slice of Life"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://crunchyroll.com/series/GT00384001/fx-fighter-kurumi-chan"
-      }
-     ]
-    },
-    {
      "id": 205896,
      "t": "Full Clearing Another World under a Goddess with Zero Believers",
      "f": "TV",
@@ -892,6 +868,30 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+      }
+     ]
+    },
+    {
+     "id": 206401,
+     "t": "FX Fighter Kurumi-chan",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      1
+     ],
+     "u": "https://anilist.co/anime/206401",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
+     "g": [
+      "Drama",
+      "Slice of Life"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://crunchyroll.com/series/GT00384001/fx-fighter-kurumi-chan"
       }
      ]
     },
@@ -1417,14 +1417,14 @@
      "t": "Mairimashita! Iruma-kun: If Episode of Mafia",
      "f": "TV",
      "st": "NOT_YET_RELEASED",
-     "n": 0,
+     "n": 12,
      "d": [
       2027,
       1,
-      0
+      4
      ],
      "u": "https://anilist.co/anime/207251",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207251-9HLT5632FOMw.jpg",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207251-1opGPW7xVHQ8.jpg",
      "g": [
       "Action",
       "Comedy"
