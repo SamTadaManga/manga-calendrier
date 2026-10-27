@@ -146,8 +146,8 @@ export function parseDrupalEditeur(html, { editeur, base }) {
   return out;
 }
 
-/* Kazé : boutique Shopify (kazemanga.fr). products.json donne titre, ISBN (sku) et prix ;
-   la date de parution se lit sur la fiche produit (« Publication: JJ.MM.AAAA »). */
+/* Kazé : boutique Shopify (kazemanga.fr). products.json donne titre, ISBN (sku), prix et couverture ;
+   la date de parution vient de BDbase, on rapproche les deux par l'ISBN. */
 export function parseKazeProducts(json) {
   const list = Array.isArray(json?.products) ? json.products : [];
   const out = [];
@@ -161,15 +161,6 @@ export function parseKazeProducts(json) {
     out.push({ created: String(p.created_at || '').slice(0, 10), handle: String(p.handle).replace(/[^A-Za-z0-9-]/g, ''), title: decode(p.title), isbn, prix: Number.isFinite(prix) && prix > 0 ? prix : null, cover });
   }
   return out;
-}
-export function parseKazeDate(html) {
-  // on lit le texte de la page : les balises entre « Publication: » et la date varient
-  const m = strip(String(html).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')).match(/Publication\s*:?\s*(\d{2})\.(\d{2})\.(\d{4})/i);
-  return m ? `${m[3]}-${m[2]}-${m[1]}` : null;
-}
-export function kazeRow(prod, date) {
-  const { serie, tome, titre } = splitTitle(prod.title.replace(/\s+-\s+(?=T\d)/i, ' '));
-  return { date, editeur: 'Kazé', serie, tome, titre, isbn: prod.isbn, prix: prod.prix, source: `https://kazemanga.fr/products/${prod.handle}`, cover: prod.cover || '' };
 }
 
 /* BDbase (agrégateur) : pour les éditeurs sans planning exploitable (Kurokawa, Meian, Mangetsu).
