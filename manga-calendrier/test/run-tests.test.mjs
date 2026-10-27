@@ -279,6 +279,8 @@ test('collecte (pages simulées) + fusion : la saisie manuelle l\'emporte', () =
   assert.ok(csv.includes('"Sing ""Yesterday"" for Me",9') && csv.includes('2026-12-03,Delcourt'), 'dates JJ.MM.AAAA et entités décodées');
   assert.ok(csv.includes('2026-10-15,Delcourt,The Brave Wish Revenging,15'), 'fiche à fenêtre modale conservée');
   assert.ok(csv.includes('2026-10-26,Kazé,Vavam Vampire,8,,9782820355218,"7,99"') && !csv.includes('Vieille Série'), 'Kazé : date de la fiche, prix, hors fenêtre exclu');
+  assert.ok(csv.includes('cdn.shopify.com/s/files/1/0810/4011/3877/files/9782820355218.jpg?v=1783539873&width=360'), 'couverture Kazé');
+  assert.ok(csv.includes('https://www.editions-delcourt.fr/sites/default/files/styles/image_list_retinafy_/public/product/9782413095309.jpg?itok=abc'), 'couverture Delcourt');
   // Kurokawa, Meian, Mangetsu via BDbase : fiches lues une fois, autres éditeurs écartés
   assert.ok(/Kurokawa : 1/.test(out) && /Mangetsu : 2/.test(out), out);
   assert.ok(csv.includes('2026-11-12,Kurokawa,Chainsaw Man,19,,9782368099991') && !csv.includes('Autre Série'), 'fiche d\'un autre éditeur écartée');

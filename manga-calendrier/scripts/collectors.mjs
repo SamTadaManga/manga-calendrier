@@ -140,7 +140,8 @@ export function parseDrupalEditeur(html, { editeur, base }) {
     if (!manga) continue;
     const { serie, tome, titre } = splitTitle(title);
     const source = href.startsWith('/') ? new URL(href, base).href : base;
-    out.push({ date, editeur, serie, tome, titre, isbn, prix: null, source, cover: '' });
+    const cv = (block.match(/(\/sites\/default\/files\/styles\/[^"\s]*?\/product\/97[89]\d{10}\.jpe?g(?:\?itok=[\w-]+)?)/) || [])[1];
+    out.push({ date, editeur, serie, tome, titre, isbn, prix: null, source, cover: cv ? httpsOnly(new URL(decode(cv), base).href) : '' });
   }
   return out;
 }
@@ -155,7 +156,9 @@ export function parseKazeProducts(json) {
     const isbn = isbnOf(v.sku);
     if (!p.title || !p.handle) continue;
     const prix = parseFloat(v.price);
-    out.push({ handle: String(p.handle).replace(/[^A-Za-z0-9-]/g, ''), title: decode(p.title), isbn, prix: Number.isFinite(prix) && prix > 0 ? prix : null });
+    const img = String((p.images || [])[0]?.src || v.featured_image?.src || '');
+    const cover = /^https:\/\/cdn\.shopify\.com\//.test(img) ? img + (img.includes('?') ? '&' : '?') + 'width=360' : '';
+    out.push({ handle: String(p.handle).replace(/[^A-Za-z0-9-]/g, ''), title: decode(p.title), isbn, prix: Number.isFinite(prix) && prix > 0 ? prix : null, cover });
   }
   return out;
 }
@@ -166,7 +169,7 @@ export function parseKazeDate(html) {
 }
 export function kazeRow(prod, date) {
   const { serie, tome, titre } = splitTitle(prod.title.replace(/\s+-\s+(?=T\d)/i, ' '));
-  return { date, editeur: 'Kazé', serie, tome, titre, isbn: prod.isbn, prix: prod.prix, source: `https://kazemanga.fr/products/${prod.handle}`, cover: '' };
+  return { date, editeur: 'Kazé', serie, tome, titre, isbn: prod.isbn, prix: prod.prix, source: `https://kazemanga.fr/products/${prod.handle}`, cover: prod.cover || '' };
 }
 
 /* BDbase (agrégateur) : pour les éditeurs sans planning exploitable (Kurokawa, Meian, Mangetsu).
