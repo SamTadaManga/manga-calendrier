@@ -530,5 +530,61 @@
    "source": "https://www.bdbase.fr/manga/de-neige-et-d-encre-8",
    "cover": ""
   }
+ },
+ "/manga/mad-otori-4": {
+  "vu": "2026-10-27",
+  "row": {
+   "date": "2026-10-28",
+   "editeur": "Kazé",
+   "serie": "Mad (Otori)",
+   "tome": "4",
+   "titre": "Mad 4",
+   "isbn": "9782820355171",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/mad-otori-4",
+   "cover": ""
+  }
+ },
+ "/manga/backstage-banri-2": {
+  "vu": "2026-10-27",
+  "row": {
+   "date": "2026-11-12",
+   "editeur": "Kazé",
+   "serie": "Backstage Banri",
+   "tome": "2",
+   "titre": "",
+   "isbn": "9782820355928",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/backstage-banri-2",
+   "cover": ""
+  }
+ },
+ "/manga/rappa-furyo-ninjas-2": {
+  "vu": "2026-10-27",
+  "row": {
+   "date": "2026-11-12",
+   "editeur": "Kazé",
+   "serie": "Rappa - Furyo Ninjas",
+   "tome": "2",
+   "titre": "",
+   "isbn": "9782820355997",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/rappa-furyo-ninjas-2",
+   "cover": ""
+  }
+ },
+ "/manga/l-arcane-de-l-aube-volume-5-red-edition": {
+  "vu": "2026-10-27",
+  "row": {
+   "date": "2026-12-02",
+   "editeur": "Kazé",
+   "serie": "L'Arcane de l'aube Volume 5 red edition",
+   "tome": "",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/l-arcane-de-l-aube-volume-5-red-edition",
+   "cover": ""
+  }
  }
 }

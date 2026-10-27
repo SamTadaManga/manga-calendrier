@@ -1,16 +1,12 @@
 ---
 title: "Nouvelles séries manga de octobre 2026 : par où commencer"
 date: 2026-10-01
-description: "4 séries qui démarrent en octobre 2026 en France, avec éditeur, genres, auteur et résumé."
+description: "3 séries qui démarrent en octobre 2026 en France, avec éditeur, genres, auteur et résumé."
 auto: true
 draft: false
 ---
 
-4 nouvelles séries démarrent en France en octobre 2026. Pour chacune : l'éditeur, les genres et l'auteur quand on les connaît, et le résumé de l'éditeur. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/octobre-2026/).
-
-## [Bug Ego](/serie/bug-ego/)
-
-Tome 1 le mer. 7 oct, 7,99 €. Kazé · comédie, drame, horreur · ONE et Kiyoto Shitara
+3 nouvelles séries démarrent en France en octobre 2026. Pour chacune : l'éditeur, les genres et l'auteur quand on les connaît, et le résumé de l'éditeur. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/octobre-2026/).
 
 ## [Love Potion, la sorcière mal-aimée](/serie/love-potion-la-sorciere-mal-aimee/)
 

@@ -5115,7 +5115,44 @@
     "y": 2022,
     "v": 2
    }
+  },
+  "backstage-banri": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Chitose Kaidou"
+    ],
+    "sc": [
+     "Chitose Kaidou"
+    ],
+    "ar": [
+     "Chitose Kaidou"
+    ],
+    "g": [
+     "Comedy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "l-arcane-de-l-aube-volume-5-red-edition": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "mad-otori": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "rappa-furyo-ninjas": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
   }
  },
- "generatedAt": "2026-10-27T16:17:47.434Z"
+ "generatedAt": "2026-10-27T16:22:13.459Z"
 }
