@@ -4884,7 +4884,238 @@
    "c": "2026-10-27",
    "a": [],
    "i": null
+  },
+  "blue-exorcist": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 9919,
+     "t": "Blue Exorcist",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/9919",
+     "s": []
+    },
+    {
+     "id": 11737,
+     "t": "Blue Exorcist: The Movie",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/11737",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/80169943"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Kazue Katou"
+    ],
+    "sc": [
+     "Kazue Katou"
+    ],
+    "ar": [
+     "Kazue Katou"
+    ],
+    "g": [
+     "Action",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2009,
+    "v": 2
+   }
+  },
+  "bug-ego": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "ONE",
+     "Kiyoto Shitara"
+    ],
+    "sc": [
+     "ONE"
+    ],
+    "ar": [
+     "Kiyoto Shitara"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Horror",
+     "Sci-Fi",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "chainsaw-man": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 127230,
+     "t": "Chainsaw Man",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/127230",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://crunchyroll.com/series/GVDHX8QNW"
+      },
+      {
+       "n": "Disney+",
+       "u": "https://www.disneyplus.com/series/chainsaw-man/2gMK1kC3JIEh"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81215627"
+      }
+     ]
+    },
+    {
+     "id": 171627,
+     "t": "Chainsaw Man – The Movie: Reze Arc",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/171627",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GNVHKN92K/chainsaw-man--the-movie-reze-arc"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Tatsuki Fujimoto"
+    ],
+    "sc": [
+     "Tatsuki Fujimoto"
+    ],
+    "ar": [
+     "Tatsuki Fujimoto"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Horror",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2018,
+    "v": 2
+   }
+  },
+  "l-arcane-de-l-aube": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Rei Touma"
+    ],
+    "sc": [
+     "Rei Touma"
+    ],
+    "ar": [
+     "Rei Touma"
+    ],
+    "g": [
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2009,
+    "v": 2
+   }
+  },
+  "la-bete-du-roi": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "les-noces-veneneuses": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "mad": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Yuusuke Ootori"
+    ],
+    "sc": [
+     "Yuusuke Ootori"
+    ],
+    "ar": [
+     "Yuusuke Ootori"
+    ],
+    "g": [
+     "Action",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2024,
+    "v": 2
+   }
+  },
+  "marriage-toxin": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 213752,
+     "t": "MARRIAGETOXIN 2nd Season",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/213752",
+     "s": []
+    },
+    {
+     "id": 199547,
+     "t": "MARRIAGETOXIN",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/199547",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00371857/marriagetoxin"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Mizuki Yoda",
+     "Joumyaku"
+    ],
+    "sc": [
+     "Joumyaku"
+    ],
+    "ar": [
+     "Mizuki Yoda"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2022,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-10-27T16:10:42.153Z"
+ "generatedAt": "2026-10-27T16:17:47.434Z"
 }
