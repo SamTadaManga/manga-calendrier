@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { readChanges, keyOf } from './changes.mjs';
 import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
 import {
-  paths, now, parisKey, parisHM, addDays, frDate, frDayMonth, frShort, frMonth, ucfirst,
+  paths, now, parisKey, parisHM, addDays, frDate, frLongDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
   esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume, mangaSlugOf, loadManga, parseCSV,
 } from './lib.mjs';
@@ -614,6 +614,23 @@ const bookLd = (r) => ({ '@type': 'Book', name: mangaLabel(r), ...(slugify(r.ser
 const listLd = (rows, url, name, max = 100) => siteUrlOk && rows.length ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name, url: `${base}${url}`, inLanguage: 'fr',
   mainEntity: { '@type': 'ItemList', numberOfItems: rows.length, itemListElement: rows.slice(0, max).map((r, i) => ({ '@type': 'ListItem', position: i + 1, item: bookLd(r) })) } }).replace(/</g, '\\u003c')}</script>` : '';
 
+/* Titre et description des pages série : le nom, le numéro du tome et la date, les mots que les gens tapent
+   (« X tome 12 date de sortie », « prochain tome de X »). Google réécrit parfois : on garde ça court. */
+function serieMeta(S, n) {
+  const fallbackTitle = `Prochain tome de ${S.name} : date de sortie`;
+  if (!n) return { title: fallbackTitle, description: `Date du prochain tome de ${S.name} en France : tomes parus et annonces des éditeurs.` };
+  const when = frLongDate(n.date);
+  const what = n.tome ? `${S.name} tome ${n.tome}` : S.name;
+  let title = `${what} : date de sortie le ${when}`;
+  if (title.length > 58) title = `${what} : sortie le ${when}`;
+  if (title.length > 62) title = fallbackTitle;
+  const pub = n.editeur ? ` chez ${n.editeur}` : '';
+  let description = `Prochain tome de ${S.name} : ${n.tome ? `le tome ${n.tome} sort` : 'sortie'} le ${when}${pub}. Dates des tomes suivants, ISBN et où l'acheter.`;
+  if (description.length > 155) description = `Prochain tome de ${S.name} : ${n.tome ? `tome ${n.tome}` : 'sortie'} le ${when}${pub}. Toutes les dates de sortie.`;
+  if (description.length > 158) description = `${what} : sortie le ${when}${pub}. Toutes les dates de sortie.`;
+  return { title, description };
+}
+
 /* ------------------------------------------- pages par mois et par série (référencement) */
 {
   const live = manga.filter((r) => r.statut !== 'annule' && r.date);
@@ -744,10 +761,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     ]).replace(/</g, '\\u003c')}</script>` : '';
     page(`/serie/${S.k}/`, {
       extraHead: serieLd,
-      title: `Prochain tome de ${S.name} : date de sortie`,
-      description: n
-        ? `${n.tome ? `Tome ${n.tome}` : 'Prochain volume'} de ${S.name} : sortie le ${frShort(n.date)}${n.editeur ? ` chez ${n.editeur}` : ''}. Tous les tomes annoncés et la date de chaque sortie.`
-        : `Date du prochain tome de ${S.name} en France : tomes parus et annonces des éditeurs.`,
+      ...serieMeta(S, n),
       image: showCovers ? ([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover : '',
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
@@ -1101,8 +1115,6 @@ ${eps.length ? FILTER_JS : ''}`;
   const SOURCE_NOTE = {
     'Anime · AniList': 'Programme des épisodes (8 jours)',
     'Saisie · Google Sheets': 'Tes sorties saisies à la main',
-    'Complément · Google Books': 'Tomes des éditeurs sans planning lisible (à vérifier)',
-    'Complément · Flux RSS': 'Annonces des sites d\'éditeurs (jamais publiées sans relecture)',
   };
   const verdict = (v) => {
     const h = hoursSince(v.lastSuccess);
@@ -1120,7 +1132,7 @@ ${eps.length ? FILTER_JS : ''}`;
   }).join('');
 
   // Contrôles qualité sur les données réellement utilisées par le site
-  const files = ['manga.csv', 'manga-auto.csv', 'manga-extra.csv'].map((f) => ({ f, rows: loadManga(path.join(P.dataDir, f)) }));
+  const files = ['manga.csv', 'manga-auto.csv'].map((f) => ({ f, rows: loadManga(path.join(P.dataDir, f)) }));
   const byIsbn = new Map();
   for (const { f, rows } of files) for (const r of rows) if (r.isbn.length >= 10) { if (!byIsbn.has(r.isbn)) byIsbn.set(r.isbn, []); byIsbn.get(r.isbn).push({ f, r }); }
   const lbl = (r) => `${r.serie}${r.tome ? ` t. ${r.tome}` : ''}`;
