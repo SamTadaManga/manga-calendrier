@@ -115,6 +115,59 @@ export function parseKioon(json) {
   return out;
 }
 
+/* Delcourt (Tonkam) et Soleil : même gabarit Drupal. Chaque sortie est un bloc « product-thumbnail__content » :
+   titre dans le premier <span>, date « Paru le 22 octobre 2026 » ou « 03.12.2026 », ISBN dans l'adresse de la couverture.
+   On ne garde que les fiches /mangas/ (et /kbooks/) : la page mélange aussi BD, comics et jeunesse. */
+const MOIS_FR = ['janvier', 'fevrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'aout', 'septembre', 'octobre', 'novembre', 'decembre'];
+const frDate = (s) => {
+  const t = String(s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  let m = t.match(/(\d{1,2})\.(\d{2})\.(\d{4})/);
+  if (m) return `${m[3]}-${m[2]}-${m[1].padStart(2, '0')}`;
+  m = t.match(/(\d{1,2})(?:er)?\s+([a-z]+)\s+(\d{4})/);
+  const mon = m ? MOIS_FR.indexOf(m[2]) + 1 : 0;
+  return mon ? `${m[3]}-${String(mon).padStart(2, '0')}-${m[1].padStart(2, '0')}` : null;
+};
+export function parseDrupalEditeur(html, { editeur, base }) {
+  const out = [];
+  for (const block of String(html).split(/class="product-thumbnail__content/).slice(1)) {
+    const title = strip((block.match(/product-thumbnail__title[^>]*>[\s\S]*?<span>([\s\S]*?)<\/span>/) || [])[1] || '');
+    const href = decode((block.match(/product-thumbnail__title[^>]*>\s*<a\b[^>]*\bhref="([^"]*)"/) || [])[1] || '').trim();
+    const dateText = strip((block.match(/product-thumbnail__date[^>]*>([\s\S]*?)<\/div>/) || [])[1] || '');
+    const date = frDate(dateText);
+    const isbn = (block.match(/\/product\/(97[89]\d{10})\./) || [])[1] || '';
+    if (!title || !date) continue;
+    const manga = /^\/(mangas|kbooks)\//.test(href) || (href.startsWith('#') && isbn);
+    if (!manga) continue;
+    const { serie, tome, titre } = splitTitle(title);
+    const source = href.startsWith('/') ? new URL(href, base).href : base;
+    out.push({ date, editeur, serie, tome, titre, isbn, prix: null, source, cover: '' });
+  }
+  return out;
+}
+
+/* Kazé : boutique Shopify (kazemanga.fr). products.json donne titre, ISBN (sku) et prix ;
+   la date de parution se lit sur la fiche produit (« Publication: JJ.MM.AAAA »). */
+export function parseKazeProducts(json) {
+  const list = Array.isArray(json?.products) ? json.products : [];
+  const out = [];
+  for (const p of list) {
+    const v = (p.variants || [])[0] || {};
+    const isbn = isbnOf(v.sku);
+    if (!p.title || !p.handle) continue;
+    const prix = parseFloat(v.price);
+    out.push({ handle: String(p.handle).replace(/[^A-Za-z0-9-]/g, ''), title: decode(p.title), isbn, prix: Number.isFinite(prix) && prix > 0 ? prix : null });
+  }
+  return out;
+}
+export function parseKazeDate(html) {
+  const m = String(html).match(/Publication\s*:?\s*(?:<[^>]*>\s*)*(\d{2})\.(\d{2})\.(\d{4})/i);
+  return m ? `${m[3]}-${m[2]}-${m[1]}` : null;
+}
+export function kazeRow(prod, date) {
+  const { serie, tome, titre } = splitTitle(prod.title.replace(/\s+-\s+(?=T\d)/i, ' '));
+  return { date, editeur: 'Kazé', serie, tome, titre, isbn: prod.isbn, prix: prod.prix, source: `https://kazemanga.fr/products/${prod.handle}`, cover: '' };
+}
+
 /* robots.txt minimal : groupe « User-agent: * », règles Allow/Disallow, la plus longue gagne. */
 /* Akata : une page par mois ; chaque sortie est un lien /publications/<slug> précédé d'une date JJ/MM/AAAA.
    Analyse tolérante : on parcourt la page dans l'ordre, chaque lien reçoit la dernière date vue. */

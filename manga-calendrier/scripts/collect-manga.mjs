@@ -1,4 +1,4 @@
-// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon, Akata) -> data/manga-auto.csv
+// Collecte automatique des plannings des éditeurs (Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé) -> data/manga-auto.csv
 // Politesse : User-Agent qui s'identifie, robots.txt respecté, ~15 requêtes par jour, 2 s entre deux requêtes.
 // Si un éditeur ne répond pas ou change sa page, ses anciennes lignes sont conservées et le reste continue.
 //
@@ -9,7 +9,7 @@ import path from 'node:path';
 import { paths, now, parisKey, addDays, loadManga } from './lib.mjs';
 import { readChanges, updateChanges, serializeChanges } from './changes.mjs';
 import { recordStatus } from './status.mjs';
-import { parseHachette, parseKana, parseKioon, parseAkata, robotsAllows } from './collectors.mjs';
+import { parseHachette, parseKana, parseKioon, parseAkata, parseDrupalEditeur, parseKazeProducts, parseKazeDate, kazeRow, robotsAllows } from './collectors.mjs';
 
 const P = paths();
 const today = parisKey(now());
@@ -61,6 +61,22 @@ async function get(url, { json = false } = {}) {
   if (res.status === 404) return null;
   if (!res.ok) throw new Error(`code ${res.status} pour ${url}`);
   return json ? res.json() : res.text();
+}
+
+// Delcourt et Soleil : même gabarit ; la liste se charge par « pager » progressif, on suit ?page=N tant que de nouvelles sorties apparaissent.
+async function drupalRun(editeur, origin) {
+  const rows = [];
+  const known = new Set();
+  for (let page = 0; page < 6; page++) {
+    const html = await get(`${origin}/mangas/a-paraitre-mangas${page ? `?page=${page}` : ''}`);
+    if (!html) break;
+    const got = parseDrupalEditeur(html, { editeur, base: origin });
+    const fresh = got.filter((r) => !known.has(r.isbn || r.source));
+    if (!fresh.length) break;
+    fresh.forEach((r) => known.add(r.isbn || r.source));
+    rows.push(...fresh);
+  }
+  return rows;
 }
 
 const SOURCES = [
@@ -123,6 +139,42 @@ const SOURCES = [
         const html = await get(`https://www.akata.fr/planning?date=${ym}`);
         if (html) rows.push(...parseAkata(html));
       }
+      return rows;
+    },
+  },
+  {
+    editeur: 'Delcourt',
+    run: () => drupalRun('Delcourt', 'https://www.editions-delcourt.fr'),
+  },
+  {
+    editeur: 'Soleil',
+    run: () => drupalRun('Soleil', 'https://www.editions-soleil.fr'),
+  },
+  {
+    editeur: 'Kazé',
+    async run() {
+      const json = await get('https://kazemanga.fr/collections/a-venir/products.json?limit=100', { json: true });
+      if (!json) return [];
+      // les dates déjà lues sont gardées d'un jour à l'autre : on ne recharge que les fiches nouvelles
+      const cacheFile = path.join(P.dataDir, 'kaze-dates.json');
+      let cache = {};
+      try { cache = JSON.parse(readFileSync(cacheFile, 'utf8')); } catch { /* premier passage */ }
+      const rows = [];
+      let fetched = 0;
+      for (const prod of parseKazeProducts(json)) {
+        let date = cache[prod.handle]?.date;
+        if (!date && fetched < 60) {
+          fetched++;
+          const html = await get(`https://kazemanga.fr/products/${prod.handle}`);
+          date = html ? parseKazeDate(html) : null;
+          if (date) cache[prod.handle] = { date, vu: today };
+        }
+        if (date) rows.push(kazeRow(prod, date));
+      }
+      for (const k of Object.keys(cache)) if (cache[k].date < addDays(today, -60)) delete cache[k];
+      mkdirSync(P.dataDir, { recursive: true });
+      const out = JSON.stringify(cache, null, 1) + '\n';
+      if (!existsSync(cacheFile) || readFileSync(cacheFile, 'utf8') !== out) writeFileSync(cacheFile, out);
       return rows;
     },
   },
