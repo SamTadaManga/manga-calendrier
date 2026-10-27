@@ -448,6 +448,16 @@ test('pages par mois, par série et index : générées, liées et dans le sitem
   const monthLinks = [...rd('sorties-manga/index.html').matchAll(/href="\/sorties-manga\/([a-z]+-\d{4})\/"/g)].map((m) => m[1]);
   assert.ok(monthLinks.length > 0);
   assert.match(rd(`sorties-manga/${monthLinks[0]}/index.html`), /Sorties manga de/);
+  // référencement : icône lisible par Google, données structurées des mois et des séries, en-têtes de cache
+  assert.ok(existsSync(path.join(tmp, 'dist/favicon.ico')) && existsSync(path.join(tmp, 'dist/favicon-48.png')));
+  assert.match(rd('index.html'), /rel="icon" href="\/favicon\.ico"/);
+  assert.ok(!/rel="icon" href="data:/.test(rd('index.html')), 'pas d\'icône en data: (Google ne la lit pas)');
+  const ldOf = (f) => [...rd(f).matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].flatMap((m) => [].concat(JSON.parse(m[1])));
+  const monthLd = ldOf(`sorties-manga/${monthLinks[0]}/index.html`).find((j) => j['@type'] === 'CollectionPage');
+  assert.ok(monthLd && monthLd.mainEntity.itemListElement.length > 0 && monthLd.mainEntity.itemListElement[0].item.datePublished, 'ItemList de tomes datés');
+  assert.ok(ldOf(`serie/${links[0]}/index.html`).some((j) => j['@type'] === 'ComicSeries' && (Array.isArray(j.hasPart) ? j.hasPart.length : 0) > 0), 'ComicSeries avec ses tomes');
+  assert.ok(rd('_headers').includes('/fonts/*'), 'cache long pour les polices');
+  assert.match(rd(`sorties-manga/${monthLinks[0]}/index.html`), /href="\/editeur\/[a-z-]+\/"/, 'mois -> éditeurs');
   const sm = rd('sitemap.xml');
   assert.ok(sm.includes(`/serie/${links[0]}/`) && sm.includes('/sorties-manga/'));
 });
