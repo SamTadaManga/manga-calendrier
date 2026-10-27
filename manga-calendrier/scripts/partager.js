@@ -9,7 +9,7 @@
     manga: 'Sorties manga de la semaine', mois: 'Bilan du mois', nouv: 'Nouvelles séries à découvrir', dates: 'Changements de date',
     anime: 'Anime de la semaine', traite: 'Sélection : à lire d’une traite', genre: 'Sélection : si tu aimes… (genre du moment)',
   };
-  var PUBCOL = { glenat: '#0a4fd6', kana: '#d93a0b', pika: '#08804a', 'ki-oon': '#7a24c9', akata: '#c4177d', autre: '#5f6672' };
+  var PUBCOL = { glenat: '#0a4fd6', kana: '#d93a0b', pika: '#08804a', 'ki-oon': '#7a24c9', akata: '#c4177d', delcourt: '#0e7c86', soleil: '#b8860b', kaze: '#5c7f1a', kurokawa: '#3b3f4a', meian: '#8d5524', mangetsu: '#a61e4d', 'panini-manga': '#c92a2a', autre: '#5f6672' };
   var THEMES = {
     jaune: { bg: '#ffd21f', ink: '#111', sub: '#3a3300', card: '#ffffff', cardInk: '#111', cardSub: '#555', border: '#111', shadow: '#111', title: '#111', titleShadow: '#ffffff', ray: 'rgba(255,255,255,.35)', dot: 'rgba(0,0,0,.08)', band: '#111', bandInk: '#ffd21f', chip: '#111', chipInk: '#ffd21f', accent: '#e4361b', sticker: '#e4361b', stickerInk: '#fff' },
     sombre: { bg: '#121214', ink: '#f6f4ee', sub: '#b9b6ab', card: '#1f1f23', cardInk: '#f6f4ee', cardSub: '#b9b6ab', border: '#ffd21f', shadow: '#ffd21f', title: '#ffd21f', titleShadow: '#e4361b', ray: 'rgba(255,210,31,.10)', dot: 'rgba(255,210,31,.08)', band: '#ffd21f', bandInk: '#111', chip: '#ffd21f', chipInk: '#111', accent: '#ff6a4d', sticker: '#ffd21f', stickerInk: '#111' },

@@ -160,7 +160,8 @@ export function parseKazeProducts(json) {
   return out;
 }
 export function parseKazeDate(html) {
-  const m = String(html).match(/Publication\s*:?\s*(?:<[^>]*>\s*)*(\d{2})\.(\d{2})\.(\d{4})/i);
+  // on lit le texte de la page : les balises entre « Publication: » et la date varient
+  const m = strip(String(html).replace(/<(script|style)[\s\S]*?<\/\1>/gi, ' ')).match(/Publication\s*:?\s*(\d{2})\.(\d{2})\.(\d{4})/i);
   return m ? `${m[3]}-${m[2]}-${m[1]}` : null;
 }
 export function kazeRow(prod, date) {

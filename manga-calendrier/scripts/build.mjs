@@ -193,7 +193,7 @@ const page = (pathname, opts) => write(`${pathname.replace(/^\//, '')}index.html
 
 /* ------------------------------------------------------------- composants */
 const SEO_URLS = [];
-const PUBS = { glenat: 'Glénat', kana: 'Kana', pika: 'Pika', 'ki-oon': 'Ki-oon', akata: 'Akata' };
+const PUBS = { glenat: 'Glénat', kana: 'Kana', pika: 'Pika', 'ki-oon': 'Ki-oon', akata: 'Akata', delcourt: 'Delcourt', soleil: 'Soleil', kaze: 'Kazé', kurokawa: 'Kurokawa', meian: 'Meian', mangetsu: 'Mangetsu', 'panini-manga': 'Panini Manga' };
 const pubKey = (e) => { const k = slugify(e || ''); return k in PUBS ? k : 'autre'; };
 const weekday = (k) => new Intl.DateTimeFormat('fr-FR', { weekday: 'short', timeZone: 'UTC' }).format(new Date(`${k}T12:00:00Z`)).replace('.', '');
 const dayNum = (k) => String(Number(k.slice(8)));
@@ -423,7 +423,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const body = `
 <section class="week" aria-labelledby="t-week">
 <div class="week-head"><h1 id="t-week">Sorties manga et anime, jour par jour</h1>
-<p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon et Akata. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
+<p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
 <section aria-labelledby="t-days">
 <h2 id="t-days">Les sorties de la semaine</h2>
@@ -600,7 +600,7 @@ ${content}` : '<p class="empty">Le calendrier manga sera bientôt alimenté.</p>
 <p class="more"><a href="/manga.ics">Ajouter à mon agenda (manga.ics)</a>${siteUrlOk ? `<span class="muted"> Adresse à coller dans l'agenda : <code>${esc(base)}/manga.ics</code></span>` : ''}</p>
 <p class="more muted">Un agenda par éditeur : ${order.map((k) => `<a href="/agenda/${k}.ics">${esc(PUBS[k] || 'Autres')}</a>`).filter((_, i) => order[i] in PUBS).join(' · ')}</p>
 ${rows.length ? FILTER_JS : ''}`;
-  page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs (Glénat, Kana, Pika, Ki-oon, Akata), prix et statut de chaque tome.', body });
+  page('/manga/', { title: 'Calendrier des sorties manga', description: 'Calendrier des sorties manga en France : dates, éditeurs (Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu, Panini Manga), prix et statut de chaque tome.', body });
 }
 
 
@@ -638,10 +638,10 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   }
   page('/sorties-manga/', {
     title: 'Sorties manga par mois',
-    description: 'Les sorties manga en France mois par mois : tous les tomes annoncés par Glénat, Kana, Pika, Ki-oon et Akata.',
+    description: 'Les sorties manga en France mois par mois : tous les tomes annoncés par Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga.',
     body: `<h1>Sorties manga par mois</h1>
 <p class="lead">Choisis un mois pour voir tous les tomes annoncés.</p>
-<p>${months.length ? `${esc(plural(live.length, 'tome', 'tomes'))} au total, répartis sur ${months.length} mois, de ${esc(frMonth(`${months[0]}-01`))} à ${esc(frMonth(`${months[months.length - 1]}-01`))}. ` : ''}Chaque page mensuelle réunit les sorties de Glénat, Kana, Pika, Ki-oon et Akata avec leur date, leur prix et un lien vers la fiche de l'éditeur. Les dates viennent des plannings officiels : elles sont marquées « estimées » tant qu'un éditeur ne les a pas confirmées, et les reports sont signalés sur la page <a href="/changements/">Changements</a>.</p>
+<p>${months.length ? `${esc(plural(live.length, 'tome', 'tomes'))} au total, répartis sur ${months.length} mois, de ${esc(frMonth(`${months[0]}-01`))} à ${esc(frMonth(`${months[months.length - 1]}-01`))}. ` : ''}Chaque page mensuelle réunit les sorties de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga avec leur date, leur prix et un lien vers la fiche de l'éditeur. Les dates viennent des plannings officiels : elles sont marquées « estimées » tant qu'un éditeur ne les a pas confirmées, et les reports sont signalés sur la page <a href="/changements/">Changements</a>.</p>
 <p class="chiprow">${months.map((mk) => `<a class="chip" href="/sorties-manga/${monthSlug(mk)}/">${esc(ucfirst(frMonth(`${mk}-01`)))} <span class="n">${byMonth.get(mk).length}</span></a>`).join('')}</p>
 <p class="more"><a href="/manga/">Voir le calendrier</a> · <a href="/series/">Parcourir les séries</a></p>`,
   });
@@ -708,7 +708,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const synBox = synRow ? `<section class="synopsis"><h2>Résumé${synRow.tome ? ` du tome ${esc(synRow.tome)}` : ''}</h2><p>${esc(SYN[synRow.source].t)}</p><p class="muted syn-src">Résumé de l'éditeur · <a href="${esc(synRow.source)}" rel="noopener nofollow" target="_blank">${esc(synRow.editeur || 'Fiche éditeur')}</a></p></section>` : '';
     const lead = n
       ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? ' Cette date est confirmée.' : ' Cette date est estimée d\'après le planning de l\'éditeur : elle peut encore bouger.'}`
-      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata.${lastOut ? ` Dernier tome paru : ${lastOut.tome ? `tome ${esc(lastOut.tome)}` : 'le volume'} (${esc(frShort(lastOut.date))}).` : ''} Suis la série pour la retrouver dans Mon planning.`;
+      : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga.${lastOut ? ` Dernier tome paru : ${lastOut.tome ? `tome ${esc(lastOut.tome)}` : 'le volume'} (${esc(frShort(lastOut.date))}).` : ''} Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
     const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
     const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
@@ -761,7 +761,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
   const az = letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="sgrid">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L).map(card).join('')}</ul></section>`).join('');
   page('/series/', {
     title: 'Toutes les séries manga : prochain tome',
-    description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika, Ki-oon et Akata.`,
+    description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga.`,
     body: `<h1>Séries manga</h1>
 <p class="lead">${esc(plural(seriesList.length, 'série suivie', 'séries suivies'))} dans les plannings des éditeurs. Clique sur une série pour voir la date de son prochain tome.</p>
 ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" data-gs placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"></div>
@@ -781,7 +781,7 @@ ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="sea
       const finished = list.filter((S) => (infoOf(S.name) || {}).st === 'FINISHED').length;
       const ongoing = list.filter((S) => (infoOf(S.name) || {}).st === 'RELEASING').length;
       const upc = nextOf(list);
-      const intro = `${esc(plural(list.length, 'série', 'séries'))} ${esc(gl.toLowerCase())} ${list.length > 1 ? 'sont suivies' : 'est suivie'} dans les plannings de Glénat, Kana, Pika, Ki-oon et Akata${list.filter((S) => S.next).length ? `, dont ${list.filter((S) => S.next).length} avec un prochain tome déjà annoncé` : ''}.${ongoing || finished ? ` ${ongoing ? esc(plural(ongoing, 'série est encore publiée au Japon', 'séries sont encore publiées au Japon')) : ''}${ongoing && finished ? ', ' : ''}${finished ? esc(plural(finished, 'série est terminée', 'séries sont terminées')) + ' (idéal pour lire d\'une traite)' : ''}.` : ''}`;
+      const intro = `${esc(plural(list.length, 'série', 'séries'))} ${esc(gl.toLowerCase())} ${list.length > 1 ? 'sont suivies' : 'est suivie'} dans les plannings de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga${list.filter((S) => S.next).length ? `, dont ${list.filter((S) => S.next).length} avec un prochain tome déjà annoncé` : ''}.${ongoing || finished ? ` ${ongoing ? esc(plural(ongoing, 'série est encore publiée au Japon', 'séries sont encore publiées au Japon')) : ''}${ongoing && finished ? ', ' : ''}${finished ? esc(plural(finished, 'série est terminée', 'séries sont terminées')) + ' (idéal pour lire d\'une traite)' : ''}.` : ''}`;
       const soon = upc.length ? `<h2>Prochaines sorties en ${esc(gl.toLowerCase())}</h2><ul class="related">${upc.map((S) => `<li><a href="/serie/${S.k}/">${esc(S.name)}</a><span class="muted"> · ${S.next.tome ? `tome ${esc(S.next.tome)} · ` : ''}${esc(frShort(S.next.date))} · ${esc(S.editeur || '')}</span></li>`).join('')}</ul>` : '';
       const ld = siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` }, { '@type': 'ListItem', position: 2, name: 'Genres', item: `${base}/genres/` }, { '@type': 'ListItem', position: 3, name: gl, item: `${base}/genre/${gs}/` }] }).replace(/</g, '\\u003c')}</script>` : '';
@@ -840,7 +840,7 @@ ${mine.length ? `<h2>Séries ${esc(p.name)} sur le site</h2><ul class="chiprow">
     }
     page('/editeurs/', {
       title: 'Éditeurs de manga : calendriers des sorties',
-      description: `Les sorties manga de ${pubs.length} éditeurs français : Glénat, Kana, Pika, Ki-oon, Akata et d'autres.`,
+      description: `Les sorties manga de ${pubs.length} éditeurs français : Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Kazé et d'autres.`,
       body: `<h1>Éditeurs de manga</h1><p class="lead">Le calendrier des sorties de chaque éditeur.</p><p>Chaque page éditeur liste ses prochaines sorties, ses nouvelles séries et toutes les séries que nous suivons chez lui. Les données sont relevées chaque nuit sur les plannings officiels de ${esc(pubs.map((p) => p.name).slice(0, 5).join(', '))}${pubs.length > 5 ? ' et d\'autres éditeurs' : ''}.</p><ul class="sgrid">${pubs.map((p) => `<li class="scard p-${pubKey(p.name)}"><a class="scard-link" href="/editeur/${p.k}/"><strong>${esc(p.name)}</strong><span class="muted">${esc(plural(p.rows.filter((r) => r.date >= today).length, 'sortie à venir', 'sorties à venir'))}</span></a></li>`).join('')}</ul>`,
     });
     SEO_URLS.push('/editeurs/', ...pubs.map((p) => `/editeur/${p.k}/`));
@@ -1013,7 +1013,7 @@ page('/mes-animes/', {
     title: 'Changements de date des sorties manga',
     description: 'Tomes reportés, avancés, nouvellement annoncés ou retirés des plannings des éditeurs, relevés chaque jour.',
     body: `<h1>Changements de date</h1>
-<p class="lead">Chaque nuit, le site compare les plannings de Glénat, Kana, Pika, Ki-oon et Akata avec ceux de la veille. Quand un tome est reporté, avancé, annoncé ou disparaît, c'est ici.</p>
+<p class="lead">Chaque nuit, le site compare les plannings de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga avec ceux de la veille. Quand un tome est reporté, avancé, annoncé ou disparaît, c'est ici.</p>
 ${events.length ? content : `<p class="empty">Aucun changement détecté pour le moment. ${esc(since)} Cette page se remplit quand un éditeur modifie son planning.</p>`}
 <p class="more muted">${events.length ? esc(since) : ''}</p>`,
   });

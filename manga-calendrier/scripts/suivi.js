@@ -265,8 +265,8 @@
     return new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }).format(dt).replace('.', '');
   }
   var pubClass = function (e) {
-    var k = (e || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z-]/g, '');
-    return ['glenat', 'kana', 'pika', 'ki-oon', 'akata'].indexOf(k) > -1 ? k : 'autre';
+    var k = (e || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '-').replace(/[^a-z-]/g, '');
+    return ['glenat', 'kana', 'pika', 'ki-oon', 'akata', 'delcourt', 'soleil', 'kaze', 'kurokawa', 'meian', 'mangetsu', 'panini-manga'].indexOf(k) > -1 ? k : 'autre';
   };
   var pubName = function (e) { return e || 'Éditeur inconnu'; };
   function addD(d, n) { var dt = new Date(d + 'T12:00:00Z'); dt.setUTCDate(dt.getUTCDate() + n); return dt.toISOString().slice(0, 10); }

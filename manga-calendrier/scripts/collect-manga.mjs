@@ -181,7 +181,7 @@ const SOURCES = [
     editeur: 'Kazé',
     async run() {
       const json = await get('https://kazemanga.fr/collections/a-venir/products.json?limit=100', { json: true });
-      if (!json) return [];
+      if (!json) throw new Error('liste « à venir » introuvable (robots.txt ou page absente)');
       // les dates déjà lues sont gardées d'un jour à l'autre : on ne recharge que les fiches nouvelles
       const cacheFile = path.join(P.dataDir, 'kaze-dates.json');
       let cache = {};
@@ -198,7 +198,9 @@ const SOURCES = [
         }
         if (date) rows.push(kazeRow(prod, date));
       }
+      console.log(`  Kazé : ${parseKazeProducts(json).length} produits dans « à venir », ${rows.length} avec une date de parution`);
       for (const k of Object.keys(cache)) if (cache[k].date < addDays(today, -60)) delete cache[k];
+      if (!rows.length) throw new Error(`${parseKazeProducts(json).length} produit(s) listé(s), aucune date de parution lue sur les fiches`);
       mkdirSync(P.dataDir, { recursive: true });
       const out = JSON.stringify(cache, null, 1) + '\n';
       if (!existsSync(cacheFile) || readFileSync(cacheFile, 'utf8') !== out) writeFileSync(cacheFile, out);
