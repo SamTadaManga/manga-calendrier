@@ -4115,7 +4115,776 @@
     "y": 2019,
     "v": 2
    }
+  },
+  "acheve-moi": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "ao-ashi-playmaker": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 191788,
+     "t": "Aoashi Season 2",
+     "st": "RELEASING",
+     "f": "TV",
+     "u": "https://anilist.co/anime/191788",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/aoashi"
+      }
+     ]
+    },
+    {
+     "id": 134732,
+     "t": "Aoashi",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/134732",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/aoashi"
+      },
+      {
+       "n": "Disney+",
+       "u": "https://www.disneyplus.com/ja-jp/series/aoashi/27OVvACG0ySD"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Naohiko Ueno",
+     "Yuugo Kobayashi"
+    ],
+    "sc": [
+     "Yuugo Kobayashi",
+     "Naohiko Ueno"
+    ],
+    "ar": [
+     "Yuugo Kobayashi"
+    ],
+    "g": [
+     "Sports"
+    ],
+    "st": "FINISHED",
+    "y": 2015,
+    "v": 2
+   }
+  },
+  "arms": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 1493,
+     "t": "Project ARMS: The 2nd Chapter",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/1493",
+     "s": []
+    },
+    {
+     "id": 1492,
+     "t": "Project ARMS",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/1492",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Ryouji Minagawa"
+    ],
+    "sc": [
+     "Ryouji Minagawa"
+    ],
+    "ar": [
+     "Ryouji Minagawa"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 1997,
+    "v": 2
+   }
+  },
+  "baki-gaiden-scarface": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Keisuke Itagaki",
+     "Yukinao Yamauchi"
+    ],
+    "sc": [
+     "Keisuke Itagaki"
+    ],
+    "ar": [
+     "Yukinao Yamauchi"
+    ],
+    "g": [
+     "Action"
+    ],
+    "st": "RELEASING",
+    "y": 2005,
+    "v": 2
+   }
+  },
+  "blood-crawling-princess": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "call-of-the-night": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 141391,
+     "t": "Call of the Night",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/141391",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81621036"
+      },
+      {
+       "n": "Prime Video",
+       "u": "https://www.primevideo.com/detail/Call-of-the-Night/0KF5WYD9EMI7DIYOVTH56ANAN2"
+      }
+     ]
+    },
+    {
+     "id": 175914,
+     "t": "Call of the Night Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/175914",
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.primevideo.com/detail/0R6FDBMOY7ICNHGEQNII2RA941"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Kotoyama",
+     "Annaliese Christman"
+    ],
+    "sc": [
+     "Kotoyama"
+    ],
+    "ar": [
+     "Kotoyama"
+    ],
+    "g": [
+     "Comedy",
+     "Psychological",
+     "Romance",
+     "Slice of Life",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2019,
+    "v": 2
+   }
+  },
+  "chibi-maruko-chan": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 951,
+     "t": "Chibi Maruko-chan",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/951",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Momoko Sakura",
+     "Botan Kohagi"
+    ],
+    "sc": [
+     "Momoko Sakura",
+     "Botan Kohagi"
+    ],
+    "ar": [
+     "Momoko Sakura",
+     "Botan Kohagi"
+    ],
+    "g": [
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 1986,
+    "v": 2
+   }
+  },
+  "crayon-shinchan": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 966,
+     "t": "Shin Chan",
+     "st": "RELEASING",
+     "f": "TV",
+     "u": "https://anilist.co/anime/966",
+     "s": []
+    },
+    {
+     "id": 98093,
+     "t": "Shin chan Spin-off: Toy Wars",
+     "st": "FINISHED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/98093",
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/-/dp/B09S3BTXFL/"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yoshito Usui"
+    ],
+    "sc": [
+     "Yoshito Usui"
+    ],
+    "ar": [
+     "Yoshito Usui"
+    ],
+    "g": [
+     "Comedy",
+     "Ecchi"
+    ],
+    "st": "FINISHED",
+    "y": 1990,
+    "v": 2
+   }
+  },
+  "dead-account": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 187901,
+     "t": "Dead Account",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/187901",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00365559/dead-account"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Shizumu Watanabe",
+     "Hiromu Kitano"
+    ],
+    "sc": [
+     "Shizumu Watanabe"
+    ],
+    "ar": [
+     "Shizumu Watanabe"
+    ],
+    "g": [
+     "Action",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "en-scene-cuvie": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "fermat-kitchen": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 186003,
+     "t": "Fermat Kitchen",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/186003",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/82082002"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuugo Kobayashi",
+     "Frederic Neau"
+    ],
+    "sc": [
+     "Yuugo Kobayashi"
+    ],
+    "ar": [
+     "Yuugo Kobayashi"
+    ],
+    "g": [
+     "Drama",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2018,
+    "v": 2
+   }
+  },
+  "golden-guy": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Jun Watanabe"
+    ],
+    "sc": [
+     "Jun Watanabe"
+    ],
+    "ar": [
+     "Jun Watanabe"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Mystery"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "iwamoto-senpai": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "kids-on-the-slope": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 12531,
+     "t": "Kids on the Slope",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/12531",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuki Kodama",
+     "Hinoko"
+    ],
+    "sc": [
+     "Yuki Kodama"
+    ],
+    "ar": [
+     "Yuki Kodama"
+    ],
+    "g": [
+     "Drama",
+     "Music",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2007,
+    "v": 2
+   }
+  },
+  "me-roboco": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 150117,
+     "t": "ME & ROBOCO",
+     "st": "FINISHED",
+     "f": "TV_SHORT",
+     "u": "https://anilist.co/anime/150117",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GKEH2G031/me--roboco"
+      }
+     ]
+    },
+    {
+     "id": 166249,
+     "t": "Me & Roboco: The Movie",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/166249",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GMTE00369364/me--roboco-the-movie"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Kentarou Yabuki",
+     "Shuuhei Miyazaki",
+     "Yuuto  Suzuki"
+    ],
+    "sc": [
+     "Shuuhei Miyazaki"
+    ],
+    "ar": [
+     "Shuuhei Miyazaki"
+    ],
+    "g": [
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "meteoria": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "moi-quand-je-me-reincarne-en-slime": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "mon-chat-a-tout-faire-est-encore-tout-deprime": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "partners-2-0": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Souryu"
+    ],
+    "sc": [
+     "Souryu"
+    ],
+    "ar": [
+     "Souryu"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Ecchi",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "pere-fouettard-corporation": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "remede-imperial-l-etrange-medecin-de-la-cour": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "ron-kamonohashi-deranged-detective": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 158926,
+     "t": "Ron Kamonohashi's Forbidden Deductions",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/158926",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GNVHKN903/ron-kamonohashis-forbidden-deductions"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/id-en/title/81726765"
+      }
+     ]
+    },
+    {
+     "id": 172355,
+     "t": "Ron Kamonohashi’s Forbidden Deductions Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/172355",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GNVHKN903/ron-kamonohashis-forbidden-deductions"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Akira Amano"
+    ],
+    "sc": [
+     "Akira Amano"
+    ],
+    "ar": [
+     "Akira Amano"
+    ],
+    "g": [
+     "Drama",
+     "Mystery"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "share-house-nile": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Hiroo Nakamichi",
+     "Megumi Dorokawa"
+    ],
+    "sc": [
+     "Hiroo Nakamichi"
+    ],
+    "ar": [
+     "Megumi Dorokawa"
+    ],
+    "g": [
+     "Comedy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2022,
+    "v": 2
+   }
+  },
+  "silver-plan-ma-seconde-chance": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "snowball-earth": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 213579,
+     "t": "Snowball Earth 2nd Season",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/213579",
+     "s": []
+    },
+    {
+     "id": 196144,
+     "t": "SNOWBALL EARTH",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/196144",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00371869/snowball-earth"
+      },
+      {
+       "n": "Disney+",
+       "u": "https://www.disneyplus.com/browse/entity-5ecc8b00-79fd-4c1a-81ed-f44260ef38d4"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/82746480"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuuhirou Tsujiji"
+    ],
+    "sc": [
+     "Yuuhirou Tsujiji"
+    ],
+    "ar": [
+     "Yuuhirou Tsujiji"
+    ],
+    "g": [
+     "Action",
+     "Mecha",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "soichi": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "spy-x-family": {
+   "c": "2026-10-27",
+   "a": [
+    {
+     "id": 140960,
+     "t": "SPY x FAMILY",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/140960",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81511410"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/spy-x-family"
+      },
+      {
+       "n": "Disney+",
+       "u": "https://www.disneyplus.com/series/spyfamily/fet1h9jqmrAM"
+      }
+     ]
+    },
+    {
+     "id": 142838,
+     "t": "SPY x FAMILY Cour 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/142838",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/G4PH0WXVJ/spy-x-family"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81511410"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Tatsuya Endou",
+     "Rina Mapa"
+    ],
+    "sc": [
+     "Tatsuya Endou"
+    ],
+    "ar": [
+     "Tatsuya Endou"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Slice of Life",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2019,
+    "v": 2
+   }
+  },
+  "the-condemned-villainess-goes-back-in-time": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "the-fed-up-office-lady-wants-to-serve-the-villainess": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Nekotarou"
+    ],
+    "sc": [
+     "Nekotarou"
+    ],
+    "ar": [
+     "Nekotarou"
+    ],
+    "g": [
+     "Comedy",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2022,
+    "v": 2
+   }
+  },
+  "the-hitman-s-fave": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
+  },
+  "tsukimichi-moonlit-fantasy": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": {
+    "au": [
+     "Kei Azumi",
+     "Kotora Kino"
+    ],
+    "sc": [
+     "Kotora Kino"
+    ],
+    "ar": [
+     "Kotora Kino"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Fantasy",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2015,
+    "v": 2
+   }
+  },
+  "de-neige-et-d-encre": {
+   "c": "2026-10-27",
+   "a": [],
+   "i": null
   }
  },
- "generatedAt": "2026-10-27T15:16:17.092Z"
+ "generatedAt": "2026-10-27T15:29:14.796Z"
 }

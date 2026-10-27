@@ -20,6 +20,10 @@ Glénat · action, comédie, drame · Riichirou Inagaki et Ryouichi Ikegami · d
 
 Kana · action, drame, fantasy · Tunakan Suda · depuis 2022
 
+## [Ao Ashi, playmaker](/serie/ao-ashi-playmaker/)
+
+Mangetsu · sport · Naohiko Ueno et Yuugo Kobayashi · depuis 2015
+
 ## [Go for it, Nakamura !](/serie/go-for-it-nakamura/)
 
 Akata · comédie, tranche de vie · Shundei · depuis 2014
@@ -27,7 +31,3 @@ Akata · comédie, tranche de vie · Shundei · depuis 2014
 ## [Pandora Seven](/serie/pandora-seven/)
 
 Soleil · action, aventure, fantasy · Kayashima Yuta · depuis 2021
-
-## [2.5 Dimensional Seduction](/serie/2-5-dimensional-seduction/)
-
-Soleil · comédie, ecchi, romance · Yuu Hashimoto · depuis 2019
