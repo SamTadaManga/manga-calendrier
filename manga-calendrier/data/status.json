@@ -2,128 +2,128 @@
  "version": 1,
  "sources": {
   "Anime · AniList": {
-   "lastRun": "2026-10-28T11:51:47.651Z",
+   "lastRun": "2026-10-28T12:00:02.928Z",
    "ok": true,
    "count": 109,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:47.651Z",
+   "lastSuccess": "2026-10-28T12:00:02.928Z",
    "lastSuccessCount": 109,
    "fails": 0
   },
   "Anime · Saisons AniList": {
-   "lastRun": "2026-10-28T11:51:43.750Z",
+   "lastRun": "2026-10-28T11:59:58.591Z",
    "ok": true,
    "count": 80,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:43.750Z",
+   "lastSuccess": "2026-10-28T11:59:58.591Z",
    "lastSuccessCount": 80,
    "fails": 0
   },
   "Manga · Akata": {
-   "lastRun": "2026-10-28T11:50:59.844Z",
+   "lastRun": "2026-10-28T11:59:14.450Z",
    "ok": true,
    "count": 31,
    "note": "",
-   "lastSuccess": "2026-10-28T11:50:59.844Z",
+   "lastSuccess": "2026-10-28T11:59:14.450Z",
    "lastSuccessCount": 31,
    "fails": 0
   },
   "Manga · Delcourt": {
-   "lastRun": "2026-10-28T11:51:05.946Z",
+   "lastRun": "2026-10-28T11:59:20.777Z",
    "ok": true,
    "count": 27,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:05.946Z",
+   "lastSuccess": "2026-10-28T11:59:20.777Z",
    "lastSuccessCount": 27,
    "fails": 0
   },
   "Manga · Glénat": {
-   "lastRun": "2026-10-28T11:50:22.887Z",
+   "lastRun": "2026-10-28T11:58:41.197Z",
    "ok": true,
    "count": 19,
    "note": "",
-   "lastSuccess": "2026-10-28T11:50:22.887Z",
+   "lastSuccess": "2026-10-28T11:58:41.197Z",
    "lastSuccessCount": 19,
    "fails": 0
   },
   "Manga · Kana": {
-   "lastRun": "2026-10-28T11:50:33.351Z",
+   "lastRun": "2026-10-28T11:58:47.323Z",
    "ok": true,
    "count": 46,
    "note": "",
-   "lastSuccess": "2026-10-28T11:50:33.351Z",
+   "lastSuccess": "2026-10-28T11:58:47.323Z",
    "lastSuccessCount": 46,
    "fails": 0
   },
   "Manga · Kazé": {
-   "lastRun": "2026-10-28T11:51:29.794Z",
+   "lastRun": "2026-10-28T11:59:44.326Z",
    "ok": true,
    "count": 4,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:29.794Z",
+   "lastSuccess": "2026-10-28T11:59:44.326Z",
    "lastSuccessCount": 4,
    "fails": 0
   },
   "Manga · Ki-oon": {
-   "lastRun": "2026-10-28T11:50:53.736Z",
+   "lastRun": "2026-10-28T11:59:08.356Z",
    "ok": true,
    "count": 28,
    "note": "",
-   "lastSuccess": "2026-10-28T11:50:53.736Z",
+   "lastSuccess": "2026-10-28T11:59:08.356Z",
    "lastSuccessCount": 28,
    "fails": 0
   },
   "Manga · Kurokawa": {
-   "lastRun": "2026-10-28T11:51:32.220Z",
+   "lastRun": "2026-10-28T11:59:47.087Z",
    "ok": true,
    "count": 12,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:32.220Z",
+   "lastSuccess": "2026-10-28T11:59:47.087Z",
    "lastSuccessCount": 12,
    "fails": 0
   },
   "Manga · Mangetsu": {
-   "lastRun": "2026-10-28T11:51:35.820Z",
+   "lastRun": "2026-10-28T11:59:50.585Z",
    "ok": true,
    "count": 12,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:35.820Z",
+   "lastSuccess": "2026-10-28T11:59:50.585Z",
    "lastSuccessCount": 12,
    "fails": 0
   },
   "Manga · Meian": {
-   "lastRun": "2026-10-28T11:51:33.846Z",
+   "lastRun": "2026-10-28T11:59:48.473Z",
    "ok": true,
    "count": 8,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:33.846Z",
+   "lastSuccess": "2026-10-28T11:59:48.473Z",
    "lastSuccessCount": 8,
    "fails": 0
   },
   "Manga · Panini Manga": {
-   "lastRun": "2026-10-28T11:51:38.056Z",
+   "lastRun": "2026-10-28T11:59:52.744Z",
    "ok": true,
    "count": 1,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:38.056Z",
+   "lastSuccess": "2026-10-28T11:59:52.744Z",
    "lastSuccessCount": 1,
    "fails": 0
   },
   "Manga · Pika": {
-   "lastRun": "2026-10-28T11:50:47.723Z",
+   "lastRun": "2026-10-28T11:59:02.699Z",
    "ok": true,
    "count": 60,
    "note": "",
-   "lastSuccess": "2026-10-28T11:50:47.723Z",
+   "lastSuccess": "2026-10-28T11:59:02.699Z",
    "lastSuccessCount": 60,
    "fails": 0
   },
   "Manga · Soleil": {
-   "lastRun": "2026-10-28T11:51:10.004Z",
+   "lastRun": "2026-10-28T11:59:25.105Z",
    "ok": true,
    "count": 14,
    "note": "",
-   "lastSuccess": "2026-10-28T11:51:10.004Z",
+   "lastSuccess": "2026-10-28T11:59:25.105Z",
    "lastSuccessCount": 14,
    "fails": 0
   }
