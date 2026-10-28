@@ -205,3 +205,13 @@ Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse norma
 ## Couvertures de tomes dans R2
 
 `scripts/couvertures-isbn.mjs` cherche la couverture de chaque tome par ISBN (Amazon.fr, puis Open Library), la réduit en WebP (400 px) et la range dans R2 sous `isbn/<isbn13>.webp`, à côté de `series/`. La liste des ISBN faits est dans `data/couvertures-isbn.json` : le site utilise alors l'image R2 au lieu d'aller la chercher ailleurs. Le workflow « Couvertures de tomes (R2) » le fait par lots ; il demande les secrets `R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`.
+
+## Réseaux sociaux
+
+`scripts/social.mjs` prépare chaque matin les visuels et les textes du jour dans la direction artistique du site (jaune d'imprimerie, trame de points, titres Dela Gothic One) et publie sur Bluesky, X, Instagram et Pinterest. Le workflow « Publication sur les réseaux » le lance à 6 h UTC.
+
+- **Publications** : `jour` (sorties du jour ; à défaut, la prochaine date de sortie), `semaine` (le lundi), `nouveautes` (tomes 1 des 14 prochains jours, le jeudi).
+- **Visuels** : une image paysage pour Bluesky et X, un carrousel 4:5 pour Instagram, des diapositives 9:16 pour TikTok, une image 2:3 pour Pinterest. Ils sont aussi dans Actions > Artifacts (`visuels-reseaux`), avec `textes.md`.
+- **Identifiants** (secrets GitHub, chaque réseau est facultatif) : `BLUESKY_HANDLE`, `BLUESKY_APP_PASSWORD` ; `X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_SECRET` ; `IG_USER_ID`, `IG_ACCESS_TOKEN` ; `PINTEREST_TOKEN`, `PINTEREST_BOARD_ID`. Instagram et Pinterest demandent une adresse publique d'image : les secrets R2 servent à y déposer les visuels du jour (`social/…`).
+- **TikTok** : l'API de publication exige une validation de l'application ; les diapositives et la légende sont donc prêtes dans l'artefact, à publier depuis l'application.
+- `data/social-posted.json` garde ce qui a été publié (pas de doublon si le workflow est relancé).

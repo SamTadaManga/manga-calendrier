@@ -1,0 +1,89 @@
+name: Publication sur les réseaux
+# Chaque matin : dessine les visuels du jour (sorties manga, semaine le lundi, nouvelles séries le jeudi) et publie sur les réseaux
+# dont les identifiants sont présents (secrets). Les visuels et textes sont aussi disponibles dans Artifacts (pour TikTok, ou à la main).
+# Lancement manuel possible : choisissez « essai à blanc » pour voir le résultat sans rien publier.
+on:
+  schedule:
+    - cron: '12 6 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Essai à blanc (ne publie rien)"
+        type: boolean
+        default: true
+      kinds:
+        description: "Publications : auto, ou jour,semaine,nouveautes"
+        default: auto
+      platforms:
+        description: "Réseaux : bluesky,x,instagram,pinterest (vide = tous ceux configurés)"
+        default: ''
+      force:
+        description: "Republier même si déjà publié aujourd'hui"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: social
+  cancel-in-progress: false
+jobs:
+  social:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Installer Playwright (Chrome est déjà présent sur le serveur)
+        run: npm i --no-save --no-audit --no-fund playwright-core
+      - name: Dessiner et publier
+        run: |
+          ARGS="--kinds=${{ inputs.kinds || 'auto' }} --out=social-out"
+          if [ -n "${{ inputs.platforms }}" ]; then ARGS="$ARGS --platforms=${{ inputs.platforms }}"; fi
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          node scripts/social.mjs $ARGS
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          X_API_KEY: ${{ secrets.X_API_KEY }}
+          X_API_SECRET: ${{ secrets.X_API_SECRET }}
+          X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+          X_ACCESS_SECRET: ${{ secrets.X_ACCESS_SECRET }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          PINTEREST_TOKEN: ${{ secrets.PINTEREST_TOKEN }}
+          PINTEREST_BOARD_ID: ${{ secrets.PINTEREST_BOARD_ID }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: visuels-reseaux
+          path: manga-calendrier/social-out/
+          retention-days: 14
+      - name: Enregistrer ce qui a été publié
+        if: always()
+        working-directory: .
+        run: |
+          [ -f manga-calendrier/data/social-posted.json ] || exit 0
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/p.json"; cp manga-calendrier/data/social-posted.json "$KEEP"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$KEEP" manga-calendrier/data/social-posted.json
+            git add manga-calendrier/data/social-posted.json
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Réseaux : publications du jour enregistrées"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1
