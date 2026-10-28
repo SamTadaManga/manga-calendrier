@@ -687,3 +687,12 @@ ul.hscroll .tile-body>.t-shops{padding-top:4px}
 .cat-vols li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:10px 14px;border-bottom:1px solid var(--line)}
 .cat-vols .cv-t{font-weight:800;min-width:5.5em}
 .cat-vols .cv-m{flex:1 1 12em}
+
+/* Couverture absente : le titre prend la place, l'image le recouvre quand elle existe */
+.cover:has(>.ph){position:relative}
+.cover>.ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:8px;text-align:center;font-weight:800;font-size:.85rem;line-height:1.2;color:var(--ink);background:var(--paper,var(--line));overflow:hidden;overflow-wrap:anywhere}
+.cover>.ph+.cover-img{position:relative}
+.cat-vols .cv-ed{flex:1 1 100%}
+.cat-vols .cv-ed summary{cursor:pointer;font-weight:700;font-size:.9rem}
+.cat-vols .cv-ed ul{list-style:none;margin:6px 0 0;padding:0}
+.cat-vols .cv-ed li{border-bottom:0;padding:6px 0 6px 12px;border-left:3px solid var(--line)}

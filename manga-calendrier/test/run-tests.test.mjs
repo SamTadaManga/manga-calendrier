@@ -422,7 +422,7 @@ test('catalogue BnF : pages par série, pages par lettre, recherche, couvertures
   execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, ...dirs, CONFIG_FILE: cfg }, encoding: 'utf8' });
   const rd = (f) => readFileSync(path.join(tmp, 'dist', f), 'utf8');
   const only = rd('serie/catalogue-seul/index.html');
-  assert.ok(/Catalogue Seul : tous les tomes/.test(only) && only.includes('Tome 1') && only.includes('Tomes 1 &amp; 2') && only.includes('Aussi publié chez Ki-oon') && only.includes('ISBN 9782811600006'), 'page catalogue');
+  assert.ok(/Catalogue Seul : tous les tomes/.test(only) && only.includes('Tome 1') && only.includes('Tomes 1 &amp; 2') && only.includes('Aussi publié chez Ki-oon') && !only.includes('&amp;#') && only.includes('ISBN 9782811600006'), 'page catalogue');
   assert.ok(only.includes('https://covers.exemple.test/series/catalogue-seul.webp'), 'couverture R2');
   assert.ok(only.includes('amazon.fr') && only.includes('ComicSeries'), "liens d'achat et données structurées");
   // la série déjà au calendrier garde sa page et reçoit les tomes du catalogue
