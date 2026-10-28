@@ -716,7 +716,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   // Un tome = une carte dans un carrousel. Couverture : fichier de l'éditeur si on l'a pour cet ISBN, sinon Open Library
   // (adresse construite avec l'ISBN, chargée par le navigateur) ; sans image, le titre du tome reste affiché.
   // Les autres éditions (réimpressions) sont dans un menu déroulant, sans JavaScript.
-  const isbnCover = (isbn) => (showCovers && COVER_ISBN.has(isbn) ? COVER_ISBN.get(isbn) : showCovers && config.isbnCovers ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false` : '');
+  const isbnCover = (isbn) => (showCovers && COVER_ISBN.has(isbn) ? COVER_ISBN.get(isbn) : showCovers && config.isbnCovers !== false ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false` : '');
   const volList = (c, vols) => {
     const groups = new Map();
     for (const v of vols) { const key = v[0] ? `t${v[0]}` : `l${v[3] || v[1]}`; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(v); }
