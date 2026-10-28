@@ -708,7 +708,9 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   }
   const catOnly = BNF.series.filter((c) => !c.page);
   for (const c of catOnly) c.page = c.k;
-  const r2img = (c, alt, w, h, cls = 'cover-img') => { const u = bnfCover(c); return u ? `<img class="${cls}" src="${esc(u)}" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''; };
+  // Miniature servie par Cloudflare (Transformations d'images) : ~20 Ko au lieu de l'image pleine taille. "catalogueResize": false pour couper.
+  const bnfThumb = (c, w) => { const u = bnfCover(c); return u && config.catalogueResize !== false ? `/cdn-cgi/image/width=${w},quality=80,format=auto/${u}` : u; };
+  const r2img = (c, alt, w, h, cls = 'cover-img') => { const u = bnfThumb(c, w * 2); return u ? `<img class="${cls}" src="${esc(u)}" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''; };
   const volRow = (c, v) => ({ serie: c.n, tome: v[0], isbn: v[1], date: v[2] ? `${v[2]}-01-01` : '2000-01-01', editeur: c.e });
   const volLabel = (v) => (v[0] ? `Tome ${v[0]}` : (v[3] || 'Volume'));
   // Un tome = une carte dans un carrousel. Couverture : fichier de l'éditeur si on l'a pour cet ISBN, sinon Open Library
@@ -877,8 +879,8 @@ ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des li
 
     // pages par lettre (240 séries par page)
     const everyone = [
-      ...seriesList.map((S) => ({ k: S.k, n: S.name, e: S.editeur, count: S.cat ? Math.max(S.cat.v.length, S.rows.length) : S.rows.length, sub: S.next ? `${S.next.tome ? `T${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', cover: (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover) || (S.cat ? bnfCover(S.cat) : ''), live: true })),
-      ...byName.map((c) => ({ k: c.k, n: c.n, e: c.e, count: c.v.length, sub: '', cover: bnfCover(c), live: false })),
+      ...seriesList.map((S) => ({ k: S.k, n: S.name, e: S.editeur, count: S.cat ? Math.max(S.cat.v.length, S.rows.length) : S.rows.length, sub: S.next ? `${S.next.tome ? `T${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', cover: (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover) || (S.cat ? bnfThumb(S.cat, 300) : ''), live: true })),
+      ...byName.map((c) => ({ k: c.k, n: c.n, e: c.e, count: c.v.length, sub: '', cover: bnfThumb(c, 300), live: false })),
     ].sort((a, b) => a.n.localeCompare(b.n, 'fr'));
     const groups = new Map();
     for (const x of everyone) { const L = letterKey(x.k); if (!groups.has(L)) groups.set(L, []); groups.get(L).push(x); }
