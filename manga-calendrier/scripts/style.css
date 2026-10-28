@@ -696,5 +696,9 @@ ul.hscroll .tile-body>.t-shops{padding-top:4px}
 .cat-vols .cv-ed summary{cursor:pointer;font-weight:700;font-size:.9rem}
 .cat-vols .cv-ed ul{list-style:none;margin:6px 0 0;padding:0}
 .cat-vols .cv-ed li{border-bottom:0;padding:6px 0 6px 12px;border-left:3px solid var(--line)}
-.monthjump{margin:0 0 12px}.sel{font:inherit;padding:8px 12px;border:2px solid var(--edge);border-radius:6px;background:var(--bg,transparent);color:var(--ink)}
+.monthjump{margin:0 0 12px}.sel{appearance:none;-webkit-appearance:none;min-height:42px;padding:6px 38px 6px 14px;border:2px solid var(--edge);border-radius:2px;background:var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23888' stroke-width='2'/%3E%3C/svg%3E") no-repeat right 14px center;color:var(--ink);font:inherit;font-weight:700;cursor:pointer;color-scheme:light dark}
+:root[data-theme="dark"] .sel{color-scheme:dark}:root[data-theme="light"] .sel{color-scheme:light}
+.sel:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.sel option{background:var(--panel);color:var(--ink);font-weight:500}
+.monthjump label{color:var(--muted);margin-right:6px}
 .vnc{border:2px solid var(--edge);padding:10px}.vnc>strong{font-size:1.05rem}
