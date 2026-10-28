@@ -10,6 +10,8 @@ import { compose } from './social-contenu.mjs';
 import { jobs, render } from './social-visuels.mjs';
 import { postBluesky, postX, postInstagram, postPinterest, blueskyReady, xReady, instagramReady, pinterestReady } from './social-publier.mjs';
 import { r2Client } from './r2.mjs';
+import { loadBnf } from './catalogue-bnf.mjs';
+import { slugify } from './lib.mjs';
 
 const arg = (n, d = '') => { const m = process.argv.find((a) => a === `--${n}` || a.startsWith(`--${n}=`)); return m ? (m.includes('=') ? m.split('=').slice(1).join('=') : 'true') : d; };
 const P = paths();
@@ -33,10 +35,14 @@ let posted = {}; try { posted = JSON.parse(readFileSync(logFile, 'utf8')); } cat
 const manga = loadAllManga(P.dataDir), anime = readAnime(P.dataDir);
 const imgBase = (env.SOCIAL_IMG_BASE || (config.catalogueCovers ? new URL(config.catalogueCovers).origin : '')).replace(/\/+$/, '');
 const r2 = env.R2_ACCOUNT_ID && env.R2_BUCKET && env.R2_ACCESS_KEY_ID && env.R2_SECRET_ACCESS_KEY ? r2Client({ accountId: env.R2_ACCOUNT_ID, bucket: env.R2_BUCKET, accessKey: env.R2_ACCESS_KEY_ID, secretKey: env.R2_SECRET_ACCESS_KEY }) : null;
+// Couverture de secours quand l'éditeur n'en fournit pas : image du tome déjà rangée dans R2, sinon couverture de la série au catalogue.
+const bnf = loadBnf(P.dataDir);
+let isbnDone = new Set(); try { isbnDone = new Set(JSON.parse(readFileSync(path.join(P.dataDir, 'couvertures-isbn.json'), 'utf8')).done || []); } catch {}
+const coverFor = (r) => !imgBase ? '' : (isbnDone.has(r.isbn) ? `${imgBase}/isbn/${r.isbn}.webp` : bnf.byK.has(slugify(r.serie)) ? `${imgBase}/series/${slugify(r.serie)}.webp` : '');
 let failures = 0;
 
 for (const kind of kinds) {
-  const data = compose({ kind, today, manga, anime, site });
+  const data = compose({ kind, today, manga, anime, site, coverFor });
   if (!data) { console.log(`[${kind}] rien à publier aujourd'hui.`); continue; }
   const dir = path.join(OUT, data.key);
   mkdirSync(dir, { recursive: true });

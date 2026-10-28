@@ -1129,3 +1129,12 @@ test('réseaux sociaux : contenu du jour, repli sur la prochaine sortie, longueu
   assert.equal(c2.filter((u) => u.endsWith('/9/media')).length, 3, '2 vignettes + 1 carrousel');
   assert.ok(c2.at(-1).endsWith('/9/media_publish'));
 });
+
+test('réseaux sociaux : les sorties avec couverture passent en premier, couverture de secours acceptée', async () => {
+  const { pick } = await import('../scripts/social-contenu.mjs');
+  const mk = (serie, cover) => ({ date: '2026-11-04', serie, tome: '2', editeur: 'Pika', titre: '', statut: 'annonce', cover });
+  const rows = [mk('A sans', ''), mk('B avec', 'https://x/b.jpg'), mk('C secours', ''), mk('D sans', '')];
+  const out = pick(rows, 4, (r) => (r.serie === 'C secours' ? 'https://img/c.webp' : ''));
+  assert.deepEqual(out.slice(0, 2).map((i) => i.serie), ['B avec', 'C secours']);
+  assert.equal(out[1].cover, 'https://img/c.webp');
+});
