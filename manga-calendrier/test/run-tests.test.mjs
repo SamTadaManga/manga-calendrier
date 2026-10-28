@@ -410,6 +410,31 @@ test('affiches d\'anime : collectées, affichées seulement si showCovers', () =
   assert.ok(!readFileSync(path.join(tmp, 'off/anime/index.html'), 'utf8').includes('bx1-test.jpg'));
 });
 
+test('catalogue BnF : pages par série, pages par lettre, recherche, couvertures R2', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), NOW: '2026-10-12T07:00:00Z' };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(dirs.DATA_DIR, 'manga.csv'));
+  cpSync(path.join(ROOT, 'test/fixtures/catalogue-bnf.json'), path.join(dirs.DATA_DIR, 'catalogue-bnf.json'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json');
+  writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.test', launched: true, showCovers: true, catalogueCovers: 'https://covers.exemple.test/series' }));
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, ...dirs, CONFIG_FILE: cfg }, encoding: 'utf8' });
+  const rd = (f) => readFileSync(path.join(tmp, 'dist', f), 'utf8');
+  const only = rd('serie/catalogue-seul/index.html');
+  assert.ok(/Catalogue Seul : tous les tomes/.test(only) && only.includes('Tome 1') && only.includes('Tomes 1 &amp; 2') && only.includes('Aussi publié chez Ki-oon') && only.includes('ISBN 9782811600006'), 'page catalogue');
+  assert.ok(only.includes('https://covers.exemple.test/series/catalogue-seul.webp'), 'couverture R2');
+  assert.ok(only.includes('amazon.fr') && only.includes('ComicSeries'), "liens d'achat et données structurées");
+  // la série déjà au calendrier garde sa page et reçoit les tomes du catalogue
+  const alpha = rd('serie/serie-fictive-alpha/index.html');
+  assert.ok(alpha.includes('Tous les tomes parus en France') && alpha.includes('9782505000003'), 'tomes du catalogue sur une série du calendrier');
+  assert.ok(existsSync(path.join(tmp, 'dist/series/lettre/c/index.html')) && rd('series/lettre/z/index.html').includes('Zèbre bleu'), 'pages par lettre');
+  assert.ok(rd('series/index.html').includes('/series/lettre/c/'), 'index des lettres sur /series/');
+  const idx = JSON.parse(rd('data/search.json'));
+  assert.ok(idx.catalogue.some((c) => c[1] === 'catalogue-seul' && c[3] === 3) && !idx.catalogue.some((c) => c[1] === 'serie-fictive-alpha'), 'index de recherche du catalogue');
+  assert.ok(rd('sitemap.xml').includes('/serie/catalogue-seul/') && !rd('sitemap.xml').includes('/serie/zebre-bleu/'), 'sitemap : séries à 3 tomes ou plus seulement');
+});
+
 test('pages par mois, par série et index : générées, liées et dans le sitemap', () => {
   const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
   const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), NOW: '2026-10-12T07:00:00Z' };

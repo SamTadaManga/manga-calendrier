@@ -12,6 +12,7 @@ import {
   esc, slugify, weekdayOfKey, markdown, buildICS, isFirstVolume, mangaSlugOf, loadManga, parseCSV,
 } from './lib.mjs';
 import { readStatus } from './status.mjs';
+import { loadBnf, yearsOf } from './catalogue-bnf.mjs';
 
 const P = paths();
 const SCRIPTS = path.dirname(fileURLToPath(import.meta.url));
@@ -187,6 +188,9 @@ ${body}
 `;
 }
 let searchSeries = [];
+let searchCatalogue = [];
+let catalogueHub = null;
+const letterKey = (k) => { const c = String(k || '')[0] || ''; return /[a-z]/.test(c) ? c : '0-9'; };
 function animeNotice() {
   if (!ANIME_STALE) return '';
   if (!anime.generatedAt) return '<p class="notice warn" role="status">Le programme des épisodes n\'a pas encore pu être récupéré. Il apparaîtra dès que la source (AniList) répondra.</p>';
@@ -692,6 +696,27 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     return { k, name, rows: sorted, next: sorted.find((r) => r.date >= today) || null, editeur: sorted[sorted.length - 1].editeur };
   }).sort((a, b) => a.name.localeCompare(b.name, 'fr'));
 
+  /* ---------------- catalogue complet (BnF) : ≈ 8 000 séries publiées en français, avec leurs tomes et leur couverture hébergée dans R2 */
+  const BNF = loadBnf(P.dataDir);
+  const COVER_BASE = (() => { const u = typeof config.catalogueCovers === 'string' ? config.catalogueCovers.trim() : ''; return /^https:\/\/[^\s"<>]+$/.test(u) ? u.replace(/\/?$/, '/') : ''; })();
+  const bnfCover = (c) => (showCovers && COVER_BASE ? `${COVER_BASE}${c.k}.webp` : '');
+  for (const S of seriesList) { // une série du calendrier et la même dans le catalogue : même page
+    const c = BNF.byK.get(S.k) || S.rows.map((r) => BNF.byIsbn.get(r.isbn)).find(Boolean);
+    if (c && !c.page) { c.page = S.k; S.cat = c; }
+  }
+  const catOnly = BNF.series.filter((c) => !c.page);
+  for (const c of catOnly) c.page = c.k;
+  const r2img = (c, alt, w, h, cls = 'cover-img') => { const u = bnfCover(c); return u ? `<img class="${cls}" src="${esc(u)}" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''; };
+  const volRow = (c, v) => ({ serie: c.n, tome: v[0], isbn: v[1], date: v[2] ? `${v[2]}-01-01` : '2000-01-01', editeur: c.e });
+  const volLabel = (v) => (v[0] ? `Tome ${v[0]}` : (v[3] || 'Volume'));
+  const volList = (c, vols) => `<ul class="cat-vols panel">${vols.map((v) => `<li><span class="cv-t">${esc(volLabel(v))}</span><span class="muted cv-m">${v[2] ? `${v[2]} · ` : ''}ISBN ${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}</li>`).join('')}</ul>`;
+  const catBox = (S) => {
+    if (!S.cat) return '';
+    const known = new Set(S.rows.map((r) => r.isbn).filter(Boolean));
+    const vols = S.cat.v.filter((v) => !known.has(v[1]));
+    return vols.length ? `<h2>Tous les tomes parus en France</h2><p class="muted">${esc(plural(S.cat.v.length, 'tome', 'tomes'))} au catalogue${S.cat.e ? ` (${esc(S.cat.e)})` : ''}. Source : <a href="https://catalogue.bnf.fr" rel="noopener nofollow">BnF</a>.</p>${volList(S.cat, vols)}` : '';
+  };
+
   searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: [S.editeur, ...((infoOf(S.name) || {}).au || [])].filter(Boolean).join(' '), c: showCovers ? (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover || '') : '', x: [S.editeur, S.rows.filter((r) => r.date >= today).length ? `${S.rows.filter((r) => r.date >= today).length} tome(s) à venir` : 'rien d\'annoncé'].filter(Boolean).join(' · ') }));
   // Séries proches (auteur, genres, éditeur) et articles qui citent la série
   const norm = (t) => String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -740,7 +765,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? ' Cette date est confirmée.' : ' Cette date est estimée d\'après le planning de l\'éditeur : elle peut encore bouger.'}`
       : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga.${lastOut ? ` Dernier tome paru : ${lastOut.tome ? `tome ${esc(lastOut.tome)}` : 'le volume'} (${esc(frShort(lastOut.date))}).` : ''} Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
-    const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : '';
+    const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : (S.cat && bnfCover(S.cat) ? `<div class="cover series-cover">${r2img(S.cat, `Couverture de ${S.name}`, 160, 240)}</div>` : '');
     const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
     const ae = aeps.find((e) => e.date >= now()) || aeps[0];
     const adaptHtml = adaptLine(S.name, 2);
@@ -777,11 +802,92 @@ ${animeBox}
 </div></div>
 ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
+${catBox(S)}
 ${historyBox(S)}
 ${relatedBox(S)}
 ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more">${S.editeur && slugify(S.editeur) ? `<a href="/editeur/${slugify(S.editeur)}/">Autres sorties ${esc(S.editeur)}</a> · ` : ''}<a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
     });
+  }
+  /* ------------------------------------------------------------- catalogue : une page par série (hors calendrier), pages par lettre */
+  {
+    const byName = [...catOnly].sort((a, b) => a.n.localeCompare(b.n, 'fr'));
+    const pubKeyOf = (e) => slugify(e || '');
+    const trackedPub = (e) => pubs_for_link.has(pubKeyOf(e));
+    const pubs_for_link = new Set(manga.filter((r) => r.statut !== 'annule' && r.editeur).map((r) => slugify(r.editeur)));
+    const pubLink = (e) => (e ? (trackedPub(e) ? `<a href="/editeur/${slugify(e)}/">${esc(e)}</a>` : esc(e)) : '');
+    const idxOf = new Map(byName.map((c, i) => [c.k, i]));
+    for (const c of byName) {
+      const [y0, y1] = yearsOf(c);
+      const years = y0 ? (y0 === y1 ? ` en ${y0}` : ` de ${y0} à ${y1}`) : '';
+      const n = c.v.length;
+      const others = (c.p || []).length ? ` Aussi publié chez ${(c.p || []).map(esc).join(', ')}.` : '';
+      const i = idxOf.get(c.k);
+      const same = byName.filter((o, j) => o.e && o.e === c.e && j !== i).slice(0, 0);
+      const prev = byName[i - 1], next = byName[i + 1];
+      const L = letterKey(c.k);
+      const cover = r2img(c, `Couverture de ${c.n}`, 160, 240);
+      const hero = cover ? `<div class="cover series-cover">${cover}</div>` : '';
+      const ld = siteUrlOk ? `<script type="application/ld+json">${JSON.stringify([
+        { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
+          { '@type': 'ListItem', position: 2, name: 'Séries', item: `${base}/series/` },
+          { '@type': 'ListItem', position: 3, name: c.n, item: `${base}/serie/${c.k}/` }] },
+        { '@context': 'https://schema.org', '@type': 'ComicSeries', name: c.n, inLanguage: 'fr', url: `${base}/serie/${c.k}/`, numberOfEpisodes: n,
+          ...(c.e ? { publisher: { '@type': 'Organization', name: c.e } } : {}),
+          ...(bnfCover(c) ? { image: bnfCover(c) } : {}),
+          hasPart: c.v.slice(0, 30).map((v) => ({ '@type': 'Book', name: `${c.n}${v[0] ? ` tome ${v[0]}` : ''}`, isbn: v[1], inLanguage: 'fr', ...(v[2] ? { datePublished: String(v[2]) } : {}), ...(c.e ? { publisher: { '@type': 'Organization', name: c.e } } : {}) })) },
+      ]).replace(/</g, '\\u003c')}</script>` : '';
+      page(`/serie/${c.k}/`, {
+        extraHead: ld,
+        title: `${c.n} : tous les tomes en français`,
+        description: `${c.n} : ${plural(n, 'tome paru', 'tomes parus')} en France${c.e ? ` chez ${c.e}` : ''}${years}. Liste des tomes, ISBN et où les acheter.`,
+        image: bnfCover(c),
+        body: `<div class="series-head">${hero}<div>
+<h1>${esc(c.n)} : tous les tomes</h1>
+<p class="lead"><strong>${esc(c.n)}</strong> compte ${esc(plural(n, 'tome paru', 'tomes parus'))} en France${c.e ? ` chez ${pubLink(c.e)}` : ''}${esc(years)}.${esc(others)} Aucune sortie n'est annoncée pour le moment dans nos plannings.</p>
+</div></div>
+<h2>Les tomes</h2>${volList(c, c.v)}
+${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
+<p class="muted facts-src">Liste des tomes : <a href="https://catalogue.bnf.fr" rel="noopener nofollow">catalogue général de la BnF</a> (licence ouverte). Les dates exactes de sortie ne sont connues que pour les séries suivies dans les plannings.</p>
+<p class="chiprow">${prev ? `<a class="chip" href="/serie/${prev.k}/">← ${esc(prev.n)}</a>` : ''}${next ? `<a class="chip" href="/serie/${next.k}/">${esc(next.n)} →</a>` : ''}</p>
+<p class="more"><a href="/series/lettre/${L}/">Séries en ${esc(L === '0-9' ? '0-9' : L.toUpperCase())}</a> · <a href="/series/">Toutes les séries</a>${c.e && trackedPub(c.e) ? ` · <a href="/editeur/${slugify(c.e)}/">Sorties ${esc(c.e)}</a>` : ''}</p>`,
+      });
+      if (n >= 3) SEO_URLS.push(`/serie/${c.k}/`);
+    }
+    // index de recherche : [nom, adresse, éditeur, nombre de tomes]
+    searchCatalogue = byName.map((c) => [c.n, c.k, c.e || '', c.v.length]);
+
+    // pages par lettre (240 séries par page)
+    const everyone = [
+      ...seriesList.map((S) => ({ k: S.k, n: S.name, e: S.editeur, count: S.cat ? Math.max(S.cat.v.length, S.rows.length) : S.rows.length, sub: S.next ? `${S.next.tome ? `T${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', cover: (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover) || (S.cat ? bnfCover(S.cat) : ''), live: true })),
+      ...byName.map((c) => ({ k: c.k, n: c.n, e: c.e, count: c.v.length, sub: '', cover: bnfCover(c), live: false })),
+    ].sort((a, b) => a.n.localeCompare(b.n, 'fr'));
+    const groups = new Map();
+    for (const x of everyone) { const L = letterKey(x.k); if (!groups.has(L)) groups.set(L, []); groups.get(L).push(x); }
+    const letterList = [...groups.keys()].sort((a, b) => (a === '0-9' ? -1 : b === '0-9' ? 1 : a.localeCompare(b)));
+    const PER = 240;
+    const lcard = (x) => `<li class="scard p-${pubKey(x.e)}"><a class="scard-link" href="/serie/${x.k}/">${showCovers && x.cover ? `<div class="cover"><img class="cover-img" src="${esc(x.cover)}" alt="Couverture de ${esc(x.n)}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer"${x.live ? '' : ' onerror="this.remove()"'}></div>` : ''}<strong>${esc(x.n)}</strong><span class="muted">${x.sub ? `${esc(x.sub)}` : `${esc(plural(x.count, 'tome', 'tomes'))}${x.e ? ` · ${esc(x.e)}` : ''}`}</span></a></li>`;
+    for (const L of letterList) {
+      const list = groups.get(L);
+      const pages = Math.ceil(list.length / PER);
+      const lname = L === '0-9' ? '0-9' : L.toUpperCase();
+      for (let pg = 1; pg <= pages; pg++) {
+        const url = `/series/lettre/${L}/${pg > 1 ? `${pg}/` : ''}`;
+        const slice = list.slice((pg - 1) * PER, pg * PER);
+        const nav = `<p class="chiprow" aria-label="Lettres">${letterList.map((l) => `<a class="chip${l === L ? ' on' : ''}" href="/series/lettre/${l}/"${l === L ? ' aria-current="page"' : ''}>${esc(l === '0-9' ? '0-9' : l.toUpperCase())} <span class="n">${groups.get(l).length}</span></a>`).join('')}</p>`;
+        const pager = pages > 1 ? `<p class="chiprow" aria-label="Pages">${Array.from({ length: pages }, (_, i) => `<a class="chip${i + 1 === pg ? ' on' : ''}" href="/series/lettre/${L}/${i ? `${i + 1}/` : ''}"${i + 1 === pg ? ' aria-current="page"' : ''}>Page ${i + 1}</a>`).join('')}</p>` : '';
+        page(url, {
+          title: `Séries manga en ${lname}${pg > 1 ? ` (page ${pg})` : ''} : tous les tomes`,
+          description: `${plural(list.length, 'série', 'séries')} manga dont le titre commence par ${lname}, publiées en France : liste des tomes, éditeurs et prochains tomes.`,
+          body: `<h1>Séries manga en ${esc(lname)}</h1>
+<p class="lead">${esc(plural(list.length, 'série', 'séries'))} publiées en français${pages > 1 ? `, page ${pg} sur ${pages}` : ''}. Les séries avec un prochain tome annoncé affichent sa date.</p>
+${nav}<ul class="sgrid">${slice.map(lcard).join('')}</ul>${pager}<p class="more"><a href="/series/">Toutes les séries</a></p>`,
+        });
+        SEO_URLS.push(url);
+      }
+    }
+    catalogueHub = { letters: letterList.map((l) => ({ l, n: groups.get(l).length })), total: everyone.length };
   }
   const letters = [...new Set(seriesList.map((S) => (slugify(S.name)[0] || '#').toUpperCase()))].sort();
   const card = (S) => {
@@ -791,10 +897,11 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
   };
   const az = letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="sgrid">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L).map(card).join('')}</ul></section>`).join('');
   page('/series/', {
-    title: 'Toutes les séries manga : prochain tome',
+    title: catalogueHub ? 'Catalogue des séries manga : tous les tomes' : 'Toutes les séries manga : prochain tome',
     description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga.`,
     body: `<h1>Séries manga</h1>
-<p class="lead">${esc(plural(seriesList.length, 'série suivie', 'séries suivies'))} dans les plannings des éditeurs. Clique sur une série pour voir la date de son prochain tome.</p>
+<p class="lead">${catalogueHub ? `${esc(plural(catalogueHub.total, 'série', 'séries').replace(/^\d+/, (n) => Number(n).toLocaleString('fr-FR')))} de manga publiées en français, avec la liste de leurs tomes. ` : ''}${esc(plural(seriesList.length, 'série est suivie', 'séries sont suivies'))} dans les plannings des éditeurs : clique dessus pour voir la date de son prochain tome.</p>
+${catalogueHub ? `<h2>Tout le catalogue, de A à Z</h2><p class="chiprow" aria-label="Lettres">${catalogueHub.letters.map((x) => `<a class="chip" href="/series/lettre/${x.l}/">${esc(x.l === '0-9' ? '0-9' : x.l.toUpperCase())} <span class="n">${x.n}</span></a>`).join('')}</p><h2>Séries suivies dans les plannings</h2>` : ''}
 ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" data-gs placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"></div>
 <p class="empty" id="aucun" hidden>Aucune série ne correspond.</p>${az}${FILTER_JS}` : '<p class="empty">Les séries apparaîtront après la première collecte.</p>'}`,
   });
@@ -1404,6 +1511,7 @@ write('data/recent.json', JSON.stringify({
   }
   write('data/search.json', JSON.stringify({
     series: searchSeries,
+    catalogue: searchCatalogue,
     anime: animeIdx,
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));

@@ -10,7 +10,8 @@
   if (!out) return;
   if (!q) { out.appendChild(h('p', 'empty', 'Tape le nom d\'une série, d\'un anime ou d\'un article.')); return; }
   fetch('/data/search.json').then(function (r) { return r.json(); }).then(function (idx) {
-    var groups = [['Séries manga', idx.series], ['Animes de la semaine', idx.anime], ['Articles', idx.articles]], total = 0;
+    var cat = (idx.catalogue || []).map(function (c) { return { n: c[0], u: '/serie/' + c[1] + '/', a: c[2], d: c[3] + (c[3] > 1 ? ' tomes' : ' tome') + (c[2] ? ' · ' + c[2] : '') }; });
+    var groups = [['Séries manga', idx.series], ['Catalogue complet', cat], ['Animes de la semaine', idx.anime], ['Articles', idx.articles]], total = 0;
     groups.forEach(function (g) {
       var hits = (g[1] || []).map(function (x) { return { x: x, s: score(q, x.n + ' ' + (x.a || '')) }; }).filter(function (o) { return o.s > 0; })
         .sort(function (a, b) { return b.s - a.s || a.x.n.localeCompare(b.x.n, 'fr'); });
