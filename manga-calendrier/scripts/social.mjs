@@ -11,6 +11,7 @@ import { jobs, render } from './social-visuels.mjs';
 import { postBluesky, postX, postInstagram, postPinterest, blueskyReady, xReady, instagramReady, pinterestReady } from './social-publier.mjs';
 import { r2Client } from './r2.mjs';
 import { loadBnf } from './catalogue-bnf.mjs';
+import { sendMail } from './mail.mjs';
 import { slugify } from './lib.mjs';
 
 const arg = (n, d = '') => { const m = process.argv.find((a) => a === `--${n}` || a.startsWith(`--${n}=`)); return m ? (m.includes('=') ? m.split('=').slice(1).join('=') : 'true') : d; };
@@ -40,6 +41,7 @@ const bnf = loadBnf(P.dataDir);
 let isbnDone = new Set(); try { isbnDone = new Set(JSON.parse(readFileSync(path.join(P.dataDir, 'couvertures-isbn.json'), 'utf8')).done || []); } catch {}
 const coverFor = (r) => !imgBase ? '' : (isbnDone.has(r.isbn) ? `${imgBase}/isbn/${r.isbn}.webp` : bnf.byK.has(slugify(r.serie)) ? `${imgBase}/series/${slugify(r.serie)}.webp` : '');
 let failures = 0;
+const packs = []; // ce qui a été dessiné aujourd'hui, pour l'e-mail récapitulatif
 
 for (const kind of kinds) {
   const data = compose({ kind, today, manga, anime, site, coverFor });
@@ -53,6 +55,7 @@ for (const kind of kinds) {
   const carousel = (fmt) => files.filter((f) => f.name.startsWith(`${fmt}-`)).sort((a, b) => a.name.localeCompare(b.name, 'en', { numeric: true }));
   writeFileSync(path.join(dir, 'textes.md'), `# ${data.key}\n\n## Bluesky\n\n${data.text.bluesky}\n\n## X\n\n${data.text.x}\n\n## Instagram (carrousel instagram-*.jpg)\n\n${data.text.instagram}\n\n## TikTok (photos tiktok-*.jpg, mode diaporama)\n\n${data.text.tiktok}\n\n## Pinterest (pinterest.jpg)\n\nTitre : ${data.text.pinterest.title}\n\nDescription : ${data.text.pinterest.description}\n\nLien : ${data.text.pinterest.link}\n`);
 
+  packs.push({ data, dir, files });
   const done = (p) => posted[data.key]?.[p];
   const mark = (p, id) => { posted[data.key] = { ...(posted[data.key] || {}), [p]: { at: new Date().toISOString(), id: id || '' } }; };
   const upload = async () => {
@@ -74,6 +77,27 @@ for (const kind of kinds) {
       if (p === 'pinterest') { urls ??= await upload(); res = await postPinterest({ ...data.text.pinterest, alt: data.alt, url: urls.pinterest }, env); }
       mark(p, res?.id); console.log(`  ${p} : publié.`);
     } catch (e) { failures++; console.error(`  ${p} : ÉCHEC — ${e.message}`); }
+  }
+}
+// E-mail du matin : images et textes pour les réseaux publiés à la main (par défaut X, Pinterest, TikTok).
+// Variables : SMTP_USER (adresse Gmail), SMTP_PASS (mot de passe d'application), MAIL_TO (défaut : SMTP_USER), MAIL_PLATFORMS (défaut : x,pinterest,tiktok)
+if (!DRY && env.SMTP_USER && env.SMTP_PASS && packs.length) {
+  const wanted = (env.MAIL_PLATFORMS || 'x,pinterest,tiktok').split(',').map((x) => x.trim()).filter(Boolean);
+  if (posted[`mail-${today}`] && !FORCE) console.log('  e-mail : déjà envoyé.');
+  else {
+    const sections = []; const att = new Map();
+    for (const { data, files } of packs) {
+      const t = data.text, add = (f) => { const x = files.find((y) => y.name === f); if (x) att.set(`${data.key}-${f}.jpg`, x.file); };
+      sections.push(`=============== ${data.key} ===============`);
+      if (wanted.includes('x')) { add('bluesky-x'); sections.push(`--- X (image : ${data.key}-bluesky-x.jpg)\n\n${t.x}`); }
+      if (wanted.includes('pinterest')) { add('pinterest'); sections.push(`--- Pinterest (image : ${data.key}-pinterest.jpg)\n\nTitre : ${t.pinterest.title}\n\nDescription : ${t.pinterest.description}\n\nLien : ${t.pinterest.link}`); }
+      if (wanted.includes('tiktok')) { files.filter((f) => f.name.startsWith('tiktok-')).forEach((f) => add(f.name)); sections.push(`--- TikTok (images : ${data.key}-tiktok-*.jpg, mode photos)\n\n${t.tiktok}`); }
+      if (wanted.includes('instagram')) { files.filter((f) => f.name.startsWith('instagram-')).forEach((f) => add(f.name)); sections.push(`--- Instagram (carrousel : ${data.key}-instagram-*.jpg)\n\n${t.instagram}`); }
+    }
+    try {
+      await sendMail({ user: env.SMTP_USER, pass: env.SMTP_PASS, to: env.MAIL_TO || env.SMTP_USER, from: `Prochain Tome <${env.SMTP_USER}>`, subject: `À publier aujourd'hui : ${packs.map((k) => k.data.title.join(' ').toLowerCase()).join(' + ')} (${today})`, text: sections.join('\n\n'), attachments: [...att].map(([filename, f]) => ({ filename, type: 'image/jpeg', content: readFileSync(f) })) });
+      posted[`mail-${today}`] = { at: new Date().toISOString() }; console.log(`  e-mail : envoyé (${att.size} images).`);
+    } catch (e) { failures++; console.error(`  e-mail : ÉCHEC — ${e.message}`); }
   }
 }
 const cutoff = new Date(Date.now() - 90 * 864e5).toISOString().slice(0, 10);

@@ -215,3 +215,5 @@ Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse norma
 - **Identifiants** (secrets GitHub, chaque réseau est facultatif) : `BLUESKY_HANDLE`, `BLUESKY_APP_PASSWORD` ; `X_API_KEY`, `X_API_SECRET`, `X_ACCESS_TOKEN`, `X_ACCESS_SECRET` ; `IG_USER_ID`, `IG_ACCESS_TOKEN` ; `PINTEREST_TOKEN`, `PINTEREST_BOARD_ID`. Instagram et Pinterest demandent une adresse publique d'image : les secrets R2 servent à y déposer les visuels du jour (`social/…`).
 - **TikTok** : l'API de publication exige une validation de l'application ; les diapositives et la légende sont donc prêtes dans l'artefact, à publier depuis l'application.
 - `data/social-posted.json` garde ce qui a été publié (pas de doublon si le workflow est relancé).
+
+**E-mail du matin** : pour les réseaux publiés à la main (X, Pinterest, TikTok par défaut), le workflow envoie un e-mail avec les images en pièces jointes et les textes prêts à copier. Secrets : `SMTP_USER` (adresse Gmail) et `SMTP_PASS` (mot de passe d'application Google, pas le mot de passe du compte). Variables facultatives : `MAIL_TO` (destinataire, par défaut `SMTP_USER`) et `MAIL_PLATFORMS` (par défaut `x,pinterest,tiktok`).

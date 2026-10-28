@@ -1138,3 +1138,26 @@ test('réseaux sociaux : les sorties avec couverture passent en premier, couvert
   assert.deepEqual(out.slice(0, 2).map((i) => i.serie), ['B avec', 'C secours']);
   assert.equal(out[1].cover, 'https://img/c.webp');
 });
+
+test('e-mail du matin : message MIME avec pièces jointes, envoi SMTP (serveur simulé)', async () => {
+  const { sendMail, buildMessage } = await import('../scripts/mail.mjs');
+  const net = await import('node:net');
+  const msg = buildMessage({ from: 'a@x.fr', to: 'b@x.fr', subject: 'À publier : é', text: 'Bonjour é', attachments: [{ filename: 'x.jpg', type: 'image/jpeg', content: Buffer.from('IMG') }], boundary: 'B' });
+  assert.ok(msg.includes('Subject: =?UTF-8?B?') && msg.includes('filename="x.jpg"') && msg.endsWith('--B--\r\n'));
+  const got = [];
+  const srv = net.createServer((s) => {
+    let data = false, buf = '';
+    s.write('220 ok\r\n');
+    s.on('data', (d) => { buf += d.toString();
+      while (true) {
+        if (data) { if (!buf.includes('\r\n.\r\n')) return; got.push(buf); buf = ''; data = false; s.write('250 queued\r\n'); continue; }
+        const i = buf.indexOf('\r\n'); if (i < 0) return;
+        const line = buf.slice(0, i); buf = buf.slice(i + 2); got.push(line);
+        if (/^AUTH LOGIN/.test(line)) s.write('334 VXNlcm5hbWU6\r\n'); else if (/^[A-Za-z0-9+/=]+$/.test(line) && !/^(EHLO|DATA|QUIT)/.test(line)) s.write(got.filter((g) => /^[A-Za-z0-9+/=]{4,}$/.test(g)).length >= 2 ? '235 ok\r\n' : '334 UGFzc3dvcmQ6\r\n');
+        else if (line === 'DATA') { s.write('354 go\r\n'); data = true; } else if (line === 'QUIT') { s.write('221 bye\r\n'); s.end(); } else s.write('250 ok\r\n');
+      } }); });
+  await new Promise((r) => srv.listen(0, '127.0.0.1', r));
+  await sendMail({ host: '127.0.0.1', port: srv.address().port, secure: false, user: 'a@x.fr', pass: 'pw', to: 'b@x.fr', subject: 'Test', text: 'Salut', attachments: [{ filename: 'i.jpg', type: 'image/jpeg', content: Buffer.from('IMG') }] });
+  srv.close();
+  assert.ok(got.includes('RCPT TO:<b@x.fr>') && got.some((g) => g.includes('filename="i.jpg"')), 'message reçu par le serveur');
+});
