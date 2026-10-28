@@ -1,8 +1,10 @@
 name: Couvertures de tomes (R2)
 # Récupère les couvertures par ISBN et les range dans R2 (isbn/<isbn13>.webp). Reprend là où l'exécution précédente s'est arrêtée.
 # Secrets à créer dans Settings > Secrets and variables > Actions : R2_ACCOUNT_ID, R2_BUCKET, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY.
-# Sans ces secrets, l'exécution s'arrête sans rien faire. Lancement manuel, ou chaque nuit tant que la case « nuit » est activée ci-dessous.
+# Sans ces secrets, l'exécution s'arrête sans rien faire. Lancement manuel, et chaque soir à 20 h 47 UTC (21 h 47 ou 22 h 47 à Paris) : 9 000 ISBN au plus par nuit, fini bien avant la mise à jour de 3 h 17 UTC.
 on:
+  schedule:
+    - cron: '47 20 * * *'
   workflow_dispatch:
     inputs:
       limit:
@@ -39,7 +41,7 @@ jobs:
         run: npm i --no-save --no-audit --no-fund sharp
       - name: Récupérer et envoyer les couvertures
         if: steps.s.outputs.ok == 'yes'
-        run: node scripts/couvertures-isbn.mjs --limit=${{ inputs.limit || 3000 }} --minutes=300
+        run: node scripts/couvertures-isbn.mjs --limit=${{ inputs.limit || 9000 }} --minutes=300
         env:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
           R2_BUCKET: ${{ secrets.R2_BUCKET }}
