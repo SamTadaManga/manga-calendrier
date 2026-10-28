@@ -65,6 +65,7 @@ for (const kind of kinds) {
   for (const p of want.filter((x) => ALL.includes(x))) {
     if (!READY[p]) { console.log(`  ${p} : identifiants absents, ignoré.`); continue; }
     if (done(p) && !FORCE) { console.log(`  ${p} : déjà publié.`); continue; }
+    if (p === 'x' && env.X_KINDS && !env.X_KINDS.split(',').map((k) => k.trim()).includes(kind)) { console.log(`  x : ignoré pour « ${kind} » (X_KINDS=${env.X_KINDS}).`); continue; }
     if (DRY) { console.log(`  ${p} : essai à blanc, non publié.`); continue; }
     try {
       let res;
@@ -73,7 +74,11 @@ for (const kind of kinds) {
       if (p === 'instagram') { urls ??= await upload(); res = await postInstagram({ caption: data.text.instagram, urls: carousel('instagram').map((f) => urls[f.name]) }, env); }
       if (p === 'pinterest') { urls ??= await upload(); res = await postPinterest({ ...data.text.pinterest, alt: data.alt, url: urls.pinterest }, env); }
       mark(p, res?.id); console.log(`  ${p} : publié.`);
-    } catch (e) { failures++; console.error(`  ${p} : ÉCHEC — ${e.message}`); }
+    } catch (e) {
+      // Plus de crédits chez X : on le signale sans faire échouer toute l'exécution (Bluesky et les autres ont fonctionné)
+      if (p === 'x' && /\b402\b|credits/i.test(e.message)) console.warn(`  x : crédits épuisés, publication ignorée. Rechargez les crédits dans le portail développeur X, ou retirez les secrets X_*. (${e.message.slice(0, 120)})`);
+      else { failures++; console.error(`  ${p} : ÉCHEC — ${e.message}`); }
+    }
   }
 }
 const cutoff = new Date(Date.now() - 90 * 864e5).toISOString().slice(0, 10);
