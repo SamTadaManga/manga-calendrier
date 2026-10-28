@@ -716,16 +716,24 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   // Un tome = une carte dans un carrousel. Couverture : fichier de l'éditeur si on l'a pour cet ISBN, sinon Open Library
   // (adresse construite avec l'ISBN, chargée par le navigateur) ; sans image, le titre du tome reste affiché.
   // Les autres éditions (réimpressions) sont dans un menu déroulant, sans JavaScript.
-  const isbnCover = (isbn) => (showCovers && COVER_ISBN.has(isbn) ? COVER_ISBN.get(isbn) : showCovers && config.isbnCovers !== false ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false` : '');
+  const isbn10 = (i) => { if (!/^978\d{10}$/.test(i)) return ''; const d = i.slice(3, 12); let t = 0; for (let k = 0; k < 9; k++) t += (10 - k) * Number(d[k]); const c = (11 - (t % 11)) % 11; return d + (c === 10 ? 'X' : c); };
+  // Sources par ISBN, dans l'ordre : couverture de l'éditeur (calendrier), Amazon.fr, Open Library. Le navigateur passe à la suivante si l'image manque.
+  const isbnCovers = (isbn) => {
+    if (!showCovers) return [];
+    if (COVER_ISBN.has(isbn)) return [COVER_ISBN.get(isbn)];
+    if (config.isbnCovers === false) return [];
+    const a = isbn10(isbn);
+    return [...(a ? [`https://m.media-amazon.com/images/P/${a}.08.MZZZZZZZ.jpg`] : []), `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`];
+  };
   const volList = (c, vols) => {
     const groups = new Map();
     for (const v of vols) { const key = v[0] ? `t${v[0]}` : `l${v[3] || v[1]}`; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(v); }
     const card = (g) => {
       const eds = [...g].sort((a, b) => b[2] - a[2]);
       const [main, ...rest] = eds;
-      const u = isbnCover(main[1]);
+      const [u, alt] = isbnCovers(main[1]);
       const more = rest.length ? `<details class="cv-ed"><summary>${esc(plural(eds.length, 'édition', 'éditions'))}</summary>${rest.map((v) => `<div class="cv-e"><span class="muted">${v[2] ? `${v[2]} · ` : ''}${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}</div>`).join('')}</details>` : '';
-      return `<li class="scard vcard${u ? '' : ' vnc'}">${u ? `<div class="cover"><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span><img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></div>` : ''}<strong>${esc(volLabel(main))}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
+      return `<li class="scard vcard${u ? '' : ' vnc'}">${u ? `<div class="cover"><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span><img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer"${alt ? ` data-alt="${esc(alt)}"` : ''} onload="if(this.naturalWidth<50)this.onerror()" onerror="var a=this.dataset.alt;if(a){this.dataset.alt='';this.src=a}else{this.closest('.vcard').classList.add('vnc');this.parentNode.remove()}"></div>` : ''}<strong>${esc(volLabel(main))}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
     };
     return `<div class="carousel" role="region" aria-label="Tomes de ${esc(c.n)}" tabindex="0"><ul class="sgrid carousel-track cat-car">${[...groups.values()].map(card).join('')}</ul></div>`;
   };
