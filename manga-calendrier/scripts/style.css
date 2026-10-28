@@ -681,3 +681,9 @@ ul.hscroll .tile-body>.t-shops{padding-top:4px}
 
 /* Longues listes (calendrier, mois, séries) : le navigateur ne dessine que ce qui est proche de l'écran */
 .list>.rel,.daygroup,.scard{content-visibility:auto;contain-intrinsic-size:auto 160px}
+
+/* Catalogue : liste des tomes d'une série */
+.cat-vols{list-style:none;margin:0 0 1.2rem;padding:0}
+.cat-vols li{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.cat-vols .cv-t{font-weight:800;min-width:5.5em}
+.cat-vols .cv-m{flex:1 1 12em}

@@ -188,3 +188,12 @@ Pour remplacer un lien par un lien d'affiliation, ajouter dans `site.config.json
 ```
 
 Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse normale), `{urlenc}` (adresse normale encodée). Seuls les liens en `https://` sont acceptés. Dès qu'un lien d'affiliation est actif, le site ajoute `rel="sponsored"`, une mention sous les tomes et un paragraphe « Liens d'affiliation » dans les mentions légales.
+
+## Catalogue des séries (BnF) et couvertures R2
+
+`/series/` sert aussi de catalogue : environ 8 000 séries de manga publiées en français, avec la liste de leurs tomes (numéro, année, ISBN, boutons d'achat). Pages `/serie/<nom>/` pour chaque série, pages `/series/lettre/<a-z>/` (240 séries par page) et recherche globale étendue (index `catalogue` dans `data/search.json`).
+
+- **Données** : `data/catalogue-bnf.json`, produit à partir du fichier `resultats_bnf.csv` (catalogue général de la BnF, licence ouverte) par `node scripts/import-bnf.mjs chemin/resultats_bnf.csv`. Le script écarte les ISBN invalides et les doublons, ramène les éditeurs à un seul nom (« Pika édition » et « Pika éd. » deviennent « Pika ») et regroupe les tomes par série. Relancer le script avec un nouveau fichier remplace le catalogue.
+- **Séries déjà au calendrier** : même adresse qu'avant ; la liste « Tous les tomes parus en France » vient s'ajouter. Les séries du catalogue seules n'ont pas de date de sortie à venir.
+- **Couvertures** : une image par série, `<base>/<adresse-de-la-serie>.webp`, hébergée dans R2. Dans `site.config.json` : `"catalogueCovers": "https://ton-domaine-public-r2/series/"`. Sans cette ligne (ou avec `"showCovers": false`), le catalogue s'affiche sans images. Une image manquante disparaît sans casser la page.
+- **Sitemap** : seules les séries de 3 tomes ou plus (et celles du calendrier) y figurent, pour ne pas inonder Google de pages très courtes ; les autres restent accessibles par les pages de lettres et la recherche.
