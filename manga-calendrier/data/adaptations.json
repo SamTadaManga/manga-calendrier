@@ -5152,7 +5152,30 @@
    "c": "2026-10-27",
    "a": [],
    "i": null
+  },
+  "everything-about-himeru-kokoro": {
+   "c": "2026-10-28",
+   "a": [],
+   "i": {
+    "au": [
+     "Shouta Komatsu"
+    ],
+    "sc": [
+     "Shouta Komatsu"
+    ],
+    "ar": [
+     "Shouta Komatsu"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2024,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-10-27T23:10:36.827Z"
+ "generatedAt": "2026-10-28T03:55:40.009Z"
 }

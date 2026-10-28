@@ -586,5 +586,47 @@
    "source": "https://www.bdbase.fr/manga/l-arcane-de-l-aube-volume-5-red-edition",
    "cover": ""
   }
+ },
+ "/manga/everything-about-himeru-kokoro-4": {
+  "vu": "2026-10-28",
+  "row": {
+   "date": "2026-11-04",
+   "editeur": "Kazé",
+   "serie": "Everything about Himeru Kokoro",
+   "tome": "4",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/everything-about-himeru-kokoro-4",
+   "cover": ""
+  }
+ },
+ "/manga/baki-gaiden-scarface-8": {
+  "vu": "2026-10-28",
+  "row": {
+   "date": "2027-02-24",
+   "editeur": "Meian",
+   "serie": "Baki Gaiden - Scarface",
+   "tome": "8",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/baki-gaiden-scarface-8",
+   "cover": ""
+  }
+ },
+ "/manga/the-condemned-villainess-goes-back-in-time-5": {
+  "vu": "2026-10-28",
+  "row": {
+   "date": "2027-02-24",
+   "editeur": "Meian",
+   "serie": "The Condemned Villainess Goes Back in Time",
+   "tome": "5",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/the-condemned-villainess-goes-back-in-time-5",
+   "cover": ""
+  }
  }
 }
