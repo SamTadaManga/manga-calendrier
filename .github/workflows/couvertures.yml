@@ -1,0 +1,66 @@
+name: Couvertures de tomes (R2)
+# Récupère les couvertures par ISBN et les range dans R2 (isbn/<isbn13>.webp). Reprend là où l'exécution précédente s'est arrêtée.
+# Secrets à créer dans Settings > Secrets and variables > Actions : R2_ACCOUNT_ID, R2_BUCKET, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY.
+# Sans ces secrets, l'exécution s'arrête sans rien faire. Lancement manuel, ou chaque nuit tant que la case « nuit » est activée ci-dessous.
+on:
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Nombre maximum d'ISBN à traiter"
+        default: '3000'
+permissions:
+  contents: write
+concurrency:
+  group: couvertures
+  cancel-in-progress: false
+jobs:
+  couvertures:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Vérifier les secrets
+        id: s
+        run: |
+          if [ -z "$R2_ACCOUNT_ID" ] || [ -z "$R2_BUCKET" ] || [ -z "$R2_ACCESS_KEY_ID" ] || [ -z "$R2_SECRET_ACCESS_KEY" ]; then echo "ok=no" >> "$GITHUB_OUTPUT"; echo "Secrets R2 manquants : rien à faire."; else echo "ok=yes" >> "$GITHUB_OUTPUT"; fi
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      - name: Installer sharp (sans modifier package.json)
+        if: steps.s.outputs.ok == 'yes'
+        run: npm i --no-save --no-audit --no-fund sharp
+      - name: Récupérer et envoyer les couvertures
+        if: steps.s.outputs.ok == 'yes'
+        run: node scripts/couvertures-isbn.mjs --limit=${{ inputs.limit || 3000 }} --minutes=300
+        env:
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      - name: Enregistrer la liste des couvertures faites
+        if: steps.s.outputs.ok == 'yes'
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/c.json"
+          cp manga-calendrier/data/couvertures-isbn.json "$KEEP"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$KEEP" manga-calendrier/data/couvertures-isbn.json
+            git add manga-calendrier/data/couvertures-isbn.json
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Couvertures de tomes : liste mise à jour"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1

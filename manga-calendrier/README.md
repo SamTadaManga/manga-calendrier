@@ -201,3 +201,7 @@ Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse norma
 ## Analyse du site
 
 `node scripts/analyse-site.mjs rapports dist` produit des CSV : sorties absentes du catalogue, numéros de tomes manquants, ISBN sans couverture (`2-isbn-a-couvrir.csv`), doublons, liens internes cassés. `node scripts/liens-externes.mjs rapports` teste les liens externes. Le workflow « Analyse du site et liens » lance les deux une fois par mois (ou à la demande) et publie les fichiers dans Actions > Artifacts.
+
+## Couvertures de tomes dans R2
+
+`scripts/couvertures-isbn.mjs` cherche la couverture de chaque tome par ISBN (Amazon.fr, puis Open Library), la réduit en WebP (400 px) et la range dans R2 sous `isbn/<isbn13>.webp`, à côté de `series/`. La liste des ISBN faits est dans `data/couvertures-isbn.json` : le site utilise alors l'image R2 au lieu d'aller la chercher ailleurs. Le workflow « Couvertures de tomes (R2) » le fait par lots ; il demande les secrets `R2_ACCOUNT_ID`, `R2_BUCKET`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`.

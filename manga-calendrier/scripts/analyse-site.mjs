@@ -6,6 +6,7 @@ import path from 'node:path';
 import { paths, loadAllManga, slugify } from './lib.mjs';
 import { loadBnf } from './catalogue-bnf.mjs';
 import { isIsbn13 } from './shops.mjs';
+import { isbn10 } from './couvertures-lib.mjs';
 
 const P = paths();
 const OUT = path.resolve(process.argv[2] || 'rapports');
@@ -51,7 +52,6 @@ rep.push(`- ${notInCat.length} sorties du calendrier n'ont pas leur ISBN dans le
 h('2. ISBN à couvrir');
 const haveCover = new Map(); // isbn -> url
 for (const r of manga) if (isIsbn13(r.isbn) && /^https:\/\//.test(r.cover || '')) haveCover.set(r.isbn, r.cover);
-const isbn10 = (i) => { if (!/^978\d{10}$/.test(i)) return ''; const d = i.slice(3, 12); let t = 0; for (let k = 0; k < 9; k++) t += (10 - k) * Number(d[k]); const c = (11 - (t % 11)) % 11; return d + (c === 10 ? 'X' : c); };
 const need = []; const seen = new Set();
 for (const r of manga) if (isIsbn13(r.isbn) && !haveCover.has(r.isbn) && !seen.has(r.isbn)) { seen.add(r.isbn); need.push([r.isbn, isbn10(r.isbn), r.serie, r.tome, r.editeur, r.date.slice(0, 4), 'calendrier']); }
 for (const s of BNF.series) {

@@ -716,11 +716,14 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   // Un tome = une carte dans un carrousel. Couverture : fichier de l'éditeur si on l'a pour cet ISBN, sinon Open Library
   // (adresse construite avec l'ISBN, chargée par le navigateur) ; sans image, le titre du tome reste affiché.
   // Les autres éditions (réimpressions) sont dans un menu déroulant, sans JavaScript.
+  const ISBN_BASE = COVER_BASE ? COVER_BASE.replace(/series\/?$/, 'isbn/') : '';
+  const ISBN_R2 = (() => { try { return new Set(JSON.parse(readFileSync(path.join(P.dataDir, 'couvertures-isbn.json'), 'utf8')).done || []); } catch { return new Set(); } })();
   const isbn10 = (i) => { if (!/^978\d{10}$/.test(i)) return ''; const d = i.slice(3, 12); let t = 0; for (let k = 0; k < 9; k++) t += (10 - k) * Number(d[k]); const c = (11 - (t % 11)) % 11; return d + (c === 10 ? 'X' : c); };
   // Sources par ISBN, dans l'ordre : couverture de l'éditeur (calendrier), Amazon.fr, Open Library. Le navigateur passe à la suivante si l'image manque.
   const isbnCovers = (isbn) => {
     if (!showCovers) return [];
     if (COVER_ISBN.has(isbn)) return [COVER_ISBN.get(isbn)];
+    if (ISBN_R2.has(isbn) && ISBN_BASE) return [`${ISBN_BASE}${isbn}.webp`]; // déjà rangée dans R2 par scripts/couvertures-isbn.mjs
     if (config.isbnCovers === false) return [];
     const a = isbn10(isbn);
     return [...(a ? [`https://m.media-amazon.com/images/P/${a}.08.MZZZZZZZ.jpg`] : []), `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`];

@@ -1073,3 +1073,15 @@ test('mesure d\'audience : script inclus sur toutes les pages, 404 marquée, men
   assert.match(ml, /id="mesure"/); assert.match(ml, /mesure=non/);
   assert.match(readFileSync(path.join(out, 'sw.js'), 'utf8'), /\/api\//);
 });
+
+test('couvertures par ISBN : signature R2 (vecteur AWS), ISBN-10, liste des ISBN à chercher', async () => {
+  const { signV4 } = await import('../scripts/r2.mjs');
+  const { isbn10, targets } = await import('../scripts/couvertures-lib.mjs');
+  const h = signV4({ method: 'GET', host: 'examplebucket.s3.amazonaws.com', pathname: '/test.txt', headers: { range: 'bytes=0-9' }, accessKey: 'AKIAIOSFODNN7EXAMPLE', secretKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY', region: 'us-east-1', amzDate: '20130524T000000Z' });
+  assert.ok(h.authorization.endsWith('Signature=f0e8bdb87c964420e857bd35b5d6ed310bd44f0170aba48dd91039c6036bdb41'), 'signature AWS');
+  assert.equal(isbn10('9782505128472'), '2505128472');
+  assert.equal(isbn10('9791032723425'), '');
+  const bnf = { series: [{ k: 'a', n: 'A', e: 'X', v: [['1', '9782505000006', 2010], ['1', '9782505000013', 2020], ['2', '9782505000020', 2021]] }] };
+  const t = targets({ manga: [], bnf, skip: (i) => i === '9782505000020' });
+  assert.deepEqual(t.map((x) => x.isbn), ['9782505000013'], 'une édition par tome, la plus récente, sans les ISBN écartés');
+});
