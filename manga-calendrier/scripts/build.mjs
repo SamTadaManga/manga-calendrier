@@ -18,6 +18,8 @@ const P = paths();
 const SCRIPTS = path.dirname(fileURLToPath(import.meta.url));
 const config = loadConfig(P.config);
 const today = parisKey(now());
+// Vérification du site par Pinterest (balise publique, pas un secret). Réglable avec "pinterestVerify" dans site.config.json, "" pour la retirer.
+const PIN_VERIFY = typeof config.pinterestVerify === 'string' ? config.pinterestVerify : 'f9e3eebb5f9b396beea575d305660e16';
 const siteUrlOk = /^https?:\/\//.test(config.siteUrl || '') && !/REMPLACE/i.test(config.siteUrl);
 const base = siteUrlOk ? config.siteUrl.replace(/\/+$/, '') : '';
 const host = siteUrlOk ? new URL(base).hostname : 'manga-calendrier.local';
@@ -139,7 +141,8 @@ function layout({ title, description, pathname, body, noindex = false, extraHead
 <meta name="color-scheme" content="light dark">
 ${THEME_BOOT}
 <title>${esc(fullTitle)}</title>
-<meta name="description" content="${esc(description)}">
+<meta name="description" content="${esc(description)}">${PIN_VERIFY ? `
+<meta name="p:domain-verify" content="${esc(PIN_VERIFY)}">` : ''}
 ${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
 ${noindex || isPrivate ? `<meta name="robots" content="noindex${isPrivate ? ', nofollow' : ''}">` : ''}
 <meta property="og:title" content="${esc(fullTitle)}">
