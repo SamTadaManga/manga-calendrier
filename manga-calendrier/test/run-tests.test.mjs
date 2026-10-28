@@ -923,7 +923,7 @@ test('calendrier manga : filtre par type de publication, navigation par mois, ch
   assert.match(h, /data-attr="ty"[^>]*>Collector/); assert.match(h, /data-ty="collector"/);
   assert.match(h, /<template id="mois-tpl">/); assert.match(h, /id="plus-btn"/);
   assert.ok(h.indexOf('<template id="mois-tpl">') > h.indexOf('Novembre 2026') && h.indexOf('Décembre 2026') > h.indexOf('<template id="mois-tpl">'), 'seuls 2 mois dans la page, les suivants à la demande');
-  assert.match(h, /class="chiprow monthjump"/); assert.match(h, /href="\/sorties-manga\/decembre-2026\/"/);
+  assert.match(h, /class="monthjump"/); assert.match(h, /<option value="\/sorties-manga\/decembre-2026\/">/);
 });
 
 test('page Ma collection : nav, page noindex, script, statut À lire', () => {
