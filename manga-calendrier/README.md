@@ -197,3 +197,7 @@ Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse norma
 - **Séries déjà au calendrier** : même adresse qu'avant ; la liste « Tous les tomes parus en France » vient s'ajouter. Les séries du catalogue seules n'ont pas de date de sortie à venir.
 - **Couvertures** : une image par série, `<base>/<adresse-de-la-serie>.webp`, hébergée dans R2. Dans `site.config.json` : `"catalogueCovers": "https://ton-domaine-public-r2/series/"`. Sans cette ligne (ou avec `"showCovers": false`), le catalogue s'affiche sans images. Une image manquante disparaît sans casser la page.
 - **Sitemap** : seules les séries de 3 tomes ou plus (et celles du calendrier) y figurent, pour ne pas inonder Google de pages très courtes ; les autres restent accessibles par les pages de lettres et la recherche.
+
+## Analyse du site
+
+`node scripts/analyse-site.mjs rapports dist` produit des CSV : sorties absentes du catalogue, numéros de tomes manquants, ISBN sans couverture (`2-isbn-a-couvrir.csv`), doublons, liens internes cassés. `node scripts/liens-externes.mjs rapports` teste les liens externes. Le workflow « Analyse du site et liens » lance les deux une fois par mois (ou à la demande) et publie les fichiers dans Actions > Artifacts.
