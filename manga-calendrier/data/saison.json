@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-28T03:55:45.464Z",
+ "generatedAt": "2026-10-28T11:19:01.698Z",
  "seasons": [
   {
    "season": "FALL",
@@ -109,31 +109,6 @@
      ]
     },
     {
-     "id": 189123,
-     "t": "Blue Box Season 2",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      4
-     ],
-     "u": "https://anilist.co/anime/189123",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189123-0secXELIhkIW.jpg",
-     "g": [
-      "Romance",
-      "Slice of Life",
-      "Sports"
-     ],
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/81663323"
-      }
-     ]
-    },
-    {
      "id": 212888,
      "t": "Overgeared",
      "f": "ONA",
@@ -155,6 +130,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384004"
+      }
+     ]
+    },
+    {
+     "id": 189123,
+     "t": "Blue Box Season 2",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/189123",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189123-0secXELIhkIW.jpg",
+     "g": [
+      "Romance",
+      "Slice of Life",
+      "Sports"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81663323"
       }
      ]
     },
@@ -208,26 +208,6 @@
      ]
     },
     {
-     "id": 160275,
-     "t": "Made in Abyss: Mezameru Shinpi",
-     "f": "MOVIE",
-     "st": "FINISHED",
-     "n": 1,
-     "d": [
-      2026,
-      10,
-      23
-     ],
-     "u": "https://anilist.co/anime/160275",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx160275-cBOWJpcCGeMq.jpg",
-     "g": [
-      "Adventure",
-      "Drama",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
      "id": 191656,
      "t": "Even the Student Council Has Its Holes!",
      "f": "TV",
@@ -244,6 +224,26 @@
       "Comedy",
       "Ecchi",
       "Slice of Life"
+     ],
+     "s": []
+    },
+    {
+     "id": 160275,
+     "t": "Made in Abyss: Mezameru Shinpi",
+     "f": "MOVIE",
+     "st": "FINISHED",
+     "n": 1,
+     "d": [
+      2026,
+      10,
+      23
+     ],
+     "u": "https://anilist.co/anime/160275",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx160275-cBOWJpcCGeMq.jpg",
+     "g": [
+      "Adventure",
+      "Drama",
+      "Fantasy"
      ],
      "s": []
     },
@@ -499,6 +499,25 @@
      "s": []
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 186541,
      "t": "Reborn as a Space Mercenary: I Woke Up Piloting the Strongest Starship!",
      "f": "TV",
@@ -522,25 +541,6 @@
        "u": "https://www.crunchyroll.com/series/GT00384006/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship"
       }
      ]
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
     },
     {
      "id": 191788,
@@ -716,31 +716,6 @@
      ]
     },
     {
-     "id": 212503,
-     "t": "The Iceblade Sorcerer Shall Rule the World II",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      9
-     ],
-     "u": "https://anilist.co/anime/212503",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212503-sXBpRZr96c4e.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GDKHZEP21/the-iceblade-sorcerer-shall-rule-the-world"
-      }
-     ]
-    },
-    {
      "id": 209219,
      "t": "So What's Wrong with Getting Reborn as a Goblin?",
      "f": "ONA",
@@ -790,6 +765,31 @@
      ]
     },
     {
+     "id": 212503,
+     "t": "The Iceblade Sorcerer Shall Rule the World II",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      9
+     ],
+     "u": "https://anilist.co/anime/212503",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212503-sXBpRZr96c4e.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GDKHZEP21/the-iceblade-sorcerer-shall-rule-the-world"
+      }
+     ]
+    },
+    {
      "id": 204650,
      "t": "TOUGEN ANKI: Nikko Kegon Falls Arc",
      "f": "TV",
@@ -823,6 +823,30 @@
      ]
     },
     {
+     "id": 205896,
+     "t": "Full Clearing Another World under a Goddess with Zero Believers",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      11
+     ],
+     "u": "https://anilist.co/anime/205896",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+      }
+     ]
+    },
+    {
      "id": 187402,
      "t": "A Tale of the Secret Saint",
      "f": "ONA",
@@ -844,30 +868,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00371633"
-      }
-     ]
-    },
-    {
-     "id": 205896,
-     "t": "Full Clearing Another World under a Goddess with Zero Believers",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      11
-     ],
-     "u": "https://anilist.co/anime/205896",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
-     "g": [
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
       }
      ]
     },
@@ -1605,25 +1605,6 @@
      "s": []
     },
     {
-     "id": 202282,
-     "t": "Disney Twisted-Wonderland: THE ANIMATION - Season 2: EPISODE of SAVANACLAW",
-     "f": "ONA",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2026,
-      12,
-      0
-     ],
-     "u": "https://anilist.co/anime/202282",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202282-4KJHHwWKebwv.jpg",
-     "g": [
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
      "id": 202503,
      "t": "Majutsu wo Kiwamete Tabi ni Deta Tensei Elf, Moteamashita Jumyou de Ikeru Densetsu to Naru",
      "f": "TV",
@@ -1638,6 +1619,25 @@
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202503-U8b43fpnu9EI.png",
      "g": [
       "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 202282,
+     "t": "Disney Twisted-Wonderland: THE ANIMATION - Season 2: EPISODE of SAVANACLAW",
+     "f": "ONA",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2026,
+      12,
+      0
+     ],
+     "u": "https://anilist.co/anime/202282",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202282-4KJHHwWKebwv.jpg",
+     "g": [
       "Adventure",
       "Fantasy"
      ],
