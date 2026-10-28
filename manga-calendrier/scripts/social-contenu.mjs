@@ -10,17 +10,17 @@ const tag = (s) => `#${slugify(s).replace(/-/g, '')}`;
 const clip = (s, n) => (s.length <= n ? s : `${s.slice(0, n - 1).replace(/\s+\S*$/, '')}…`);
 
 /** Une sortie prête à afficher. */
-const item = (r) => ({
+const item = (r, coverFor) => ({
   serie: r.serie, tome: r.tome || '', editeur: r.editeur || '', color: PUBCOL[pubKey(r.editeur)],
-  cover: /^https:\/\//.test(r.cover || '') ? r.cover : '', nouveau: isFirstVolume(r), special: SPECIAL.test(`${r.serie} ${r.titre || ''}`), date: r.date,
+  cover: /^https:\/\//.test(r.cover || '') ? r.cover : (coverFor ? coverFor(r) || '' : ''), nouveau: isFirstVolume(r), special: SPECIAL.test(`${r.serie} ${r.titre || ''}`), date: r.date,
 });
 const label = (i) => `${i.serie}${i.tome ? ` T${i.tome}` : ''}`;
 
-/** Ordre d'affichage : nouvelles séries d'abord, puis éditions spéciales, puis celles qui ont une couverture, une série une seule fois. */
-export function pick(rows, n) {
+/** Ordre d'affichage : celles qui ont une couverture d'abord, puis nouvelles séries, puis éditions spéciales ; une série une seule fois. */
+export function pick(rows, n, coverFor) {
   const seen = new Set();
-  return rows.map(item)
-    .sort((a, b) => (Number(b.nouveau) - Number(a.nouveau)) || (Number(b.special) - Number(a.special)) || (Number(!!b.cover) - Number(!!a.cover)) || label(a).localeCompare(label(b), 'fr'))
+  return rows.map((r) => item(r, coverFor))
+    .sort((a, b) => (Number(!!b.cover) - Number(!!a.cover)) || (Number(b.nouveau) - Number(a.nouveau)) || (Number(b.special) - Number(a.special)) || label(a).localeCompare(label(b), 'fr'))
     .filter((i) => { const k = slugify(i.serie); if (seen.has(k)) return false; seen.add(k); return true; })
     .slice(0, n);
 }
@@ -34,7 +34,7 @@ const dm = (k) => frDayMonth(k).replace(/^\S+\s/, ''); // « 4 novembre » sans 
  * 'semaine' (7 jours à partir d'aujourd'hui) ou 'nouveautes' (tomes 1 des 14 prochains jours).
  * Renvoie null s'il n'y a rien d'intéressant à dire.
  */
-export function compose({ kind, today, manga, anime, site }) {
+export function compose({ kind, today, manga, anime, site, coverFor }) {
   const live = manga.filter((r) => r.statut !== 'annule' && r.date);
   const base = (site || '').replace(/\/+$/, '');
   let rows, d;
@@ -60,7 +60,7 @@ export function compose({ kind, today, manga, anime, site }) {
   if (!rows.length) return null;
 
   const total = new Set(rows.map((r) => slugify(r.serie) + '#' + r.tome)).size;
-  const items = pick(rows, 24);
+  const items = pick(rows, 24, coverFor);
   const eps = (anime?.episodes || []).filter((e) => new Date(e.airingAt * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' }) === today);
   const firsts = eps.filter((e) => e.episode === 1);
   const animeLine = eps.length && (kind === 'jour') ? `${plural(eps.length, 'épisode d’anime', 'épisodes d’anime')} aujourd’hui${firsts.length ? `, dont ${plural(firsts.length, 'premier', 'premiers')}` : ''}` : '';
