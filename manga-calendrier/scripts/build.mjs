@@ -699,6 +699,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   /* ---------------- catalogue complet (BnF) : ≈ 8 000 séries publiées en français, avec leurs tomes et leur couverture hébergée dans R2 */
   const BNF = loadBnf(P.dataDir);
   const COVER_BASE = (() => { const u = typeof config.catalogueCovers === 'string' ? config.catalogueCovers.trim() : ''; return /^https:\/\/[^\s"<>]+$/.test(u) ? u.replace(/\/?$/, '/') : ''; })();
+  const COVER_ISBN = new Map(manga.filter((r) => r.isbn && /^https:\/\//.test(r.cover || '')).map((r) => [r.isbn, r.cover]));
   const bnfCover = (c) => (showCovers && COVER_BASE ? `${COVER_BASE}${c.k}.webp` : '');
   for (const S of seriesList) { // une série du calendrier et la même dans le catalogue : même page
     const c = BNF.byK.get(S.k) || S.rows.map((r) => BNF.byIsbn.get(r.isbn)).find(Boolean);
@@ -709,18 +710,21 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   const r2img = (c, alt, w, h, cls = 'cover-img') => { const u = bnfCover(c); return u ? `<img class="${cls}" src="${esc(u)}" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''; };
   const volRow = (c, v) => ({ serie: c.n, tome: v[0], isbn: v[1], date: v[2] ? `${v[2]}-01-01` : '2000-01-01', editeur: c.e });
   const volLabel = (v) => (v[0] ? `Tome ${v[0]}` : (v[3] || 'Volume'));
-  // Un tome peut exister en plusieurs éditions (réimpressions, nouvelles éditions) : une ligne par tome,
-  // l'édition la plus récente d'abord, les autres dans un menu déroulant (sans JavaScript).
-  const volLine = (c, v) => `<span class="muted cv-m">${v[2] ? `${v[2]} · ` : ''}ISBN ${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}`;
+  // Un tome = une carte dans un carrousel. Couverture : fichier de l'éditeur si on l'a pour cet ISBN, sinon Open Library
+  // (adresse construite avec l'ISBN, chargée par le navigateur) ; sans image, le titre du tome reste affiché.
+  // Les autres éditions (réimpressions) sont dans un menu déroulant, sans JavaScript.
+  const isbnCover = (isbn) => (showCovers && COVER_ISBN.has(isbn) ? COVER_ISBN.get(isbn) : showCovers ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false` : '');
   const volList = (c, vols) => {
     const groups = new Map();
     for (const v of vols) { const key = v[0] ? `t${v[0]}` : `l${v[3] || v[1]}`; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(v); }
-    return `<ul class="cat-vols panel">${[...groups.values()].map((g) => {
+    const card = (g) => {
       const eds = [...g].sort((a, b) => b[2] - a[2]);
       const [main, ...rest] = eds;
-      const more = rest.length ? `<details class="cv-ed"><summary>${esc(plural(eds.length, 'édition', 'éditions'))} : choisir</summary><ul>${rest.map((v) => `<li>${volLine(c, v)}</li>`).join('')}</ul></details>` : '';
-      return `<li><span class="cv-t">${esc(volLabel(main))}</span>${volLine(c, main)}${more}</li>`;
-    }).join('')}</ul>`;
+      const u = isbnCover(main[1]);
+      const more = rest.length ? `<details class="cv-ed"><summary>${esc(plural(eds.length, 'édition', 'éditions'))}</summary>${rest.map((v) => `<div class="cv-e"><span class="muted">${v[2] ? `${v[2]} · ` : ''}${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}</div>`).join('')}</details>` : '';
+      return `<li class="scard vcard"><div class="cover"><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span>${u ? `<img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div><strong>${esc(volLabel(main))}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
+    };
+    return `<div class="carousel" role="region" aria-label="Tomes de ${esc(c.n)}" tabindex="0"><ul class="sgrid carousel-track cat-car">${[...groups.values()].map(card).join('')}</ul></div>`;
   };
   const catBox = (S) => {
     if (!S.cat) return '';
