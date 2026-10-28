@@ -709,7 +709,19 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   const r2img = (c, alt, w, h, cls = 'cover-img') => { const u = bnfCover(c); return u ? `<img class="${cls}" src="${esc(u)}" alt="${esc(alt)}" width="${w}" height="${h}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''; };
   const volRow = (c, v) => ({ serie: c.n, tome: v[0], isbn: v[1], date: v[2] ? `${v[2]}-01-01` : '2000-01-01', editeur: c.e });
   const volLabel = (v) => (v[0] ? `Tome ${v[0]}` : (v[3] || 'Volume'));
-  const volList = (c, vols) => `<ul class="cat-vols panel">${vols.map((v) => `<li><span class="cv-t">${esc(volLabel(v))}</span><span class="muted cv-m">${v[2] ? `${v[2]} · ` : ''}ISBN ${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}</li>`).join('')}</ul>`;
+  // Un tome peut exister en plusieurs éditions (réimpressions, nouvelles éditions) : une ligne par tome,
+  // l'édition la plus récente d'abord, les autres dans un menu déroulant (sans JavaScript).
+  const volLine = (c, v) => `<span class="muted cv-m">${v[2] ? `${v[2]} · ` : ''}ISBN ${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}`;
+  const volList = (c, vols) => {
+    const groups = new Map();
+    for (const v of vols) { const key = v[0] ? `t${v[0]}` : `l${v[3] || v[1]}`; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(v); }
+    return `<ul class="cat-vols panel">${[...groups.values()].map((g) => {
+      const eds = [...g].sort((a, b) => b[2] - a[2]);
+      const [main, ...rest] = eds;
+      const more = rest.length ? `<details class="cv-ed"><summary>${esc(plural(eds.length, 'édition', 'éditions'))} : choisir</summary><ul>${rest.map((v) => `<li>${volLine(c, v)}</li>`).join('')}</ul></details>` : '';
+      return `<li><span class="cv-t">${esc(volLabel(main))}</span>${volLine(c, main)}${more}</li>`;
+    }).join('')}</ul>`;
+  };
   const catBox = (S) => {
     if (!S.cat) return '';
     const known = new Set(S.rows.map((r) => r.isbn).filter(Boolean));
@@ -765,7 +777,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       ? `${n.tome ? `Le tome ${esc(n.tome)}` : 'Le prochain volume'} de <strong>${esc(S.name)}</strong> sort le <strong>${esc(frDate(n.date))}</strong> en France${n.editeur ? ` chez ${esc(n.editeur)}` : ''}${n.prix != null ? `, au prix de ${esc(euro(n.prix))}` : ''}.${n.statut === 'confirme' ? ' Cette date est confirmée.' : ' Cette date est estimée d\'après le planning de l\'éditeur : elle peut encore bouger.'}`
       : `Aucun nouveau tome de <strong>${esc(S.name)}</strong> n'est annoncé pour le moment dans les plannings de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga.${lastOut ? ` Dernier tome paru : ${lastOut.tome ? `tome ${esc(lastOut.tome)}` : 'le volume'} (${esc(frShort(lastOut.date))}).` : ''} Suis la série pour la retrouver dans Mon planning.`;
     const coverRow = showCovers ? [...S.rows].reverse().find((r) => r.cover) : null;
-    const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : (S.cat && bnfCover(S.cat) ? `<div class="cover series-cover">${r2img(S.cat, `Couverture de ${S.name}`, 160, 240)}</div>` : '');
+    const hero = coverRow ? `<div class="cover series-cover"><img class="cover-img" src="${esc(coverRow.cover)}" alt="Couverture de ${esc(mangaLabel(coverRow))}" width="160" height="240" decoding="async" referrerpolicy="no-referrer"></div>` : (S.cat && bnfCover(S.cat) ? `<div class="cover series-cover"><span class="ph" aria-hidden="true">${esc(S.name)}</span>${r2img(S.cat, `Couverture de ${S.name}`, 160, 240)}</div>` : '');
     const aeps = eps.filter((e) => e.ms === S.k).sort((a, b) => a.airingAt - b.airingAt);
     const ae = aeps.find((e) => e.date >= now()) || aeps[0];
     const adaptHtml = adaptLine(S.name, 2);
@@ -827,7 +839,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
       const prev = byName[i - 1], next = byName[i + 1];
       const L = letterKey(c.k);
       const cover = r2img(c, `Couverture de ${c.n}`, 160, 240);
-      const hero = cover ? `<div class="cover series-cover">${cover}</div>` : '';
+      const hero = cover ? `<div class="cover series-cover"><span class="ph" aria-hidden="true">${esc(c.n)}</span>${cover}</div>` : '';
       const ld = siteUrlOk ? `<script type="application/ld+json">${JSON.stringify([
         { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
@@ -845,7 +857,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
         image: bnfCover(c),
         body: `<div class="series-head">${hero}<div>
 <h1>${esc(c.n)} : tous les tomes</h1>
-<p class="lead"><strong>${esc(c.n)}</strong> compte ${esc(plural(n, 'tome paru', 'tomes parus'))} en France${c.e ? ` chez ${pubLink(c.e)}` : ''}${esc(years)}.${esc(others)} Aucune sortie n'est annoncée pour le moment dans nos plannings.</p>
+<p class="lead"><strong>${esc(c.n)}</strong> compte ${esc(plural(n, 'tome paru', 'tomes parus'))} en France${c.e ? ` chez ${pubLink(c.e)}` : ''}${esc(years)}.${others} Aucune sortie n'est annoncée pour le moment dans nos plannings.</p>
 </div></div>
 <h2>Les tomes</h2>${volList(c, c.v)}
 ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
@@ -867,7 +879,7 @@ ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des li
     for (const x of everyone) { const L = letterKey(x.k); if (!groups.has(L)) groups.set(L, []); groups.get(L).push(x); }
     const letterList = [...groups.keys()].sort((a, b) => (a === '0-9' ? -1 : b === '0-9' ? 1 : a.localeCompare(b)));
     const PER = 240;
-    const lcard = (x) => `<li class="scard p-${pubKey(x.e)}"><a class="scard-link" href="/serie/${x.k}/">${showCovers && x.cover ? `<div class="cover"><img class="cover-img" src="${esc(x.cover)}" alt="Couverture de ${esc(x.n)}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer"${x.live ? '' : ' onerror="this.remove()"'}></div>` : ''}<strong>${esc(x.n)}</strong><span class="muted">${x.sub ? `${esc(x.sub)}` : `${esc(plural(x.count, 'tome', 'tomes'))}${x.e ? ` · ${esc(x.e)}` : ''}`}</span></a></li>`;
+    const lcard = (x) => `<li class="scard p-${pubKey(x.e)}"><a class="scard-link" href="/serie/${x.k}/"><div class="cover"><span class="ph" aria-hidden="true">${esc(x.n)}</span>${showCovers && x.cover ? `<img class="cover-img" src="${esc(x.cover)}" alt="Couverture de ${esc(x.n)}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div><strong>${esc(x.n)}</strong><span class="muted">${x.sub ? `${esc(x.sub)}` : `${esc(plural(x.count, 'tome', 'tomes'))}${x.e ? ` · ${esc(x.e)}` : ''}`}</span></a></li>`;
     for (const L of letterList) {
       const list = groups.get(L);
       const pages = Math.ceil(list.length / PER);
