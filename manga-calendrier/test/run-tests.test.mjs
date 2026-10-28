@@ -1085,3 +1085,47 @@ test('couvertures par ISBN : signature R2 (vecteur AWS), ISBN-10, liste des ISBN
   const t = targets({ manga: [], bnf, skip: (i) => i === '9782505000020' });
   assert.deepEqual(t.map((x) => x.isbn), ['9782505000013'], 'une édition par tome, la plus récente, sans les ISBN écartés');
 });
+
+test('réseaux sociaux : contenu du jour, repli sur la prochaine sortie, longueurs, publication simulée', async () => {
+  const { compose } = await import('../scripts/social-contenu.mjs');
+  const { postBluesky, oauth1Header, postPinterest, postInstagram } = await import('../scripts/social-publier.mjs');
+  const mk = (date, serie, tome, editeur) => ({ date, serie, tome, editeur, titre: '', isbn: '', statut: 'annonce', cover: '' });
+  const manga = [mk('2026-11-04', 'Série é', '1', 'Kana'), mk('2026-11-04', 'Autre', '12', 'Pika'), mk('2026-11-09', 'Plus tard', '3', 'Glénat')];
+  for (let i = 0; i < 30; i++) manga.push(mk('2026-11-04', `Titre très long numéro ${i} pour remplir`, '2', 'Ki-oon'));
+  const site = 'https://prochaintome.fr';
+  const j = compose({ kind: 'jour', today: '2026-11-04', manga, anime: { episodes: [] }, site });
+  assert.equal(j.mode, 'jour'); assert.equal(j.total, 32);
+  assert.ok(j.text.bluesky.length <= 300, 'Bluesky 300 caractères');
+  assert.ok(j.text.x.replace(/https:\/\/\S+/, 'x'.repeat(23)).length <= 280, 'X 280 caractères, adresse comptée pour 23');
+  assert.ok(j.text.instagram.includes('#manga') && j.text.pinterest.link.includes('utm_source=pinterest'));
+  const p = compose({ kind: 'jour', today: '2026-11-02', manga, anime: { episodes: [] }, site });
+  assert.equal(p.mode, 'prochain'); assert.ok(/DANS 2 JOURS/.test(p.sticker));
+  assert.equal(compose({ kind: 'jour', today: '2026-12-25', manga, anime: { episodes: [] }, site }), null, 'rien à dire : pas de publication');
+  assert.equal(compose({ kind: 'nouveautes', today: '2026-11-04', manga: [], anime: { episodes: [] }, site }), null);
+
+  // Bluesky : connexion, envoi de l'image, publication avec lien cliquable (positions en octets UTF-8)
+  const calls = [];
+  const fake = async (url, opt) => { calls.push({ url, opt }); const u = String(url);
+    const body = u.endsWith('createSession') ? { accessJwt: 'jwt', did: 'did:plc:x' } : u.endsWith('uploadBlob') ? { blob: { ref: 'b' } } : { uri: 'at://post/1' };
+    return { ok: true, status: 200, text: async () => JSON.stringify(body) }; };
+  const text = 'Séries é\n\nprochaintome.fr/semaine';
+  await postBluesky({ text, link: { text: 'prochaintome.fr/semaine', uri: 'https://prochaintome.fr/semaine/?utm_source=bluesky' }, images: [{ buf: Buffer.from('x'), alt: 'alt', w: 1200, h: 675 }] }, { BLUESKY_HANDLE: 'a.bsky.social', BLUESKY_APP_PASSWORD: 'pw' }, fake);
+  assert.deepEqual(calls.map((c) => c.url.split('/').pop()), ['com.atproto.server.createSession', 'com.atproto.repo.uploadBlob', 'com.atproto.repo.createRecord']);
+  const rec = JSON.parse(calls[2].opt.body).record;
+  assert.equal(Buffer.from(rec.text).slice(rec.facets[0].index.byteStart, rec.facets[0].index.byteEnd).toString(), 'prochaintome.fr/semaine');
+  assert.equal(rec.embed.images.length, 1);
+
+  // X : signature OAuth 1.0a (exemple de la documentation)
+  const h = oauth1Header({ method: 'POST', url: 'https://api.twitter.com/1/statuses/update.json', query: { include_entities: 'true', status: 'Hello Ladies + Gentlemen, a signed OAuth request!' }, nonce: 'kYjzVBB8Y0ZFabxSWbWovY3uYSQ2pTgmZeNu2VS4cg', ts: 1318622958, env: { X_API_KEY: 'xvz1evFS4wEEPTGEFPHBog', X_API_SECRET: 'kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw', X_ACCESS_TOKEN: '370773112-GmHxMAgYyLbNEtIKZeRNFsMKPR9EyMZeS9weJAEb', X_ACCESS_SECRET: 'LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE' } });
+  assert.ok(h.includes('oauth_signature="tnnArxj06cWHq44gCs1OSKk%2FjLY%3D"'), 'signature OAuth');
+
+  // Pinterest et Instagram : bons appels, dans le bon ordre
+  const c2 = [];
+  const f2 = async (url, opt) => { c2.push(String(url)); return { ok: true, status: 200, text: async () => JSON.stringify({ id: '1', status_code: 'FINISHED' }) }; };
+  await postPinterest({ title: 't', description: 'd', link: 'https://x', alt: 'a', url: 'https://img/x.jpg' }, { PINTEREST_TOKEN: 't', PINTEREST_BOARD_ID: 'b' }, f2);
+  assert.ok(c2[0].endsWith('/pins'));
+  c2.length = 0;
+  await postInstagram({ caption: 'c', urls: ['https://i/1.jpg', 'https://i/2.jpg'] }, { IG_USER_ID: '9', IG_ACCESS_TOKEN: 't' }, f2, async () => {});
+  assert.equal(c2.filter((u) => u.endsWith('/9/media')).length, 3, '2 vignettes + 1 carrousel');
+  assert.ok(c2.at(-1).endsWith('/9/media_publish'));
+});
