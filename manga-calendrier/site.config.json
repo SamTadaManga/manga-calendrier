@@ -7,6 +7,7 @@
   "description": "Les sorties manga en France et les épisodes d'anime de la semaine, jour par jour.",
   "autoPublish": true,
   "showCovers": true,
+  "catalogueCovers": "https://img.prochaintome.fr/series/",
   "launched": true,
   "legal": {
     "editorName": "Sam Tada",
