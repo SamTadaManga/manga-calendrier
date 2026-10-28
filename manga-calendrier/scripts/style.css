@@ -696,3 +696,5 @@ ul.hscroll .tile-body>.t-shops{padding-top:4px}
 .cat-vols .cv-ed summary{cursor:pointer;font-weight:700;font-size:.9rem}
 .cat-vols .cv-ed ul{list-style:none;margin:6px 0 0;padding:0}
 .cat-vols .cv-ed li{border-bottom:0;padding:6px 0 6px 12px;border-left:3px solid var(--line)}
+.monthjump{margin:0 0 12px}.sel{font:inherit;padding:8px 12px;border:2px solid var(--edge);border-radius:6px;background:var(--bg,transparent);color:var(--ink)}
+.vnc{border:2px solid var(--edge);padding:10px}.vnc>strong{font-size:1.05rem}

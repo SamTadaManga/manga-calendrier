@@ -594,7 +594,8 @@ var _ap2=apply;apply=function(){if(tpl&&((q.value||'').trim()||nAct())){loadMore
   const tyChips = [['standard', 'Tome standard'], ...TYPES.map(([k, l]) => [k, l])].filter(([k]) => tyCount(k)).map(([k, l]) => `<button type="button" class="chip" data-chip="${k}" data-attr="ty" aria-pressed="false">${esc(l)} <span class="n">${tyCount(k)}</span></button>`).join('');
   const allMonths = [...new Set(manga.filter((r) => r.statut !== 'annule' && r.date).map((r) => r.date.slice(0, 7)))].sort();
   const prevM = allMonths.filter((m) => m < monthKeys[0]).pop();
-  const monthJump = `<p class="chiprow monthjump"><span class="muted">Mois :</span>${prevM ? `<a class="chip" href="/sorties-manga/${mSlug(prevM)}/">← ${esc(frMonth(`${prevM}-01`))}</a>` : ''}${monthKeys.map((mk) => `<a class="chip" href="/sorties-manga/${mSlug(mk)}/">${esc(frMonth(`${mk}-01`))}</a>`).join('')}<a class="chip" href="/sorties-manga/">Tous les mois</a></p>`;
+  const curM = monthKeys[0];
+  const monthJump = `<p class="monthjump"><label class="muted" for="mj">Mois :</label> <select id="mj" class="sel" onchange="if(this.value)location.href=this.value"><option value="/sorties-manga/" selected>Tous les mois</option>${allMonths.map((mk) => `<option value="/sorties-manga/${mSlug(mk)}/">${esc(frMonth(`${mk}-01`))}</option>`).join('')}</select><noscript> ${allMonths.map((mk) => `<a href="/sorties-manga/${mSlug(mk)}/">${esc(frMonth(`${mk}-01`))}</a>`).join(' · ')}</noscript></p>`;
   const body = `
 <h1>Calendrier des sorties manga</h1>
 <p class="lead">Sorties en France relevées sur les plannings officiels des éditeurs. Les dates peuvent bouger : la fiche de l'éditeur fait foi.${mangaUpdatedIso ? ` <span class="muted">Mis à jour ${esc(agoFr(mangaUpdatedIso))}. <a href="/etat/">État des données</a></span>` : ''}</p>
@@ -713,7 +714,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   // Un tome = une carte dans un carrousel. Couverture : fichier de l'éditeur si on l'a pour cet ISBN, sinon Open Library
   // (adresse construite avec l'ISBN, chargée par le navigateur) ; sans image, le titre du tome reste affiché.
   // Les autres éditions (réimpressions) sont dans un menu déroulant, sans JavaScript.
-  const isbnCover = (isbn) => (showCovers && COVER_ISBN.has(isbn) ? COVER_ISBN.get(isbn) : showCovers ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false` : '');
+  const isbnCover = (isbn) => (showCovers && COVER_ISBN.has(isbn) ? COVER_ISBN.get(isbn) : showCovers && config.isbnCovers ? `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false` : '');
   const volList = (c, vols) => {
     const groups = new Map();
     for (const v of vols) { const key = v[0] ? `t${v[0]}` : `l${v[3] || v[1]}`; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(v); }
@@ -722,7 +723,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       const [main, ...rest] = eds;
       const u = isbnCover(main[1]);
       const more = rest.length ? `<details class="cv-ed"><summary>${esc(plural(eds.length, 'édition', 'éditions'))}</summary>${rest.map((v) => `<div class="cv-e"><span class="muted">${v[2] ? `${v[2]} · ` : ''}${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}</div>`).join('')}</details>` : '';
-      return `<li class="scard vcard"><div class="cover"><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span>${u ? `<img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div><strong>${esc(volLabel(main))}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
+      return `<li class="scard vcard${u ? '' : ' vnc'}">${u ? `<div class="cover"><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span><img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"></div>` : ''}<strong>${esc(volLabel(main))}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
     };
     return `<div class="carousel" role="region" aria-label="Tomes de ${esc(c.n)}" tabindex="0"><ul class="sgrid carousel-track cat-car">${[...groups.values()].map(card).join('')}</ul></div>`;
   };
@@ -882,7 +883,7 @@ ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des li
     const groups = new Map();
     for (const x of everyone) { const L = letterKey(x.k); if (!groups.has(L)) groups.set(L, []); groups.get(L).push(x); }
     const letterList = [...groups.keys()].sort((a, b) => (a === '0-9' ? -1 : b === '0-9' ? 1 : a.localeCompare(b)));
-    const PER = 240;
+    const PER = 96;
     const lcard = (x) => `<li class="scard p-${pubKey(x.e)}"><a class="scard-link" href="/serie/${x.k}/"><div class="cover"><span class="ph" aria-hidden="true">${esc(x.n)}</span>${showCovers && x.cover ? `<img class="cover-img" src="${esc(x.cover)}" alt="Couverture de ${esc(x.n)}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div><strong>${esc(x.n)}</strong><span class="muted">${x.sub ? `${esc(x.sub)}` : `${esc(plural(x.count, 'tome', 'tomes'))}${x.e ? ` · ${esc(x.e)}` : ''}`}</span></a></li>`;
     for (const L of letterList) {
       const list = groups.get(L);
