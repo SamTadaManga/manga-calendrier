@@ -1,0 +1,33 @@
+name: Analyse du site et liens
+# Construit le site, lance l'analyse (tomes manquants, couvertures, doublons, liens internes) et teste les liens externes.
+# Résultat : onglet Actions > cette exécution > Artifacts (fichiers CSV) et résumé en bas de la page de l'exécution.
+on:
+  schedule:
+    - cron: '23 5 1 * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  analyse:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Construire le site
+        run: node scripts/build.mjs
+      - name: Analyser
+        run: node scripts/analyse-site.mjs rapports dist
+      - name: Tester les liens externes
+        run: node scripts/liens-externes.mjs rapports
+      - name: Résumé
+        run: cat rapports/rapport.md rapports/liens-externes.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rapports-site
+          path: manga-calendrier/rapports/
+          retention-days: 90

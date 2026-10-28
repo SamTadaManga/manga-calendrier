@@ -52,6 +52,25 @@ for (const r of table.slice(1)) {
   if (!byId.has(id)) byId.set(id, []);
   byId.get(id).push({ r, isbn, title });
 }
+// Un même ISBN peut sortir de plusieurs séries (requêtes qui se recoupent, par exemple « version » ou « happy »).
+// On le garde dans la série dont le nom d'adresse colle le mieux à son titre ; à égalité, dans la plus grosse.
+const slugOfGroup = (rows) => { const q = (rows[0].r[col.requete] || '').match(/bib\.title all "([^"]+)"/); return slugify(q ? q[1] : rows[0].title); };
+const owners = new Map(); // isbn -> [{ id, score }]
+for (const [id, rows] of byId) {
+  const k = slugOfGroup(rows);
+  for (const x of rows) {
+    const t = slugify(x.title);
+    const score = (t === k ? 3 : t.startsWith(`${k}-`) ? 2 : t.includes(k) ? 1 : 0) * 1e6 + rows.length;
+    if (!owners.has(x.isbn)) owners.set(x.isbn, []);
+    owners.get(x.isbn).push({ id, score });
+  }
+}
+let removedDup = 0;
+for (const [id, rows] of byId) {
+  const keep = rows.filter((x) => { const best = owners.get(x.isbn).reduce((a, b) => (b.score > a.score || (b.score === a.score && b.id < a.id) ? b : a)); return best.id === id; });
+  removedDup += rows.length - keep.length;
+  if (keep.length) byId.set(id, keep); else byId.delete(id);
+}
 const groups = new Map(); // slug de la série -> { names, pubs, vols }
 for (const rows of byId.values()) {
   const q = (rows[0].r[col.requete] || '').match(/bib\.title all "([^"]+)"/);
@@ -83,4 +102,4 @@ const series = [...groups].map(([k, g]) => {
 const P = paths();
 const out = path.join(P.dataDir, 'catalogue-bnf.json');
 writeFileSync(out, JSON.stringify({ source: 'BnF (catalogue général), licence ouverte', maj: new Date().toISOString().slice(0, 10), series }) + '\n');
-console.log(`${series.length} séries, ${series.reduce((n, s) => n + s.v.length, 0)} tomes, ${skipped} lignes écartées -> ${out}`);
+console.log(`${series.length} séries, ${series.reduce((n, s) => n + s.v.length, 0)} tomes, ${skipped} lignes écartées, ${removedDup} doublons d'ISBN entre séries supprimés -> ${out}`);
