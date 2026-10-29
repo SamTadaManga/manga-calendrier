@@ -7,5 +7,20 @@
  },
  "mail-2026-10-28": {
   "at": "2026-10-28T14:34:41.526Z"
+ },
+ "jour-2026-10-29": {
+  "bluesky": {
+   "at": "2026-10-29T06:56:11.354Z",
+   "id": "at://did:plc:utmfgrrz5d3bd46r2qbh44wd/app.bsky.feed.post/3myyoqfjqda2d"
+  }
+ },
+ "nouveautes-2026-10-29": {
+  "bluesky": {
+   "at": "2026-10-29T06:56:18.934Z",
+   "id": "at://did:plc:utmfgrrz5d3bd46r2qbh44wd/app.bsky.feed.post/3myyoqmur3c2y"
+  }
+ },
+ "mail-2026-10-29": {
+  "at": "2026-10-29T06:56:23.891Z"
  }
 }
