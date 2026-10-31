@@ -8,6 +8,7 @@
   "autoPublish": true,
   "showCovers": true,
   "catalogueCovers": "https://img.prochaintome.fr/series/",
+  "catalogueResize": false,
   "launched": true,
   "legal": {
     "editorName": "Sam Tada",
