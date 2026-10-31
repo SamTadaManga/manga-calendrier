@@ -1,7 +1,7 @@
 ---
-title: "Manga : 12 changements dans les plannings du samedi 31 octobre 2026"
+title: "Manga : 14 changements dans les plannings du samedi 31 octobre 2026"
 date: 2026-10-31
-description: "12 tomes reportés, avancés, annoncés ou retirés des plannings le samedi 31 octobre 2026."
+description: "14 tomes reportés, avancés, annoncés ou retirés des plannings le samedi 31 octobre 2026."
 auto: true
 draft: false
 ---
@@ -37,5 +37,8 @@ Voici ce qui a bougé dans les plannings manga des éditeurs le samedi 31 octobr
 
 - **Silence tome 8** (Kana) : n'apparaît plus au planning de l'éditeur (était prévu le ven. 4 déc.) ([fiche éditeur](https://www.kana.fr/produit/silence-tome-8/))
   → [Page de la série](/serie/silence/) · [Calendrier manga](/manga/)
+- **Blue Period tome 19** (Pika) : n'apparaît plus au planning de l'éditeur (était prévu le mer. 2 déc.) ([fiche éditeur](https://www.pika.fr/livre/blue-period-t19-9791043312243/))
+- **Hunter X Hunter tome 39** (Kana) : n'apparaît plus au planning de l'éditeur (était prévu le ven. 4 déc.) ([fiche éditeur](https://www.kana.fr/produit/hunter-x-hunter-t39/))
+  → [Page de la série](/serie/hunter-x-hunter/) · [Calendrier manga](/manga/)
 
 Les éditeurs peuvent corriger leurs dates à tout moment : la fiche de chaque tome fait foi.

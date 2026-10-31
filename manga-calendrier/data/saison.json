@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-31T03:55:08.452Z",
+ "generatedAt": "2026-10-31T13:18:48.049Z",
  "seasons": [
   {
    "season": "FALL",
@@ -716,6 +716,31 @@
      ]
     },
     {
+     "id": 212503,
+     "t": "The Iceblade Sorcerer Shall Rule the World II",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      9
+     ],
+     "u": "https://anilist.co/anime/212503",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212503-sXBpRZr96c4e.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GDKHZEP21/the-iceblade-sorcerer-shall-rule-the-world"
+      }
+     ]
+    },
+    {
      "id": 209502,
      "t": "The Cold Sato-san is Only Sweet to Me",
      "f": "TV",
@@ -761,31 +786,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
-      }
-     ]
-    },
-    {
-     "id": 212503,
-     "t": "The Iceblade Sorcerer Shall Rule the World II",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      9
-     ],
-     "u": "https://anilist.co/anime/212503",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx212503-sXBpRZr96c4e.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GDKHZEP21/the-iceblade-sorcerer-shall-rule-the-world"
       }
      ]
     },
@@ -847,31 +847,6 @@
      ]
     },
     {
-     "id": 187402,
-     "t": "A Tale of the Secret Saint",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      3
-     ],
-     "u": "https://anilist.co/anime/187402",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187402-ReKkLwFmMV3q.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00371633"
-      }
-     ]
-    },
-    {
      "id": 211778,
      "t": "The World's Strongest Witch",
      "f": "TV",
@@ -893,6 +868,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384009/the-worlds-strongest-witch"
+      }
+     ]
+    },
+    {
+     "id": 187402,
+     "t": "A Tale of the Secret Saint",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      3
+     ],
+     "u": "https://anilist.co/anime/187402",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187402-ReKkLwFmMV3q.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00371633"
       }
      ]
     },
@@ -1239,26 +1239,6 @@
      "s": []
     },
     {
-     "id": 190244,
-     "t": "Date A Live F Last Date",
-     "f": "MOVIE",
-     "st": "NOT_YET_RELEASED",
-     "n": 1,
-     "d": [
-      2027,
-      3,
-      26
-     ],
-     "u": "https://anilist.co/anime/190244",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx190244-u2yo4hPmVp6Z.png",
-     "g": [
-      "Action",
-      "Comedy",
-      "Ecchi"
-     ],
-     "s": []
-    },
-    {
      "id": 216624,
      "t": "SSS-Class Revival Hunter",
      "f": "TV",
@@ -1275,6 +1255,26 @@
       "Action",
       "Adventure",
       "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 190244,
+     "t": "Date A Live F Last Date",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2027,
+      3,
+      26
+     ],
+     "u": "https://anilist.co/anime/190244",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx190244-u2yo4hPmVp6Z.png",
+     "g": [
+      "Action",
+      "Comedy",
+      "Ecchi"
      ],
      "s": []
     },
@@ -1355,6 +1355,24 @@
      "s": []
     },
     {
+     "id": 208766,
+     "t": "Bless",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/208766",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208766-FIvJRb63ztBJ.jpg",
+     "g": [
+      "Slice of Life"
+     ],
+     "s": []
+    },
+    {
      "id": 206298,
      "t": "Medalist Movie",
      "f": "MOVIE",
@@ -1391,24 +1409,6 @@
       "Adventure",
       "Drama",
       "Psychological"
-     ],
-     "s": []
-    },
-    {
-     "id": 208766,
-     "t": "Bless",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/208766",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208766-FIvJRb63ztBJ.jpg",
-     "g": [
-      "Slice of Life"
      ],
      "s": []
     },
@@ -1585,26 +1585,6 @@
      "s": []
     },
     {
-     "id": 213497,
-     "t": "Sudachi no Maoujou",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/213497",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213497-bi5uWSWWtGmH.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Comedy"
-     ],
-     "s": []
-    },
-    {
      "id": 202503,
      "t": "Majutsu wo Kiwamete Tabi ni Deta Tensei Elf, Moteamashita Jumyou de Ikeru Densetsu to Naru",
      "f": "TV",
@@ -1621,6 +1601,26 @@
       "Action",
       "Adventure",
       "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 213497,
+     "t": "Sudachi no Maoujou",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213497",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213497-bi5uWSWWtGmH.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
      ],
      "s": []
     },
@@ -1683,6 +1683,24 @@
      "s": []
     },
     {
+     "id": 198728,
+     "t": "Kaze wo Tsugumono",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/198728",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-RguTjB254b7H.jpg",
+     "g": [
+      "Action"
+     ],
+     "s": []
+    },
+    {
      "id": 187303,
      "t": "Giant Ojou-sama",
      "f": "TV",
@@ -1699,24 +1717,6 @@
       "Action",
       "Comedy",
       "Ecchi"
-     ],
-     "s": []
-    },
-    {
-     "id": 198728,
-     "t": "Kaze wo Tsugumono",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/198728",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-RguTjB254b7H.jpg",
-     "g": [
-      "Action"
      ],
      "s": []
     },
