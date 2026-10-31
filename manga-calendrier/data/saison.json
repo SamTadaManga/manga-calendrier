@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-30T03:57:42.138Z",
+ "generatedAt": "2026-10-31T03:55:08.452Z",
  "seasons": [
   {
    "season": "FALL",
@@ -293,26 +293,6 @@
      ]
     },
     {
-     "id": 178083,
-     "t": "Tokyo Revengers: War of the Three Titans Arc",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 13,
-     "d": [
-      2026,
-      10,
-      3
-     ],
-     "u": "https://anilist.co/anime/178083",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178083-bg7pg6TCHwtG.jpg",
-     "g": [
-      "Action",
-      "Drama",
-      "Romance"
-     ],
-     "s": []
-    },
-    {
      "id": 213805,
      "t": "The Ramparts of Ice Season 2",
      "f": "TV",
@@ -336,6 +316,26 @@
        "u": "https://www.netflix.com/title/82031882"
       }
      ]
+    },
+    {
+     "id": 178083,
+     "t": "Tokyo Revengers: War of the Three Titans Arc",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 13,
+     "d": [
+      2026,
+      10,
+      3
+     ],
+     "u": "https://anilist.co/anime/178083",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx178083-bg7pg6TCHwtG.jpg",
+     "g": [
+      "Action",
+      "Drama",
+      "Romance"
+     ],
+     "s": []
     },
     {
      "id": 199340,
@@ -479,6 +479,25 @@
      ]
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 208025,
      "t": "I'm Dating a Dark Summoner",
      "f": "TV_SHORT",
@@ -494,25 +513,6 @@
      "g": [
       "Comedy",
       "Ecchi",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
       "Fantasy"
      ],
      "s": []
@@ -872,30 +872,6 @@
      ]
     },
     {
-     "id": 206401,
-     "t": "FX Fighter Kurumi-chan",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      1
-     ],
-     "u": "https://anilist.co/anime/206401",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
-     "g": [
-      "Drama",
-      "Slice of Life"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://crunchyroll.com/series/GT00384001/fx-fighter-kurumi-chan"
-      }
-     ]
-    },
-    {
      "id": 211778,
      "t": "The World's Strongest Witch",
      "f": "TV",
@@ -917,6 +893,30 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384009/the-worlds-strongest-witch"
+      }
+     ]
+    },
+    {
+     "id": 206401,
+     "t": "FX Fighter Kurumi-chan",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      1
+     ],
+     "u": "https://anilist.co/anime/206401",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
+     "g": [
+      "Drama",
+      "Slice of Life"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://crunchyroll.com/series/GT00384001/fx-fighter-kurumi-chan"
       }
      ]
     },
@@ -1663,26 +1663,6 @@
      "s": []
     },
     {
-     "id": 187303,
-     "t": "Giant Ojou-sama",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/187303",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg",
-     "g": [
-      "Action",
-      "Comedy",
-      "Ecchi"
-     ],
-     "s": []
-    },
-    {
      "id": 194030,
      "t": "Gacha wo Mawashite Nakama wo Fuyasu: Saikyou no Bishoujo Gundan wo Tsukuriagero",
      "f": "TV",
@@ -1699,6 +1679,26 @@
       "Action",
       "Adventure",
       "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 187303,
+     "t": "Giant Ojou-sama",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/187303",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Ecchi"
      ],
      "s": []
     },

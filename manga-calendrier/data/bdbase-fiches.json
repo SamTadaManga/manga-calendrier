@@ -628,5 +628,75 @@
    "source": "https://www.bdbase.fr/manga/the-condemned-villainess-goes-back-in-time-5",
    "cover": ""
   }
+ },
+ "/manga/la-bete-du-roi-5": {
+  "vu": "2026-10-31",
+  "row": {
+   "date": "2026-12-02",
+   "editeur": "Kazé",
+   "serie": "La Bête du Roi",
+   "tome": "5",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/la-bete-du-roi-5",
+   "cover": ""
+  }
+ },
+ "/manga/idol-x-idol-story-volume-5": {
+  "vu": "2026-10-31",
+  "row": {
+   "date": "2026-11-27",
+   "editeur": "Meian",
+   "serie": "Idol X Idol Story Volume",
+   "tome": "5",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/idol-x-idol-story-volume-5",
+   "cover": ""
+  }
+ },
+ "/manga/tearmoon-empire-story-8": {
+  "vu": "2026-10-31",
+  "row": {
+   "date": "2026-11-27",
+   "editeur": "Meian",
+   "serie": "Tearmoon Empire Story",
+   "tome": "8",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/tearmoon-empire-story-8",
+   "cover": ""
+  }
+ },
+ "/manga/touhou-lotus-eaters-sobering-7": {
+  "vu": "2026-10-31",
+  "row": {
+   "date": "2026-11-27",
+   "editeur": "Meian",
+   "serie": "Touhou - Lotus Eaters' Sobering",
+   "tome": "7",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/touhou-lotus-eaters-sobering-7",
+   "cover": ""
+  }
+ },
+ "/manga/uzaki-chan-wants-to-hang-out-12": {
+  "vu": "2026-10-31",
+  "row": {
+   "date": "2026-11-27",
+   "editeur": "Meian",
+   "serie": "Uzaki-Chan wants to hang out !",
+   "tome": "12",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/uzaki-chan-wants-to-hang-out-12",
+   "cover": ""
+  }
  }
 }

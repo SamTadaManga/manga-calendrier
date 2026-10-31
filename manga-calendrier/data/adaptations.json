@@ -5175,7 +5175,104 @@
     "y": 2024,
     "v": 2
    }
+  },
+  "idol-x-idol-story-volume": {
+   "c": "2026-10-31",
+   "a": [],
+   "i": null
+  },
+  "tearmoon-empire-story": {
+   "c": "2026-10-31",
+   "a": [
+    {
+     "id": 154384,
+     "t": "Tearmoon Empire",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/154384",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/G9VHN9QVN/tearmoon-empire"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Nozomu Mochitsuki"
+    ],
+    "sc": [
+     "Nozomu Mochitsuki"
+    ],
+    "ar": [],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2019,
+    "v": 2
+   }
+  },
+  "touhou-lotus-eaters-sobering": {
+   "c": "2026-10-31",
+   "a": [],
+   "i": null
+  },
+  "uzaki-chan-wants-to-hang-out": {
+   "c": "2026-10-31",
+   "a": [
+    {
+     "id": 115113,
+     "t": "Uzaki-chan Wants to Hang Out!",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/115113",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/uzaki-chan-wants-to-hang-out"
+      }
+     ]
+    },
+    {
+     "id": 124395,
+     "t": "Uzaki-chan Wants to Hang Out! Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/124395",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GNVHKN7KZ/uzaki-chan-wants-to-hang-out"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Take"
+    ],
+    "sc": [
+     "Take"
+    ],
+    "ar": [
+     "Take"
+    ],
+    "g": [
+     "Comedy",
+     "Ecchi",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2017,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-10-30T03:57:36.746Z"
+ "generatedAt": "2026-10-31T03:55:02.849Z"
 }
