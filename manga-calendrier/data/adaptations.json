@@ -1642,8 +1642,9 @@
    }
   },
   "redflower": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
   },
   "reve-ou-realite": {
    "c": "2026-10-26",
@@ -2679,8 +2680,28 @@
    }
   },
   "ryukyu-buccaneer": {
-   "c": "2026-10-09",
-   "a": []
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Rainy Kamitsuki",
+     "Nau Doi"
+    ],
+    "sc": [
+     "Nau Doi"
+    ],
+    "ar": [
+     "Nau Doi"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Drama"
+    ],
+    "st": "RELEASING",
+    "y": 2024,
+    "v": 2
+   }
   },
   "sanda": {
    "c": "2026-10-26",
@@ -5272,7 +5293,667 @@
     "y": 2017,
     "v": 2
    }
+  },
+  "adou-hybrides": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "alt": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Takehiro Miura"
+    ],
+    "sc": [
+     "Takehiro Miura"
+    ],
+    "ar": [
+     "Takehiro Miura"
+    ],
+    "g": [
+     "Hentai"
+    ],
+    "st": "FINISHED",
+    "y": 2013,
+    "v": 2
+   }
+  },
+  "bucket-list-of-the-dead": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 159831,
+     "t": "Zom 100: Bucket List of the Dead",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/159831",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81680101"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GJ0H7QGQK/zom-100-the-bucket-list-of-the-dead"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Haro Aso",
+     "Koutarou Takata"
+    ],
+    "sc": [
+     "Haro Aso"
+    ],
+    "ar": [
+     "Koutarou Takata"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Horror"
+    ],
+    "st": "RELEASING",
+    "y": 2018,
+    "v": 2
+   }
+  },
+  "c-est-de-l-amour-crois-moi": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Fujimomo"
+    ],
+    "sc": [
+     "Fujimomo"
+    ],
+    "ar": [
+     "Fujimomo"
+    ],
+    "g": [
+     "Comedy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "cervin-le-roi-oublie": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "duchess-in-ruins": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Lemon Gaeguri",
+     "Saedeul",
+     "Bambi Cho"
+    ],
+    "sc": [
+     "Saedeul"
+    ],
+    "ar": [
+     "Bambi Cho"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2024,
+    "v": 2
+   }
+  },
+  "four-knights-of-the-apocalypse": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "hero-organization": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Akira Takahashi",
+     "Michiru Kodaka",
+     "Kei Saikawa"
+    ],
+    "sc": [
+     "Kei Saikawa"
+    ],
+    "ar": [
+     "Akira Takahashi"
+    ],
+    "g": [
+     "Action",
+     "Mecha",
+     "Sci-Fi"
+    ],
+    "st": "RELEASING",
+    "y": 2024,
+    "v": 2
+   }
+  },
+  "i-m-the-queen-in-this-life": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Omin",
+     "Refalzimp",
+     "Themis"
+    ],
+    "sc": [
+     "Omin"
+    ],
+    "ar": [
+     "Themis"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2022,
+    "v": 2
+   }
+  },
+  "immortalite-et-chatiment": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "jaadugar-la-legende-de-fatima": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "kingdom-of-quartz": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "le-battement-des-cils": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "les-carnets-de-l-apothicaire-les-memoires-de-shaolan": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "les-noces-des-lucioles": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 205909,
+     "t": "Firefly Wedding",
+     "st": "RELEASING",
+     "f": "TV",
+     "u": "https://anilist.co/anime/205909",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383999"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Oreco Tachibana",
+     "Finn K"
+    ],
+    "sc": [
+     "Oreco Tachibana"
+    ],
+    "ar": [
+     "Oreco Tachibana"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "omniscient-reader-s-viewpoint": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 179068,
+     "t": "Omniscient Reader",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/179068",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Singsyong",
+     "Sleepy-C",
+     "UMI"
+    ],
+    "sc": [
+     "UMI"
+    ],
+    "ar": [
+     "Sleepy-C"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "pippira-note": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Fumiyo Kouno"
+    ],
+    "sc": [
+     "Fumiyo Kouno"
+    ],
+    "ar": [
+     "Fumiyo Kouno"
+    ],
+    "g": [],
+    "st": "FINISHED",
+    "y": 1997,
+    "v": 2
+   }
+  },
+  "promenons-nous-dans-l-espace": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Inuhiko Doronoda"
+    ],
+    "sc": [
+     "Inuhiko Doronoda"
+    ],
+    "ar": [
+     "Inuhiko Doronoda"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "promise-cinderella": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Oreco Tachibana",
+     "Alice Rundcrantz Leise"
+    ],
+    "sc": [
+     "Oreco Tachibana"
+    ],
+    "ar": [
+     "Oreco Tachibana"
+    ],
+    "g": [
+     "Drama",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2018,
+    "v": 2
+   }
+  },
+  "rave-edition-originale": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "real": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Aruta Kusui"
+    ],
+    "sc": [
+     "Aruta Kusui"
+    ],
+    "ar": [
+     "Aruta Kusui"
+    ],
+    "g": [
+     "Hentai"
+    ],
+    "st": "FINISHED",
+    "y": 2014,
+    "v": 2
+   }
+  },
+  "sakamoto-days": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 204363,
+     "t": "SAKAMOTO DAYS Season 2",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/204363",
+     "s": []
+    },
+    {
+     "id": 177709,
+     "t": "SAKAMOTO DAYS",
+     "st": "FINISHED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/177709",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81663325"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuuto  Suzuki"
+    ],
+    "sc": [
+     "Yuuto  Suzuki"
+    ],
+    "ar": [
+     "Yuuto  Suzuki"
+    ],
+    "g": [
+     "Action",
+     "Comedy"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "sayonara-monsieur-desespoir": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "sounds-of-life": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 103302,
+     "t": "Kono Oto Tomare!: Sounds of Life",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/103302",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/kono-oto-tomare-sounds-of-life"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81328604"
+      }
+     ]
+    },
+    {
+     "id": 108891,
+     "t": "Kono Oto Tomare!: Sounds of Life Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/108891",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/kono-oto-tomare-sounds-of-life"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81328604"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Amyuu Sakura"
+    ],
+    "sc": [
+     "Amyuu Sakura"
+    ],
+    "ar": [
+     "Amyuu Sakura"
+    ],
+    "g": [
+     "Drama",
+     "Music",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2012,
+    "v": 2
+   }
+  },
+  "stray-dog": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Hiromu Arakawa"
+    ],
+    "sc": [
+     "Hiromu Arakawa"
+    ],
+    "ar": [
+     "Hiromu Arakawa"
+    ],
+    "g": [
+     "Adventure"
+    ],
+    "st": "FINISHED",
+    "y": 1999,
+    "v": 2
+   }
+  },
+  "the-elusive-samurai": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 162896,
+     "t": "The Elusive Samurai",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/162896",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GQWH0M19X/the-elusive-samurai"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81907835"
+      }
+     ]
+    },
+    {
+     "id": 182616,
+     "t": "The Elusive Samurai Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/182616",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GQWH0M19X/the-elusive-samurai"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuusei Matsui"
+    ],
+    "sc": [
+     "Yuusei Matsui"
+    ],
+    "ar": [
+     "Yuusei Matsui"
+    ],
+    "g": [
+     "Action",
+     "Adventure"
+    ],
+    "st": "FINISHED",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "the-hedgehog": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "the-strange-house": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": {
+    "au": [
+     "Kyou Ayano",
+     "Uketsu"
+    ],
+    "sc": [
+     "Kyou Ayano"
+    ],
+    "ar": [
+     "Kyou Ayano"
+    ],
+    "g": [
+     "Horror",
+     "Mystery",
+     "Psychological",
+     "Thriller"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "tomb-raider-king": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 184356,
+     "t": "Tomb Raider King",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/184356",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00378123/"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yoonz",
+     "3B2S",
+     "Sanjijiksong"
+    ],
+    "sc": [
+     "Yoonz"
+    ],
+    "ar": [
+     "3B2S"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2019,
+    "v": 2
+   }
+  },
+  "triage-x": {
+   "c": "2026-11-01",
+   "a": [
+    {
+     "id": 20839,
+     "t": "Triage X",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/20839",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Shouji Satou"
+    ],
+    "sc": [
+     "Shouji Satou"
+    ],
+    "ar": [
+     "Shouji Satou"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Ecchi"
+    ],
+    "st": "RELEASING",
+    "y": 2009,
+    "v": 2
+   }
+  },
+  "une-belle-fille-a-croquer": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "une-reincarnation-presque-ordinaire": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
+  },
+  "yubooh-la-magie-des-songes": {
+   "c": "2026-11-01",
+   "a": [],
+   "i": null
   }
  },
- "generatedAt": "2026-10-31T13:18:42.656Z"
+ "generatedAt": "2026-11-01T04:02:33.612Z"
 }

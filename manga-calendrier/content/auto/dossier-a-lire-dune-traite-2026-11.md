@@ -20,6 +20,10 @@ Kana · action, drame, fantasy · Tunakan Suda · depuis 2022
 
 Akata · mystère · Rito Asami et Tom Bertrand · depuis 2022
 
+## [Tomb Raider King](/serie/tomb-raider-king/)
+
+Pika · action, aventure, fantasy · Yoonz et 3B2S · depuis 2019
+
 ## [Angel Sanctuary](/serie/angel-sanctuary/)
 
 Pika · fantasy, mystère, romance · Kaori Yuki · depuis 1994
@@ -27,7 +31,3 @@ Pika · fantasy, mystère, romance · Kaori Yuki · depuis 1994
 ## [Share House Nile](/serie/share-house-nile/)
 
 Mangetsu · comédie, romance · Hiroo Nakamichi et Megumi Dorokawa · depuis 2022
-
-## [Pandora Hearts](/serie/pandora-hearts/)
-
-Ki-oon · action, aventure, drame · Jun Mochizuki · depuis 2006
