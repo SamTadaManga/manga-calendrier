@@ -20,10 +20,6 @@ Kana · Fumiyo Kouno · depuis 1997
 
 Glénat · drame, romance · Oreco Tachibana et Finn K · depuis 2023
 
-## [And yet, you are so sweet](/serie/and-yet-you-are-so-sweet/)
-
-Pika · romance · Kujira Anan · depuis 2017
-
 ## [La couche est pleine](/serie/la-couche-est-pleine/)
 
 Akata · comédie, tranche de vie · Akiko Higashimura · depuis 2007
@@ -31,3 +27,7 @@ Akata · comédie, tranche de vie · Akiko Higashimura · depuis 2007
 ## [Show-ha Shoten](/serie/show-ha-shoten/)
 
 Kana · comédie, drame, tranche de vie · Takeshi Obata et Akinari Asakura · depuis 2021
+
+## [Qui a vu le paon danser ?](/serie/qui-a-vu-le-paon-danser/)
+
+Akata · mystère · Rito Asami et Tom Bertrand · depuis 2022

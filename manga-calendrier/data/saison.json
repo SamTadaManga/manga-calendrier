@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-01T04:02:39.067Z",
+ "generatedAt": "2026-11-02T04:07:14.627Z",
  "seasons": [
   {
    "season": "FALL",
@@ -84,31 +84,6 @@
      ]
     },
     {
-     "id": 159042,
-     "t": "Reincarnated as a Sword Season 2",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      1
-     ],
-     "u": "https://anilist.co/anime/159042",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx159042-GGFwlDskc5vR.png",
-     "g": [
-      "Action",
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Prime Video",
-       "u": "https://www.amazon.com/gp/video/detail/B0HLCHQS6T"
-      }
-     ]
-    },
-    {
      "id": 212888,
      "t": "Overgeared",
      "f": "ONA",
@@ -130,6 +105,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384004"
+      }
+     ]
+    },
+    {
+     "id": 159042,
+     "t": "Reincarnated as a Sword Season 2",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      1
+     ],
+     "u": "https://anilist.co/anime/159042",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx159042-GGFwlDskc5vR.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/gp/video/detail/B0HLCHQS6T"
       }
      ]
     },
@@ -159,6 +159,30 @@
      ]
     },
     {
+     "id": 205909,
+     "t": "Firefly Wedding",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      9
+     ],
+     "u": "https://anilist.co/anime/205909",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205909-DM0fAzNQulod.jpg",
+     "g": [
+      "Drama",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383999"
+      }
+     ]
+    },
+    {
      "id": 210482,
      "t": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
      "f": "ONA",
@@ -180,30 +204,6 @@
       {
        "n": "Netflix",
        "u": "https://www.netflix.com/title/82116553"
-      }
-     ]
-    },
-    {
-     "id": 205909,
-     "t": "Firefly Wedding",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      9
-     ],
-     "u": "https://anilist.co/anime/205909",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205909-DM0fAzNQulod.jpg",
-     "g": [
-      "Drama",
-      "Romance"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00383999"
       }
      ]
     },
@@ -641,31 +641,6 @@
      ]
     },
     {
-     "id": 204389,
-     "t": "A Wild Last Boss Appeared! Season 2",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      9,
-      26
-     ],
-     "u": "https://anilist.co/anime/204389",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204389-jCoFCeTthDMy.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00361955/a-wild-last-boss-appeared"
-      }
-     ]
-    },
-    {
      "id": 202250,
      "t": "Magic Repo Man: Dumped by My Party, I’ll Cash In With a Cute Support Fairy to Become the Strongest!",
      "f": "TV",
@@ -687,6 +662,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00385867/magic-repo-man-dumped-by-my-party-ill-cash-in-with-a-cute-support-fairy-to-become-the-strongest"
+      }
+     ]
+    },
+    {
+     "id": 204389,
+     "t": "A Wild Last Boss Appeared! Season 2",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      9,
+      26
+     ],
+     "u": "https://anilist.co/anime/204389",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204389-jCoFCeTthDMy.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00361955/a-wild-last-boss-appeared"
       }
      ]
     },
@@ -847,31 +847,6 @@
      ]
     },
     {
-     "id": 211778,
-     "t": "The World's Strongest Witch",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      7
-     ],
-     "u": "https://anilist.co/anime/211778",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211778-0MXK5HqVFBYH.jpg",
-     "g": [
-      "Action",
-      "Comedy",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384009/the-worlds-strongest-witch"
-      }
-     ]
-    },
-    {
      "id": 187402,
      "t": "A Tale of the Secret Saint",
      "f": "ONA",
@@ -893,6 +868,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00371633"
+      }
+     ]
+    },
+    {
+     "id": 211778,
+     "t": "The World's Strongest Witch",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      7
+     ],
+     "u": "https://anilist.co/anime/211778",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211778-0MXK5HqVFBYH.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384009/the-worlds-strongest-witch"
       }
      ]
     },
@@ -1663,6 +1663,24 @@
      "s": []
     },
     {
+     "id": 198728,
+     "t": "Kaze wo Tsugumono",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/198728",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-1tasIeJ995QJ.jpg",
+     "g": [
+      "Action"
+     ],
+     "s": []
+    },
+    {
      "id": 194030,
      "t": "Gacha wo Mawashite Nakama wo Fuyasu: Saikyou no Bishoujo Gundan wo Tsukuriagero",
      "f": "TV",
@@ -1679,24 +1697,6 @@
       "Action",
       "Adventure",
       "Comedy"
-     ],
-     "s": []
-    },
-    {
-     "id": 198728,
-     "t": "Kaze wo Tsugumono",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/198728",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-RguTjB254b7H.jpg",
-     "g": [
-      "Action"
      ],
      "s": []
     },

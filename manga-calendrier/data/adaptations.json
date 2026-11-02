@@ -370,7 +370,7 @@
    "i": null
   },
   "bless": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 208766,
@@ -400,7 +400,7 @@
    }
   },
   "blue-lock": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 199404,
@@ -526,7 +526,7 @@
    }
   },
   "craque-pour-moi-medaka": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 188892,
@@ -708,7 +708,7 @@
    }
   },
   "fall-in-love-false-angels": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 213131,
@@ -778,7 +778,7 @@
    }
   },
   "fungus-and-iron": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 208610,
@@ -971,7 +971,7 @@
    }
   },
   "kagurabachi": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 211496,
@@ -1301,7 +1301,7 @@
    }
   },
   "mission-yozakura-family": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 213657,
@@ -1309,7 +1309,12 @@
      "st": "RELEASING",
      "f": "TV",
      "u": "https://anilist.co/anime/213657",
-     "s": []
+     "s": [
+      {
+       "n": "Disney+",
+       "u": "https://www.disneyplus.com/browse/entity-ac689bea-f955-4d95-8693-7b87b5a309cb"
+      }
+     ]
     },
     {
      "id": 158898,
@@ -1891,7 +1896,7 @@
    "i": null
   },
   "sss-class-revival-hunter": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 216624,
@@ -1917,9 +1922,7 @@
     "g": [
      "Action",
      "Adventure",
-     "Drama",
-     "Fantasy",
-     "Supernatural"
+     "Fantasy"
     ],
     "st": "RELEASING",
     "y": 2020,
@@ -2349,7 +2352,7 @@
    }
   },
   "wistoria-wand-and-sword": {
-   "c": "2026-10-26",
+   "c": "2026-11-02",
    "a": [
     {
      "id": 213656,
@@ -5953,7 +5956,207 @@
    "c": "2026-11-01",
    "a": [],
    "i": null
+  },
+  "beat-motion": {
+   "c": "2026-11-02",
+   "a": [
+    {
+     "id": 169102,
+     "t": "BEAT & MOTION",
+     "st": "NOT_YET_RELEASED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/169102",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [],
+    "g": [
+     "Drama",
+     "Music",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2023,
+    "v": 2
+   }
+  },
+  "failure-frame": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": null
+  },
+  "from-5-to-9": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": {
+    "au": [
+     "Miki Aihara"
+    ],
+    "sc": [
+     "Miki Aihara"
+    ],
+    "ar": [
+     "Miki Aihara"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2010,
+    "v": 2
+   }
+  },
+  "from-bureaucrat-to-villainess": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": null
+  },
+  "hima-ten": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": {
+    "au": [
+     "Genki Ono"
+    ],
+    "sc": [
+     "Genki Ono"
+    ],
+    "ar": [
+     "Genki Ono"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2024,
+    "v": 2
+   }
+  },
+  "la-voie-de-l-assassin": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": null
+  },
+  "les-allumes-du-conseil": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": null
+  },
+  "nos-differences-enlacees": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": null
+  },
+  "salaryman-z-le-bureau-des-morts-vivants": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": null
+  },
+  "shikimori-n-est-pas-juste-mignonne": {
+   "c": "2026-11-02",
+   "a": [
+    {
+     "id": 127911,
+     "t": "Shikimori's Not Just a Cutie",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/127911",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/shikimoris-not-just-a-cutie"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Keigo Maki"
+    ],
+    "sc": [
+     "Keigo Maki"
+    ],
+    "ar": [
+     "Keigo Maki"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2018,
+    "v": 2
+   }
+  },
+  "teenager-rampage": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": null
+  },
+  "the-ogre-s-bride": {
+   "c": "2026-11-02",
+   "a": [
+    {
+     "id": 194219,
+     "t": "The Ogre's Bride",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/194219",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00378121/the-ogres-bride"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Kureha"
+    ],
+    "sc": [
+     "Kureha"
+    ],
+    "ar": [],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "ultimate-exorcist-kiyoshi": {
+   "c": "2026-11-02",
+   "a": [],
+   "i": {
+    "au": [
+     "Shouichi Usui"
+    ],
+    "sc": [
+     "Shouichi Usui"
+    ],
+    "ar": [
+     "Shouichi Usui"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2024,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-11-01T04:02:33.612Z"
+ "generatedAt": "2026-11-02T04:07:09.063Z"
 }
