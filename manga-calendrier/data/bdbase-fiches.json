@@ -880,5 +880,19 @@
    "source": "https://www.bdbase.fr/manga/the-ogre-s-bride-3",
    "cover": ""
   }
+ },
+ "/manga/le-secret-d-aiko-10": {
+  "vu": "2026-11-03",
+  "row": {
+   "date": "2026-12-09",
+   "editeur": "Panini Manga",
+   "serie": "Le Secret d'Aiko",
+   "tome": "10",
+   "titre": "",
+   "isbn": "9791070250259",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/le-secret-d-aiko-10",
+   "cover": ""
+  }
  }
 }

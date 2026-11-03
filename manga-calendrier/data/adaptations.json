@@ -4146,7 +4146,7 @@
    "i": null
   },
   "ao-ashi-playmaker": {
-   "c": "2026-10-27",
+   "c": "2026-11-03",
    "a": [
     {
      "id": 191788,
@@ -4358,7 +4358,7 @@
    }
   },
   "crayon-shinchan": {
-   "c": "2026-10-27",
+   "c": "2026-11-03",
    "a": [
     {
      "id": 966,
@@ -6156,7 +6156,40 @@
     "y": 2024,
     "v": 2
    }
+  },
+  "drcl-midnight-children": {
+   "c": "2026-11-03",
+   "a": [],
+   "i": {
+    "au": [
+     "Shinichi Sakamoto"
+    ],
+    "sc": [
+     "Shinichi Sakamoto"
+    ],
+    "ar": [
+     "Shinichi Sakamoto"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Horror"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "le-secret-d-aiko": {
+   "c": "2026-11-03",
+   "a": [],
+   "i": null
+  },
+  "les-heros": {
+   "c": "2026-11-03",
+   "a": [],
+   "i": null
   }
  },
- "generatedAt": "2026-11-02T08:24:16.345Z"
+ "generatedAt": "2026-11-03T04:01:08.628Z"
 }
