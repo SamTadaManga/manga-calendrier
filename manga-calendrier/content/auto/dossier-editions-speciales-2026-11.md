@@ -19,11 +19,11 @@ draft: false
 
 ## Éditions deluxe et prestige
 
+- **Bleach Deluxe tome 2** (Glénat) : mer. 4 nov. · [la série](/serie/bleach-deluxe/)
 - **Flying Ben - Édition prestige** (Delcourt) : jeu. 12 nov. · [la série](/serie/flying-ben-edition-prestige/)
 - **Alice in Borderland Perfect Edition tome 2** (Delcourt) : jeu. 19 nov. · [la série](/serie/alice-in-borderland-perfect-edition/)
 
 ## Éditions spéciales
 
-- **Ultimate Exorcist Kiyoshi tome 4** (Kazé) : mer. 4 nov. · [la série](/serie/ultimate-exorcist-kiyoshi/)
 - **Saint Seiya Final Edition tome 9** (Kana) : ven. 6 nov. · [la série](/serie/saint-seiya-final-edition/)
 - **Basara (Star Edition) tome 4** (Kana) : ven. 13 nov. · [la série](/serie/basara-star-edition/)

@@ -6189,7 +6189,85 @@
    "c": "2026-11-03",
    "a": [],
    "i": null
+  },
+  "ace-of-diamond": {
+   "c": "2026-11-04",
+   "a": [
+    {
+     "id": 18689,
+     "t": "Ace of the Diamond",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/18689",
+     "s": []
+    },
+    {
+     "id": 21085,
+     "t": "Ace of the Diamond Second Season",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/21085",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuuji Terajima"
+    ],
+    "sc": [
+     "Yuuji Terajima"
+    ],
+    "ar": [
+     "Yuuji Terajima"
+    ],
+    "g": [
+     "Sports"
+    ],
+    "st": "FINISHED",
+    "y": 2006,
+    "v": 2
+   }
+  },
+  "chiruran": {
+   "c": "2026-11-04",
+   "a": [],
+   "i": null
+  },
+  "ikusa-no-ko-la-legende-d-oda-nobunaga": {
+   "c": "2026-11-04",
+   "a": [],
+   "i": null
+  },
+  "smile": {
+   "c": "2026-11-04",
+   "a": [],
+   "i": {
+    "au": [
+     "Akira Kasugai"
+    ],
+    "sc": [
+     "Akira Kasugai"
+    ],
+    "ar": [
+     "Akira Kasugai"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Horror",
+     "Psychological",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2015,
+    "v": 2
+   }
+  },
+  "the-lost-signal-and-this-communication": {
+   "c": "2026-11-04",
+   "a": [],
+   "i": null
   }
  },
- "generatedAt": "2026-11-03T04:01:08.628Z"
+ "generatedAt": "2026-11-04T04:04:11.705Z"
 }

@@ -28,6 +28,6 @@ Pika · action, aventure, fantasy · Yoonz et 3B2S · depuis 2019
 
 Pika · fantasy, mystère, romance · Kaori Yuki · depuis 1994
 
-## [Share House Nile](/serie/share-house-nile/)
+## [Pandora Hearts](/serie/pandora-hearts/)
 
-Mangetsu · comédie, romance · Hiroo Nakamichi et Megumi Dorokawa · depuis 2022
+Ki-oon · action, aventure, drame · Jun Mochizuki · depuis 2006

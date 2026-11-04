@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-03T04:01:14.310Z",
+ "generatedAt": "2026-11-04T04:04:17.039Z",
  "seasons": [
   {
    "season": "FALL",
@@ -716,6 +716,31 @@
      ]
     },
     {
+     "id": 209219,
+     "t": "So What's Wrong with Getting Reborn as a Goblin?",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/209219",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
+      }
+     ]
+    },
+    {
      "id": 212503,
      "t": "The Iceblade Sorcerer Shall Rule the World II",
      "f": "TV",
@@ -761,31 +786,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
-      }
-     ]
-    },
-    {
-     "id": 209219,
-     "t": "So What's Wrong with Getting Reborn as a Goblin?",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      5
-     ],
-     "u": "https://anilist.co/anime/209219",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Comedy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
       }
      ]
     },
