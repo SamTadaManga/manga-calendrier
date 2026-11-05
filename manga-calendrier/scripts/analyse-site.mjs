@@ -7,6 +7,7 @@ import { paths, loadAllManga, slugify } from './lib.mjs';
 import { loadBnf } from './catalogue-bnf.mjs';
 import { isIsbn13 } from './shops.mjs';
 import { isbn10 } from './couvertures-lib.mjs';
+import { findGaps, loadExceptions } from './trous.mjs';
 
 const P = paths();
 const OUT = path.resolve(process.argv[2] || 'rapports');
@@ -32,21 +33,16 @@ for (const r of manga) if (isIsbn13(r.isbn) && !BNF.byIsbn.has(r.isbn)) notInCat
 save('1a-sorties-absentes-du-catalogue.csv', ['série', 'tome', 'isbn', 'date', 'éditeur', 'cas'], notInCat);
 const newSeries = [...calSeries].filter(([k]) => !BNF.byK.has(k)).map(([k, rs]) => [rs[0].serie, rs[0].editeur, rs.length, k]);
 save('1b-series-du-calendrier-absentes-du-catalogue.csv', ['série', 'éditeur', 'sorties', 'adresse'], newSeries);
-const gaps = []; // trous dans la numérotation d'une série
-for (const s of BNF.series) {
-  const nums = new Set(s.v.map((v) => Number(v[0])).filter((n) => n > 0 && n < 1000));
-  if (nums.size < 2) continue;
-  const max = Math.max(...nums);
-  const miss = []; for (let i = 1; i <= max; i++) if (!nums.has(i)) miss.push(i);
-  // une série dont presque tout manque est probablement mal regroupée : on la signale à part
-  if (miss.length) gaps.push([s.n, s.e, nums.size, max, miss.length, miss.length > 30 ? `${miss.slice(0, 30).join(' ')} …` : miss.join(' '), miss.length > nums.size ? 'à vérifier (peu de tomes présents)' : '', s.k]);
-}
-gaps.sort((a, b) => a[4] - b[4]);
-save('1c-tomes-manquants-dans-la-numerotation.csv', ['série', 'éditeur', 'tomes présents', 'dernier numéro', 'nb manquants', 'numéros manquants', 'remarque', 'adresse'], gaps);
+// Trous dans la numérotation : voir scripts/trous.mjs pour la définition (petit / gros / bruit) et data/numerotation-ok.json pour les exceptions
+const calNums = new Map(); for (const [k, rs] of calSeries) calNums.set(k, rs.map((r) => Number(r.tome)).filter((n) => n > 0));
+const G = findGaps(BNF.series, (k) => calNums.get(k) || [], loadExceptions(P.dataDir));
+const gapRow = (g, cls) => [g.n, g.e, g.have, g.max, g.miss.length, g.miss.length > 30 ? `${g.miss.slice(0, 30).join(' ')} …` : g.miss.join(' '), cls, g.k];
+const gaps = [...G.petit.map((g) => gapRow(g, 'petit trou : affiché sur le site')), ...G.gros.map((g) => gapRow(g, 'gros trou : catalogue incomplet, à compléter'))];
+save('1c-tomes-manquants-dans-la-numerotation.csv', ['série', 'éditeur', 'tomes présents', 'dernier numéro', 'nb manquants', 'numéros manquants', 'classe', 'adresse'], gaps);
 // Sorties du calendrier plus récentes que le catalogue (le catalogue BnF est en retard par nature)
 let ahead = 0;
 for (const [k, rs] of calSeries) { const c = BNF.byK.get(k); if (!c) continue; const mx = Math.max(0, ...c.v.map((v) => Number(v[0]) || 0)); if (rs.some((r) => Number(r.tome) > mx)) ahead++; }
-rep.push(`- ${notInCat.length} sorties du calendrier n'ont pas leur ISBN dans le catalogue BnF (1a).`, `- ${newSeries.length} séries du calendrier sont absentes du catalogue (1b).`, `- ${gaps.length} séries du catalogue ont des numéros manquants (1c), dont ${gaps.filter((g) => g[6]).length} à vérifier car peu de tomes y figurent.`, `- ${ahead} séries du calendrier ont un tome plus récent que ceux du catalogue.`);
+rep.push(`- ${notInCat.length} sorties du calendrier n'ont pas leur ISBN dans le catalogue BnF (1a).`, `- ${newSeries.length} séries du calendrier sont absentes du catalogue (1b).`, `- Numérotation (1c) : ${G.petit.length} séries avec un petit trou (${G.petit.reduce((n, g) => n + g.miss.length, 0)} tomes, affichés « référence en cours » sur le site), ${G.gros.length} séries au catalogue très incomplet (${G.gros.reduce((n, g) => n + g.miss.length, 0)} tomes à retrouver), ${G.bruit.length} ignorées (éditeurs hors manga ou numéros de collection).`, `- ${ahead} séries du calendrier ont un tome plus récent que ceux du catalogue.`);
 
 // --- 2. ISBN pour lesquels il faut une couverture
 h('2. ISBN à couvrir');

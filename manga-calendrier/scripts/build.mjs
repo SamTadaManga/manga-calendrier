@@ -13,6 +13,7 @@ import {
 } from './lib.mjs';
 import { readStatus } from './status.mjs';
 import { loadBnf, yearsOf } from './catalogue-bnf.mjs';
+import { gapsOf, loadExceptions } from './trous.mjs';
 
 const P = paths();
 const SCRIPTS = path.dirname(fileURLToPath(import.meta.url));
@@ -731,7 +732,14 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
     const a = isbn10(isbn);
     return [...(a ? [`https://m.media-amazon.com/images/P/${a}.08.MZZZZZZZ.jpg`] : []), `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg?default=false`];
   };
-  const volList = (c, vols) => {
+  // Petits trous de numérotation (voir trous.mjs) : une carte « référence en cours » à la place du tome, avec un lien pour nous signaler l'ISBN.
+  const TROUS_EX = loadExceptions(P.dataDir);
+  const holesOf = (c, known = []) => { const g = gapsOf(c, known, TROUS_EX); return g && g.kind === 'petit' ? g.miss : []; };
+  const missCard = (c, n) => {
+    const href = reportUrl || (reportEmail ? `/signaler/?p=${encodeURIComponent(`/serie/${c.k}/`)}&m=${encodeURIComponent(`Tome ${n} de « ${c.n} » : ISBN `)}` : '');
+    return `<li class="scard vcard vmiss"><strong>Tome ${n}</strong><span class="muted">Référence en cours</span>${href ? `<a class="vmiss-l" href="${esc(href)}"${reportUrl ? ' rel="noopener" target="_blank"' : ''}>Tu as l'ISBN ? Signale-le</a>` : ''}</li>`;
+  };
+  const volList = (c, vols, holes = []) => {
     const groups = new Map();
     for (const v of vols) { const key = v[0] ? `t${v[0]}` : `l${v[3] || v[1]}`; if (!groups.has(key)) groups.set(key, []); groups.get(key).push(v); }
     const card = (g) => {
@@ -741,13 +749,13 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       const more = rest.length ? `<details class="cv-ed"><summary>${esc(plural(eds.length, 'édition', 'éditions'))}</summary>${rest.map((v) => `<div class="cv-e"><span class="muted">${v[2] ? `${v[2]} · ` : ''}${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}</div>`).join('')}</details>` : '';
       return `<li class="scard vcard${u ? '' : ' vnc'}">${u ? `<div class="cover"><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span><img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer"${alt ? ` data-alt="${esc(alt)}"` : ''} onload="if(this.naturalWidth<50)this.onerror()" onerror="var a=this.dataset.alt;if(a){this.dataset.alt='';this.src=a}else{this.closest('.vcard').classList.add('vnc');this.parentNode.remove()}"></div>` : ''}<strong>${esc(volLabel(main))}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
     };
-    return `<div class="carousel" role="region" aria-label="Tomes de ${esc(c.n)}" tabindex="0"><ul class="sgrid carousel-track cat-car">${[...groups.values()].map(card).join('')}</ul></div>`;
+    return `<div class="carousel" role="region" aria-label="Tomes de ${esc(c.n)}" tabindex="0"><ul class="sgrid carousel-track cat-car">${(() => { const pend = [...holes].sort((a, b) => a - b); const out = []; for (const g of groups.values()) { const t = Number(g[0][0]) || 0; while (t && pend.length && pend[0] < t) out.push(missCard(c, pend.shift())); out.push(card(g)); } for (const n of pend) out.push(missCard(c, n)); return out.join(''); })()}</ul></div>`;
   };
   const catBox = (S) => {
     if (!S.cat) return '';
     const known = new Set(S.rows.map((r) => r.isbn).filter(Boolean));
     const vols = S.cat.v.filter((v) => !known.has(v[1]));
-    return vols.length ? `<h2>Tous les tomes parus en France</h2><p class="muted">${esc(plural(S.cat.v.length, 'tome', 'tomes'))} au catalogue${S.cat.e ? ` (${esc(S.cat.e)})` : ''}. Source : <a href="https://catalogue.bnf.fr" rel="noopener nofollow">BnF</a>.</p>${volList(S.cat, vols)}` : '';
+    return vols.length ? `<h2>Tous les tomes parus en France</h2><p class="muted">${esc(plural(S.cat.v.length, 'tome', 'tomes'))} au catalogue${S.cat.e ? ` (${esc(S.cat.e)})` : ''}. Source : <a href="https://catalogue.bnf.fr" rel="noopener nofollow">BnF</a>.</p>${volList(S.cat, vols, holesOf(S.cat, S.rows.map((r) => Number(r.tome))))}` : '';
   };
 
   searchSeries = seriesList.map((S) => ({ n: S.name, u: `/serie/${S.k}/`, d: S.next ? `${S.next.tome ? `tome ${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', a: [S.editeur, ...((infoOf(S.name) || {}).au || [])].filter(Boolean).join(' '), c: showCovers ? (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover || '') : '', x: [S.editeur, S.rows.filter((r) => r.date >= today).length ? `${S.rows.filter((r) => r.date >= today).length} tome(s) à venir` : 'rien d\'annoncé'].filter(Boolean).join(' · ') }));
@@ -880,7 +888,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
 <h1>${esc(c.n)} : tous les tomes</h1>
 <p class="lead"><strong>${esc(c.n)}</strong> compte ${esc(plural(n, 'tome paru', 'tomes parus'))} en France${c.e ? ` chez ${pubLink(c.e)}` : ''}${esc(years)}.${others} Aucune sortie n'est annoncée pour le moment dans nos plannings.</p>
 </div></div>
-<h2>Les tomes</h2>${volList(c, c.v)}
+<h2>Les tomes</h2>${volList(c, c.v, holesOf(c))}
 ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="muted facts-src">Liste des tomes : <a href="https://catalogue.bnf.fr" rel="noopener nofollow">catalogue général de la BnF</a> (licence ouverte). Les dates exactes de sortie ne sont connues que pour les séries suivies dans les plannings.</p>
 <p class="chiprow">${prev ? `<a class="chip" href="/serie/${prev.k}/">← ${esc(prev.n)}</a>` : ''}${next ? `<a class="chip" href="/serie/${next.k}/">${esc(next.n)} →</a>` : ''}</p>
@@ -1440,6 +1448,7 @@ if (reportEmail && !reportUrl) {
 var to=r.getAttribute('data-mail'),pg=document.getElementById('rep-page'),msg=document.getElementById('rep-msg'),ok=document.getElementById('rep-ok');
 var q=new URLSearchParams(location.search).get('p')||'';
 pg.value=q&&/^\\/[\\w\\-\\/.#?=&%]*$/.test(q)?location.origin+q:'';
+var mm=new URLSearchParams(location.search).get('m')||'';if(mm&&mm.length<200&&!msg.value)msg.value=mm;
 var sub='Erreur signalée';
 function body(){return 'Page : '+(pg.value||'(non précisée)')+'\\n\\nCe qui est faux :\\n'+msg.value;}
 function upd(){var b=encodeURIComponent(body()),s=encodeURIComponent(sub);

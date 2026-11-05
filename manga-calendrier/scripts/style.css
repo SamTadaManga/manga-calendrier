@@ -702,3 +702,8 @@ ul.hscroll .tile-body>.t-shops{padding-top:4px}
 .sel option{background:var(--panel);color:var(--ink);font-weight:500}
 .monthjump label{color:var(--muted);margin-right:6px}
 .vnc{border:2px solid var(--edge);padding:10px}.vnc>strong{font-size:1.05rem}
+
+/* Tome sans référence : carte discrète à la place du tome manquant */
+.vmiss{background:transparent;align-items:center;justify-content:center;text-align:center;gap:6px;align-self:stretch}
+.vmiss strong{font-size:1rem}
+.vmiss-l{font-size:.85rem;font-weight:700;text-decoration:underline;text-underline-offset:3px}
