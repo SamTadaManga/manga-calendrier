@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-05T04:04:02.461Z",
+ "generatedAt": "2026-11-05T16:28:36.276Z",
  "seasons": [
   {
    "season": "FALL",
@@ -431,30 +431,6 @@
      ]
     },
     {
-     "id": 185756,
-     "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      9,
-      27
-     ],
-     "u": "https://anilist.co/anime/185756",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185756-xPCl0RyQ7fXD.jpg",
-     "g": [
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GG5H5XQMD/as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world"
-      }
-     ]
-    },
-    {
      "id": 207191,
      "t": "Hello, I am a Witch and my Crush Wants me to Make a Love Potion!",
      "f": "TV",
@@ -475,6 +451,30 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00378072/hello-i-am-a-witch-and-my-crush-wants-me-to-make-a-love-potion"
+      }
+     ]
+    },
+    {
+     "id": 185756,
+     "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      9,
+      27
+     ],
+     "u": "https://anilist.co/anime/185756",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx185756-xPCl0RyQ7fXD.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GG5H5XQMD/as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world"
       }
      ]
     },
@@ -716,6 +716,30 @@
      ]
     },
     {
+     "id": 209502,
+     "t": "The Cold Sato-san is Only Sweet to Me",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/209502",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
+     "g": [
+      "Comedy",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
+      }
+     ]
+    },
+    {
      "id": 209219,
      "t": "So What's Wrong with Getting Reborn as a Goblin?",
      "f": "ONA",
@@ -737,30 +761,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
-      }
-     ]
-    },
-    {
-     "id": 209502,
-     "t": "The Cold Sato-san is Only Sweet to Me",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/209502",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
-     "g": [
-      "Comedy",
-      "Romance"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
       }
      ]
     },
@@ -1683,24 +1683,6 @@
      "s": []
     },
     {
-     "id": 198728,
-     "t": "Kaze wo Tsugumono",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/198728",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-1tasIeJ995QJ.jpg",
-     "g": [
-      "Action"
-     ],
-     "s": []
-    },
-    {
      "id": 187303,
      "t": "Giant Ojou-sama",
      "f": "TV",
@@ -1717,6 +1699,24 @@
       "Action",
       "Comedy",
       "Ecchi"
+     ],
+     "s": []
+    },
+    {
+     "id": 198728,
+     "t": "Kaze wo Tsugumono",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/198728",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-1tasIeJ995QJ.jpg",
+     "g": [
+      "Action"
      ],
      "s": []
     },
