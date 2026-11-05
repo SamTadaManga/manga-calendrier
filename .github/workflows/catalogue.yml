@@ -1,0 +1,66 @@
+name: Catalogue (BnF)
+# Chaque dimanche : (1) nouvelles notices de la BnF pour les éditeurs de manga et ISBN du calendrier absents du catalogue (scripts/bnf-maj.mjs) ;
+# (2) recherche des tomes qui manquent dans la numérotation, 250 séries par passage (scripts/trous-combler.mjs).
+# Résultats dans data/catalogue-ajouts.json : seuls les ajouts « ok » (BnF) apparaissent sur le site. Les propositions Google Books
+# restent « a-valider » jusqu'à un lancement manuel avec « accepter » coché. Résumé de chaque passage : onglet de l'exécution.
+on:
+  schedule:
+    - cron: '41 2 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Essai à blanc (rien n'est enregistré)"
+        type: boolean
+        default: false
+      google:
+        description: "Interroger aussi Google Books pour les petits trous"
+        type: boolean
+        default: true
+      accepter:
+        description: "Valider les propositions Google Books « a-valider » (aucune recherche)"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: catalogue
+  cancel-in-progress: false
+jobs:
+  catalogue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Valider les propositions Google Books
+        if: inputs.accepter
+        run: node scripts/trous-combler.mjs --accepter
+      - name: Nouvelles notices et ISBN du calendrier (BnF)
+        if: ${{ !inputs.accepter }}
+        run: node scripts/bnf-maj.mjs --minutes=45 ${{ inputs.dry_run && '--dry-run' || '' }}
+      - name: Tomes manquants dans la numérotation
+        if: ${{ !inputs.accepter }}
+        run: node scripts/trous-combler.mjs --max=250 --minutes=40 --google=${{ github.event_name == 'workflow_dispatch' && inputs.google == false && 'non' || 'oui' }} ${{ inputs.dry_run && '--dry-run' || '' }}
+      - name: Enregistrer les résultats
+        if: ${{ !inputs.dry_run }}
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/keep"; mkdir -p "$KEEP"
+          for f in catalogue-ajouts.json bnf-maj.json trous-etat.json; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            for f in "$KEEP"/*; do cp "$f" "manga-calendrier/data/$(basename "$f")"; git add "manga-calendrier/data/$(basename "$f")"; done
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Catalogue : références ajoutées (BnF)"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1

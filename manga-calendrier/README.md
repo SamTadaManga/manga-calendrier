@@ -173,6 +173,15 @@ Chaque anime diffusé dans la semaine a sa page `/anime/<id>-<titre>/` (platefor
 
 Titres : Dela Gothic One ; texte : Zen Kaku Gothic New (SIL OFL, voir `scripts/assets/fonts/LICENSE.txt`). Elles sont hébergées avec le site (`/fonts/`), sans requête vers un tiers. Pour changer : remplacer les `.woff` de `scripts/assets/fonts/` et les `@font-face` de `style.css`.
 
+## Mise à jour du catalogue (BnF)
+
+Le catalogue (`data/catalogue-bnf.json`) vient d'un export ponctuel ; il est complété automatiquement chaque dimanche par le workflow **Catalogue (BnF)**, qui interroge le [service SRU de la BnF](https://www.bnf.fr/fr/service-sru-catalogue-general-de-la-bnf) (ouvert à tous, sans identifiant, 1 requête par seconde) :
+
+- `scripts/bnf-maj.mjs` : notices créées depuis la dernière mise à jour pour chaque éditeur de manga, et ISBN du calendrier que le catalogue ne connaît pas. Une notice entre si son titre est celui d'une série connue, ou si l'éditeur ne publie que du manga (liste dans `ajouts-lib.mjs`) ; sinon elle est ignorée.
+- `scripts/trous-combler.mjs` : cherche à la BnF les tomes qui manquent dans la numérotation (titre exact et numéro manquant seulement). Pour les petits trous, Google Books ajoute des propositions **« a-valider »**, qui n'apparaissent sur le site qu'après un lancement manuel du workflow avec « accepter » coché (ou `node scripts/trous-combler.mjs --accepter`).
+
+Tout est écrit dans `data/catalogue-ajouts.json` (jamais dans le fichier du catalogue : un nouvel import du CSV ne les efface pas). `data/bnf-maj.json` garde la date de la dernière mise à jour, `data/trous-etat.json` la dernière recherche par série (pas de nouvelle recherche avant 60 jours). Les variables `BNF_SRU_URL` et `BNF_PAUSE` servent aux tests.
+
 ## Trous de numérotation
 
 `scripts/trous.mjs` classe les numéros manquants des séries du catalogue : **petit trou** (quelques tomes absents dans une série bien fournie : le site affiche une carte « Référence en cours » avec un lien « Signale-le »), **gros trou** (catalogue très incomplet, à compléter par les scripts de collecte) et **bruit** (éditeurs hors manga, numéros de collection : ignorés). Le rapport `node scripts/analyse-site.mjs` (fichier 1c) donne les chiffres. Les cas légitimes (hors-série, tome unique, double tome « 1-2 », intégrale) se déclarent dans `data/numerotation-ok.json` :

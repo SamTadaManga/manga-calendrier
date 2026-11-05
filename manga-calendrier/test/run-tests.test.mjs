@@ -1195,3 +1195,99 @@ test('trous de numérotation : classement, exceptions, cartes « référence en 
   assert.ok(!rd('serie/serie-excusee/index.html').includes('vmiss'), 'exception respectée');
   assert.ok(rd('signaler/index.html').includes("get('m')"), 'le formulaire lit le tome signalé');
 });
+
+/* ---- BnF : analyse des notices UNIMARC et mise à jour du catalogue (serveur SRU simulé) */
+const isbnOk = (core12) => { let s = 0; for (let i = 0; i < 12; i++) s += Number(core12[i]) * (i % 2 ? 3 : 1); return core12 + String((10 - (s % 10)) % 10); };
+const notice = ({ isbn, titre, h = '', pub = 'Pika', date = '2026', ark = 'cb1' }) => `<srw:record><srw:recordData><mxc:record xmlns:mxc="info:lc/xmlns/marcxchange-v2"><mxc:controlfield tag="003">http://catalogue.bnf.fr/ark:/12148/${ark}</mxc:controlfield><mxc:datafield tag="010" ind1=" " ind2=" "><mxc:subfield code="a">${isbn.replace(/^(\d{3})(\d)(\d{3})(\d{5})(\d)$/, '$1-$2-$3-$4-$5')}</mxc:subfield></mxc:datafield><mxc:datafield tag="200" ind1="1" ind2=" "><mxc:subfield code="a">${titre}</mxc:subfield>${h ? `<mxc:subfield code="h">${h}</mxc:subfield>` : ''}</mxc:datafield><mxc:datafield tag="210" ind1=" " ind2=" "><mxc:subfield code="c">${pub}</mxc:subfield><mxc:subfield code="d">${date}</mxc:subfield></mxc:datafield></mxc:record></srw:recordData></srw:record>`;
+const reponse = (notices) => `<?xml version="1.0"?><srw:searchRetrieveResponse xmlns:srw="http://www.loc.gov/zing/srw/"><srw:version>1.2</srw:version><srw:numberOfRecords>${notices.length}</srw:numberOfRecords><srw:records>${notices.join('')}</srw:records></srw:searchRetrieveResponse>`;
+
+test('BnF SRU : analyse des notices UNIMARC (ISBN, titre, tome, éditeur, année)', async () => {
+  const { parseReponse } = await import('../scripts/bnf-sru.mjs');
+  const i1 = isbnOk('978230000001');
+  const r = parseReponse(reponse([notice({ isbn: i1, titre: 'Série d&apos;essai', h: 'T. 7', pub: 'Ki-oon', date: '[2025]' })]));
+  assert.equal(r.total, 1);
+  assert.deepEqual({ ...r.notices[0] }, { ark: 'http://catalogue.bnf.fr/ark:/12148/cb1', isbn: i1, titre: "Série d'essai", tome: '7', partie: 'T. 7', editeur: 'Ki-oon', annee: 2025, collection: '' });
+});
+
+test('mise à jour du catalogue par la BnF : séries connues, nouvelles séries chez un éditeur manga, ISBN du calendrier', async () => {
+  const http = await import('node:http');
+  const { execFile } = await import('node:child_process');
+  const iBeta = isbnOk('978230000010'), iNeuve = isbnOk('978230000011'), iMixte = isbnOk('978230000012'), iAlpha = '9782000000013';
+  const srv = http.createServer((req, res) => {
+    const q = new URL(req.url, 'http://x').searchParams.get('query') || '';
+    let n = [];
+    if (/publisher all "Kana"/.test(q)) n = [notice({ isbn: iBeta, titre: 'Série Fictive Beta', h: '2', pub: 'Kana' }), notice({ isbn: iMixte, titre: 'Inconnue chez Kana', h: '1', pub: 'Kana' })];
+    else if (/publisher all "Akata"/.test(q)) n = [notice({ isbn: iNeuve, titre: 'Série Neuve', h: '1', pub: 'Akata' })];
+    else if (q.includes(`bib.isbn all "${iAlpha}"`)) n = [notice({ isbn: iAlpha, titre: 'Série Fictive Alpha', h: '5', pub: 'Glénat' })];
+    res.setHeader('content-type', 'application/xml'); res.end(reponse(n));
+  });
+  await new Promise((r) => srv.listen(0, '127.0.0.1', r));
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  writeFileSync(path.join(data, 'catalogue-bnf.json'), JSON.stringify({ series: Array.from({ length: 15 }, (_, i) => ({ k: `akata-${i}`, n: `Akata ${i}`, e: 'Akata', v: [['1', isbnOk(`97823100${String(i).padStart(4, '0')}`), 2020]] })) }));
+  const env = { ...process.env, DATA_DIR: data, BNF_SRU_URL: `http://127.0.0.1:${srv.address().port}/SRU`, BNF_PAUSE: '0', NOW: '2026-10-12T07:00:00Z' };
+  const run = (...a) => new Promise((res, rej) => execFile(process.execPath, [path.join(ROOT, 'scripts/bnf-maj.mjs'), ...a], { env }, (e, so, se) => (e ? rej(new Error(se || so)) : res(so))));
+  const dry = await run('--dry-run');
+  assert.ok(dry.includes('Essai à blanc') && !existsSync(path.join(data, 'catalogue-ajouts.json')), 'essai à blanc : rien d\'écrit');
+  await run();
+  const aj = JSON.parse(readFileSync(path.join(data, 'catalogue-ajouts.json'), 'utf8')).ajouts;
+  assert.ok(aj.some((a) => a.isbn === iBeta && a.k === 'serie-fictive-beta' && a.t === '2' && a.statut === 'ok'), 'tome d\'une série du calendrier');
+  assert.ok(aj.some((a) => a.isbn === iNeuve && a.k === 'serie-neuve' && a.e === 'Akata'), 'nouvelle série chez un éditeur de manga');
+  assert.ok(!aj.some((a) => a.isbn === iMixte), 'série inconnue chez un éditeur mixte : ignorée');
+  assert.ok(aj.some((a) => a.isbn === iAlpha && a.k === 'serie-fictive-alpha' && a.t === '5'), 'ISBN du calendrier retrouvé par ISBN');
+  assert.match(readFileSync(path.join(data, 'bnf-maj.json'), 'utf8'), /20261012/);
+  // le catalogue lu par le site intègre les ajouts, sans doublon
+  const { loadBnf } = await import('../scripts/catalogue-bnf.mjs');
+  const b = loadBnf(data);
+  assert.ok(b.byK.get('serie-neuve').v.some((v) => v[1] === iNeuve) && b.byIsbn.has(iAlpha) && b.series.length === 15 + 3);
+  await run();
+  assert.equal(JSON.parse(readFileSync(path.join(data, 'catalogue-ajouts.json'), 'utf8')).ajouts.length, aj.length, 'relancer n\'ajoute rien');
+  srv.close();
+});
+
+test('trous de numérotation : la BnF comble directement, Google Books propose « à valider » jusqu\'à acceptation', async () => {
+  const http = await import('node:http');
+  const { execFile } = await import('node:child_process');
+  const iBnf = isbnOk('978230000020'), iGoogle = isbnOk('978230000021'), iMauvais = isbnOk('978230000022');
+  const srv = http.createServer((req, res) => {
+    const u = new URL(req.url, 'http://x');
+    if (u.pathname === '/books') {
+      const q = u.searchParams.get('query') || u.searchParams.get('q') || '';
+      const items = q.includes('Série Deux') ? [
+        { volumeInfo: { title: 'Série Deux 3', publisher: 'Pika Édition', publishedDate: '2022-05-01', industryIdentifiers: [{ type: 'ISBN_13', identifier: iGoogle }] } },
+        { volumeInfo: { title: 'Série Deux 3', publisher: 'Autre maison', industryIdentifiers: [{ type: 'ISBN_13', identifier: iMauvais }] } },
+      ] : [];
+      res.setHeader('content-type', 'application/json'); res.end(JSON.stringify({ items })); return;
+    }
+    const q = u.searchParams.get('query') || '';
+    const n = /Série Un/.test(q) ? [notice({ isbn: iBnf, titre: 'Série Un', h: '3', pub: 'Pika', date: '2021' }), notice({ isbn: iMauvais, titre: 'Série Un spin-off', h: '3', pub: 'Pika' })] : [];
+    res.setHeader('content-type', 'application/xml'); res.end(reponse(n));
+  });
+  await new Promise((r) => srv.listen(0, '127.0.0.1', r));
+  const base = `http://127.0.0.1:${srv.address().port}`;
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const data = path.join(tmp, 'data'); mkdirSync(data);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(data, 'manga.csv'));
+  const v = (pre, ...ns) => ns.map((n) => [String(n), isbnOk(`${pre}${String(n).padStart(4, '0')}`), 2020]);
+  writeFileSync(path.join(data, 'catalogue-bnf.json'), JSON.stringify({ series: [
+    { k: 'serie-un', n: 'Série Un', e: 'Pika', v: v('97823100', 1, 2, 4, 5, 6) },
+    { k: 'serie-deux', n: 'Série Deux', e: 'Pika', v: v('97823200', 1, 2, 4, 5, 6) },
+  ] }));
+  const env = { ...process.env, DATA_DIR: data, BNF_SRU_URL: `${base}/SRU`, GOOGLE_BOOKS_URL: `${base}/books`, BNF_PAUSE: '0', NOW: '2026-10-12T07:00:00Z' };
+  const run = (...a) => new Promise((res, rej) => execFile(process.execPath, [path.join(ROOT, 'scripts/trous-combler.mjs'), ...a], { env }, (e, so, se) => (e ? rej(new Error(se || so)) : res(so))));
+  await run();
+  const { loadBnf } = await import('../scripts/catalogue-bnf.mjs');
+  const aj = JSON.parse(readFileSync(path.join(data, 'catalogue-ajouts.json'), 'utf8')).ajouts;
+  assert.ok(aj.some((a) => a.isbn === iBnf && a.t === '3' && a.src === 'bnf' && a.statut === 'ok'), 'tome 3 retrouvé à la BnF');
+  assert.ok(!aj.some((a) => a.isbn === iMauvais), 'titre différent ou autre éditeur : refusé');
+  assert.ok(aj.some((a) => a.isbn === iGoogle && a.src === 'google' && a.statut === 'a-valider'), 'proposition Google à valider');
+  let b = loadBnf(data);
+  assert.ok(b.byIsbn.has(iBnf) && !b.byIsbn.has(iGoogle), 'seul l\'ajout BnF entre sur le site');
+  await run(); // 60 jours de repos : rien de nouveau
+  assert.equal(JSON.parse(readFileSync(path.join(data, 'catalogue-ajouts.json'), 'utf8')).ajouts.length, aj.length);
+  await run('--accepter');
+  b = loadBnf(data);
+  assert.ok(b.byIsbn.has(iGoogle), 'accepté : entre sur le site');
+  srv.close();
+});
