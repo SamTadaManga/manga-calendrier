@@ -173,6 +173,16 @@ Chaque anime diffusé dans la semaine a sa page `/anime/<id>-<titre>/` (platefor
 
 Titres : Dela Gothic One ; texte : Zen Kaku Gothic New (SIL OFL, voir `scripts/assets/fonts/LICENSE.txt`). Elles sont hébergées avec le site (`/fonts/`), sans requête vers un tiers. Pour changer : remplacer les `.woff` de `scripts/assets/fonts/` et les `@font-face` de `style.css`.
 
+## Trous de numérotation
+
+`scripts/trous.mjs` classe les numéros manquants des séries du catalogue : **petit trou** (quelques tomes absents dans une série bien fournie : le site affiche une carte « Référence en cours » avec un lien « Signale-le »), **gros trou** (catalogue très incomplet, à compléter par les scripts de collecte) et **bruit** (éditeurs hors manga, numéros de collection : ignorés). Le rapport `node scripts/analyse-site.mjs` (fichier 1c) donne les chiffres. Les cas légitimes (hors-série, tome unique, double tome « 1-2 », intégrale) se déclarent dans `data/numerotation-ok.json` :
+
+```json
+{ "editeursExclus": ["Nom d'éditeur"], "exceptions": { "adresse-de-la-serie": { "numeros": [5, 6], "motif": "double tome" } } }
+```
+
+`"numeros": "tous"` ignore toute la série.
+
 ## Liens d'achat (ISBN) et affiliation
 
 Chaque tome ayant un ISBN-13 valide affiche des boutons « Acheter » (« Précommander » avant la sortie), un par boutique, stylés comme les plateformes de streaming (accueil, liste des sorties, pages série) : Amazon, Cultura, BDfugue (la Fnac a été retirée : programme d'affiliation refusé ; Cultura et BDfugue sont désactivées dans `site.config.json`, avec `"enabled": true` on les réactive). Le code est dans `scripts/shops.mjs`.

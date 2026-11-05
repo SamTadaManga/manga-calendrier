@@ -1161,3 +1161,37 @@ test('e-mail du matin : message MIME avec pièces jointes, envoi SMTP (serveur s
   srv.close();
   assert.ok(got.includes('RCPT TO:<b@x.fr>') && got.some((g) => g.includes('filename="i.jpg"')), 'message reçu par le serveur');
 });
+
+test('trous de numérotation : classement, exceptions, cartes « référence en cours » et préremplissage du signalement', async () => {
+  const { gapsOf, loadExceptions } = await import('../scripts/trous.mjs');
+  const v = (...ns) => ns.map((n) => [String(n), `97823000${String(n).padStart(5, '0')}`, 2020]);
+  const ex = { exclus: new Set(['harlequin']), exceptions: new Map([['avec-exception', new Set([3])]]) };
+  assert.deepEqual(gapsOf({ k: 'a', n: 'A', e: 'Pika', v: v(1, 2, 4, 5, 6) }, [], ex).miss, [3]);
+  assert.equal(gapsOf({ k: 'a', n: 'A', e: 'Pika', v: v(1, 2, 4, 5, 6) }, [], ex).kind, 'petit');
+  assert.equal(gapsOf({ k: 'a', n: 'A', e: 'Pika', v: v(1, 2, 4, 5, 6) }, [3], ex), null, 'le calendrier comble le trou');
+  assert.equal(gapsOf({ k: 'b', n: 'B', e: 'Pika', v: v(1, 30) }, [], ex).kind, 'gros');
+  assert.equal(gapsOf({ k: 'c', n: 'C', e: 'Harlequin', v: v(1, 2, 4) }, [], ex).kind, 'bruit');
+  assert.equal(gapsOf({ k: 'd', n: 'D', e: 'Pika', v: v(1, 2, 400) }, [], ex).kind, 'bruit', 'numéros de collection');
+  assert.equal(gapsOf({ k: 'avec-exception', n: 'E', e: 'Pika', v: v(1, 2, 4) }, [], ex), null, 'exception déclarée');
+  assert.equal(loadExceptions('/inexistant').exceptions.size, 0);
+
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), NOW: '2026-10-12T07:00:00Z' };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(dirs.DATA_DIR, 'manga.csv'));
+  writeFileSync(path.join(dirs.DATA_DIR, 'catalogue-bnf.json'), JSON.stringify({ series: [
+    { k: 'serie-a-trou', n: 'Série à trou', e: 'Pika', v: v(1, 2, 4, 5, 6) },
+    { k: 'serie-excusee', n: 'Série excusée', e: 'Pika', v: v(1, 2, 4, 5, 6) },
+  ] }));
+  writeFileSync(path.join(dirs.DATA_DIR, 'numerotation-ok.json'), JSON.stringify({ exceptions: { 'serie-excusee': { numeros: [3], motif: 'hors-série' } } }));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json');
+  writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.test', launched: true, legal: { ...(base.legal || {}), contactEmail: 'contact@exemple.test' } }));
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, ...dirs, CONFIG_FILE: cfg }, encoding: 'utf8' });
+  const rd = (f) => readFileSync(path.join(tmp, 'dist', f), 'utf8');
+  const a = rd('serie/serie-a-trou/index.html');
+  assert.ok(a.includes('vmiss') && a.includes('Référence en cours') && a.includes('/signaler/?p=%2Fserie%2Fserie-a-trou%2F&amp;m='), 'carte du tome 3');
+  assert.ok(a.indexOf('Tome 2') < a.indexOf('Tome 3') && a.indexOf('Tome 3') < a.indexOf('Tome 4'), 'à sa place dans la liste');
+  assert.ok(!rd('serie/serie-excusee/index.html').includes('vmiss'), 'exception respectée');
+  assert.ok(rd('signaler/index.html').includes("get('m')"), 'le formulaire lit le tome signalé');
+});
