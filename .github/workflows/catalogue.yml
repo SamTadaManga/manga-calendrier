@@ -53,7 +53,8 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           KEEP="$RUNNER_TEMP/keep"; mkdir -p "$KEEP"
-          for f in catalogue-ajouts.json bnf-maj.json trous-etat.json; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
+          for f in catalogue-ajouts.json bnf-maj.json trous-etat.json; do if [ -f "manga-calendrier/data/$f" ]; then cp "manga-calendrier/data/$f" "$KEEP/$f"; fi; done
+          if [ -z "$(ls -A "$KEEP")" ]; then echo "Rien à enregistrer (aucun fichier produit)."; exit 0; fi
           for i in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
