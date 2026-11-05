@@ -6267,7 +6267,34 @@
    "c": "2026-11-04",
    "a": [],
    "i": null
+  },
+  "dangerous-convenience-store": {
+   "c": "2026-11-05",
+   "a": [],
+   "i": null
+  },
+  "our-sunny-days": {
+   "c": "2026-11-05",
+   "a": [],
+   "i": {
+    "au": [
+     "Seok-Chan Jeong"
+    ],
+    "sc": [
+     "Seok-Chan Jeong"
+    ],
+    "ar": [
+     "Seok-Chan Jeong"
+    ],
+    "g": [
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2023,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-11-04T04:04:11.705Z"
+ "generatedAt": "2026-11-05T04:03:57.127Z"
 }

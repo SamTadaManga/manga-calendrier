@@ -1,16 +1,18 @@
 ---
 title: "Delcourt : les sorties manga de novembre 2026"
 date: 2026-11-01
-description: "17 sorties manga Delcourt annoncées pour novembre 2026, dont 2 nouvelles séries."
+description: "19 sorties manga Delcourt annoncées pour novembre 2026, dont 3 nouvelles séries."
 auto: true
 draft: false
 ---
 
-Delcourt publie 17 références manga en novembre 2026, dont 2 nouvelles séries. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/).
+Delcourt publie 19 références manga en novembre 2026, dont 3 nouvelles séries. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/).
 
 - **jeu. 5 nov.** · [Ayakashi Triangle tome 12](/serie/ayakashi-triangle/)
+- **jeu. 5 nov.** · [Dangerous Convenience Store tome 7](/serie/dangerous-convenience-store/)
 - **jeu. 5 nov.** · [L'Archange de la décapitation tome 1](/serie/l-archange-de-la-decapitation/) · nouvelle série
 - **jeu. 5 nov.** · [No Longer A-rank Party tome 2](/serie/no-longer-a-rank-party/)
+- **jeu. 5 nov.** · [Our Sunny Days tome 1](/serie/our-sunny-days/) · nouvelle série
 - **jeu. 5 nov.** · [Réincarné dans un autre monde tome 18](/serie/reincarne-dans-un-autre-monde/)
 - **jeu. 12 nov.** · [Ceux dont il ne faut pas tomber amoureuse tome 2](/serie/ceux-dont-il-ne-faut-pas-tomber-amoureuse/)
 - **jeu. 12 nov.** · [Flying Ben - Édition prestige](/serie/flying-ben-edition-prestige/)

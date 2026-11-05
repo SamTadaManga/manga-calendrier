@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-04T04:04:17.039Z",
+ "generatedAt": "2026-11-05T04:04:02.461Z",
  "seasons": [
   {
    "season": "FALL",
@@ -248,26 +248,6 @@
      "s": []
     },
     {
-     "id": 143103,
-     "t": "Witch on the Holy Night",
-     "f": "MOVIE",
-     "st": "NOT_YET_RELEASED",
-     "n": 1,
-     "d": [
-      2026,
-      11,
-      20
-     ],
-     "u": "https://anilist.co/anime/143103",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143103-vvsaIpZPpIuE.png",
-     "g": [
-      "Action",
-      "Drama",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
      "id": 207329,
      "t": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life",
      "f": "TV",
@@ -291,6 +271,26 @@
        "u": "https://www.crunchyroll.com/series/GT00384016/"
       }
      ]
+    },
+    {
+     "id": 143103,
+     "t": "Witch on the Holy Night",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2026,
+      11,
+      20
+     ],
+     "u": "https://anilist.co/anime/143103",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx143103-vvsaIpZPpIuE.png",
+     "g": [
+      "Action",
+      "Drama",
+      "Fantasy"
+     ],
+     "s": []
     },
     {
      "id": 213805,
@@ -499,6 +499,25 @@
      "s": []
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 186541,
      "t": "Reborn as a Space Mercenary: I Woke Up Piloting the Strongest Starship!",
      "f": "TV",
@@ -522,25 +541,6 @@
        "u": "https://www.crunchyroll.com/series/GT00384006/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship"
       }
      ]
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
     },
     {
      "id": 191788,
@@ -741,6 +741,30 @@
      ]
     },
     {
+     "id": 209502,
+     "t": "The Cold Sato-san is Only Sweet to Me",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/209502",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
+     "g": [
+      "Comedy",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
+      }
+     ]
+    },
+    {
      "id": 212503,
      "t": "The Iceblade Sorcerer Shall Rule the World II",
      "f": "TV",
@@ -762,30 +786,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GDKHZEP21/the-iceblade-sorcerer-shall-rule-the-world"
-      }
-     ]
-    },
-    {
-     "id": 209502,
-     "t": "The Cold Sato-san is Only Sweet to Me",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/209502",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209502-C81oN8M4Smlo.jpg",
-     "g": [
-      "Comedy",
-      "Romance"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384014/the-cold-sato-san-is-only-sweet-to-me"
       }
      ]
     },
@@ -1317,24 +1317,6 @@
      "s": []
     },
     {
-     "id": 194213,
-     "t": "ghost – end of night",
-     "f": "MOVIE",
-     "st": "NOT_YET_RELEASED",
-     "n": 1,
-     "d": [
-      2027,
-      2,
-      11
-     ],
-     "u": "https://anilist.co/anime/194213",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-hbKL5BMfdtcK.jpg",
-     "g": [
-      "Supernatural"
-     ],
-     "s": []
-    },
-    {
      "id": 196333,
      "t": "Hirayasumi",
      "f": "TV",
@@ -1351,6 +1333,24 @@
       "Comedy",
       "Drama",
       "Slice of Life"
+     ],
+     "s": []
+    },
+    {
+     "id": 194213,
+     "t": "ghost – end of night",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2027,
+      2,
+      11
+     ],
+     "u": "https://anilist.co/anime/194213",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-hbKL5BMfdtcK.jpg",
+     "g": [
+      "Supernatural"
      ],
      "s": []
     },
