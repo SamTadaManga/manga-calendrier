@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-06T04:01:51.101Z",
+ "generatedAt": "2026-11-07T03:59:15.809Z",
  "seasons": [
   {
    "season": "FALL",
@@ -479,6 +479,25 @@
      ]
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 208025,
      "t": "I'm Dating a Dark Summoner",
      "f": "TV_SHORT",
@@ -494,25 +513,6 @@
      "g": [
       "Comedy",
       "Ecchi",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
       "Fantasy"
      ],
      "s": []
