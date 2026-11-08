@@ -1,4 +1,4 @@
-{"maj":"2026-11-05","ajouts":[{"k":"isekai-samurai","n":"Isekai samurai","e":"Meian","t":"5","isbn":"9782385039080","y":2026,"src":"bnf","statut":"ok"},
+{"maj":"2026-11-08","ajouts":[{"k":"isekai-samurai","n":"Isekai samurai","e":"Meian","t":"5","isbn":"9782385039080","y":2026,"src":"bnf","statut":"ok"},
 {"k":"the-new-gate","n":"The new gate","e":"Meian","t":"9","isbn":"9782385031190","y":0,"src":"bnf","statut":"ok"},
 {"k":"today-she-is-not-here","n":"Today, she is not here","e":"Meian","t":"5","isbn":"9782386585456","y":2026,"src":"bnf","statut":"ok"},
 {"k":"grand-blue","n":"Grand blue","e":"Meian","t":"24","isbn":"9782385036973","y":0,"src":"bnf","statut":"ok"},
@@ -178,4 +178,12 @@
 {"k":"inazuma-eleven","n":"Inazuma eleven","e":"Kurokawa","t":"7","isbn":"9782351427026","y":2012,"src":"bnf","statut":"ok"},
 {"k":"marine-blue","n":"Marine blue","e":"Saphira","t":"8","isbn":"9782752200952","y":2005,"src":"bnf","statut":"ok"},
 {"k":"monster-collection","n":"Monster collection","e":"Asuka","t":"3","isbn":"9782849651148","y":2006,"src":"bnf","statut":"ok"},
-{"k":"number","n":"Number","e":"Soleil","t":"2","isbn":"9782302013131","y":2010,"src":"bnf","statut":"ok"}]}
+{"k":"number","n":"Number","e":"Soleil","t":"2","isbn":"9782302013131","y":2010,"src":"bnf","statut":"ok"},
+{"k":"rave","n":"Rave","e":"Glénat","t":"14","isbn":"9782344060544","y":0,"src":"bnf","statut":"ok"},
+{"k":"the-ogre-s-bride","n":"The Ogre's Bride","e":"Panini","t":"1","isbn":"9791039147507","y":0,"src":"bnf","statut":"ok"},
+{"k":"i-dream-of-love","n":"I dream of love","e":"Tonkam","t":"3","isbn":"9782756071794","y":2016,"src":"bnf","statut":"ok"},
+{"k":"i-dream-of-love","n":"I dream of love","e":"Tonkam","t":"2","isbn":"9782756071787","y":2015,"src":"bnf","statut":"ok"},
+{"k":"re-zero","n":"Re-zero","e":"Ofelbe","t":"12","isbn":"9782373021097","y":0,"src":"bnf","statut":"ok"},
+{"k":"re-zero","n":"Re-zero","e":"Ofelbe","t":"13","isbn":"9782373021110","y":0,"src":"bnf","statut":"ok"},
+{"k":"silence","n":"Silence","e":"Kana","t":"1","isbn":"9782505117087","y":2023,"src":"bnf","statut":"ok"},
+{"k":"silence","n":"Silence","e":"Kana","t":"5","isbn":"9782505133964","y":2025,"src":"bnf","statut":"ok"}]}
