@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-07T03:59:15.809Z",
+ "generatedAt": "2026-11-08T04:01:41.955Z",
  "seasons": [
   {
    "season": "FALL",
@@ -1363,7 +1363,7 @@
      "d": [
       2027,
       1,
-      0
+      8
      ],
      "u": "https://anilist.co/anime/208766",
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208766-FIvJRb63ztBJ.jpg",
@@ -1663,6 +1663,26 @@
      "s": []
     },
     {
+     "id": 219548,
+     "t": "Spirit Circle",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 18,
+     "d": [
+      2026,
+      12,
+      0
+     ],
+     "u": "https://anilist.co/anime/219548",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx219548-TJDkwN6I2ahO.png",
+     "g": [
+      "Action",
+      "Comedy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
      "id": 194030,
      "t": "Gacha wo Mawashite Nakama wo Fuyasu: Saikyou no Bishoujo Gundan wo Tsukuriagero",
      "f": "TV",
@@ -1737,26 +1757,6 @@
       "Action",
       "Adventure",
       "Drama"
-     ],
-     "s": []
-    },
-    {
-     "id": 199590,
-     "t": "Matsurika Kanriden",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/199590",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199590-gMBbisGLCZxa.png",
-     "g": [
-      "Drama",
-      "Fantasy",
-      "Romance"
      ],
      "s": []
     }

@@ -4007,7 +4007,7 @@
    "i": null
   },
   "2-5-dimensional-seduction": {
-   "c": "2026-10-27",
+   "c": "2026-11-08",
    "a": [
     {
      "id": 185515,
@@ -5498,7 +5498,7 @@
    "i": null
   },
   "les-noces-des-lucioles": {
-   "c": "2026-11-01",
+   "c": "2026-11-08",
    "a": [
     {
      "id": 205909,
@@ -5535,7 +5535,7 @@
    }
   },
   "omniscient-reader-s-viewpoint": {
-   "c": "2026-11-01",
+   "c": "2026-11-08",
    "a": [
     {
      "id": 179068,
@@ -5661,7 +5661,7 @@
    }
   },
   "sakamoto-days": {
-   "c": "2026-11-01",
+   "c": "2026-11-08",
    "a": [
     {
      "id": 204363,
@@ -6299,7 +6299,131 @@
    "c": "2026-11-06",
    "a": [],
    "i": null
+  },
+  "cross-of-the-cross": {
+   "c": "2026-11-08",
+   "a": [],
+   "i": {
+    "au": [
+     "Shiryuu  Nakatake"
+    ],
+    "sc": [
+     "Shiryuu  Nakatake"
+    ],
+    "ar": [
+     "Shiryuu  Nakatake"
+    ],
+    "g": [
+     "Drama",
+     "Psychological",
+     "Thriller"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   }
+  },
+  "dead-tube": {
+   "c": "2026-11-08",
+   "a": [],
+   "i": {
+    "au": [
+     "Touta Kitakawa",
+     "Mikoto Yamaguchi"
+    ],
+    "sc": [],
+    "ar": [
+     "Touta Kitakawa"
+    ],
+    "g": [
+     "Ecchi",
+     "Horror",
+     "Psychological",
+     "Thriller"
+    ],
+    "st": "RELEASING",
+    "y": 2014,
+    "v": 2
+   }
+  },
+  "elles-moi-sous-le-meme-toit": {
+   "c": "2026-11-08",
+   "a": [],
+   "i": null
+  },
+  "punk-gun": {
+   "c": "2026-11-08",
+   "a": [],
+   "i": {
+    "au": [
+     "Naoki Oki"
+    ],
+    "sc": [
+     "Naoki Oki"
+    ],
+    "ar": [
+     "Naoki Oki"
+    ],
+    "g": [
+     "Action",
+     "Drama"
+    ],
+    "st": "FINISHED",
+    "y": 2025,
+    "v": 2
+   }
+  },
+  "witch-watch": {
+   "c": "2026-11-08",
+   "a": [
+    {
+     "id": 199793,
+     "t": "Witch Watch 2nd Season",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/199793",
+     "s": []
+    },
+    {
+     "id": 180367,
+     "t": "WITCH WATCH",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/180367",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81991687"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/G5PHNM9P0/witch-watch"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Kenta Shinohara"
+    ],
+    "sc": [
+     "Kenta Shinohara"
+    ],
+    "ar": [
+     "Kenta Shinohara"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Fantasy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2021,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-11-07T03:59:10.161Z"
+ "generatedAt": "2026-11-08T04:01:36.388Z"
 }
