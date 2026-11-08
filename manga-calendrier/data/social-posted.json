@@ -115,5 +115,14 @@
  },
  "mail-2026-11-07": {
   "at": "2026-11-07T06:56:46.331Z"
+ },
+ "jour-2026-11-08": {
+  "bluesky": {
+   "at": "2026-11-08T06:58:31.744Z",
+   "id": "at://did:plc:utmfgrrz5d3bd46r2qbh44wd/app.bsky.feed.post/3mzrtjs3xbl2f"
+  }
+ },
+ "mail-2026-11-08": {
+  "at": "2026-11-08T06:58:35.058Z"
  }
 }
