@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-09T04:07:36.896Z",
+ "generatedAt": "2026-11-10T11:13:50.347Z",
  "seasons": [
   {
    "season": "FALL",
@@ -183,6 +183,26 @@
      ]
     },
     {
+     "id": 191656,
+     "t": "Even the Student Council Has Its Holes!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/191656",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191656-xFHtxM8SUTdU.png",
+     "g": [
+      "Comedy",
+      "Ecchi",
+      "Slice of Life"
+     ],
+     "s": []
+    },
+    {
      "id": 210482,
      "t": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
      "f": "ONA",
@@ -208,46 +228,6 @@
      ]
     },
     {
-     "id": 191656,
-     "t": "Even the Student Council Has Its Holes!",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      4
-     ],
-     "u": "https://anilist.co/anime/191656",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191656-xFHtxM8SUTdU.png",
-     "g": [
-      "Comedy",
-      "Ecchi",
-      "Slice of Life"
-     ],
-     "s": []
-    },
-    {
-     "id": 160275,
-     "t": "Made in Abyss: Mezameru Shinpi",
-     "f": "MOVIE",
-     "st": "FINISHED",
-     "n": 1,
-     "d": [
-      2026,
-      10,
-      23
-     ],
-     "u": "https://anilist.co/anime/160275",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx160275-cBOWJpcCGeMq.jpg",
-     "g": [
-      "Adventure",
-      "Drama",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
      "id": 207329,
      "t": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life",
      "f": "TV",
@@ -271,6 +251,26 @@
        "u": "https://www.crunchyroll.com/series/GT00384016/"
       }
      ]
+    },
+    {
+     "id": 160275,
+     "t": "Made in Abyss: Mezameru Shinpi",
+     "f": "MOVIE",
+     "st": "FINISHED",
+     "n": 1,
+     "d": [
+      2026,
+      10,
+      23
+     ],
+     "u": "https://anilist.co/anime/160275",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx160275-cBOWJpcCGeMq.jpg",
+     "g": [
+      "Adventure",
+      "Drama",
+      "Fantasy"
+     ],
+     "s": []
     },
     {
      "id": 143103,
@@ -402,6 +402,30 @@
      "s": []
     },
     {
+     "id": 207191,
+     "t": "Hello, I am a Witch and my Crush Wants me to Make a Love Potion!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/207191",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207191-VgkIzfH92WoZ.jpg",
+     "g": [
+      "Fantasy",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00378072/hello-i-am-a-witch-and-my-crush-wants-me-to-make-a-love-potion"
+      }
+     ]
+    },
+    {
      "id": 206814,
      "t": "Dragon Ball Super: Beerus",
      "f": "TV",
@@ -431,30 +455,6 @@
      ]
     },
     {
-     "id": 207191,
-     "t": "Hello, I am a Witch and my Crush Wants me to Make a Love Potion!",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      5
-     ],
-     "u": "https://anilist.co/anime/207191",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207191-VgkIzfH92WoZ.jpg",
-     "g": [
-      "Fantasy",
-      "Romance"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00378072/hello-i-am-a-witch-and-my-crush-wants-me-to-make-a-love-potion"
-      }
-     ]
-    },
-    {
      "id": 185756,
      "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
      "f": "TV",
@@ -477,25 +477,6 @@
        "u": "https://www.crunchyroll.com/series/GG5H5XQMD/as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world"
       }
      ]
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
     },
     {
      "id": 208025,
@@ -541,6 +522,25 @@
        "u": "https://www.crunchyroll.com/series/GT00384006/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship"
       }
      ]
+    },
+    {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
     },
     {
      "id": 191788,
@@ -591,31 +591,6 @@
      ]
     },
     {
-     "id": 213457,
-     "t": "Fool Night",
-     "f": "ONA",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2026,
-      11,
-      26
-     ],
-     "u": "https://anilist.co/anime/213457",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
-     "g": [
-      "Drama",
-      "Psychological",
-      "Sci-Fi"
-     ],
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/81991076"
-      }
-     ]
-    },
-    {
      "id": 169581,
      "t": "Magical Explorer",
      "f": "ONA",
@@ -637,6 +612,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
+      }
+     ]
+    },
+    {
+     "id": 213457,
+     "t": "Fool Night",
+     "f": "ONA",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2026,
+      11,
+      26
+     ],
+     "u": "https://anilist.co/anime/213457",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81991076"
       }
      ]
     },
@@ -790,6 +790,30 @@
      ]
     },
     {
+     "id": 205896,
+     "t": "Full Clearing Another World under a Goddess with Zero Believers",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      11
+     ],
+     "u": "https://anilist.co/anime/205896",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+      }
+     ]
+    },
+    {
      "id": 204650,
      "t": "TOUGEN ANKI: Nikko Kegon Falls Arc",
      "f": "TV",
@@ -819,30 +843,6 @@
       {
        "n": "Netflix",
        "u": "https://www.netflix.com/title/81969861"
-      }
-     ]
-    },
-    {
-     "id": 205896,
-     "t": "Full Clearing Another World under a Goddess with Zero Believers",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      11
-     ],
-     "u": "https://anilist.co/anime/205896",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
-     "g": [
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
       }
      ]
     },
@@ -1348,7 +1348,7 @@
       11
      ],
      "u": "https://anilist.co/anime/194213",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-hbKL5BMfdtcK.jpg",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-MZDr0UcflB0Y.jpg",
      "g": [
       "Supernatural"
      ],
@@ -1413,25 +1413,6 @@
      "s": []
     },
     {
-     "id": 207251,
-     "t": "Mairimashita! Iruma-kun: If Episode of Mafia",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 12,
-     "d": [
-      2027,
-      1,
-      4
-     ],
-     "u": "https://anilist.co/anime/207251",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207251-1opGPW7xVHQ8.jpg",
-     "g": [
-      "Action",
-      "Comedy"
-     ],
-     "s": []
-    },
-    {
      "id": 197619,
      "t": "Bride of the Barrier Master",
      "f": "TV",
@@ -1448,6 +1429,25 @@
       "Drama",
       "Fantasy",
       "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 207251,
+     "t": "Mairimashita! Iruma-kun: If Episode of Mafia",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 12,
+     "d": [
+      2027,
+      1,
+      4
+     ],
+     "u": "https://anilist.co/anime/207251",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207251-1opGPW7xVHQ8.jpg",
+     "g": [
+      "Action",
+      "Comedy"
      ],
      "s": []
     },
@@ -1545,26 +1545,6 @@
      "s": []
     },
     {
-     "id": 213052,
-     "t": "Dengeki Daisy",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/213052",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213052-RzCXgG576ilW.jpg",
-     "g": [
-      "Comedy",
-      "Drama",
-      "Romance"
-     ],
-     "s": []
-    },
-    {
      "id": 219548,
      "t": "Spirit Circle",
      "f": "TV",
@@ -1580,6 +1560,26 @@
      "g": [
       "Action",
       "Comedy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 213052,
+     "t": "Dengeki Daisy",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213052",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213052-RzCXgG576ilW.jpg",
+     "g": [
+      "Comedy",
+      "Drama",
       "Romance"
      ],
      "s": []
