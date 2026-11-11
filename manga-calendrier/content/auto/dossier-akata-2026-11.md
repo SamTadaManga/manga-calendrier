@@ -1,14 +1,13 @@
 ---
 title: "Akata : les sorties manga de novembre 2026"
 date: 2026-11-01
-description: "15 sorties manga Akata annoncées pour novembre 2026, dont 1 nouvelle série."
+description: "14 sorties manga Akata annoncées pour novembre 2026, dont 1 nouvelle série."
 auto: true
 draft: false
 ---
 
-Akata publie 15 références manga en novembre 2026, dont 1 nouvelle série. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/).
+Akata publie 14 références manga en novembre 2026, dont 1 nouvelle série. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/).
 
-- **mer. 4 nov.** · [Cherry Magic tome 13](/serie/cherry-magic/)
 - **mer. 4 nov.** · [Constellations Cruelles tome 3](/serie/constellations-cruelles/)
 - **mer. 4 nov.** · [Go for it, Nakamura ! tome 1](/serie/go-for-it-nakamura/) · nouvelle série
 - **mer. 4 nov.** · [Les filles d'Awajima tome 3](/serie/les-filles-d-awajima/)
