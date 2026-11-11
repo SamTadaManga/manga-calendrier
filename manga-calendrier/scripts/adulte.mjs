@@ -3,6 +3,7 @@
 //   data/contenu-adulte.json       (à la main, jamais réécrit par un script) :
 //        { "editeurs": ["Nom du label adulte"], "series": { "adresse-de-la-serie": "motif" }, "isbn": ["978…"], "conserver": { "adresse-de-la-serie": "faux positif" } }
 //   data/contenu-adulte-auto.json  (produit par « Liens Cultura » / adulte-analyse.mjs) : séries repérées par leur description.
+//   data/contenu-adulte-images.json (produit par « Contrôle des couvertures ») : séries dont les couvertures sont classées adultes par le modèle d'image.
 //   Les règles ci-dessous : labels adultes connus et titres explicites.
 // « conserver » l'emporte toujours : c'est la liste des faux positifs confirmés par une personne.
 import { readFileSync } from 'node:fs';
@@ -30,10 +31,11 @@ const lire = (dir, nom) => { try { return JSON.parse(readFileSync(path.join(dir,
 export function chargerAdulte(dir) {
   const man = dir ? lire(dir, 'contenu-adulte.json') : {};
   const auto = dir ? lire(dir, 'contenu-adulte-auto.json') : {};
+  const img = dir ? lire(dir, 'contenu-adulte-images.json') : {};
   const obj = (x) => (x && typeof x === 'object' && !Array.isArray(x) ? x : {});
   return {
     editeurs: new Set([...EDITEURS_ADULTES, ...(Array.isArray(man.editeurs) ? man.editeurs : [])].map(flat)),
-    series: new Set([...Object.keys(obj(man.series)), ...Object.keys(obj(auto.series))]),
+    series: new Set([...Object.keys(obj(man.series)), ...Object.keys(obj(auto.series)), ...Object.keys(obj(img.series))]),
     isbn: new Set((Array.isArray(man.isbn) ? man.isbn : []).map(String)),
     conserver: new Set(Object.keys(obj(man.conserver))),
   };

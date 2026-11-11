@@ -165,10 +165,11 @@ async function main() {
   const ana = analyserAdulte(produits, loadBnf(dir, { tout: true }), adulteCfg);
   let ancien = {};
   try { ancien = JSON.parse(readFileSync(path.join(dir, 'contenu-adulte-auto.json'), 'utf8')); } catch {}
-  const exclusAuto = Object.fromEntries(Object.entries({ ...(ancien.series || {}), ...ana.exclure }).filter(([k]) => !adulteCfg.conserver.has(k)));
-  const aRevoir = Object.fromEntries(Object.entries(ana.revoir).filter(([k]) => !exclusAuto[k]));
-  console.log(`Contenu adulte : ${Object.keys(exclusAuto).length} séries retirées automatiquement (${Object.keys(ana.exclure).length} nouvelles), ${Object.keys(aRevoir).length} à relire.`);
-  if (!essai) ecrire('contenu-adulte-auto.json', { source: 'Descriptions du flux Cultura et règles de scripts/adulte.mjs', maj, series: exclusAuto, revoir: aRevoir }, (old) => stable(old.series || {}) === stable(exclusAuto) && stable(old.revoir || {}) === stable(aRevoir));
+  // Tout ce qui est signalé est retiré (motif noté). Une série retirée à tort se rétablit dans data/contenu-adulte.json, rubrique « conserver ».
+  const parReperes = Object.fromEntries(Object.entries(ana.revoir).map(([k, v]) => [k, { n: v.n, e: v.e, motif: `repères : ${v.r.join(', ')}` }]));
+  const exclusAuto = Object.fromEntries(Object.entries({ ...(ancien.series || {}), ...parReperes, ...ana.exclure }).filter(([k]) => !adulteCfg.conserver.has(k)));
+  console.log(`Contenu adulte : ${Object.keys(exclusAuto).length} séries retirées automatiquement (${Object.keys(ana.exclure).length} par titre ou description, ${Object.keys(parReperes).length} par repères dans la description).`);
+  if (!essai) ecrire('contenu-adulte-auto.json', { source: 'Descriptions du flux Cultura et règles de scripts/adulte.mjs', maj, series: exclusAuto }, (old) => stable(old.series || {}) === stable(exclusAuto) && !old.revoir);
 
   // 1. Tomes absents du catalogue (avant de compter les liens, pour que les nouveaux ISBN en profitent)
   const bnf = loadBnf(dir);

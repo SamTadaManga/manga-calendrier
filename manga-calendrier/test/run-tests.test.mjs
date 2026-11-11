@@ -1422,3 +1422,34 @@ test('contenu adulte : retiré du calendrier, du catalogue et des couvertures à
   assert.equal(loadBnf(dir, { tout: true }).series.length, 3);
   assert.deepEqual(clesAPurger(dir), [`isbn/${B}.webp`, `isbn/${C}.webp`, 'series/osee.webp'].sort());
 });
+
+test('contrôle des couvertures : décision à partir des scores du modèle', async () => {
+  const { decider, aControler } = await import('../scripts/adulte-images.mjs');
+  const bnf = { series: [
+    { k: 'a', n: 'A', e: 'X', v: [['1', '9782344000010', 0], ['2', '9782344000027', 0], ['3', '9782344000034', 0]] },
+    { k: 'b', n: 'B', e: 'X', v: [['1', '9782344000041', 0], ['2', '9782344000058', 0], ['3', '9782344000065', 0]] },
+    { k: 'c', n: 'C', e: 'X', v: [['1', '9782344000072', 0], ['2', '9782344000089', 0], ['3', '9782344000096', 0]] },
+    { k: 'd', n: 'D', e: 'X', v: [['1', '9782344000102', 0]] }] };
+  const vus = {
+    'series/a': [0.97, 0.02],                                                     // couverture de série r18 : retirée
+    'isbn/9782344000041': [0.9, 0], 'isbn/9782344000058': [0.9, 0], 'isbn/9782344000065': [0.1, 0],  // b : 2 tomes sur 3 : retirée
+    'series/c': [0.4, 0.5], 'isbn/9782344000072': [0.95, 0], 'isbn/9782344000089': [0.1, 0], 'isbn/9782344000096': [0.1, 0], // c : un seul tome : signalé, pas retiré
+    'series/d': [0.99, 0],
+  };
+  const d = decider(vus, bnf, new Set(['d']));                                    // d est dans « conserver »
+  assert.deepEqual(Object.keys(d.series).sort(), ['a', 'b']);
+  assert.deepEqual(Object.keys(d.tomes), ['9782344000072']);
+  assert.ok(d.series.a.motif.includes('0.97'));
+  const liste = aControler({ 'series/a': [0, 0] }, bnf, new Set(['9782344000010']), 10).map((x) => x.cle);
+  assert.equal(liste[0], 'series/b');                                              // séries d'abord, ce qui est déjà vu est ignoré
+  assert.ok(liste.includes('isbn/9782344000010') && !liste.includes('isbn/9782344000027'));  // tomes : seulement ceux dont la couverture est dans R2
+  assert.ok(liste.every((x) => !x.startsWith('series/a')));
+});
+
+test('contrôle des couvertures : les séries retirées par image disparaissent du catalogue', async () => {
+  const { loadBnf } = await import('../scripts/catalogue-bnf.mjs');
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'adulte3-'));
+  writeFileSync(path.join(dir, 'catalogue-bnf.json'), JSON.stringify({ series: [{ k: 'x', n: 'X', e: 'Kana', v: [['1', '9782344000010', 2020]] }, { k: 'y', n: 'Y', e: 'Kana', v: [['1', '9782344000027', 2020]] }] }));
+  writeFileSync(path.join(dir, 'contenu-adulte-images.json'), JSON.stringify({ series: { x: { motif: 'image' } } }));
+  assert.deepEqual(loadBnf(dir).series.map((s) => s.k), ['y']);
+});
