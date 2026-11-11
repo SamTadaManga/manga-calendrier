@@ -707,3 +707,9 @@ ul.hscroll .tile-body>.t-shops{padding-top:4px}
 .vmiss{background:transparent;align-items:center;justify-content:center;text-align:center;gap:6px;align-self:stretch}
 .vmiss strong{font-size:1rem}
 .vmiss-l{font-size:.85rem;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+/* Fiche d'un tome et numéro mis en avant */
+.tome-badge{display:inline-flex;align-items:center;gap:10px;margin:0 0 10px;padding:4px 12px 4px 4px;border:2px solid var(--edge);border-radius:2px;background:var(--panel);font-weight:800;font-size:1.25rem;line-height:1.2;box-shadow:3px 3px 0 var(--shadow)}
+.tome-badge span{padding:3px 8px;background:var(--edge);color:var(--panel);font-size:.72rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.fiche-tome h1{display:flex;flex-direction:column;gap:2px;margin-bottom:8px}.fiche-tome .tome-num{font-size:2.4rem;line-height:1.05;font-weight:900}.fiche-tome .tome-serie{font-size:1.1rem;font-weight:700;color:var(--muted)}
+.fiche-nav{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0}.fiche-ed{margin-top:10px}.fiche-ed summary{cursor:pointer;font-weight:700}
+.vcard .vcov{display:block}.vcard .vlink{color:inherit;text-decoration:none}.vcard .vlink:hover,.vcard .vlink:focus-visible{text-decoration:underline}.vcard.vcur{outline:3px solid var(--edge);outline-offset:2px}

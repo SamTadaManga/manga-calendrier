@@ -186,6 +186,7 @@ ${body}
 <script src="${av('jour.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
 <script src="${av('clic.js')}" defer></script>
+<script src="${av('fiche-tome.js')}" defer></script>
 <script src="${av('recherche.js')}" defer></script>
 <script src="${av('theme.js')}" defer></script>
 </body>
@@ -749,7 +750,10 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       const [main, ...rest] = eds;
       const [u, alt] = isbnCovers(main[1]);
       const more = rest.length ? `<details class="cv-ed"><summary>${esc(plural(eds.length, 'édition', 'éditions'))}</summary>${rest.map((v) => `<div class="cv-e"><span class="muted">${v[2] ? `${v[2]} · ` : ''}${esc(v[1])}</span>${buyBox(volRow(c, v), 'sm')}</div>`).join('')}</details>` : '';
-      return `<li class="scard vcard${u ? '' : ' vnc'}">${u ? `<div class="cover"><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span><img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer"${alt ? ` data-alt="${esc(alt)}"` : ''} onload="if(this.naturalWidth<50)this.onerror()" onerror="var a=this.dataset.alt;if(a){this.dataset.alt='';this.src=a}else{this.closest('.vcard').classList.add('vnc');this.parentNode.remove()}"></div>` : ''}<strong>${esc(volLabel(main))}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
+      const tn = main[0] ? String(main[0]).replace(/\D/g, '') : '';
+      const fiche = tn ? `/serie/${c.k}/?tome=${tn}#tome` : '';
+      const lab = tn ? `<a class="vlink" href="${fiche}" aria-label="Voir la fiche du ${esc(volLabel(main))} de ${esc(c.n)}">${esc(volLabel(main))}</a>` : esc(volLabel(main));
+      return `<li class="scard vcard${u ? '' : ' vnc'}"${tn ? ` data-t="${tn}" data-sn="${esc(c.n)}"${c.e ? ` data-ed="${esc(c.e)}"` : ''}` : ''}>${u ? `<a class="cover vcov" href="${fiche || '#'}"${fiche ? '' : ' tabindex="-1" aria-hidden="true"'}><span class="ph" aria-hidden="true">${esc(volLabel(main))}</span><img class="cover-img" src="${esc(u)}" alt="Couverture : ${esc(c.n)}, ${esc(volLabel(main))}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer"${alt ? ` data-alt="${esc(alt)}"` : ''} onload="if(this.naturalWidth<50)this.onerror()" onerror="var a=this.dataset.alt;if(a){this.dataset.alt='';this.src=a}else{this.closest('.vcard').classList.add('vnc');this.parentNode.remove()}"></a>` : ''}<strong>${lab}</strong><span class="muted">${main[2] ? `${main[2]} · ` : ''}ISBN ${esc(main[1])}</span>${buyBox(volRow(c, main), 'sm')}${more}</li>`;
     };
     return `<div class="carousel" role="region" aria-label="Tomes de ${esc(c.n)}" tabindex="0"><ul class="sgrid carousel-track cat-car">${(() => { const pend = [...holes].sort((a, b) => a - b); const out = []; for (const g of groups.values()) { const t = Number(g[0][0]) || 0; while (t && pend.length && pend[0] < t) out.push(missCard(c, pend.shift())); out.push(card(g)); } for (const n of pend) out.push(missCard(c, n)); return out.join(''); })()}</ul></div>`;
   };
@@ -834,6 +838,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
       image: showCovers ? ([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover : '',
       body: `<div class="series-head">${hero}<div>
 <h1>Prochain tome de ${esc(S.name)}</h1>
+${(n || lastOut) && (n || lastOut).tome ? `<p class="tome-badge"><span>${n ? 'Prochain' : 'Dernier paru'}</span> Tome ${esc((n || lastOut).tome)}</p>` : ''}
 <p class="lead">${lead}</p>
 ${infoBox(S.name)}
 ${buyRow ? buyBox(buyRow, 'lg') : ''}
@@ -1560,7 +1565,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));
 }
-for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'fiche-tome.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
