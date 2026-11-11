@@ -135,7 +135,7 @@ function layout({ title, description, pathname, body, noindex = false, extraHead
     return `<a href="${href}"${active ? ' aria-current="page"' : ''}>${label}</a>`;
   }).join('');
   return `<!doctype html>
-<html lang="fr">
+<html lang="fr" data-built="${today}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -183,6 +183,7 @@ ${body}
 </div></footer>
 <script src="${av('suivi.js')}" defer></script>
 <script src="${av('mesure.js')}" defer></script>
+<script src="${av('jour.js')}" defer></script>
 <script src="${av('visite.js')}" defer></script>
 <script src="${av('clic.js')}" defer></script>
 <script src="${av('recherche.js')}" defer></script>
@@ -427,7 +428,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const strip = Array.from({ length: 7 }, (_, i) => addDays(today, i)).map((d) => {
     const m = live.filter((r) => r.date === d);
     const a = eps.filter((e) => e.key === d);
-    return `<li class="day-panel ${wdc(d)}${d === today ? ' today' : ''}"><div class="d-head"><a class="d-link" href="/semaine/#j-${d}" aria-label="Voir le détail du ${esc(frDate(d))}"><span class="d-wd">${esc(d === today ? "aujourd'hui" : weekday(d))}</span><span class="d-num">${dayNum(d)}</span></a></div>`
+    return `<li class="day-panel ${wdc(d)}${d === today ? ' today' : ''}" data-d="${d}" data-wd="${esc(weekday(d))}"><div class="d-head"><a class="d-link" href="/semaine/#j-${d}" aria-label="Voir le détail du ${esc(frDate(d))}"><span class="d-wd">${esc(d === today ? "aujourd'hui" : weekday(d))}</span><span class="d-num">${dayNum(d)}</span></a></div>`
       + (m.length ? `<a class="d-line" href="/manga/#j-${d}"><b>${m.length}</b> ${m.length > 1 ? 'mangas' : 'manga'}<span class="dots">${dots(m)}</span></a>` : '<span class="d-line none">Pas de manga</span>')
       + (a.length ? `<a class="d-line" href="/anime/#j-${d}"><b>${a.length}</b> ${a.length > 1 ? 'épisodes' : 'épisode'}</a>` : '<span class="d-line none">Pas d\'épisode</span>')
       + '</li>';
@@ -445,7 +446,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
 <section class="pour-toi" id="pour-toi" aria-labelledby="t-pt" hidden><h2 id="t-pt">Pour toi cette semaine</h2><div id="pt-body"></div></section>
 <div class="since panel" id="since" hidden></div>
 </section>
-<section class="two stack" aria-label="Aujourd'hui">
+<section class="two stack" aria-label="Aujourd'hui" data-day="${today}">
 <div>
 <h2>Manga du ${esc(frDate(today))}</h2>
 ${mangaToday.length
@@ -1558,7 +1559,7 @@ write('data/recent.json', JSON.stringify({
     articles: articles.map((a) => ({ n: a.title, u: `/articles/${a.slug}/`, d: frShort(a.date), x: a.description || '' })),
   }));
 }
-for (const f of ['collection.js', 'mesure.js', 'visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',

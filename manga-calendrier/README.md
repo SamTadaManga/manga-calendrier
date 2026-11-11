@@ -182,6 +182,10 @@ Le catalogue (`data/catalogue-bnf.json`) vient d'un export ponctuel ; il est com
 
 Tout est écrit dans `data/catalogue-ajouts.json` (jamais dans le fichier du catalogue : un nouvel import du CSV ne les efface pas). `data/bnf-maj.json` garde la date de la dernière mise à jour, `data/trous-etat.json` la dernière recherche par série (pas de nouvelle recherche avant 60 jours). Les variables `BNF_SRU_URL` et `BNF_PAUSE` servent aux tests.
 
+## Heure et tâches planifiées
+
+GitHub peut retarder une tâche planifiée de plusieurs heures. Pour que « aujourd'hui » reste juste : le site est reconstruit plusieurs fois autour de minuit (workflow Déploiement), la publication sur les réseaux a quatre créneaux le matin (une publication déjà faite est ignorée), et `scripts/jour.js` corrige dans le navigateur le bandeau de la semaine, le repère « aujourd'hui » et le bloc « sorties du jour » quand la page a été construite la veille. Les jours sans sortie, on ne publie que la veille d'une sortie (« Demain en manga », constante `PROCHAIN_JOURS` dans `social-contenu.mjs`).
+
 ## Trous de numérotation
 
 `scripts/trous.mjs` classe les numéros manquants des séries du catalogue : **petit trou** (quelques tomes absents dans une série bien fournie : le site affiche une carte « Référence en cours » avec un lien « Signale-le »), **gros trou** (catalogue très incomplet, à compléter par les scripts de collecte) et **bruit** (éditeurs hors manga, numéros de collection : ignorés). Le rapport `node scripts/analyse-site.mjs` (fichier 1c) donne les chiffres. Les cas légitimes (hors-série, tome unique, double tome « 1-2 », intégrale) se déclarent dans `data/numerotation-ok.json` :

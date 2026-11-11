@@ -5,6 +5,12 @@ name: Déploiement Cloudflare
 on:
   push:
     branches: [main]
+  schedule:
+    # Reconstruction autour de minuit à Paris (22 h et 23 h UTC selon l'heure d'été), pour que « aujourd'hui » change à temps :
+    # GitHub retarde parfois les tâches planifiées de plusieurs heures, d'où plusieurs créneaux de rattrapage.
+    - cron: '7 22,23 * * *'
+    - cron: '37 0 * * *'
+    - cron: '17 2 * * *'
   workflow_run:
     # les commits du bot ne déclenchent pas « push » : on réagit à la fin de la mise à jour
     workflows: ['Mise à jour quotidienne']
