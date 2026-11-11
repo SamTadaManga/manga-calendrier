@@ -1454,3 +1454,13 @@ test('contrôle des couvertures : les séries retirées par image disparaissent 
   writeFileSync(path.join(dir, 'contenu-adulte-images.json'), JSON.stringify({ series: { x: { motif: 'image' } } }));
   assert.deepEqual(loadBnf(dir).series.map((s) => s.k), ['y']);
 });
+
+test('fiche de tome : cartes du carrousel cliquables, script publié, numéro mis en avant', () => {
+  const js = readFileSync(path.join(import.meta.dirname, '..', 'scripts', 'fiche-tome.js'), 'utf8');
+  assert.match(js, /tome=\(\\d\{1,4\}\)/);
+  assert.doesNotMatch(js, /innerHTML/); // rien n'est injecté en HTML : seulement du texte et des nœuds copiés
+  const b = readFileSync(path.join(import.meta.dirname, '..', 'scripts', 'build.mjs'), 'utf8');
+  assert.match(b, /\?tome=\$\{tn\}#tome/);
+  assert.match(b, /class="tome-badge"/);
+  assert.match(b, /'fiche-tome\.js'/);
+});
