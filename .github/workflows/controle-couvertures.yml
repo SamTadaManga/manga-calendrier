@@ -1,8 +1,8 @@
 name: Contrôle des couvertures (modèle d'image)
 # Passe les couvertures du site dans un modèle de classification d'images (deepghs/anime_rating : safe / r15 / r18).
-# Une série dont la couverture est classée r18 (score ≥ 0,85), ou dont la moitié des couvertures de tomes contrôlées le sont, est retirée du site
-# (data/contenu-adulte-images.json). Un tome isolé est seulement signalé dans ce fichier. Pour rétablir une série : data/contenu-adulte.json, rubrique « conserver ».
-# Chaque nuit à 4 h 17 UTC (après la mise à jour de 3 h 17) : 3 000 couvertures au plus, séries d'abord. Lancement manuel possible.
+# Une série dont la couverture est classée r18 (score ≥ 0,5), ou dont UNE couverture de tome ou du calendrier l'est, est retirée du site
+# (data/contenu-adulte-images.json). Pour rétablir une série : data/contenu-adulte.json, rubrique « conserver ».
+# Chaque nuit à 4 h 17 UTC (après la mise à jour de 3 h 17) : 12 000 couvertures au plus : calendrier, puis séries, puis tomes. Lancement manuel possible.
 on:
   schedule:
     - cron: '17 4 * * *'
@@ -10,10 +10,10 @@ on:
     inputs:
       limit:
         description: "Nombre maximum de couvertures à contrôler"
-        default: '3000'
+        default: '12000'
       minutes:
         description: "Durée maximale du contrôle, en minutes"
-        default: '90'
+        default: '150'
 permissions:
   contents: write
 concurrency:
@@ -22,7 +22,7 @@ concurrency:
 jobs:
   controle:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 200
     defaults:
       run:
         working-directory: manga-calendrier
@@ -47,7 +47,7 @@ jobs:
         env:
           IN_LIMIT: ${{ inputs.limit }}
         run: |
-          LIMIT="${IN_LIMIT:-3000}"
+          LIMIT="${IN_LIMIT:-12000}"
           case "$LIMIT" in ''|*[!0-9]*) echo "Limite refusée."; exit 1;; esac
           node scripts/adulte-images.mjs liste --limit="$LIMIT" > "$RUNNER_TEMP/cibles.json"
           echo "n=$(node -e "console.log(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).length)" "$RUNNER_TEMP/cibles.json")" >> "$GITHUB_OUTPUT"
@@ -56,7 +56,7 @@ jobs:
         env:
           IN_MINUTES: ${{ inputs.minutes }}
         run: |
-          MIN="${IN_MINUTES:-90}"
+          MIN="${IN_MINUTES:-150}"
           case "$MIN" in ''|*[!0-9]*) echo "Durée refusée."; exit 1;; esac
           python3 scripts/controle-couvertures.py "$RUNNER_TEMP/cibles.json" data/couvertures-controle.json --minutes="$MIN"
       - name: Décider
