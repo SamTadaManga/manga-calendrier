@@ -47,12 +47,21 @@ jobs:
         run: npm i --no-save --no-audit --no-fund playwright-core
       - name: Dessiner et publier
         run: |
-          ARGS="--kinds=${{ inputs.kinds || 'auto' }} --out=social-out"
-          if [ -n "${{ inputs.platforms }}" ]; then ARGS="$ARGS --platforms=${{ inputs.platforms }}"; fi
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.dry_run }}" = "true" ]; then ARGS="$ARGS --dry-run"; fi
-          if [ "${{ inputs.force }}" = "true" ]; then ARGS="$ARGS --force"; fi
+          # Les saisies du formulaire passent par des variables d'environnement (jamais écrites dans le script shell) et sont contrôlées.
+          KINDS="${IN_KINDS:-auto}"
+          case "$KINDS" in *[!a-z,]*) echo "Valeur de « kinds » refusée."; exit 1;; esac
+          case "$IN_PLATFORMS" in *[!a-z,]*) echo "Valeur de « platforms » refusée."; exit 1;; esac
+          ARGS="--kinds=$KINDS --out=social-out"
+          if [ -n "$IN_PLATFORMS" ]; then ARGS="$ARGS --platforms=$IN_PLATFORMS"; fi
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "$IN_DRY" = "true" ]; then ARGS="$ARGS --dry-run"; fi
+          if [ "$IN_FORCE" = "true" ]; then ARGS="$ARGS --force"; fi
           node scripts/social.mjs $ARGS
         env:
+          IN_KINDS: ${{ inputs.kinds }}
+          IN_PLATFORMS: ${{ inputs.platforms }}
+          IN_DRY: ${{ inputs.dry_run }}
+          IN_FORCE: ${{ inputs.force }}
+          EVENT: ${{ github.event_name }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
           MAIL_TO: ${{ vars.MAIL_TO }}

@@ -1,0 +1,83 @@
+name: Contrôle des couvertures (modèle d'image)
+# Passe les couvertures du site dans un modèle de classification d'images (deepghs/anime_rating : safe / r15 / r18).
+# Une série dont la couverture est classée r18 (score ≥ 0,85), ou dont la moitié des couvertures de tomes contrôlées le sont, est retirée du site
+# (data/contenu-adulte-images.json). Un tome isolé est seulement signalé dans ce fichier. Pour rétablir une série : data/contenu-adulte.json, rubrique « conserver ».
+# Chaque nuit à 4 h 17 UTC (après la mise à jour de 3 h 17) : 3 000 couvertures au plus, séries d'abord. Lancement manuel possible.
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+    inputs:
+      limit:
+        description: "Nombre maximum de couvertures à contrôler"
+        default: '3000'
+      minutes:
+        description: "Durée maximale du contrôle, en minutes"
+        default: '90'
+permissions:
+  contents: write
+concurrency:
+  group: controle-couvertures
+  cancel-in-progress: false
+jobs:
+  controle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: modele-anime-rating-v1
+      - name: Installer le modèle
+        run: pip install --no-cache-dir dghs-imgutils onnxruntime pillow
+      - name: Vérifier que le modèle fonctionne
+        run: python3 scripts/controle-couvertures.py --autotest
+      - name: Liste des couvertures à contrôler
+        id: liste
+        env:
+          IN_LIMIT: ${{ inputs.limit }}
+        run: |
+          LIMIT="${IN_LIMIT:-3000}"
+          case "$LIMIT" in ''|*[!0-9]*) echo "Limite refusée."; exit 1;; esac
+          node scripts/adulte-images.mjs liste --limit="$LIMIT" > "$RUNNER_TEMP/cibles.json"
+          echo "n=$(node -e "console.log(JSON.parse(require('fs').readFileSync(process.argv[1],'utf8')).length)" "$RUNNER_TEMP/cibles.json")" >> "$GITHUB_OUTPUT"
+      - name: Contrôler les couvertures
+        if: steps.liste.outputs.n != '0'
+        env:
+          IN_MINUTES: ${{ inputs.minutes }}
+        run: |
+          MIN="${IN_MINUTES:-90}"
+          case "$MIN" in ''|*[!0-9]*) echo "Durée refusée."; exit 1;; esac
+          python3 scripts/controle-couvertures.py "$RUNNER_TEMP/cibles.json" data/couvertures-controle.json --minutes="$MIN"
+      - name: Décider
+        run: node scripts/adulte-images.mjs decider | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Enregistrer
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/keep"
+          mkdir -p "$KEEP"
+          FILES="couvertures-controle.json contenu-adulte-images.json"
+          for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            for f in $FILES; do [ -f "$KEEP/$f" ] && cp "$KEEP/$f" "manga-calendrier/data/$f"; done
+            for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && git add "manga-calendrier/data/$f"; done
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Contrôle des couvertures : mise à jour"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1

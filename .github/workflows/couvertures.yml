@@ -41,7 +41,19 @@ jobs:
         run: npm i --no-save --no-audit --no-fund sharp
       - name: Récupérer et envoyer les couvertures
         if: steps.s.outputs.ok == 'yes'
-        run: node scripts/couvertures-isbn.mjs --limit=${{ inputs.limit || 9000 }} --minutes=300
+        run: |
+          LIMIT="${IN_LIMIT:-9000}"
+          case "$LIMIT" in ''|*[!0-9]*) echo "Limite refusée."; exit 1;; esac
+          node scripts/couvertures-isbn.mjs --limit="$LIMIT" --minutes=300
+        env:
+          IN_LIMIT: ${{ inputs.limit }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+      - name: Retirer de R2 les couvertures de contenu adulte
+        if: steps.s.outputs.ok == 'yes'
+        run: node scripts/adulte-purge.mjs
         env:
           R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
           R2_BUCKET: ${{ secrets.R2_BUCKET }}
@@ -53,13 +65,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          KEEP="$RUNNER_TEMP/c.json"
-          cp manga-calendrier/data/couvertures-isbn.json "$KEEP"
+          KEEP="$RUNNER_TEMP/keep"
+          mkdir -p "$KEEP"
+          FILES="couvertures-isbn.json adulte-purge.json"
+          for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
           for i in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
-            cp "$KEEP" manga-calendrier/data/couvertures-isbn.json
-            git add manga-calendrier/data/couvertures-isbn.json
+            for f in $FILES; do [ -f "$KEEP/$f" ] && cp "$KEEP/$f" "manga-calendrier/data/$f"; done
+            for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && git add "manga-calendrier/data/$f"; done
             if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
             git commit -m "Couvertures de tomes : liste mise à jour"
             if git push origin HEAD:main; then exit 0; fi
