@@ -1,0 +1,53 @@
+name: Liens Cultura (flux Awin)
+# Télécharge le flux produits Cultura (Awin) et met à jour data/cultura-liens.json : lien direct vers la fiche de chaque tome.
+# Secret à créer dans Settings > Secrets and variables > Actions : AWIN_FEED_URL (adresse complète du flux, avec sa clé). Sans lui, rien n'est fait.
+# Chaque nuit à 1 h 27 UTC, avant la mise à jour de 3 h 17 UTC ; le fichier n'est enregistré que s'il a changé.
+on:
+  schedule:
+    - cron: '27 1 * * *'
+  workflow_dispatch:
+    inputs:
+      essai:
+        description: "Essai à blanc (affiche le bilan sans rien enregistrer)"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: cultura
+  cancel-in-progress: false
+jobs:
+  cultura:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Lire le flux
+        run: node scripts/cultura-flux.mjs ${{ inputs.essai && '--essai' || '' }}
+        env:
+          AWIN_FEED_URL: ${{ secrets.AWIN_FEED_URL }}
+      - name: Enregistrer
+        if: ${{ !inputs.essai }}
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/c.json"
+          cp manga-calendrier/data/cultura-liens.json "$KEEP"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$KEEP" manga-calendrier/data/cultura-liens.json
+            git add manga-calendrier/data/cultura-liens.json
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Liens Cultura : mise à jour du flux"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1

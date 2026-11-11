@@ -40,7 +40,16 @@ export function shopsFrom(config) {
   });
 }
 
+/** Liens directs vers la fiche produit (flux Awin) : { base, liens: { isbn: id } } ; ignoré s'il est mal formé. */
+export function directFrom(raw) {
+  if (!raw || typeof raw !== 'object' || typeof raw.liens !== 'object' || !raw.liens) return null;
+  if (!/^https:\/\/www\.awin1\.com\/pclick\.php\?(?:[a-z]=\d+&)+p=$/.test(raw.base || '')) return null;
+  return { base: raw.base, liens: raw.liens };
+}
+
 export function buyUrl(shop, isbn) {
+  const id = shop.direct && shop.direct.liens[isbn];
+  if (id && /^\d{3,20}$/.test(id)) return `${shop.direct.base}${id}`;
   const url = shop.url(isbn);
   if (shop.tag) return `${url}${url.includes('?') ? '&' : '?'}tag=${encodeURIComponent(shop.tag)}`;
   if (!shop.affiliate) return url;

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { readChanges, keyOf } from './changes.mjs';
-import { isIsbn13, shopsFrom, buyUrl } from './shops.mjs';
+import { isIsbn13, shopsFrom, buyUrl, directFrom } from './shops.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frLongDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
@@ -281,7 +281,8 @@ function coverBox(src, alt, w = 200, h = 300) {
 }
 // tuile d'un tome (page de série)
 /* Où acheter : un lien par boutique (adresse normale, ou lien d'affiliation si renseigné dans la config) */
-const SHOPLIST = shopsFrom(config);
+const DIRECT = (() => { try { return directFrom(JSON.parse(readFileSync(path.join(P.dataDir, 'cultura-liens.json'), 'utf8'))); } catch { return null; } })();
+const SHOPLIST = shopsFrom(config).map((x) => (x.id === 'cultura' && x.sponsored && DIRECT ? { ...x, direct: DIRECT } : x));
 const AFFILIATE_ON = SHOPLIST.some((x) => x.sponsored);
 const CART = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M1 1.5h2l1.2 6h5.6l1-4H3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="5" cy="10" r="1" fill="currentColor"/><circle cx="9" cy="10" r="1" fill="currentColor"/></svg>';
 const buyBox = (r, size = '') => {

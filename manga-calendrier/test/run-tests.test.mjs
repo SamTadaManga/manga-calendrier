@@ -1328,3 +1328,30 @@ test('Cultura : lien Awin du site, adresse de recherche encodée', () => {
   assert.equal(u, 'https://www.awin1.com/cread.php?awinmid=113876&awinaffid=3130835&ued=' + encodeURIComponent('https://www.cultura.com/search/results?search_query=9782413094630'));
   assert.ok(!sf(cfg).some((x) => x.id === 'bdfugue'));
 });
+
+test('flux Cultura : lecture du CSV, liens directs et repli', async () => {
+  const { lireFlux, lignesCsv } = await import('../scripts/cultura-flux.mjs');
+  const csv = 'aw_deep_link,product_name,merchant_product_id,description,isbn\n'
+    + 'https://www.awin1.com/pclick.php?p=111111&a=3130835&m=113876,"Tome, 1 ""x""",9782413094630,"ligne 1\nligne 2",\n'
+    + 'https://www.awin1.com/pclick.php?p=222222&a=3130835&m=113876,Autre,9782413094631,x,\n'
+    + 'https://evil.example/?p=333333&a=1&m=2,Piège,9782344000001,x,\n'
+    + 'https://www.awin1.com/pclick.php?p=444444&a=3130835&m=113876,Hors site,9780000000002,x,\n';
+  assert.equal([...lignesCsv(csv)].length, 5);
+  const voulus = new Set(['9782413094630', '9782344000001']);
+  const r = lireFlux(csv, voulus);
+  assert.deepEqual(r.liens, { 9782413094630: '111111' });
+  assert.equal(r.base, 'https://www.awin1.com/pclick.php?a=3130835&m=113876&p=');
+  assert.throws(() => lireFlux('a,b\n1,2\n', voulus));
+});
+
+test('Cultura : lien direct si connu, sinon recherche ; fichier mal formé ignoré', async () => {
+  const { directFrom } = await import('../scripts/shops.mjs');
+  const cfg = { shops: { cultura: { affiliate: 'https://www.awin1.com/cread.php?awinmid=1&awinaffid=2&ued={urlenc}' } } };
+  const c = sf(cfg).find((x) => x.id === 'cultura');
+  const d = directFrom({ base: 'https://www.awin1.com/pclick.php?a=2&m=1&p=', liens: { 9782413094630: '111111' } });
+  assert.equal(bu({ ...c, direct: d }, '9782413094630'), 'https://www.awin1.com/pclick.php?a=2&m=1&p=111111');
+  assert.ok(bu({ ...c, direct: d }, '9782413094631').startsWith('https://www.awin1.com/cread.php?'));
+  assert.equal(directFrom({ base: 'https://evil.example/?p=', liens: {} }), null);
+  assert.equal(directFrom(null), null);
+  assert.equal(bu({ ...c, direct: { base: d.base, liens: { 9782413094630: '1"><b' } } }, '9782413094630').startsWith('https://www.awin1.com/cread.php?'), true);
+});
