@@ -12,5 +12,7 @@
   "kv_namespaces": [{ "binding": "CLICS" }],
   // Mesure d'audience : une petite base SQLite dans un Durable Object (offre gratuite), créée au déploiement.
   "durable_objects": { "bindings": [{ "name": "AUDIENCE", "class_name": "Audience" }] },
-  "migrations": [{ "tag": "audience-v1", "new_sqlite_classes": ["Audience"] }]
+  "migrations": [{ "tag": "audience-v1", "new_sqlite_classes": ["Audience"] }],
+  // Déclencheurs horaires (UTC) : reconstruction du site après minuit à Paris, publication du matin. Voir worker/planification.js.
+  "triggers": { "crons": ["5 22,23 * * *", "12 6 * * *"] }
 }

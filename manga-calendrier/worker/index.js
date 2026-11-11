@@ -117,7 +117,11 @@ async function stats(env, url) {
 
 const NOSTORE = { 'Cache-Control': 'no-store', 'X-Robots-Tag': 'noindex' };
 
+import { declencher, lancer } from './planification.js';
+
 export default {
+  // Déclencheurs horaires (wrangler.jsonc : triggers.crons) : voir planification.js
+  async scheduled(event, env, ctx) { ctx.waitUntil(declencher(event, env)); },
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     if (url.pathname === '/api/vu' && request.method === 'POST') {
@@ -147,6 +151,12 @@ export default {
         }
       } catch (err) { etat = 'erreur'; console.error('clic', err && err.message); }
       return new Response(null, { status: 204, headers: { 'Cache-Control': 'no-store', 'X-Clic': etat } });
+    }
+    // Essai du déclencheur sans attendre minuit : /api/planification?cle=...  (lance une reconstruction du site, rien d'autre)
+    if (url.pathname === '/api/planification' && request.method === 'GET') {
+      if (!env.STATS_KEY || !sameSecret(url.searchParams.get('cle') || '', String(env.STATS_KEY))) return new Response('Introuvable', { status: 404 });
+      try { return Response.json(await lancer(env, 'deploy.yml'), { headers: NOSTORE }); }
+      catch (e) { return Response.json({ ok: false, erreur: e.message }, { status: 502, headers: NOSTORE }); }
     }
     if (url.pathname === '/api/clics' && request.method === 'GET') {
       if (!env.STATS_KEY || !env.CLICS || !sameSecret(url.searchParams.get('cle') || '', String(env.STATS_KEY))) return new Response('Introuvable', { status: 404 });

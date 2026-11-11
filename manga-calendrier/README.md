@@ -186,6 +186,10 @@ Tout est écrit dans `data/catalogue-ajouts.json` (jamais dans le fichier du cat
 
 GitHub peut retarder une tâche planifiée de plusieurs heures. Pour que « aujourd'hui » reste juste : le site est reconstruit plusieurs fois autour de minuit (workflow Déploiement), la publication sur les réseaux a quatre créneaux le matin (une publication déjà faite est ignorée), et `scripts/jour.js` corrige dans le navigateur le bandeau de la semaine, le repère « aujourd'hui » et le bloc « sorties du jour » quand la page a été construite la veille. Les jours sans sortie, on ne publie que la veille d'une sortie (« Demain en manga », constante `PROCHAIN_JOURS` dans `social-contenu.mjs`).
 
+### Déclencheurs Cloudflare (heure exacte)
+
+Le Worker (`worker/planification.js`, déclarés dans `wrangler.jsonc` sous `triggers.crons`) lance lui-même deux workflows GitHub à l'heure exacte, sans dépendre des retards de GitHub : la reconstruction du site juste après minuit à Paris (22 h et 23 h UTC, un seul des deux tombe à 0 h) et la publication du matin (6 h 12 UTC). Il lui faut le secret **GITHUB_TOKEN** du Worker : un jeton GitHub limité à ce dépôt, avec la seule permission « Actions : lecture et écriture ». Essai sans attendre minuit : `https://prochaintome.fr/api/planification?cle=<STATS_KEY>` lance une reconstruction. Les créneaux de secours de GitHub restent en place.
+
 ## Trous de numérotation
 
 `scripts/trous.mjs` classe les numéros manquants des séries du catalogue : **petit trou** (quelques tomes absents dans une série bien fournie : le site affiche une carte « Référence en cours » avec un lien « Signale-le »), **gros trou** (catalogue très incomplet, à compléter par les scripts de collecte) et **bruit** (éditeurs hors manga, numéros de collection : ignorés). Le rapport `node scripts/analyse-site.mjs` (fichier 1c) donne les chiffres. Les cas légitimes (hors-série, tome unique, double tome « 1-2 », intégrale) se déclarent dans `data/numerotation-ok.json` :
