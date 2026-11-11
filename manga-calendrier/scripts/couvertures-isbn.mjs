@@ -2,7 +2,7 @@
 // Reprend là où il s'est arrêté : data/couvertures-isbn.json garde la liste des ISBN faits et des ISBN introuvables.
 // Usage : node scripts/couvertures-isbn.mjs [--limit=2000] [--minutes=300] [--dry-run=dossier]
 //   Variables : R2_ACCOUNT_ID, R2_BUCKET, R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY (sans elles : essai à blanc, rien n'est envoyé).
-// Sources, dans l'ordre : Amazon.fr (adresse construite avec l'ISBN-10), puis Open Library. 1 requête par seconde au plus.
+// Sources, dans l'ordre : image du flux Cultura/Awin si elle est connue (data/cultura-images.json), Amazon.fr (adresse construite avec l'ISBN-10), puis Open Library. 1 requête par seconde au plus.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import path from 'node:path';
 import { paths, loadAllManga } from './lib.mjs';
@@ -19,9 +19,18 @@ const RETRY_DAYS = 90;
 const UA = 'manga-calendrier/1.0 (calendrier gratuit de sorties; couvertures de tomes)';
 const P = paths();
 const file = path.join(P.dataDir, 'couvertures-isbn.json');
-let state = { maj: '', done: [], absent: {} };
+let state = { maj: '', done: [], absent: {}, cult: {} };
 try { state = { ...state, ...JSON.parse(readFileSync(file, 'utf8')) }; } catch {}
 const done = new Set(state.done);
+state.cult ||= {}; // ISBN dont l'image Cultura a déjà été essayée en vain (date)
+// Images du flux Cultura (adresse en https://cdn.cultura.com/media/pim/ uniquement)
+const CULT = (() => {
+  try {
+    const j = JSON.parse(readFileSync(path.join(P.dataDir, 'cultura-images.json'), 'utf8'));
+    if (j.base !== 'https://cdn.cultura.com/media/pim/') return {};
+    return Object.fromEntries(Object.entries(j.img || {}).filter(([i, u]) => /^\d{13}$/.test(i) && /^[\w./-]+$/.test(u)));
+  } catch { return {}; }
+})();
 const today = new Date().toISOString().slice(0, 10);
 const recent = (d) => d && (Date.parse(today) - Date.parse(d)) / 864e5 < RETRY_DAYS;
 
@@ -33,26 +42,31 @@ if (DRY) mkdirSync(DRY, { recursive: true });
 let sharp;
 try { sharp = (await import('sharp')).default; } catch { console.error('Le module sharp est nécessaire : npm i --no-save sharp'); process.exit(1); }
 
-const list = targets({ manga: loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule'), bnf: loadBnf(P.dataDir), skip: (i) => done.has(i) || recent(state.absent[i]) }).slice(0, LIMIT);
+const list = targets({ manga: loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule'), bnf: loadBnf(P.dataDir), skip: (i) => done.has(i) || (recent(state.absent[i]) && !(CULT[i] && !recent(state.cult[i]))) }).slice(0, LIMIT);
 console.log(`${list.length} ISBN à traiter (déjà faits : ${done.size}, introuvables récemment : ${Object.keys(state.absent).length}).`);
 
+let cultOk = 0; const tailles = [];
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const sources = (t) => [
+  ...(CULT[t.isbn] && !recent(state.cult[t.isbn]) ? [`https://cdn.cultura.com/media/pim/${CULT[t.isbn]}`] : []),
   ...(t.isbn10 ? [`https://m.media-amazon.com/images/P/${t.isbn10}.08.LZZZZZZZ.jpg`] : []),
   `https://covers.openlibrary.org/b/isbn/${t.isbn}-L.jpg?default=false`,
 ];
 async function grab(t) {
+  const cult = Boolean(CULT[t.isbn] && !recent(state.cult[t.isbn]));
+  let first = true;
   for (const u of sources(t)) {
+    const isCult = cult && first; first = false;
     await sleep(1000);
     try {
       const r = await fetch(u, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(20000) });
-      if (!r.ok || !/^image\//.test(r.headers.get('content-type') || '')) continue;
+      if (!r.ok || !/^image\//.test(r.headers.get('content-type') || '')) { if (isCult) state.cult[t.isbn] = today; continue; }
       const buf = Buffer.from(await r.arrayBuffer());
       const meta = await sharp(buf).metadata();
-      if (!meta.width || meta.width < 100 || meta.height < 140) continue; // pixel de remplacement ou vignette
-      if (meta.height < meta.width) continue; // une couverture de manga est plus haute que large
+      if (!meta.width || meta.width < 100 || meta.height < 140 || meta.height < meta.width) { if (isCult) { state.cult[t.isbn] = today; tailles.push(`${meta.width}x${meta.height}`); } continue; } // pixel de remplacement, vignette, ou plus large que haute (une couverture de manga est plus haute que large)
+      if (isCult) cultOk++;
       return await sharp(buf).resize({ width: WIDTH, withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
-    } catch { /* source suivante */ }
+    } catch { if (isCult) state.cult[t.isbn] = today; /* source suivante */ }
   }
   return null;
 }
@@ -71,4 +85,5 @@ for (const t of list) {
   if (++n % 100 === 0) { save(); console.log(`${n}/${list.length} : ${ok} couvertures, ${miss} introuvables`); }
 }
 save();
+console.log(`Images Cultura utilisées : ${cultOk}${tailles.length ? ` ; refusées (trop petites) : ${tailles.length}, par exemple ${tailles.slice(0, 5).join(', ')}` : ''}.`);
 console.log(`Terminé : ${ok} couvertures ${r2 ? 'envoyées dans R2' : 'écrites dans ' + DRY}, ${miss} introuvables. Total en R2 : ${done.size}.`);
