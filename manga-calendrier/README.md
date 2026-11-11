@@ -244,3 +244,12 @@ Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse norma
 - `data/social-posted.json` garde ce qui a été publié (pas de doublon si le workflow est relancé).
 
 **E-mail du matin** : pour les réseaux publiés à la main (X, Pinterest, TikTok par défaut), le workflow envoie un e-mail avec les images en pièces jointes et les textes prêts à copier. Secrets : `SMTP_USER` (adresse Gmail) et `SMTP_PASS` (mot de passe d'application Google, pas le mot de passe du compte). Variables facultatives : `MAIL_TO` (destinataire, par défaut `SMTP_USER`) et `MAIL_PLATFORMS` (par défaut `x,pinterest,tiktok`).
+
+## Liens directs Cultura (flux produits Awin)
+
+Le bouton Cultura ouvre directement la fiche du tome quand elle est connue (environ la moitié du catalogue, 9 tomes à venir sur 10), sinon la recherche Cultura par ISBN. Les deux passent par Awin.
+
+- `scripts/cultura-flux.mjs` télécharge le flux et écrit `data/cultura-liens.json` (ISBN → identifiant produit). Il ne garde que les ISBN du site et ne touche pas au fichier si le bilan est trop faible.
+- Workflow « Liens Cultura (flux Awin) » : chaque nuit à 1 h 27 UTC, ou à la main (case « Essai à blanc » pour voir le bilan sans rien enregistrer).
+- L'adresse du flux contient une clé : elle n'est QUE dans le secret GitHub `AWIN_FEED_URL`. Ne jamais la mettre dans un fichier, un message ou une capture d'écran.
+- Pour le tester sans secret : `node scripts/cultura-flux.mjs --essai --fichier=flux.csv.gz`.
