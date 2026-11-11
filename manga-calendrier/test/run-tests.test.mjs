@@ -1098,8 +1098,9 @@ test('réseaux sociaux : contenu du jour, repli sur la prochaine sortie, longueu
   assert.ok(j.text.bluesky.length <= 300, 'Bluesky 300 caractères');
   assert.ok(j.text.x.replace(/https:\/\/\S+/, 'x'.repeat(23)).length <= 280, 'X 280 caractères, adresse comptée pour 23');
   assert.ok(j.text.instagram.includes('#manga') && j.text.pinterest.link.includes('utm_source=pinterest'));
-  const p = compose({ kind: 'jour', today: '2026-11-02', manga, anime: { episodes: [] }, site });
-  assert.equal(p.mode, 'prochain'); assert.ok(/DANS 2 JOURS/.test(p.sticker));
+  assert.equal(compose({ kind: 'jour', today: '2026-11-02', manga, anime: { episodes: [] }, site }), null, 'sortie dans 2 jours : pas de publication, la même vague ne se répète pas chaque jour');
+  const p = compose({ kind: 'jour', today: '2026-11-03', manga, anime: { episodes: [{ airingAt: Date.parse('2026-11-03T10:00:00Z') / 1000, episode: 1 }] }, site });
+  assert.equal(p.mode, 'prochain'); assert.ok(/DEMAIN/.test(p.title[0]) && p.animeLine === '' && !/anime/.test(p.text.bluesky), 'veille : « demain », sans ligne d\'anime du jour');
   assert.equal(compose({ kind: 'jour', today: '2026-12-25', manga, anime: { episodes: [] }, site }), null, 'rien à dire : pas de publication');
   assert.equal(compose({ kind: 'nouveautes', today: '2026-11-04', manga: [], anime: { episodes: [] }, site }), null);
 

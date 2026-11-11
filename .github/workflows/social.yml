@@ -4,7 +4,12 @@ name: Publication sur les réseaux
 # Lancement manuel possible : choisissez « essai à blanc » pour voir le résultat sans rien publier.
 on:
   schedule:
+    # Plusieurs créneaux : GitHub retarde parfois les tâches planifiées de plusieurs heures. Sans risque de doublon :
+    # une publication déjà faite est ignorée (data/social-posted.json) et les passages sont exécutés l'un après l'autre.
+    - cron: '12 5 * * *'
     - cron: '12 6 * * *'
+    - cron: '12 8 * * *'
+    - cron: '12 10 * * *'
   workflow_dispatch:
     inputs:
       dry_run:

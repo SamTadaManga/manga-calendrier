@@ -4,6 +4,8 @@ import { slugify, addDays, weekdayOfKey, frLongDate, frDayMonth, isFirstVolume, 
 
 export const PUBCOL = { glenat: '#0a4fd6', kana: '#d93a0b', pika: '#08804a', 'ki-oon': '#7a24c9', akata: '#c4177d', delcourt: '#0e7c86', soleil: '#b8860b', kaze: '#5c7f1a', kurokawa: '#3b3f4a', meian: '#8d5524', mangetsu: '#a61e4d', 'panini-manga': '#c92a2a', autre: '#5f6672' };
 export const pubKey = (e) => { const k = slugify(e || ''); return k in PUBCOL ? k : 'autre'; };
+/** Les jours sans sortie, on n'annonce que le lendemain : sinon la même vague serait répétée tous les jours. */
+export const PROCHAIN_JOURS = 1;
 const SPECIAL = /collector|coffret|int[ée]grale|artbook|deluxe|prestige|perfect|fanbook/i;
 const plural = (n, one, many) => `${n} ${n > 1 ? many : one}`;
 const tag = (s) => `#${slugify(s).replace(/-/g, '')}`;
@@ -30,7 +32,7 @@ const wdName = (k) => WD[weekdayOfKey(k)];
 const dm = (k) => frDayMonth(k).replace(/^\S+\s/, ''); // « 4 novembre » sans le jour de la semaine
 
 /**
- * Compose le contenu d'un type de publication : 'jour' (le jour même, ou la prochaine vague s'il n'y a rien),
+ * Compose le contenu d'un type de publication : 'jour' (le jour même, ou le lendemain s'il n'y a rien aujourd'hui),
  * 'semaine' (7 jours à partir d'aujourd'hui) ou 'nouveautes' (tomes 1 des 14 prochains jours).
  * Renvoie null s'il n'y a rien d'intéressant à dire.
  */
@@ -42,7 +44,7 @@ export function compose({ kind, today, manga, anime, site, coverFor }) {
     rows = live.filter((r) => r.date === today);
     if (rows.length) d = { mode: 'jour', title: ['AUJOURD’HUI', 'EN MANGA'], sticker: plural(rows.length, 'SORTIE', 'SORTIES'), when: frDayMonth(today), path: '/semaine/' };
     else {
-      const next = [...new Set(live.filter((r) => r.date > today && r.date <= addDays(today, 10)).map((r) => r.date))].sort()[0];
+      const next = [...new Set(live.filter((r) => r.date > today && r.date <= addDays(today, PROCHAIN_JOURS)).map((r) => r.date))].sort()[0];
       if (!next) return null;
       rows = live.filter((r) => r.date === next);
       const dd = Math.round((Date.parse(next) - Date.parse(today)) / 864e5);
@@ -63,7 +65,7 @@ export function compose({ kind, today, manga, anime, site, coverFor }) {
   const items = pick(rows, 24, coverFor);
   const eps = (anime?.episodes || []).filter((e) => new Date(e.airingAt * 1000).toLocaleDateString('en-CA', { timeZone: 'Europe/Paris' }) === today);
   const firsts = eps.filter((e) => e.episode === 1);
-  const animeLine = eps.length && (kind === 'jour') ? `${plural(eps.length, 'épisode d’anime', 'épisodes d’anime')} aujourd’hui${firsts.length ? `, dont ${plural(firsts.length, 'premier', 'premiers')}` : ''}` : '';
+  const animeLine = eps.length && d.mode === 'jour' ? `${plural(eps.length, 'épisode d’anime', 'épisodes d’anime')} aujourd’hui${firsts.length ? `, dont ${plural(firsts.length, 'premier', 'premiers')}` : ''}` : '';
   const key = `${kind}-${today}`;
   const link = (src) => `${base}${d.path}?utm_source=${src}&utm_medium=social&utm_campaign=${kind}`;
   const pubs = [...new Set(items.map((i) => i.editeur).filter(Boolean))];
