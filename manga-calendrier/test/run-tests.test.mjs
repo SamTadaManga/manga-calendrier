@@ -1292,3 +1292,30 @@ test('trous de numérotation : la BnF comble directement, Google Books propose �
   assert.ok(b.byIsbn.has(iGoogle), 'accepté : entre sur le site');
   srv.close();
 });
+
+test('planification Cloudflare : un seul des deux créneaux de minuit lance la reconstruction, appel GitHub, essai protégé', async () => {
+  const { aLancer, declencher, heureParis } = await import('../scripts/../worker/planification.js');
+  const w = await import(path.join(ROOT, 'worker/index.js'));
+  // heure d'hiver : 23 h UTC = minuit à Paris ; heure d'été : 22 h UTC = minuit à Paris
+  assert.equal(heureParis(new Date('2026-11-11T23:05:00Z')), 0);
+  assert.deepEqual(aLancer('5 22,23 * * *', new Date('2026-11-11T23:05:00Z')), ['deploy.yml']);
+  assert.deepEqual(aLancer('5 22,23 * * *', new Date('2026-11-11T22:05:00Z')), [], 'hiver : 22 h UTC = 23 h à Paris, pas encore minuit');
+  assert.deepEqual(aLancer('5 22,23 * * *', new Date('2026-07-11T22:05:00Z')), ['deploy.yml'], 'été : 22 h UTC = minuit à Paris');
+  assert.deepEqual(aLancer('5 22,23 * * *', new Date('2026-07-11T23:05:00Z')), [], 'été : 23 h UTC = 1 h à Paris');
+  assert.deepEqual(aLancer('12 6 * * *', new Date('2026-11-11T06:12:00Z')), ['social.yml']);
+  assert.deepEqual(aLancer('0 0 * * *', new Date()), [], 'créneau inconnu : rien');
+  const calls = [];
+  const fake = async (url, opt) => { calls.push({ url: String(url), opt }); return new Response(null, { status: 204 }); };
+  const r = await declencher({ cron: '5 22,23 * * *', scheduledTime: Date.parse('2026-11-11T23:05:00Z') }, { GITHUB_TOKEN: 'jeton-test' }, fake);
+  assert.deepEqual(r.map((x) => x.workflow), ['deploy.yml']);
+  assert.ok(calls[0].url.endsWith('/actions/workflows/deploy.yml/dispatches') && calls[0].opt.headers.Authorization === 'Bearer jeton-test' && JSON.parse(calls[0].opt.body).ref === 'main');
+  await assert.rejects(() => declencher({ cron: '12 6 * * *', scheduledTime: Date.now() }, { GITHUB_TOKEN: 'x' }, async () => new Response('refus', { status: 403 })), /403/);
+  await assert.rejects(() => declencher({ cron: '12 6 * * *', scheduledTime: Date.now() }, {}, fake), /GITHUB_TOKEN/);
+  // essai manuel : protégé par STATS_KEY
+  const env = { STATS_KEY: 'cle-secrete-123', GITHUB_TOKEN: 'jeton-test' };
+  assert.equal((await w.default.fetch(new Request('https://x.test/api/planification?cle=mauvaise'), env, { waitUntil() {} })).status, 404);
+  const prev = globalThis.fetch; globalThis.fetch = fake;
+  try { const ok = await w.default.fetch(new Request('https://x.test/api/planification?cle=cle-secrete-123'), env, { waitUntil() {} }); assert.equal(ok.status, 200); assert.equal((await ok.json()).ok, true); } finally { globalThis.fetch = prev; }
+  // le Worker expose bien un gestionnaire de déclencheur horaire
+  assert.equal(typeof w.default.scheduled, 'function');
+});
