@@ -1319,3 +1319,12 @@ test('planification Cloudflare : un seul des deux créneaux de minuit lance la r
   // le Worker expose bien un gestionnaire de déclencheur horaire
   assert.equal(typeof w.default.scheduled, 'function');
 });
+
+test('Cultura : lien Awin du site, adresse de recherche encodée', () => {
+  const cfg = JSON.parse(readFileSync(new URL('../site.config.json', import.meta.url), 'utf8'));
+  const c = sf(cfg).find((x) => x.id === 'cultura');
+  assert.ok(c && c.sponsored);
+  const u = bu(c, '9782413094630');
+  assert.equal(u, 'https://www.awin1.com/cread.php?awinmid=113876&awinaffid=3130835&ued=' + encodeURIComponent('https://www.cultura.com/search/results?search_query=9782413094630'));
+  assert.ok(!sf(cfg).some((x) => x.id === 'bdfugue'));
+});
