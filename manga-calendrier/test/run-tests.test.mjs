@@ -1423,27 +1423,28 @@ test('contenu adulte : retiré du calendrier, du catalogue et des couvertures à
   assert.deepEqual(clesAPurger(dir), [`isbn/${B}.webp`, `isbn/${C}.webp`, 'series/osee.webp'].sort());
 });
 
-test('contrôle des couvertures : décision à partir des scores du modèle', async () => {
+test('contrôle des couvertures : décision stricte à partir des scores du modèle', async () => {
   const { decider, aControler } = await import('../scripts/adulte-images.mjs');
   const bnf = { series: [
     { k: 'a', n: 'A', e: 'X', v: [['1', '9782344000010', 0], ['2', '9782344000027', 0], ['3', '9782344000034', 0]] },
-    { k: 'b', n: 'B', e: 'X', v: [['1', '9782344000041', 0], ['2', '9782344000058', 0], ['3', '9782344000065', 0]] },
-    { k: 'c', n: 'C', e: 'X', v: [['1', '9782344000072', 0], ['2', '9782344000089', 0], ['3', '9782344000096', 0]] },
-    { k: 'd', n: 'D', e: 'X', v: [['1', '9782344000102', 0]] }] };
+    { k: 'b', n: 'B', e: 'X', v: [['1', '9782344000041', 0], ['2', '9782344000058', 0]] },
+    { k: 'c', n: 'C', e: 'X', v: [['1', '9782344000072', 0], ['2', '9782344000089', 0]] },
+    { k: 'd', n: 'D', e: 'X', v: [['1', '9782344000102', 0]] },
+    { k: 'e', n: 'E', e: 'X', v: [['1', '9782344000119', 0]] }] };
   const vus = {
-    'series/a': [0.97, 0.02],                                                     // couverture de série r18 : retirée
-    'isbn/9782344000041': [0.9, 0], 'isbn/9782344000058': [0.9, 0], 'isbn/9782344000065': [0.1, 0],  // b : 2 tomes sur 3 : retirée
-    'series/c': [0.4, 0.5], 'isbn/9782344000072': [0.95, 0], 'isbn/9782344000089': [0.1, 0], 'isbn/9782344000096': [0.1, 0], // c : un seul tome : signalé, pas retiré
-    'series/d': [0.99, 0],
+    'series/a': [0.97, 0.02],                                  // couverture de série : retirée
+    'isbn/9782344000041': [0.55, 0],                           // b : un seul tome au-dessus du seuil suffit
+    'isbn/9782344000072': [0.49, 0.9],                         // c : r15 élevé mais r18 sous le seuil : gardée
+    'series/d': [0.99, 0], 'cal/f/3': [0.8, 0], 'cal/e/1': [0.1, 0.1],
   };
-  const d = decider(vus, bnf, new Set(['d']));                                    // d est dans « conserver »
-  assert.deepEqual(Object.keys(d.series).sort(), ['a', 'b']);
-  assert.deepEqual(Object.keys(d.tomes), ['9782344000072']);
-  assert.ok(d.series.a.motif.includes('0.97'));
-  const liste = aControler({ 'series/a': [0, 0] }, bnf, new Set(['9782344000010']), 10).map((x) => x.cle);
-  assert.equal(liste[0], 'series/b');                                              // séries d'abord, ce qui est déjà vu est ignoré
+  const d = decider(vus, bnf, new Set(['d']));                  // d est dans « conserver »
+  assert.deepEqual(Object.keys(d.series).sort(), ['a', 'b', 'f']);  // f : couverture du calendrier, série hors catalogue
+  assert.ok(d.series.a.motif.includes('0.97') && d.series.b.motif.includes('9782344000041'));
+  const cal = [{ slug: 'z', tome: '2', cover: 'https://editeur.example/z2.jpg' }, { slug: 'e', tome: '1', cover: 'https://editeur.example/e1.jpg' }];
+  const liste = aControler({ 'series/a': [0, 0], 'cal/e/1': [0.1, 0] }, bnf, new Set(['9782344000010']), 10, cal).map((x) => x.cle);
+  assert.equal(liste[0], 'cal/z/2');                           // calendrier d'abord ; ce qui est déjà vu est ignoré
+  assert.ok(!liste.includes('cal/e/1') && !liste.includes('series/a'));
   assert.ok(liste.includes('isbn/9782344000010') && !liste.includes('isbn/9782344000027'));  // tomes : seulement ceux dont la couverture est dans R2
-  assert.ok(liste.every((x) => !x.startsWith('series/a')));
 });
 
 test('contrôle des couvertures : les séries retirées par image disparaissent du catalogue', async () => {
