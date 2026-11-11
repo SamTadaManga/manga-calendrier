@@ -253,3 +253,10 @@ Le bouton Cultura ouvre directement la fiche du tome quand elle est connue (envi
 - Workflow « Liens Cultura (flux Awin) » : chaque nuit à 1 h 27 UTC, ou à la main (case « Essai à blanc » pour voir le bilan sans rien enregistrer).
 - L'adresse du flux contient une clé : elle n'est QUE dans le secret GitHub `AWIN_FEED_URL`. Ne jamais la mettre dans un fichier, un message ou une capture d'écran.
 - Pour le tester sans secret : `node scripts/cultura-flux.mjs --essai --fichier=flux.csv.gz`.
+
+### Le flux Cultura complète aussi le catalogue et les couvertures
+
+Chaque nuit, le même script (`cultura-flux.mjs`) fait trois choses de plus avec le flux :
+- **Tomes manquants** : un tome du flux est ajouté au catalogue (`data/catalogue-ajouts.json`, `"src":"cultura"`) quand son titre est exactement « *nom de la série* Tome N », qu'il comble un trou de numérotation ou suit jusqu'à 3 tomes le dernier tome connu, que son ISBN a le même préfixe d'éditeur (8 premiers chiffres) que les tomes déjà connus de la série, et qu'il n'y a qu'un seul candidat. Pour annuler un ajout, supprimer sa ligne ou le déclarer dans `data/numerotation-ok.json`.
+- **Couvertures** : `data/cultura-images.json` liste les images Cultura des ISBN qui n'ont pas encore de couverture. « Couvertures de tomes (R2) » les essaie en premier (rejet si l'image est plus petite que 100 × 140 px ou plus large que haute) et garde le résultat dans R2 comme les autres. Supprimer ce fichier désactive la source.
+- Essai à blanc (workflow « Liens Cultura », case cochée) : affiche les trois bilans sans rien écrire.

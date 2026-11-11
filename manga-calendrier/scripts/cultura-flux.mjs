@@ -8,6 +8,9 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { isIsbn13 } from './shops.mjs';
 import { loadBnf } from './catalogue-bnf.mjs';
+import { decode } from './collectors.mjs';
+import { findGaps, loadExceptions } from './trous.mjs';
+import { flat, saveAjouts } from './ajouts-lib.mjs';
 
 const BASE_RE = /^https:\/\/www\.awin1\.com\/pclick\.php\?(?:[a-z]=\d+&)+p=$/;
 
@@ -31,27 +34,79 @@ export function* lignesCsv(texte) {
   if (champ || ligne.length) { ligne.push(champ); yield ligne; }
 }
 
-/** Contenu du flux -> { base, liens: { isbn13: identifiant produit Awin } } pour les ISBN voulus. */
-export function lireFlux(texte, voulus) {
+/** Contenu du flux -> liste de produits { isbn, pid, nom, serie, tome, img, base } (ISBN-13 valides uniquement). */
+export function produitsFlux(texte) {
   const it = lignesCsv(texte);
   const tete = it.next().value || [];
   const col = (nom) => tete.indexOf(nom);
-  const iLien = col('aw_deep_link'), iId = col('merchant_product_id'), iIsbn = col('isbn');
+  const iLien = col('aw_deep_link'), iId = col('merchant_product_id'), iIsbn = col('isbn'), iNom = col('product_name'), iImg = col('merchant_image_url');
   if (iLien < 0 || iId < 0) throw new Error('Flux inattendu : colonnes aw_deep_link et merchant_product_id introuvables.');
-  let base = '', lignes = 0;
-  const liens = {};
+  const out = [];
   for (const r of it) {
-    lignes++;
     const isbn = [r[iId], iIsbn >= 0 ? r[iIsbn] : ''].map((x) => String(x || '').replace(/[^0-9]/g, '')).find((x) => isIsbn13(x));
-    if (!isbn || !voulus.has(isbn) || liens[isbn]) continue;
+    if (!isbn) continue;
     const m = String(r[iLien] || '').match(/^https:\/\/www\.awin1\.com\/pclick\.php\?p=(\d{3,20})&a=(\d+)&m=(\d+)$/);
     if (!m) continue;
-    const b = `https://www.awin1.com/pclick.php?a=${m[2]}&m=${m[3]}&p=`;
-    if (!base) base = b;
-    if (b !== base) continue;
-    liens[isbn] = m[1];
+    const nom = decode(String(iNom >= 0 ? r[iNom] : '')).trim();
+    const t = nom.match(/^(.*?)\s+Tome\s*(\d{1,3})$/i);
+    const img = String(iImg >= 0 ? r[iImg] : '').match(/^https:\/\/cdn\.cultura\.com\/media\/pim\/([\w./-]+)$/);
+    out.push({ isbn, pid: m[1], base: `https://www.awin1.com/pclick.php?a=${m[2]}&m=${m[3]}&p=`, nom, serie: t ? flat(t[1]) : '', tome: t ? String(Number(t[2])) : '', img: img ? img[1] : '' });
   }
-  return { lignes, base, liens };
+  return out;
+}
+
+/** Liens directs { base, liens: { isbn13: identifiant produit Awin } } pour les ISBN voulus. */
+export function lireFlux(texte, voulus) { return liensDe(produitsFlux(texte), voulus); }
+export function liensDe(produits, voulus) {
+  let base = '';
+  const liens = {};
+  for (const p of produits) {
+    if (!voulus.has(p.isbn) || liens[p.isbn]) continue;
+    if (!base) base = p.base;
+    if (p.base !== base) continue;
+    liens[p.isbn] = p.pid;
+  }
+  return { lignes: produits.length, base, liens };
+}
+
+const pre = (isbn) => isbn.slice(0, 8); // préfixe éditeur : mêmes 8 premiers chiffres qu'un tome déjà connu de la série
+
+/**
+ * Tomes que le catalogue ne connaît pas encore : trous de numérotation (petits et gros) et jusqu'à 3 tomes après le dernier connu.
+ * Règle : titre « <série> Tome N » identique à la série, même préfixe d'ISBN que ses tomes connus, un seul candidat.
+ */
+export function completerCatalogue(produits, bnf, ex, connus) {
+  const parTitre = new Map();
+  for (const p of produits) if (p.serie) { const k = `${p.serie}|${p.tome}`; (parTitre.get(k) || parTitre.set(k, []).get(k)).push(p); }
+  const vus = new Set(connus);
+  const trouve = (s, n, pres) => {
+    const c = (parTitre.get(`${flat(s.n)}|${n}`) || []).filter((p) => pres.has(pre(p.isbn)) && !vus.has(p.isbn));
+    return c.length === 1 ? c[0] : null;
+  };
+  const out = [];
+  const ajoute = (s, n, p, motif) => { vus.add(p.isbn); out.push({ k: s.k, n: s.n, e: s.e, t: String(n), isbn: p.isbn, y: 0, src: 'cultura', motif, statut: 'ok' }); };
+  const G = findGaps(bnf.series, () => [], ex);
+  const trous = new Set();
+  for (const g of [...G.petit, ...G.gros]) {
+    const s = bnf.byK.get(g.k), pres = new Set(s.v.map((v) => pre(v[1])));
+    trous.add(g.k);
+    for (const n of g.miss) { const p = trouve(s, n, pres); if (p) ajoute(s, n, p, 'trou'); }
+  }
+  for (const s of bnf.series) {
+    if (ex.exclus.has(flat(s.e)) || ex.exceptions.get(s.k) === 'tous') continue;
+    const mx = Math.max(0, ...s.v.map((v) => Number(v[0]) || 0));
+    if (!mx || mx > 100) continue;
+    const pres = new Set(s.v.map((v) => pre(v[1])));
+    for (let n = mx + 1; n <= mx + 3; n++) { const p = trouve(s, n, pres); if (!p) break; ajoute(s, n, p, 'suite'); }
+  }
+  return out;
+}
+
+/** Images Cultura pour les ISBN du site qui n'ont pas encore de couverture : { isbn: chemin sous cdn.cultura.com/media/pim/ }. */
+export function imagesManquantes(produits, voulus, faits) {
+  const out = {};
+  for (const p of produits) if (p.img && voulus.has(p.isbn) && !faits.has(p.isbn) && !out[p.isbn]) out[p.isbn] = p.img;
+  return out;
 }
 
 /** ISBN-13 que le site peut afficher : catalogue + calendrier. */
@@ -77,16 +132,40 @@ async function main() {
     buf = Buffer.from(await r.arrayBuffer());
   }
   const texte = (buf[0] === 0x1f && buf[1] === 0x8b ? gunzipSync(buf) : buf).toString('utf8').replace(/^\uFEFF/, '');
-  const voulus = isbnVoulus(dir);
-  const { lignes, base, liens } = lireFlux(texte, voulus);
+  const produits = produitsFlux(texte);
+  const stable = (o) => JSON.stringify(Object.fromEntries(Object.entries(o).sort(([a], [b]) => a.localeCompare(b))));
+  const ecrire = (nom, objet, comparer) => {
+    const cible = path.join(dir, nom);
+    try { const old = JSON.parse(readFileSync(cible, 'utf8')); if (comparer(old)) return false; } catch {}
+    writeFileSync(cible, JSON.stringify(objet) + '\n');
+    return true;
+  };
+  const maj = new Date().toISOString().slice(0, 10);
+
+  // 1. Tomes absents du catalogue (avant de compter les liens, pour que les nouveaux ISBN en profitent)
+  const bnf = loadBnf(dir);
+  const nouveaux = completerCatalogue(produits, bnf, loadExceptions(dir), bnf.byIsbn.keys());
+  const trous = nouveaux.filter((a) => a.motif === 'trou').length;
+  console.log(`Catalogue : ${trous} trous de numérotation comblés, ${nouveaux.length - trous} tomes suivants ajoutés.`);
+  if (!essai && nouveaux.length) console.log(`  ${saveAjouts(dir, nouveaux)} références écrites dans data/catalogue-ajouts.json.`);
+
+  // 2. Liens directs
+  const voulus = new Set([...isbnVoulus(dir), ...(essai ? nouveaux.map((a) => a.isbn) : [])]);
+  const { lignes, base, liens } = liensDe(produits, voulus);
   const n = Object.keys(liens).length;
   console.log(`Flux : ${lignes} produits. ISBN du site : ${voulus.size}. Liens directs trouvés : ${n} (${Math.round((100 * n) / voulus.size)} %).`);
-  if (!BASE_RE.test(base) || n < 1000) { console.error('Bilan trop faible ou adresse inattendue : fichier laissé tel quel.'); process.exitCode = 1; return; }
+  if (!BASE_RE.test(base) || n < 1000) { console.error('Bilan trop faible ou adresse inattendue : fichiers de liens et d\'images laissés tels quels.'); process.exitCode = 1; return; }
+
+  // 3. Images pour les couvertures manquantes
+  let faits = new Set();
+  try { faits = new Set(JSON.parse(readFileSync(path.join(dir, 'couvertures-isbn.json'), 'utf8')).done || []); } catch {}
+  const images = imagesManquantes(produits, voulus, faits);
+  console.log(`Couvertures : ${Object.keys(images).length} ISBN sans couverture ont une image chez Cultura.`);
+
   if (essai) { console.log('Essai à blanc : rien écrit.'); return; }
-  const cible = path.join(dir, 'cultura-liens.json');
-  try { const old = JSON.parse(readFileSync(cible, 'utf8')); if (old.base === base && JSON.stringify(old.liens) === JSON.stringify(Object.fromEntries(Object.entries(liens).sort(([a], [b]) => a.localeCompare(b))))) { console.log('Aucun changement.'); return; } } catch {}
   const tri = Object.fromEntries(Object.entries(liens).sort(([a], [b]) => a.localeCompare(b)));
-  writeFileSync(cible, JSON.stringify({ source: 'Flux produits Cultura (Awin)', maj: new Date().toISOString().slice(0, 10), base, liens: tri }) + '\n');
-  console.log('data/cultura-liens.json écrit.');
+  const l = ecrire('cultura-liens.json', { source: 'Flux produits Cultura (Awin)', maj, base, liens: tri }, (old) => old.base === base && stable(old.liens) === stable(liens));
+  const im = ecrire('cultura-images.json', { source: 'Flux produits Cultura (Awin)', maj, base: 'https://cdn.cultura.com/media/pim/', img: images }, (old) => stable(old.img || {}) === stable(images));
+  console.log(`cultura-liens.json : ${l ? 'écrit' : 'inchangé'} ; cultura-images.json : ${im ? 'écrit' : 'inchangé'}.`);
 }
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) main().catch((e) => { console.error(`Erreur : ${e.message}`); process.exitCode = 1; });

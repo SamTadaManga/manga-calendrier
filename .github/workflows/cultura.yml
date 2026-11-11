@@ -1,5 +1,6 @@
 name: Liens Cultura (flux Awin)
-# Télécharge le flux produits Cultura (Awin) et met à jour data/cultura-liens.json : lien direct vers la fiche de chaque tome.
+# Télécharge le flux produits Cultura (Awin) et met à jour : data/cultura-liens.json (lien direct vers la fiche de chaque tome), data/catalogue-ajouts.json
+# (tomes absents du catalogue : trous de numérotation et tomes suivants, titre et préfixe ISBN identiques) et data/cultura-images.json (images pour les couvertures manquantes, utilisées par « Couvertures de tomes (R2) »).
 # Secret à créer dans Settings > Secrets and variables > Actions : AWIN_FEED_URL (adresse complète du flux, avec sa clé). Sans lui, rien n'est fait.
 # Chaque nuit à 1 h 27 UTC, avant la mise à jour de 3 h 17 UTC ; le fichier n'est enregistré que s'il a changé.
 on:
@@ -38,15 +39,17 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          KEEP="$RUNNER_TEMP/c.json"
-          cp manga-calendrier/data/cultura-liens.json "$KEEP"
+          KEEP="$RUNNER_TEMP/keep"
+          mkdir -p "$KEEP"
+          FILES="cultura-liens.json cultura-images.json catalogue-ajouts.json"
+          for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
           for i in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
-            cp "$KEEP" manga-calendrier/data/cultura-liens.json
-            git add manga-calendrier/data/cultura-liens.json
+            for f in $FILES; do [ -f "$KEEP/$f" ] && cp "$KEEP/$f" "manga-calendrier/data/$f"; done
+            git add manga-calendrier/data/cultura-liens.json manga-calendrier/data/cultura-images.json manga-calendrier/data/catalogue-ajouts.json
             if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
-            git commit -m "Liens Cultura : mise à jour du flux"
+            git commit -m "Flux Cultura : liens, tomes du catalogue et images mis à jour"
             if git push origin HEAD:main; then exit 0; fi
             sleep 5
           done

@@ -1355,3 +1355,27 @@ test('Cultura : lien direct si connu, sinon recherche ; fichier mal formé ignor
   assert.equal(directFrom(null), null);
   assert.equal(bu({ ...c, direct: { base: d.base, liens: { 9782413094630: '1"><b' } } }, '9782413094630').startsWith('https://www.awin1.com/cread.php?'), true);
 });
+
+test('flux Cultura : trous, tomes suivants, images manquantes', async () => {
+  const { produitsFlux, completerCatalogue, imagesManquantes } = await import('../scripts/cultura-flux.mjs');
+  const { loadExceptions } = await import('../scripts/trous.mjs');
+  const cle = (d) => d + String((10 - (d.split('').reduce((t, c, i) => t + Number(c) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const I = (n) => cle(`97823440${String(n).padStart(4, '0')}`); // ISBN valides, même préfixe éditeur
+  const ligne = (id, nom, p, img = '') => `https://www.awin1.com/pclick.php?p=${p}&a=1&m=2,"${nom}",${id},${img},\n`;
+  const csv = 'aw_deep_link,product_name,merchant_product_id,merchant_image_url,isbn\n'
+    + ligne(I(10), 'Ma série Tome 1', 101) + ligne(I(34), 'Ma série Tome 3', 103, 'https://cdn.cultura.com/media/pim/TITELIVE/3.jpg')
+    + ligne(I(41), 'Ma série Tome 4', 104) + ligne(I(58), 'Ma série Tome 5', 105) + ligne(I(65), 'Ma série Tome 6', 106) + ligne(I(72), 'Ma série Tome 7', 107)
+    + ligne(I(89), 'Ma série Tome 2', 102) + ligne(cle('979109999999'), 'Ma série Tome 2', 202) // même titre, autre éditeur : écarté (préfixe)
+    + ligne(I(96), 'Ma série - édition prestige', 108);
+  const pr = produitsFlux(csv);
+  assert.equal(pr.length, 9);
+  const bnf = { series: [{ k: 'ma-serie', n: 'Ma série', e: 'Glénat', v: [['1', I(10), 2020], ['5', I(58), 2021]] }] };
+  bnf.byK = new Map(bnf.series.map((s) => [s.k, s]));
+  bnf.byIsbn = new Map(bnf.series.flatMap((s) => s.v.map((v) => [v[1], s])));
+  const r = completerCatalogue(pr, bnf, loadExceptions(''), bnf.byIsbn.keys());
+  assert.deepEqual(r.map((a) => `${a.t}:${a.motif}`).sort(), ['2:trou', '3:trou', '4:trou', '6:suite', '7:suite']);
+  assert.ok(r.every((a) => a.statut === 'ok' && a.src === 'cultura' && a.e === 'Glénat'));
+  assert.ok(!r.some((a) => a.isbn === cle('979109999999')));
+  const im = imagesManquantes(pr, new Set([I(34), I(10)]), new Set([I(10)]));
+  assert.deepEqual(im, { [I(34)]: 'TITELIVE/3.jpg' });
+});
