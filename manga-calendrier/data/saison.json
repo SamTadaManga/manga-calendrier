@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-10T11:13:50.347Z",
+ "generatedAt": "2026-11-11T10:20:30.207Z",
  "seasons": [
   {
    "season": "FALL",
@@ -479,6 +479,25 @@
      ]
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 208025,
      "t": "I'm Dating a Dark Summoner",
      "f": "TV_SHORT",
@@ -522,25 +541,6 @@
        "u": "https://www.crunchyroll.com/series/GT00384006/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship"
       }
      ]
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
     },
     {
      "id": 191788,
@@ -1703,26 +1703,6 @@
      "s": []
     },
     {
-     "id": 187303,
-     "t": "Giant Ojou-sama",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/187303",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg",
-     "g": [
-      "Action",
-      "Comedy",
-      "Ecchi"
-     ],
-     "s": []
-    },
-    {
      "id": 197095,
      "t": "Kaketa Tsuki no Mercedes",
      "f": "TV",
@@ -1739,6 +1719,26 @@
       "Action",
       "Adventure",
       "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 187303,
+     "t": "Giant Ojou-sama",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/187303",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Ecchi"
      ],
      "s": []
     },
