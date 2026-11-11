@@ -30,5 +30,12 @@ export function r2Client({ accountId, bucket, accessKey, secretKey }) {
       const r = await fetch(`https://${host}${pathname.split('/').map(enc).join('/')}`, { method: 'PUT', headers, body, signal: AbortSignal.timeout(30000) });
       if (!r.ok) throw new Error(`R2 ${r.status} : ${(await r.text()).slice(0, 200)}`);
     },
+    async del(key) {
+      const amzDate = new Date().toISOString().replace(/[-:]|\.\d{3}/g, '');
+      const pathname = `/${bucket}/${key}`;
+      const headers = signV4({ method: 'DELETE', host, pathname, headers: {}, body: '', accessKey, secretKey, amzDate });
+      const r = await fetch(`https://${host}${pathname.split('/').map(enc).join('/')}`, { method: 'DELETE', headers, signal: AbortSignal.timeout(30000) });
+      if (!r.ok && r.status !== 404) throw new Error(`R2 ${r.status} : ${(await r.text()).slice(0, 200)}`);
+    },
   };
 }

@@ -11,6 +11,7 @@ import { loadBnf } from './catalogue-bnf.mjs';
 import { decode } from './collectors.mjs';
 import { findGaps, loadExceptions } from './trous.mjs';
 import { flat, saveAjouts } from './ajouts-lib.mjs';
+import { analyserTexte, chargerAdulte, estAdulte } from './adulte.mjs';
 
 const BASE_RE = /^https:\/\/www\.awin1\.com\/pclick\.php\?(?:[a-z]=\d+&)+p=$/;
 
@@ -39,7 +40,7 @@ export function produitsFlux(texte) {
   const it = lignesCsv(texte);
   const tete = it.next().value || [];
   const col = (nom) => tete.indexOf(nom);
-  const iLien = col('aw_deep_link'), iId = col('merchant_product_id'), iIsbn = col('isbn'), iNom = col('product_name'), iImg = col('merchant_image_url');
+  const iLien = col('aw_deep_link'), iId = col('merchant_product_id'), iIsbn = col('isbn'), iNom = col('product_name'), iImg = col('merchant_image_url'), iDesc = col('description');
   if (iLien < 0 || iId < 0) throw new Error('Flux inattendu : colonnes aw_deep_link et merchant_product_id introuvables.');
   const out = [];
   for (const r of it) {
@@ -50,7 +51,7 @@ export function produitsFlux(texte) {
     const nom = decode(String(iNom >= 0 ? r[iNom] : '')).trim();
     const t = nom.match(/^(.*?)\s+Tome\s*(\d{1,3})$/i);
     const img = String(iImg >= 0 ? r[iImg] : '').match(/^https:\/\/cdn\.cultura\.com\/media\/pim\/([\w./-]+)$/);
-    out.push({ isbn, pid: m[1], base: `https://www.awin1.com/pclick.php?a=${m[2]}&m=${m[3]}&p=`, nom, serie: t ? flat(t[1]) : '', tome: t ? String(Number(t[2])) : '', img: img ? img[1] : '' });
+    out.push({ desc: decode(String(iDesc >= 0 ? r[iDesc] : '').replace(/<[^>]+>/g, ' ')).slice(0, 1500), isbn, pid: m[1], base: `https://www.awin1.com/pclick.php?a=${m[2]}&m=${m[3]}&p=`, nom, serie: t ? flat(t[1]) : '', tome: t ? String(Number(t[2])) : '', img: img ? img[1] : '' });
   }
   return out;
 }
@@ -102,6 +103,23 @@ export function completerCatalogue(produits, bnf, ex, connus) {
   return out;
 }
 
+/**
+ * Contenu adulte du catalogue (descriptions du flux + règles de adulte.mjs) -> { exclure: { slug: {n, e, motif} }, revoir: { slug: {n, e, r: [repères]} } }.
+ * Les séries déjà décidées à la main (conserver, séries, labels) ne sont pas reproposées.
+ */
+export function analyserAdulte(produits, bnfTout, adulte) {
+  const parIsbn = new Map(produits.map((p) => [p.isbn, p]));
+  const exclure = {}, revoir = {};
+  for (const s of bnfTout.series) {
+    if (adulte.conserver.has(s.k) || estAdulte(adulte, { slug: s.k, serie: s.n, editeur: s.e })) continue;
+    const texte = s.v.map((v) => { const p = parIsbn.get(v[1]); return p ? `${p.nom} ${p.desc}` : ''; }).join(' ');
+    const a = analyserTexte(s.n, texte);
+    if (a.exclure) exclure[s.k] = { n: s.n, e: s.e, motif: a.exclure };
+    else if (a.revoir.length >= 2 || a.revoir.some((r) => ['porno', 'xxx', 'explicite'].includes(r))) revoir[s.k] = { n: s.n, e: s.e, r: a.revoir };
+  }
+  return { exclure, revoir };
+}
+
 /** Images Cultura pour les ISBN du site qui n'ont pas encore de couverture : { isbn: chemin sous cdn.cultura.com/media/pim/ }. */
 export function imagesManquantes(produits, voulus, faits) {
   const out = {};
@@ -141,6 +159,16 @@ async function main() {
     return true;
   };
   const maj = new Date().toISOString().slice(0, 10);
+
+  // 0. Contenu adulte : les séries repérées par leur description sont retirées du site (data/contenu-adulte-auto.json) ; les cas douteux sont listés pour relecture
+  const adulteCfg = chargerAdulte(dir);
+  const ana = analyserAdulte(produits, loadBnf(dir, { tout: true }), adulteCfg);
+  let ancien = {};
+  try { ancien = JSON.parse(readFileSync(path.join(dir, 'contenu-adulte-auto.json'), 'utf8')); } catch {}
+  const exclusAuto = Object.fromEntries(Object.entries({ ...(ancien.series || {}), ...ana.exclure }).filter(([k]) => !adulteCfg.conserver.has(k)));
+  const aRevoir = Object.fromEntries(Object.entries(ana.revoir).filter(([k]) => !exclusAuto[k]));
+  console.log(`Contenu adulte : ${Object.keys(exclusAuto).length} séries retirées automatiquement (${Object.keys(ana.exclure).length} nouvelles), ${Object.keys(aRevoir).length} à relire.`);
+  if (!essai) ecrire('contenu-adulte-auto.json', { source: 'Descriptions du flux Cultura et règles de scripts/adulte.mjs', maj, series: exclusAuto, revoir: aRevoir }, (old) => stable(old.series || {}) === stable(exclusAuto) && stable(old.revoir || {}) === stable(aRevoir));
 
   // 1. Tomes absents du catalogue (avant de compter les liens, pour que les nouveaux ISBN en profitent)
   const bnf = loadBnf(dir);

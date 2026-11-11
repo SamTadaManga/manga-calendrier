@@ -41,13 +41,13 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           KEEP="$RUNNER_TEMP/keep"
           mkdir -p "$KEEP"
-          FILES="cultura-liens.json cultura-images.json catalogue-ajouts.json"
+          FILES="cultura-liens.json cultura-images.json catalogue-ajouts.json contenu-adulte-auto.json"
           for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
           for i in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
             for f in $FILES; do [ -f "$KEEP/$f" ] && cp "$KEEP/$f" "manga-calendrier/data/$f"; done
-            git add manga-calendrier/data/cultura-liens.json manga-calendrier/data/cultura-images.json manga-calendrier/data/catalogue-ajouts.json
+            for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && git add "manga-calendrier/data/$f"; done
             if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
             git commit -m "Flux Cultura : liens, tomes du catalogue et images mis à jour"
             if git push origin HEAD:main; then exit 0; fi

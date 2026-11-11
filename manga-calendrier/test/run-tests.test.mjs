@@ -1379,3 +1379,46 @@ test('flux Cultura : trous, tomes suivants, images manquantes', async () => {
   const im = imagesManquantes(pr, new Set([I(34), I(10)]), new Set([I(10)]));
   assert.deepEqual(im, { [I(34)]: 'TITELIVE/3.jpg' });
 });
+
+test('contenu adulte : règles, liste manuelle, faux positifs conservés', async () => {
+  const { chargerAdulte, estAdulte, analyserTexte } = await import('../scripts/adulte.mjs');
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'adulte-'));
+  writeFileSync(path.join(dir, 'contenu-adulte.json'), JSON.stringify({ editeurs: ['Label Rouge'], series: { 'ma-serie-osee': 'confirmé' }, isbn: ['9782344000010'], conserver: { 'sex-pistols': 'groupe de rock', 'hot-manga-sage': 'ok' } }));
+  writeFileSync(path.join(dir, 'contenu-adulte-auto.json'), JSON.stringify({ series: { 'detectee-auto': { motif: 'description : hentai' } } }));
+  const c = chargerAdulte(dir);
+  assert.equal(estAdulte(c, { editeur: 'Hot manga', serie: 'Autre' }), true);        // label adulte intégré
+  assert.equal(estAdulte(c, { editeur: 'HOT MANGA', serie: 'Autre' }), true);
+  assert.equal(estAdulte(c, { editeur: 'Label Rouge', serie: 'Autre' }), true);      // label ajouté à la main
+  assert.equal(estAdulte(c, { editeur: 'Kana', serie: 'Ma série osée' }), true);     // série confirmée (adresse déduite du nom)
+  assert.equal(estAdulte(c, { editeur: 'Kana', slug: 'detectee-auto' }), true);      // détectée automatiquement
+  assert.equal(estAdulte(c, { editeur: 'Kana', serie: 'Incitant porno' }), true);    // titre explicite
+  assert.equal(estAdulte(c, { editeur: 'Kana', serie: 'Sex Pistols' }), false);      // faux positif conservé
+  assert.equal(estAdulte(c, { editeur: 'Hot manga', slug: 'hot-manga-sage' }), false);
+  assert.equal(estAdulte(c, { editeur: 'Kana', serie: 'Naruto', isbn: '9782344000010' }), true);
+  assert.equal(estAdulte(c, { editeur: 'Kana', serie: 'Naruto', isbn: '9782344000027' }), false);
+  assert.equal(estAdulte(c, { editeur: 'Pika', serie: 'Essex' }), false);             // « sex » dans un mot : pas de faux positif
+  assert.equal(analyserTexte('Titre', 'Un hentai doux et assumé').exclure, 'description : hentai');
+  assert.deepEqual(analyserTexte('Titre', 'Des scènes de sexe, un public adulte').revoir.sort(), ['explicite', 'xxx']);
+  assert.equal(analyserTexte('Naruto', 'Un ninja pénètre dans le village').exclure, '');
+});
+
+test('contenu adulte : retiré du calendrier, du catalogue et des couvertures à purger', async () => {
+  const { loadBnf } = await import('../scripts/catalogue-bnf.mjs');
+  const { loadAllManga } = await import('../scripts/lib.mjs');
+  const { clesAPurger } = await import('../scripts/adulte-purge.mjs');
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'adulte2-'));
+  const cle = (d) => d + String((10 - (d.split('').reduce((t, ch, i) => t + Number(ch) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const A = cle('978234400001'), B = cle('978234400002'), C = cle('978234400003');
+  writeFileSync(path.join(dir, 'catalogue-bnf.json'), JSON.stringify({ series: [
+    { k: 'gentille', n: 'Gentille', e: 'Kana', v: [['1', A, 2020]] },
+    { k: 'osee', n: 'Osée', e: 'Hot manga', v: [['1', B, 2020]] },
+    { k: 'mixte', n: 'Mixte', e: 'Kana', v: [['1', C, 2020]] }] }));
+  writeFileSync(path.join(dir, 'contenu-adulte.json'), JSON.stringify({ isbn: [C] }));
+  writeFileSync(path.join(dir, 'manga.csv'), 'Date de sortie,Éditeur,Série,Tome,Titre du tome (facultatif),ISBN-13,Prix (€),Statut,Source officielle (lien),Vérifié le,Notes\n2026-12-01,Kana,Gentille,2,,,7,A paraître,,,\n2026-12-01,Hot manga,Osée,3,,,7,A paraître,,,\n2026-12-01,Kana,Porno au boulot,1,,,7,A paraître,,,\n');
+  assert.deepEqual(loadAllManga(dir).map((r) => r.serie), ['Gentille']);
+  const b = loadBnf(dir);
+  assert.deepEqual(b.series.map((s) => s.k), ['gentille', 'mixte']);
+  assert.deepEqual(b.byK.get('mixte').v, []);                       // le tome adulte d'une série ordinaire est retiré
+  assert.equal(loadBnf(dir, { tout: true }).series.length, 3);
+  assert.deepEqual(clesAPurger(dir), [`isbn/${B}.webp`, `isbn/${C}.webp`, 'series/osee.webp'].sort());
+});

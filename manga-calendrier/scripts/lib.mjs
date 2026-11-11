@@ -3,6 +3,7 @@
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { chargerAdulte, estAdulte } from './adulte.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const TZ = 'Europe/Paris';
@@ -204,7 +205,8 @@ export function loadAllManga(dir) {
     return true;
   });
   const cmp = (a, b) => String(a).localeCompare(String(b), 'fr', { numeric: true });
-  return [...manual, ...kept].sort((a, b) => cmp(a.date, b.date) || cmp(a.editeur, b.editeur) || cmp(a.serie, b.serie) || cmp(a.tome, b.tome));
+  const adulte = chargerAdulte(dir);
+  return [...manual, ...kept].filter((r) => !estAdulte(adulte, r)).sort((a, b) => cmp(a.date, b.date) || cmp(a.editeur, b.editeur) || cmp(a.serie, b.serie) || cmp(a.tome, b.tome));
 }
 export const mangaLabel =(r) => `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
 export const euro = (n) => `${n.toFixed(2).replace('.', ',')} €`;
