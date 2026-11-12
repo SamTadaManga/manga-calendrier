@@ -1,16 +1,15 @@
 ---
 title: "Éditions collector, coffrets et éditions spéciales manga de novembre 2026"
 date: 2026-11-01
-description: "10 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
+description: "8 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
 auto: true
 draft: false
 ---
 
-10 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
+8 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
 
 ## Collectors
 
-- **Dangerous Convenience Store tome 7** (Delcourt) : jeu. 5 nov. · [la série](/serie/dangerous-convenience-store/)
 - **Agents of the Four Seasons - Coffret Collector** (Akata) : mer. 18 nov. · [la série](/serie/agents-of-the-four-seasons-coffret-collector/)
 
 ## Coffrets
@@ -20,7 +19,6 @@ draft: false
 
 ## Éditions deluxe et prestige
 
-- **Bleach Deluxe tome 2** (Glénat) : mer. 4 nov. · [la série](/serie/bleach-deluxe/)
 - **Flying Ben - Édition prestige** (Delcourt) : jeu. 12 nov. · [la série](/serie/flying-ben-edition-prestige/)
 - **Eagle Perfect édition tome 5** (Panini Manga) : mer. 18 nov. · [la série](/serie/eagle-perfect-edition/)
 - **Alice in Borderland Perfect Edition tome 2** (Delcourt) : jeu. 19 nov. · [la série](/serie/alice-in-borderland-perfect-edition/)

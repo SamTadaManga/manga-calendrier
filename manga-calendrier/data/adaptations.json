@@ -6423,7 +6423,217 @@
     "y": 2021,
     "v": 2
    }
+  },
+  "dans-la-peau-de-miwa": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": {
+    "au": [
+     "Yuhei Aoki"
+    ],
+    "sc": [
+     "Yuhei Aoki"
+    ],
+    "ar": [
+     "Yuhei Aoki"
+    ],
+    "g": [
+     "Drama",
+     "Psychological"
+    ],
+    "st": "RELEASING",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "demon-slave": {
+   "c": "2026-11-12",
+   "a": [
+    {
+     "id": 214650,
+     "t": "Mato Seihei no Slave 3",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/214650",
+     "s": []
+    },
+    {
+     "id": 141821,
+     "t": "Chained Soldier",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/141821",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Youhei Takemura",
+     "Takahiro"
+    ],
+    "sc": [
+     "Takahiro"
+    ],
+    "ar": [
+     "Youhei Takemura"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Drama",
+     "Ecchi",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2019,
+    "v": 2
+   }
+  },
+  "en-selle-sakamichi": {
+   "c": "2026-11-12",
+   "a": [
+    {
+     "id": 18179,
+     "t": "Yowamushi Pedal",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/18179",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/80061943"
+      },
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/dp/B08FVH5QJ7/"
+      }
+     ]
+    },
+    {
+     "id": 20808,
+     "t": "Yowamushi Pedal Re:RIDE",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/20808",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Wataru Watanabe"
+    ],
+    "sc": [
+     "Wataru Watanabe"
+    ],
+    "ar": [
+     "Wataru Watanabe"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Sports"
+    ],
+    "st": "RELEASING",
+    "y": 2008,
+    "v": 2
+   }
+  },
+  "ippo-saison-6-the-fighting": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": null
+  },
+  "les-heros-de-la-galaxie": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": null
+  },
+  "ma-belle-poupee-est-un-super-darling": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": null
+  },
+  "moi-quand-je-me-reincarne-en-slime-trinite": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": null
+  },
+  "oversleeping-takahashi": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": {
+    "au": [
+     "Aguro Kouki"
+    ],
+    "sc": [
+     "Aguro Kouki"
+    ],
+    "ar": [
+     "Aguro Kouki"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2024,
+    "v": 2
+   }
+  },
+  "punch-drunk-love": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": {
+    "au": [
+     "Moscareto",
+     "Ok-Dong",
+     "Karis Page"
+    ],
+    "sc": [
+     "Moscareto"
+    ],
+    "ar": [
+     "Ok-Dong"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2022,
+    "v": 2
+   }
+  },
+  "tears-on-a-withered-flower": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": {
+    "au": [
+     "Gae"
+    ],
+    "sc": [
+     "Gae"
+    ],
+    "ar": [
+     "Gae"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2024,
+    "v": 2
+   }
+  },
+  "the-heroic-legend-of-arslan": {
+   "c": "2026-11-12",
+   "a": [],
+   "i": null
   }
  },
- "generatedAt": "2026-11-11T13:48:35.117Z"
+ "generatedAt": "2026-11-12T11:11:39.015Z"
 }

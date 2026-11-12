@@ -210,7 +210,7 @@
   }
  },
  "/manga/the-fed-up-office-lady-wants-to-serve-the-villainess-3": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-15",
    "editeur": "Meian",
@@ -224,7 +224,7 @@
   }
  },
  "/manga/mon-chat-a-tout-faire-est-encore-tout-deprime-7": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-27",
    "editeur": "Meian",
@@ -238,7 +238,7 @@
   }
  },
  "/manga/baki-gaiden-scarface-5": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-12-30",
    "editeur": "Meian",
@@ -420,7 +420,7 @@
   }
  },
  "/manga/arms-wide-edition-3": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-18",
    "editeur": "Mangetsu",
@@ -434,7 +434,7 @@
   }
  },
  "/manga/chibi-maruko-chan-8": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-18",
    "editeur": "Mangetsu",
@@ -448,7 +448,7 @@
   }
  },
  "/manga/crayon-shinchan-6": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-18",
    "editeur": "Mangetsu",
@@ -462,7 +462,7 @@
   }
  },
  "/manga/fermat-kitchen-7": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-18",
    "editeur": "Mangetsu",
@@ -476,7 +476,7 @@
   }
  },
  "/manga/golden-guy-12": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-18",
    "editeur": "Mangetsu",
@@ -490,7 +490,7 @@
   }
  },
  "/manga/ron-kamonohashi-deranged-detective-19": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-18",
    "editeur": "Mangetsu",
@@ -574,7 +574,7 @@
   }
  },
  "/manga/l-arcane-de-l-aube-volume-5-red-edition": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-12-02",
    "editeur": "Kazé",
@@ -784,7 +784,7 @@
   }
  },
  "/manga/hima-ten-3": {
-  "vu": "2026-11-02",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-11-04",
    "editeur": "Panini Manga",
@@ -896,7 +896,7 @@
   }
  },
  "/manga/chiruran-29": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-12-02",
    "editeur": "Mangetsu",
@@ -910,7 +910,7 @@
   }
  },
  "/manga/smile-9": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-12-02",
    "editeur": "Mangetsu",
@@ -924,7 +924,7 @@
   }
  },
  "/manga/the-lost-signal-and-this-communication-11": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2026-12-02",
    "editeur": "Mangetsu",
@@ -938,7 +938,7 @@
   }
  },
  "/manga/ace-of-diamond-9": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2027-01-06",
    "editeur": "Mangetsu",
@@ -952,7 +952,7 @@
   }
  },
  "/manga/ao-ashi-playmaker-38": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2027-01-06",
    "editeur": "Mangetsu",
@@ -966,7 +966,7 @@
   }
  },
  "/manga/ikusa-no-ko-la-legende-d-oda-nobunaga-13": {
-  "vu": "2026-11-04",
+  "vu": "2026-11-12",
   "row": {
    "date": "2027-01-06",
    "editeur": "Mangetsu",
@@ -990,6 +990,146 @@
    "isbn": "",
    "prix": null,
    "source": "https://www.bdbase.fr/manga/eagle-kawaguchi-perfect-edition-5",
+   "cover": ""
+  }
+ },
+ "/manga/008-apprenti-espion-24": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "008 Apprenti Espion",
+   "tome": "24",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/008-apprenti-espion-24",
+   "cover": ""
+  }
+ },
+ "/manga/dans-la-peau-de-miwa-11": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "Dans la peau de Miwa",
+   "tome": "11",
+   "titre": "",
+   "isbn": "9791042021320",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/dans-la-peau-de-miwa-11",
+   "cover": ""
+  }
+ },
+ "/manga/demon-slave-21": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "Demon Slave",
+   "tome": "21",
+   "titre": "",
+   "isbn": "9791042021399",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/demon-slave-21",
+   "cover": ""
+  }
+ },
+ "/manga/en-selle-sakamichi-17": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "En selle, Sakamichi !",
+   "tome": "17",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/en-selle-sakamichi-17",
+   "cover": ""
+  }
+ },
+ "/manga/ippo-saison-6-the-fighting-36": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "Ippo Saison 6 - The Fighting !",
+   "tome": "36",
+   "titre": "",
+   "isbn": "9791042021504",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/ippo-saison-6-the-fighting-36",
+   "cover": ""
+  }
+ },
+ "/manga/les-heros-de-la-galaxie-33": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "Les Héros de la Galaxie",
+   "tome": "33",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/les-heros-de-la-galaxie-33",
+   "cover": ""
+  }
+ },
+ "/manga/ma-belle-poupee-est-un-super-darling-2": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "Ma Belle Poupée est un Super Darling",
+   "tome": "2",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/ma-belle-poupee-est-un-super-darling-2",
+   "cover": ""
+  }
+ },
+ "/manga/moi-quand-je-me-reincarne-en-slime-trinite-12": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "Moi, quand je me réincarne en Slime - Trinité",
+   "tome": "12",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/moi-quand-je-me-reincarne-en-slime-trinite-12",
+   "cover": ""
+  }
+ },
+ "/manga/oversleeping-takahashi-3": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "Oversleeping Takahashi",
+   "tome": "3",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/oversleeping-takahashi-3",
+   "cover": ""
+  }
+ },
+ "/manga/the-heroic-legend-of-arslan-24": {
+  "vu": "2026-11-12",
+  "row": {
+   "date": "2026-12-10",
+   "editeur": "Kurokawa",
+   "serie": "The Heroic Legend of Arslân",
+   "tome": "24",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/the-heroic-legend-of-arslan-24",
    "cover": ""
   }
  }
