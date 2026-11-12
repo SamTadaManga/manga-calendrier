@@ -157,5 +157,20 @@
  },
  "mail-2026-11-11": {
   "at": "2026-11-11T14:08:00.844Z"
+ },
+ "jour-2026-11-12": {
+  "bluesky": {
+   "at": "2026-11-12T09:00:33.472Z",
+   "id": "at://did:plc:utmfgrrz5d3bd46r2qbh44wd/app.bsky.feed.post/3n2447okmls2g"
+  }
+ },
+ "nouveautes-2026-11-12": {
+  "bluesky": {
+   "at": "2026-11-12T09:00:41.698Z",
+   "id": "at://did:plc:utmfgrrz5d3bd46r2qbh44wd/app.bsky.feed.post/3n2447wcrxf2e"
+  }
+ },
+ "mail-2026-11-12": {
+  "at": "2026-11-12T09:00:45.397Z"
  }
 }
