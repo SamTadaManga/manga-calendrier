@@ -10,16 +10,25 @@ const json = async (r, what) => {
   return j;
 };
 
+/** Nouvel essai (3 au total) si le serveur répond 5xx ou si le réseau coupe : à n'utiliser que pour des appels sans effet de bord (connexion, envoi d'image). */
+export async function avecReessai(appel, wait = sleep, delais = [2000, 6000]) {
+  for (let i = 0; ; i++) {
+    try { const r = await appel(); if (r.status < 500 || i >= delais.length) return r; }
+    catch (e) { if (i >= delais.length) throw e; }
+    await wait(delais[i]);
+  }
+}
+
 /* ------------------------------------------------------------------ Bluesky */
 export const blueskyReady = (env) => Boolean(env.BLUESKY_HANDLE && env.BLUESKY_APP_PASSWORD);
 /** post : { text, link: { text, uri }, images: [{ buf, alt, w, h }] } */
 export async function postBluesky(post, env, fetchFn = fetch) {
   const host = env.BLUESKY_HOST || 'https://bsky.social';
-  const ses = await json(await fetchFn(`${host}/xrpc/com.atproto.server.createSession`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ identifier: env.BLUESKY_HANDLE, password: env.BLUESKY_APP_PASSWORD }) }), 'Bluesky connexion');
+  const ses = await json(await avecReessai(() => fetchFn(`${host}/xrpc/com.atproto.server.createSession`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ identifier: env.BLUESKY_HANDLE, password: env.BLUESKY_APP_PASSWORD }) }), env.REESSAI_RAPIDE ? async () => {} : sleep), 'Bluesky connexion');
   const auth = { authorization: `Bearer ${ses.accessJwt}` };
   const images = [];
   for (const im of post.images.slice(0, 4)) {
-    const up = await json(await fetchFn(`${host}/xrpc/com.atproto.repo.uploadBlob`, { method: 'POST', headers: { ...auth, 'content-type': 'image/jpeg' }, body: im.buf }), 'Bluesky image');
+    const up = await json(await avecReessai(() => fetchFn(`${host}/xrpc/com.atproto.repo.uploadBlob`, { method: 'POST', headers: { ...auth, 'content-type': 'image/jpeg' }, body: im.buf }), env.REESSAI_RAPIDE ? async () => {} : sleep), 'Bluesky image');
     images.push({ alt: im.alt, image: up.blob, aspectRatio: { width: im.w, height: im.h } });
   }
   const record = { $type: 'app.bsky.feed.post', text: post.text, createdAt: new Date().toISOString(), langs: ['fr'], embed: { $type: 'app.bsky.embed.images', images } };
