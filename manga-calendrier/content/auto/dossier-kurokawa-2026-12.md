@@ -1,16 +1,15 @@
 ---
 title: "Kurokawa : les sorties manga de décembre 2026"
 date: 2026-12-01
-description: "9 sorties manga Kurokawa annoncées pour décembre 2026."
+description: "8 sorties manga Kurokawa annoncées pour décembre 2026."
 auto: true
 draft: false
 ---
 
-Kurokawa publie 9 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
+Kurokawa publie 8 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
 
 - **jeu. 10 déc.** · [Dans la peau de Miwa tome 11](/serie/dans-la-peau-de-miwa/)
 - **jeu. 10 déc.** · [Demon Slave tome 21](/serie/demon-slave/)
-- **jeu. 10 déc.** · [En selle, Sakamichi ! tome 17](/serie/en-selle-sakamichi/)
 - **jeu. 10 déc.** · [Ippo Saison 6 - The Fighting ! tome 36](/serie/ippo-saison-6-the-fighting/)
 - **jeu. 10 déc.** · [Les Héros de la Galaxie tome 33](/serie/les-heros-de-la-galaxie/)
 - **jeu. 10 déc.** · [Ma Belle Poupée est un Super Darling tome 2](/serie/ma-belle-poupee-est-un-super-darling/)

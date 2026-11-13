@@ -1,15 +1,14 @@
 ---
 title: "Kana : les sorties manga de décembre 2026"
 date: 2026-12-01
-description: "16 sorties manga Kana annoncées pour décembre 2026."
+description: "15 sorties manga Kana annoncées pour décembre 2026."
 auto: true
 draft: false
 ---
 
-Kana publie 16 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
+Kana publie 15 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
 
 - **ven. 4 déc.** · [Gamaran - Le Tournoi Ultime tome 31](/serie/gamaran-le-tournoi-ultime/)
-- **ven. 4 déc.** · [Hunter X Hunter tome 39](/serie/hunter-x-hunter/)
 - **ven. 4 déc.** · [March comes in like a lion tome 18](/serie/march-comes-in-like-a-lion/)
 - **ven. 4 déc.** · [Mission: Yozakura family tome 29](/serie/mission-yozakura-family/)
 - **ven. 4 déc.** · [Princesse Puncheuse tome 10](/serie/princesse-puncheuse/)

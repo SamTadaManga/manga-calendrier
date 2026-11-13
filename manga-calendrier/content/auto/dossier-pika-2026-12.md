@@ -1,12 +1,12 @@
 ---
 title: "Pika : les sorties manga de décembre 2026"
 date: 2026-12-01
-description: "24 sorties manga Pika annoncées pour décembre 2026."
+description: "23 sorties manga Pika annoncées pour décembre 2026."
 auto: true
 draft: false
 ---
 
-Pika publie 24 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
+Pika publie 23 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
 
 - **mer. 2 déc.** · [A Villainess for the Tyrant tome 3](/serie/a-villainess-for-the-tyrant/)
 - **mer. 2 déc.** · [Air Gear Unlimited tome 10](/serie/air-gear-unlimited/)
@@ -19,7 +19,6 @@ Pika publie 24 références manga en décembre 2026. Les dates viennent des plan
 - **mer. 2 déc.** · [Fairy Tail - 100 Years Quest tome 23](/serie/fairy-tail-100-years-quest/)
 - **mer. 2 déc.** · [Fall in Love, False Angels tome 5](/serie/fall-in-love-false-angels/)
 - **mer. 2 déc.** · [Fungus and Iron tome 2](/serie/fungus-and-iron/)
-- **mer. 2 déc.** · [Galaxias tome 3](/serie/galaxias/)
 - **mer. 2 déc.** · [How I Married an Amagami Sister tome 22](/serie/how-i-married-an-amagami-sister/)
 - **mer. 2 déc.** · [Kaijin Fugeki - Kindled Spirits tome 8](/serie/kaijin-fugeki-kindled-spirits/)
 - **mer. 2 déc.** · [Komi cherche ses mots tome 28](/serie/komi-cherche-ses-mots/)

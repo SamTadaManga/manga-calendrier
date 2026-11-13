@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-12T11:11:44.565Z",
+ "generatedAt": "2026-11-13T09:52:58.495Z",
  "seasons": [
   {
    "season": "FALL",
@@ -498,26 +498,6 @@
      "s": []
     },
     {
-     "id": 208025,
-     "t": "I'm Dating a Dark Summoner",
-     "f": "TV_SHORT",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      5
-     ],
-     "u": "https://anilist.co/anime/208025",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208025-JKvqWNr8rz8l.jpg",
-     "g": [
-      "Comedy",
-      "Ecchi",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
      "id": 186541,
      "t": "Reborn as a Space Mercenary: I Woke Up Piloting the Strongest Starship!",
      "f": "TV",
@@ -541,6 +521,26 @@
        "u": "https://www.crunchyroll.com/series/GT00384006/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship"
       }
      ]
+    },
+    {
+     "id": 208025,
+     "t": "I'm Dating a Dark Summoner",
+     "f": "TV_SHORT",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/208025",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208025-JKvqWNr8rz8l.jpg",
+     "g": [
+      "Comedy",
+      "Ecchi",
+      "Fantasy"
+     ],
+     "s": []
     },
     {
      "id": 191788,
@@ -591,31 +591,6 @@
      ]
     },
     {
-     "id": 169581,
-     "t": "Magical Explorer",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 13,
-     "d": [
-      2026,
-      9,
-      27
-     ],
-     "u": "https://anilist.co/anime/169581",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169581-UlAviVH36Hxi.png",
-     "g": [
-      "Action",
-      "Adventure",
-      "Ecchi"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
-      }
-     ]
-    },
-    {
      "id": 213457,
      "t": "Fool Night",
      "f": "ONA",
@@ -637,6 +612,31 @@
       {
        "n": "Netflix",
        "u": "https://www.netflix.com/title/81991076"
+      }
+     ]
+    },
+    {
+     "id": 169581,
+     "t": "Magical Explorer",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 13,
+     "d": [
+      2026,
+      9,
+      27
+     ],
+     "u": "https://anilist.co/anime/169581",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx169581-UlAviVH36Hxi.png",
+     "g": [
+      "Action",
+      "Adventure",
+      "Ecchi"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
       }
      ]
     },
@@ -740,31 +740,6 @@
      ]
     },
     {
-     "id": 209219,
-     "t": "So What's Wrong with Getting Reborn as a Goblin?",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      5
-     ],
-     "u": "https://anilist.co/anime/209219",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Comedy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
-      }
-     ]
-    },
-    {
      "id": 212503,
      "t": "The Iceblade Sorcerer Shall Rule the World II",
      "f": "TV",
@@ -790,6 +765,31 @@
      ]
     },
     {
+     "id": 209219,
+     "t": "So What's Wrong with Getting Reborn as a Goblin?",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/209219",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
+      }
+     ]
+    },
+    {
      "id": 205896,
      "t": "Full Clearing Another World under a Goddess with Zero Believers",
      "f": "TV",
@@ -810,6 +810,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+      }
+     ]
+    },
+    {
+     "id": 211778,
+     "t": "The World's Strongest Witch",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      7
+     ],
+     "u": "https://anilist.co/anime/211778",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211778-0MXK5HqVFBYH.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384009/the-worlds-strongest-witch"
       }
      ]
     },
@@ -843,31 +868,6 @@
       {
        "n": "Netflix",
        "u": "https://www.netflix.com/title/81969861"
-      }
-     ]
-    },
-    {
-     "id": 211778,
-     "t": "The World's Strongest Witch",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      7
-     ],
-     "u": "https://anilist.co/anime/211778",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx211778-0MXK5HqVFBYH.jpg",
-     "g": [
-      "Action",
-      "Comedy",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384009/the-worlds-strongest-witch"
       }
      ]
     },
@@ -1297,26 +1297,6 @@
      "s": []
     },
     {
-     "id": 186741,
-     "t": "Himekishi-sama no Himo",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/186741",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186741-jfAFI71jie1x.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Comedy"
-     ],
-     "s": []
-    },
-    {
      "id": 196333,
      "t": "Hirayasumi",
      "f": "TV",
@@ -1333,6 +1313,26 @@
       "Comedy",
       "Drama",
       "Slice of Life"
+     ],
+     "s": []
+    },
+    {
+     "id": 186741,
+     "t": "Himekishi-sama no Himo",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/186741",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186741-jfAFI71jie1x.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
      ],
      "s": []
     },
@@ -1526,25 +1526,6 @@
      "s": []
     },
     {
-     "id": 209661,
-     "t": "Magical Buffs: The Support Caster is Stronger Than He Realized!",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      4
-     ],
-     "u": "https://anilist.co/anime/209661",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209661-RHN7Jp3VPdFV.jpg",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
      "id": 219548,
      "t": "Spirit Circle",
      "f": "TV",
@@ -1561,6 +1542,25 @@
       "Action",
       "Comedy",
       "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 209661,
+     "t": "Magical Buffs: The Support Caster is Stronger Than He Realized!",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      4
+     ],
+     "u": "https://anilist.co/anime/209661",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209661-RHN7Jp3VPdFV.jpg",
+     "g": [
+      "Action",
+      "Fantasy"
      ],
      "s": []
     },
