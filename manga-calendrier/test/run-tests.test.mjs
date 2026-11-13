@@ -1309,6 +1309,9 @@ test('planification Cloudflare : un seul des deux créneaux de minuit lance la r
   const r = await declencher({ cron: '5 22,23 * * *', scheduledTime: Date.parse('2026-11-11T23:05:00Z') }, { GITHUB_TOKEN: 'jeton-test' }, fake);
   assert.deepEqual(r.map((x) => x.workflow), ['deploy.yml']);
   assert.ok(calls[0].url.endsWith('/actions/workflows/deploy.yml/dispatches') && calls[0].opt.headers.Authorization === 'Bearer jeton-test' && JSON.parse(calls[0].opt.body).ref === 'main');
+  calls.length = 0;
+  await declencher({ cron: '12 6 * * *', scheduledTime: Date.parse('2026-11-11T06:12:00Z') }, { GITHUB_TOKEN: 'jeton-test' }, fake);
+  assert.deepEqual(JSON.parse(calls[0].opt.body), { ref: 'main', inputs: { dry_run: 'false' } }, 'la publication du matin doit partir en vrai, pas en essai à blanc');
   await assert.rejects(() => declencher({ cron: '12 6 * * *', scheduledTime: Date.now() }, { GITHUB_TOKEN: 'x' }, async () => new Response('refus', { status: 403 })), /403/);
   await assert.rejects(() => declencher({ cron: '12 6 * * *', scheduledTime: Date.now() }, {}, fake), /GITHUB_TOKEN/);
   // essai manuel : protégé par STATS_KEY
