@@ -175,5 +175,11 @@
  },
  "mail-2026-11-13": {
   "at": "2026-11-13T09:47:58.449Z"
+ },
+ "jour-2026-11-13": {
+  "bluesky": {
+   "at": "2026-11-13T13:06:19.031Z",
+   "id": "at://did:plc:utmfgrrz5d3bd46r2qbh44wd/app.bsky.feed.post/3n272fxqcng2e"
+  }
  }
 }
