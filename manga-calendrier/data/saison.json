@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-13T09:52:58.495Z",
+ "generatedAt": "2026-11-13T10:59:37.078Z",
  "seasons": [
   {
    "season": "FALL",
@@ -591,31 +591,6 @@
      ]
     },
     {
-     "id": 213457,
-     "t": "Fool Night",
-     "f": "ONA",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2026,
-      11,
-      26
-     ],
-     "u": "https://anilist.co/anime/213457",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
-     "g": [
-      "Drama",
-      "Psychological",
-      "Sci-Fi"
-     ],
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/81991076"
-      }
-     ]
-    },
-    {
      "id": 169581,
      "t": "Magical Explorer",
      "f": "ONA",
@@ -637,6 +612,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
+      }
+     ]
+    },
+    {
+     "id": 213457,
+     "t": "Fool Night",
+     "f": "ONA",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2026,
+      11,
+      26
+     ],
+     "u": "https://anilist.co/anime/213457",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81991076"
       }
      ]
     },
