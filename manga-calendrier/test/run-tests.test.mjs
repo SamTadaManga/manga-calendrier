@@ -1467,3 +1467,16 @@ test('fiche de tome : cartes du carrousel cliquables, script publié, numéro mi
   assert.match(b, /class="tome-badge"/);
   assert.match(b, /'fiche-tome\.js'/);
 });
+
+test('Bluesky : nouvel essai après une erreur 5xx passagère, pas après une erreur 4xx', async () => {
+  const { avecReessai } = await import('../scripts/social-publier.mjs');
+  let n = 0;
+  const r = await avecReessai(async () => new Response('x', { status: ++n < 3 ? 502 : 200 }), async () => {});
+  assert.equal(r.status, 200); assert.equal(n, 3);
+  n = 0;
+  const r2 = await avecReessai(async () => { n++; return new Response('x', { status: 400 }); }, async () => {});
+  assert.equal(r2.status, 400); assert.equal(n, 1);
+  n = 0;
+  const r3 = await avecReessai(async () => { n++; return new Response('x', { status: 502 }); }, async () => {});
+  assert.equal(r3.status, 502); assert.equal(n, 3, 'abandon après 3 essais');
+});
