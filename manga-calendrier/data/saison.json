@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-13T10:59:37.078Z",
+ "generatedAt": "2026-11-14T10:27:11.986Z",
  "seasons": [
   {
    "season": "FALL",
@@ -1723,6 +1723,24 @@
      "s": []
     },
     {
+     "id": 198728,
+     "t": "Kaze wo Tsugumono",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 13,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/198728",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-1tasIeJ995QJ.jpg",
+     "g": [
+      "Action"
+     ],
+     "s": []
+    },
+    {
      "id": 187303,
      "t": "Giant Ojou-sama",
      "f": "TV",
@@ -1739,24 +1757,6 @@
       "Action",
       "Comedy",
       "Ecchi"
-     ],
-     "s": []
-    },
-    {
-     "id": 198728,
-     "t": "Kaze wo Tsugumono",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/198728",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-1tasIeJ995QJ.jpg",
-     "g": [
-      "Action"
      ],
      "s": []
     }
