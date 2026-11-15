@@ -1,12 +1,12 @@
 ---
 title: "Pika : les sorties manga de décembre 2026"
 date: 2026-12-01
-description: "23 sorties manga Pika annoncées pour décembre 2026."
+description: "22 sorties manga Pika annoncées pour décembre 2026."
 auto: true
 draft: false
 ---
 
-Pika publie 23 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
+Pika publie 22 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
 
 - **mer. 2 déc.** · [A Villainess for the Tyrant tome 3](/serie/a-villainess-for-the-tyrant/)
 - **mer. 2 déc.** · [Air Gear Unlimited tome 10](/serie/air-gear-unlimited/)
@@ -28,7 +28,6 @@ Pika publie 23 références manga en décembre 2026. Les dates viennent des plan
 - **mer. 2 déc.** · [Nodame Cantabile tome 13](/serie/nodame-cantabile/)
 - **mer. 2 déc.** · [Shimazaki in the Land of Peace tome 6](/serie/shimazaki-in-the-land-of-peace/)
 - **mer. 2 déc.** · [SSS Class Revival Hunter tome 2](/serie/sss-class-revival-hunter/)
-- **mer. 2 déc.** · [Versus tome 7](/serie/versus/)
 - **mer. 2 déc.** · [Wind Breaker tome 25](/serie/wind-breaker/)
 - **mer. 2 déc.** · [You're my soulmate tome 8](/serie/you-re-my-soulmate/)
 

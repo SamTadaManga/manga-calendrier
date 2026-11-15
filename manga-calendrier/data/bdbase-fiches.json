@@ -252,7 +252,7 @@
   }
  },
  "/manga/baki-gaiden-scarface-6": {
-  "vu": "2026-10-27",
+  "vu": "2026-11-15",
   "row": {
    "date": "2026-12-30",
    "editeur": "Meian",
@@ -1130,6 +1130,48 @@
    "isbn": "",
    "prix": null,
    "source": "https://www.bdbase.fr/manga/the-heroic-legend-of-arslan-24",
+   "cover": ""
+  }
+ },
+ "/manga/black-clover-tabata-coffret-prestige": {
+  "vu": "2026-11-15",
+  "row": {
+   "date": "2026-11-18",
+   "editeur": "Kazé",
+   "serie": "Black Clover Coffret Prestige",
+   "tome": "",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/black-clover-tabata-coffret-prestige",
+   "cover": ""
+  }
+ },
+ "/manga/platinum-end-coffret-prestige": {
+  "vu": "2026-11-15",
+  "row": {
+   "date": "2026-11-18",
+   "editeur": "Kazé",
+   "serie": "Platinum End Coffret Prestige",
+   "tome": "",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/platinum-end-coffret-prestige",
+   "cover": ""
+  }
+ },
+ "/manga/please-save-my-earth-panini-6": {
+  "vu": "2026-11-15",
+  "row": {
+   "date": "2026-11-18",
+   "editeur": "Panini Manga",
+   "serie": "Please Save My Earth",
+   "tome": "6",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/please-save-my-earth-panini-6",
    "cover": ""
   }
  }

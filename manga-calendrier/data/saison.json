@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-14T10:27:11.986Z",
+ "generatedAt": "2026-11-15T10:55:20.262Z",
  "seasons": [
   {
    "season": "FALL",
@@ -158,6 +158,26 @@
      ]
     },
     {
+     "id": 191656,
+     "t": "Even the Student Council Has Its Holes!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/191656",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191656-xFHtxM8SUTdU.png",
+     "g": [
+      "Comedy",
+      "Ecchi",
+      "Slice of Life"
+     ],
+     "s": []
+    },
+    {
      "id": 189123,
      "t": "Blue Box Season 2",
      "f": "TV",
@@ -181,26 +201,6 @@
        "u": "https://www.netflix.com/title/81663323"
       }
      ]
-    },
-    {
-     "id": 191656,
-     "t": "Even the Student Council Has Its Holes!",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      4
-     ],
-     "u": "https://anilist.co/anime/191656",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx191656-xFHtxM8SUTdU.png",
-     "g": [
-      "Comedy",
-      "Ecchi",
-      "Slice of Life"
-     ],
-     "s": []
     },
     {
      "id": 210482,
@@ -616,31 +616,6 @@
      ]
     },
     {
-     "id": 213457,
-     "t": "Fool Night",
-     "f": "ONA",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2026,
-      11,
-      26
-     ],
-     "u": "https://anilist.co/anime/213457",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
-     "g": [
-      "Drama",
-      "Psychological",
-      "Sci-Fi"
-     ],
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/81991076"
-      }
-     ]
-    },
-    {
      "id": 202250,
      "t": "Magic Repo Man: Dumped by My Party, I’ll Cash In With a Cute Support Fairy to Become the Strongest!",
      "f": "TV",
@@ -662,6 +637,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00385867/magic-repo-man-dumped-by-my-party-ill-cash-in-with-a-cute-support-fairy-to-become-the-strongest"
+      }
+     ]
+    },
+    {
+     "id": 213457,
+     "t": "Fool Night",
+     "f": "ONA",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2026,
+      11,
+      26
+     ],
+     "u": "https://anilist.co/anime/213457",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81991076"
       }
      ]
     },
@@ -1279,24 +1279,6 @@
      "s": []
     },
     {
-     "id": 213360,
-     "t": "Akane-banashi 2nd Season",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/213360",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213360-xNEWCLeQkXkI.jpg",
-     "g": [
-      "Drama"
-     ],
-     "s": []
-    },
-    {
      "id": 196333,
      "t": "Hirayasumi",
      "f": "TV",
@@ -1317,8 +1299,8 @@
      "s": []
     },
     {
-     "id": 186741,
-     "t": "Himekishi-sama no Himo",
+     "id": 213360,
+     "t": "Akane-banashi 2nd Season",
      "f": "TV",
      "st": "NOT_YET_RELEASED",
      "n": 0,
@@ -1327,12 +1309,10 @@
       1,
       0
      ],
-     "u": "https://anilist.co/anime/186741",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186741-jfAFI71jie1x.jpg",
+     "u": "https://anilist.co/anime/213360",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213360-xNEWCLeQkXkI.jpg",
      "g": [
-      "Action",
-      "Adventure",
-      "Comedy"
+      "Drama"
      ],
      "s": []
     },
@@ -1351,6 +1331,26 @@
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-MZDr0UcflB0Y.jpg",
      "g": [
       "Supernatural"
+     ],
+     "s": []
+    },
+    {
+     "id": 186741,
+     "t": "Himekishi-sama no Himo",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/186741",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186741-jfAFI71jie1x.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
      ],
      "s": []
     },
@@ -1510,22 +1510,6 @@
      "s": []
     },
     {
-     "id": 213877,
-     "t": "MURCIÉLAGO",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/213877",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213877-NK48aPaVO29y.jpg",
-     "g": [],
-     "s": []
-    },
-    {
      "id": 219548,
      "t": "Spirit Circle",
      "f": "TV",
@@ -1543,6 +1527,22 @@
       "Comedy",
       "Romance"
      ],
+     "s": []
+    },
+    {
+     "id": 213877,
+     "t": "MURCIÉLAGO",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/213877",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213877-NK48aPaVO29y.jpg",
+     "g": [],
      "s": []
     },
     {
@@ -1585,26 +1585,6 @@
      "s": []
     },
     {
-     "id": 174427,
-     "t": "Zombie no Afureta Sekai de Ore dake ga Osowarenai",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/174427",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174427-ozv3bFtwB08m.jpg",
-     "g": [
-      "Action",
-      "Ecchi",
-      "Supernatural"
-     ],
-     "s": []
-    },
-    {
      "id": 202503,
      "t": "Majutsu wo Kiwamete Tabi ni Deta Tensei Elf, Moteamashita Jumyou de Ikeru Densetsu to Naru",
      "f": "TV",
@@ -1621,6 +1601,26 @@
       "Action",
       "Adventure",
       "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 174427,
+     "t": "Zombie no Afureta Sekai de Ore dake ga Osowarenai",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/174427",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174427-ozv3bFtwB08m.jpg",
+     "g": [
+      "Action",
+      "Ecchi",
+      "Supernatural"
      ],
      "s": []
     },

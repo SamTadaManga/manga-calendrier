@@ -4007,7 +4007,7 @@
    "i": null
   },
   "2-5-dimensional-seduction": {
-   "c": "2026-11-08",
+   "c": "2026-11-15",
    "a": [
     {
      "id": 185515,
@@ -5498,7 +5498,7 @@
    "i": null
   },
   "les-noces-des-lucioles": {
-   "c": "2026-11-08",
+   "c": "2026-11-15",
    "a": [
     {
      "id": 205909,
@@ -5535,7 +5535,7 @@
    }
   },
   "omniscient-reader-s-viewpoint": {
-   "c": "2026-11-08",
+   "c": "2026-11-15",
    "a": [
     {
      "id": 179068,
@@ -5661,7 +5661,7 @@
    }
   },
   "sakamoto-days": {
-   "c": "2026-11-08",
+   "c": "2026-11-15",
    "a": [
     {
      "id": 204363,
@@ -6374,7 +6374,7 @@
    }
   },
   "witch-watch": {
-   "c": "2026-11-08",
+   "c": "2026-11-15",
    "a": [
     {
      "id": 199793,
@@ -6633,7 +6633,91 @@
    "c": "2026-11-12",
    "a": [],
    "i": null
+  },
+  "black-clover-coffret-prestige": {
+   "c": "2026-11-15",
+   "a": [],
+   "i": null
+  },
+  "ce-vide-au-fond-de-moi": {
+   "c": "2026-11-15",
+   "a": [],
+   "i": {
+    "au": [
+     "Tomo Taketomi",
+     "Iori Kanzaki"
+    ],
+    "sc": [
+     "Tomo Taketomi"
+    ],
+    "ar": [
+     "Tomo Taketomi"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2022,
+    "v": 2
+   }
+  },
+  "jojo-magazine": {
+   "c": "2026-11-15",
+   "a": [],
+   "i": null
+  },
+  "platinum-end-coffret-prestige": {
+   "c": "2026-11-15",
+   "a": [],
+   "i": null
+  },
+  "please-save-my-earth": {
+   "c": "2026-11-15",
+   "a": [],
+   "i": {
+    "au": [
+     "Saki Hiwatari"
+    ],
+    "sc": [
+     "Saki Hiwatari"
+    ],
+    "ar": [
+     "Saki Hiwatari"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 1986,
+    "v": 2
+   }
+  },
+  "strand": {
+   "c": "2026-11-15",
+   "a": [],
+   "i": {
+    "au": [
+     "Yoshiharu Kataoka"
+    ],
+    "sc": [
+     "Yoshiharu Kataoka"
+    ],
+    "ar": [
+     "Yoshiharu Kataoka"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2024,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-11-14T10:27:06.517Z"
+ "generatedAt": "2026-11-15T10:55:14.920Z"
 }
