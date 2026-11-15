@@ -1261,4 +1261,9 @@
 {"k":"les-carnets-de-l-apothicaire","n":"Les carnets de l'apothicaire","e":"Mana Books","t":"5","isbn":"9791035505127","y":0,"src":"bnf","statut":"ok"},
 {"k":"les-carnets-de-l-apothicaire","n":"Les carnets de l'apothicaire","e":"Mana Books","t":"15","isbn":"9791035507435","y":0,"src":"bnf","statut":"ok"},
 {"k":"les-carnets-de-l-apothicaire","n":"Les carnets de l'apothicaire","e":"Mana Books","t":"18","isbn":"9791035508784","y":0,"src":"bnf","statut":"ok"},
-{"k":"dofus-mag","n":"Dofus mag","e":"Ankama","t":"7","isbn":"9782359101683","y":2011,"src":"bnf","statut":"ok"}]}
+{"k":"dofus-mag","n":"Dofus mag","e":"Ankama","t":"7","isbn":"9782359101683","y":2011,"src":"bnf","statut":"ok"},
+{"k":"whispering-you-a-love-song","n":"Whispering you a love song","e":"Taifu Comics","t":"3","isbn":"9782375063200","y":0,"src":"cultura","motif":"trou","statut":"ok"},
+{"k":"scum-s-wish","n":"Scum's wish","e":"Noeve grafx","t":"7","isbn":"9782383166917","y":0,"src":"cultura","motif":"trou","statut":"ok"},
+{"k":"one-punch-man","n":"One-punch man","e":"Kurokawa","t":"36","isbn":"9791042023911","y":0,"src":"cultura","motif":"suite","statut":"ok"},
+{"k":"saint-seiya-rerise-of-poseidon","n":"Saint Seiya Rerise of Poseidon","e":"Kana","t":"2","isbn":"9782505144892","y":0,"src":"cultura","motif":"suite","statut":"ok"},
+{"k":"yubooh-la-magie-des-songes","n":"Yubooh, la magie des songes","e":"Glénat","t":"2","isbn":"9782344077979","y":0,"src":"cultura","motif":"suite","statut":"ok"}]}
