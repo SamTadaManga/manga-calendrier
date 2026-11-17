@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-16T11:22:01.923Z",
+ "generatedAt": "2026-11-17T11:54:12.939Z",
  "seasons": [
   {
    "season": "FALL",
@@ -232,7 +232,7 @@
      "t": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life",
      "f": "TV",
      "st": "RELEASING",
-     "n": 0,
+     "n": 12,
      "d": [
       2026,
       10,
@@ -383,25 +383,6 @@
      ]
     },
     {
-     "id": 200929,
-     "t": "The Apothecary Diaries: The Late Lady’s Treasure",
-     "f": "MOVIE",
-     "st": "NOT_YET_RELEASED",
-     "n": 1,
-     "d": [
-      2026,
-      12,
-      11
-     ],
-     "u": "https://anilist.co/anime/200929",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200929-dx3hnftE7K7C.jpg",
-     "g": [
-      "Drama",
-      "Mystery"
-     ],
-     "s": []
-    },
-    {
      "id": 207191,
      "t": "Hello, I am a Witch and my Crush Wants me to Make a Love Potion!",
      "f": "TV",
@@ -424,6 +405,25 @@
        "u": "https://www.crunchyroll.com/series/GT00378072/hello-i-am-a-witch-and-my-crush-wants-me-to-make-a-love-potion"
       }
      ]
+    },
+    {
+     "id": 200929,
+     "t": "The Apothecary Diaries: The Late Lady’s Treasure",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2026,
+      12,
+      11
+     ],
+     "u": "https://anilist.co/anime/200929",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx200929-dx3hnftE7K7C.jpg",
+     "g": [
+      "Drama",
+      "Mystery"
+     ],
+     "s": []
     },
     {
      "id": 206814,
@@ -484,7 +484,7 @@
      "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
      "f": "TV",
      "st": "RELEASING",
-     "n": 0,
+     "n": 12,
      "d": [
       2026,
       9,
@@ -504,25 +504,6 @@
      ]
     },
     {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
      "id": 208025,
      "t": "I'm Dating a Dark Summoner",
      "f": "TV_SHORT",
@@ -538,6 +519,25 @@
      "g": [
       "Comedy",
       "Ecchi",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
       "Fantasy"
      ],
      "s": []
@@ -566,6 +566,31 @@
      ]
     },
     {
+     "id": 202250,
+     "t": "Magic Repo Man: Dumped by My Party, I’ll Cash In With a Cute Support Fairy to Become the Strongest!",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      4
+     ],
+     "u": "https://anilist.co/anime/202250",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202250-mpm2cvr92Au2.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00385867/magic-repo-man-dumped-by-my-party-ill-cash-in-with-a-cute-support-fairy-to-become-the-strongest"
+      }
+     ]
+    },
+    {
      "id": 169581,
      "t": "Magical Explorer",
      "f": "ONA",
@@ -587,31 +612,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
-      }
-     ]
-    },
-    {
-     "id": 202250,
-     "t": "Magic Repo Man: Dumped by My Party, I’ll Cash In With a Cute Support Fairy to Become the Strongest!",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      4
-     ],
-     "u": "https://anilist.co/anime/202250",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202250-mpm2cvr92Au2.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00385867/magic-repo-man-dumped-by-my-party-ill-cash-in-with-a-cute-support-fairy-to-become-the-strongest"
       }
      ]
     },
@@ -716,6 +716,30 @@
      ]
     },
     {
+     "id": 205896,
+     "t": "Full Clearing Another World under a Goddess with Zero Believers",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      11
+     ],
+     "u": "https://anilist.co/anime/205896",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+      }
+     ]
+    },
+    {
      "id": 209502,
      "t": "The Cold Sato-san is Only Sweet to Me",
      "f": "TV",
@@ -740,26 +764,27 @@
      ]
     },
     {
-     "id": 205896,
-     "t": "Full Clearing Another World under a Goddess with Zero Believers",
-     "f": "TV",
+     "id": 209219,
+     "t": "So What's Wrong with Getting Reborn as a Goblin?",
+     "f": "ONA",
      "st": "RELEASING",
-     "n": 0,
+     "n": 12,
      "d": [
       2026,
       10,
-      11
+      5
      ],
-     "u": "https://anilist.co/anime/205896",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
+     "u": "https://anilist.co/anime/209219",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
      "g": [
+      "Action",
       "Adventure",
-      "Fantasy"
+      "Comedy"
      ],
      "s": [
       {
        "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+       "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
       }
      ]
     },
@@ -785,31 +810,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GDKHZEP21/the-iceblade-sorcerer-shall-rule-the-world"
-      }
-     ]
-    },
-    {
-     "id": 209219,
-     "t": "So What's Wrong with Getting Reborn as a Goblin?",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      5
-     ],
-     "u": "https://anilist.co/anime/209219",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209219-3yhKlRx0LX3p.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Comedy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00384010/so-whats-wrong-with-getting-reborn-as-a-goblin"
       }
      ]
     },
@@ -897,30 +897,6 @@
      ]
     },
     {
-     "id": 206401,
-     "t": "FX Fighter Kurumi-chan",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      1
-     ],
-     "u": "https://anilist.co/anime/206401",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
-     "g": [
-      "Drama",
-      "Slice of Life"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://crunchyroll.com/series/GT00384001/fx-fighter-kurumi-chan"
-      }
-     ]
-    },
-    {
      "id": 180894,
      "t": "Romelia War Chronicle",
      "f": "ONA",
@@ -942,6 +918,30 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384007/romelia-war-chronicle"
+      }
+     ]
+    },
+    {
+     "id": 206401,
+     "t": "FX Fighter Kurumi-chan",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      1
+     ],
+     "u": "https://anilist.co/anime/206401",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206401-8cAebkI0i8BA.png",
+     "g": [
+      "Drama",
+      "Slice of Life"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://crunchyroll.com/series/GT00384001/fx-fighter-kurumi-chan"
       }
      ]
     },
@@ -1171,7 +1171,7 @@
       8
      ],
      "u": "https://anilist.co/anime/204579",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204579-eIieS4KuQN9x.jpg",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204579-2MZs9F70Fp2M.png",
      "g": [
       "Comedy",
       "Romance",
@@ -1299,24 +1299,6 @@
      "s": []
     },
     {
-     "id": 194213,
-     "t": "ghost – end of night",
-     "f": "MOVIE",
-     "st": "NOT_YET_RELEASED",
-     "n": 1,
-     "d": [
-      2027,
-      2,
-      11
-     ],
-     "u": "https://anilist.co/anime/194213",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-MZDr0UcflB0Y.jpg",
-     "g": [
-      "Supernatural"
-     ],
-     "s": []
-    },
-    {
      "id": 186741,
      "t": "Himekishi-sama no Himo",
      "f": "TV",
@@ -1333,6 +1315,24 @@
       "Action",
       "Adventure",
       "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 194213,
+     "t": "ghost – end of night",
+     "f": "MOVIE",
+     "st": "NOT_YET_RELEASED",
+     "n": 1,
+     "d": [
+      2027,
+      2,
+      11
+     ],
+     "u": "https://anilist.co/anime/194213",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194213-MZDr0UcflB0Y.jpg",
+     "g": [
+      "Supernatural"
      ],
      "s": []
     },
