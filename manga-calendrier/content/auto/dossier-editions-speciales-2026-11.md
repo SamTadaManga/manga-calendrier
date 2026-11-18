@@ -1,12 +1,12 @@
 ---
 title: "Éditions collector, coffrets et éditions spéciales manga de novembre 2026"
 date: 2026-11-01
-description: "10 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
+description: "7 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
 auto: true
 draft: false
 ---
 
-10 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
+7 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
 
 ## Collectors
 
@@ -14,15 +14,12 @@ draft: false
 
 ## Coffrets
 
-- **Black Clover Coffret Prestige** (Kazé) : mer. 18 nov. · [la série](/serie/black-clover-coffret-prestige/)
-- **Platinum End Coffret Prestige** (Kazé) : mer. 18 nov. · [la série](/serie/platinum-end-coffret-prestige/)
 - **Blue Box tome 13** (Delcourt) : jeu. 19 nov. · [la série](/serie/blue-box/)
 - **Nana Replay - Coffret tome 11** (Delcourt) : jeu. 19 nov. · [la série](/serie/nana-replay-coffret/)
 
 ## Éditions deluxe et prestige
 
 - **Flying Ben - Édition prestige** (Delcourt) : jeu. 12 nov. · [la série](/serie/flying-ben-edition-prestige/)
-- **Eagle Perfect édition tome 5** (Panini Manga) : mer. 18 nov. · [la série](/serie/eagle-perfect-edition/)
 - **Alice in Borderland Perfect Edition tome 2** (Delcourt) : jeu. 19 nov. · [la série](/serie/alice-in-borderland-perfect-edition/)
 
 ## Éditions spéciales

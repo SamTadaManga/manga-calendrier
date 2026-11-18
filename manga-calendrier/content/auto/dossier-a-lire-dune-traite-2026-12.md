@@ -8,10 +8,6 @@ draft: false
 
 Des séries dont l'histoire est terminée au Japon, donc sans suite de scénario à attendre (l'édition française peut encore être en cours : vérifie la fiche de la série). Sélection renouvelée chaque mois, d'après les données publiques d'AniList. La suite complète est dans la [sélection des séries terminées](/series-terminees/).
 
-## [Crayon Shinchan](/serie/crayon-shinchan/)
-
-Mangetsu · comédie, ecchi · Yoshito Usui · depuis 1990
-
 ## [Pippira Note](/serie/pippira-note/)
 
 Kana · Fumiyo Kouno · depuis 1997
@@ -31,3 +27,7 @@ Kana · comédie, drame, tranche de vie · Takeshi Obata et Akinari Asakura · d
 ## [Qui a vu le paon danser ?](/serie/qui-a-vu-le-paon-danser/)
 
 Akata · mystère · Rito Asami et Tom Bertrand · depuis 2022
+
+## [2.5 Dimensional Seduction](/serie/2-5-dimensional-seduction/)
+
+Soleil · comédie, ecchi, romance · Yuu Hashimoto · depuis 2019

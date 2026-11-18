@@ -13,8 +13,8 @@ Ki-oon publie 12 références manga en novembre 2026. Les dates viennent des pla
 - **jeu. 5 nov.** · [La Fiancée du clan Kyougane tome 3](/serie/la-fiancee-du-clan-kyougane/) · 7,95 €
 - **jeu. 5 nov.** · [La Servante de l'empereur tome 8](/serie/la-servante-de-l-empereur/) · 7,95 €
 - **jeu. 5 nov.** · [Les Carnets de l'apothicaire](/serie/les-carnets-de-l-apothicaire/) · 23,85 €
+- **jeu. 5 nov.** · [Les chefs-d’œuvre de Lovecraft](/serie/les-chefs-d-uvre-de-lovecraft/) · 34,00 €
 - **jeu. 5 nov.** · [Lili-Men tome 10](/serie/lili-men/) · 7,95 €
-- **jeu. 5 nov.** · [Lovecraft](/serie/lovecraft/) · 34,00 €
 - **jeu. 5 nov.** · [My Hero Academia](/serie/my-hero-academia/) · 48,65 €
 - **jeu. 5 nov.** · [My Hero Academia](/serie/my-hero-academia/) · 48,65 €
 - **jeu. 5 nov.** · [Nine Peaks tome 13](/serie/nine-peaks/) · 6,95 €

@@ -714,7 +714,7 @@
   }
  },
  "/manga/failure-frame-13": {
-  "vu": "2026-11-10",
+  "vu": "2026-11-18",
   "row": {
    "date": "2026-11-27",
    "editeur": "Meian",
@@ -728,7 +728,7 @@
   }
  },
  "/manga/from-bureaucrat-to-villainess-6": {
-  "vu": "2026-11-10",
+  "vu": "2026-11-18",
   "row": {
    "date": "2026-11-27",
    "editeur": "Meian",
@@ -742,7 +742,7 @@
   }
  },
  "/manga/les-allumes-du-conseil-6": {
-  "vu": "2026-11-10",
+  "vu": "2026-11-18",
   "row": {
    "date": "2026-11-27",
    "editeur": "Meian",
@@ -756,7 +756,7 @@
   }
  },
  "/manga/nos-differences-enlacees-10": {
-  "vu": "2026-11-10",
+  "vu": "2026-11-18",
   "row": {
    "date": "2026-11-27",
    "editeur": "Meian",
@@ -770,7 +770,7 @@
   }
  },
  "/manga/shikimori-n-est-pas-juste-mignonne-14": {
-  "vu": "2026-11-10",
+  "vu": "2026-11-18",
   "row": {
    "date": "2026-11-27",
    "editeur": "Meian",
@@ -1172,6 +1172,90 @@
    "isbn": "",
    "prix": null,
    "source": "https://www.bdbase.fr/manga/please-save-my-earth-panini-6",
+   "cover": ""
+  }
+ },
+ "/manga/ima-koi-now-i-m-in-love-2": {
+  "vu": "2026-11-18",
+  "row": {
+   "date": "2027-01-06",
+   "editeur": "Mangetsu",
+   "serie": "Ima Koi - Now, I'm in Love.",
+   "tome": "2",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/ima-koi-now-i-m-in-love-2",
+   "cover": ""
+  }
+ },
+ "/manga/inkya-gal-revolution-3": {
+  "vu": "2026-11-18",
+  "row": {
+   "date": "2027-01-20",
+   "editeur": "Mangetsu",
+   "serie": "Inkya Gal Revolution !",
+   "tome": "3",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/inkya-gal-revolution-3",
+   "cover": ""
+  }
+ },
+ "/manga/kids-on-the-slope-mangetsu-vol-4": {
+  "vu": "2026-11-18",
+  "row": {
+   "date": "2027-01-20",
+   "editeur": "Mangetsu",
+   "serie": "Kids on the slope",
+   "tome": "4",
+   "titre": "Kids on the slope Vol. 4",
+   "isbn": "9782382817155",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/kids-on-the-slope-mangetsu-vol-4",
+   "cover": ""
+  }
+ },
+ "/manga/deep-insanity-nirvana-02": {
+  "vu": "2026-11-18",
+  "row": {
+   "date": "2027-02-03",
+   "editeur": "Mangetsu",
+   "serie": "Deep Insanity Nirvana",
+   "tome": "02",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/deep-insanity-nirvana-02",
+   "cover": ""
+  }
+ },
+ "/manga/shin-tokyo-6": {
+  "vu": "2026-11-18",
+  "row": {
+   "date": "2027-02-03",
+   "editeur": "Mangetsu",
+   "serie": "Shin Tokyo",
+   "tome": "6",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/shin-tokyo-6",
+   "cover": ""
+  }
+ },
+ "/manga/me-et-roboco-4": {
+  "vu": "2026-11-18",
+  "row": {
+   "date": "2027-02-17",
+   "editeur": "Mangetsu",
+   "serie": "Me & Roboco",
+   "tome": "4",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/me-et-roboco-4",
    "cover": ""
   }
  }

@@ -6779,7 +6779,58 @@
     "y": 2026,
     "v": 2
    }
+  },
+  "ima-koi-now-i-m-in-love": {
+   "c": "2026-11-18",
+   "a": [],
+   "i": {
+    "au": [
+     "Ayuko Hatta"
+    ],
+    "sc": [
+     "Ayuko Hatta"
+    ],
+    "ar": [
+     "Ayuko Hatta"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2019,
+    "v": 2
+   }
+  },
+  "inkya-gal-revolution": {
+   "c": "2026-11-18",
+   "a": [],
+   "i": {
+    "au": [
+     "Tsukiko Kashiwagi"
+    ],
+    "sc": [
+     "Tsukiko Kashiwagi"
+    ],
+    "ar": [
+     "Tsukiko Kashiwagi"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2022,
+    "v": 2
+   }
+  },
+  "les-chefs-d-uvre-de-lovecraft": {
+   "c": "2026-11-18",
+   "a": [],
+   "i": null
   }
  },
- "generatedAt": "2026-11-17T11:54:07.541Z"
+ "generatedAt": "2026-11-18T11:43:17.160Z"
 }

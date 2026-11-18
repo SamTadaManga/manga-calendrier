@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-17T11:54:12.939Z",
+ "generatedAt": "2026-11-18T11:43:22.778Z",
  "seasons": [
   {
    "season": "FALL",
@@ -480,6 +480,25 @@
      ]
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 185756,
      "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
      "f": "TV",
@@ -519,25 +538,6 @@
      "g": [
       "Comedy",
       "Ecchi",
-      "Fantasy"
-     ],
-     "s": []
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
       "Fantasy"
      ],
      "s": []
@@ -1069,10 +1069,10 @@
      "d": [
       2027,
       1,
-      0
+      19
      ],
      "u": "https://anilist.co/anime/204363",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204363-rDHWhXs48Ygl.jpg",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx204363-MtBgHE8uhEpJ.jpg",
      "g": [
       "Action",
       "Comedy"
@@ -1116,6 +1116,26 @@
       "Action",
       "Comedy",
       "Sci-Fi"
+     ],
+     "s": []
+    },
+    {
+     "id": 181951,
+     "t": "Ookami to Koushinryou: MERCHANT MEETS THE WISE WOLF 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/181951",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx181951-jTcWy5CUkS7L.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy",
+      "Romance"
      ],
      "s": []
     },
@@ -1351,6 +1371,26 @@
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213360-xNEWCLeQkXkI.jpg",
      "g": [
       "Drama"
+     ],
+     "s": []
+    },
+    {
+     "id": 183960,
+     "t": "Otherworldly Munchkin: Let's Speedrun the Dungeon with Only 1 HP!",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      7
+     ],
+     "u": "https://anilist.co/anime/183960",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx183960-qvkHfCrO6cAq.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Fantasy"
      ],
      "s": []
     },
@@ -1719,44 +1759,6 @@
       "Action",
       "Adventure",
       "Drama"
-     ],
-     "s": []
-    },
-    {
-     "id": 198728,
-     "t": "Kaze wo Tsugumono",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 13,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/198728",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx198728-1tasIeJ995QJ.jpg",
-     "g": [
-      "Action"
-     ],
-     "s": []
-    },
-    {
-     "id": 187303,
-     "t": "Giant Ojou-sama",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/187303",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg",
-     "g": [
-      "Action",
-      "Comedy",
-      "Ecchi"
      ],
      "s": []
     }

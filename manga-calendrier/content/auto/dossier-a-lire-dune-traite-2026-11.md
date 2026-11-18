@@ -8,10 +8,6 @@ draft: false
 
 Des séries dont l'histoire est terminée au Japon, donc sans suite de scénario à attendre (l'édition française peut encore être en cours : vérifie la fiche de la série). Sélection renouvelée chaque mois, d'après les données publiques d'AniList. La suite complète est dans la [sélection des séries terminées](/series-terminees/).
 
-## [Ron Kamonohashi - Deranged detective](/serie/ron-kamonohashi-deranged-detective/)
-
-Mangetsu · drame, mystère · Akira Amano · depuis 2020
-
 ## [Saint Seiya Rerise of Poseidon](/serie/saint-seiya-rerise-of-poseidon/)
 
 Kana · action, drame, fantasy · Tunakan Suda · depuis 2022
@@ -31,3 +27,7 @@ Pika · fantasy, mystère, romance · Kaori Yuki · depuis 1994
 ## [Pandora Hearts](/serie/pandora-hearts/)
 
 Ki-oon · action, aventure, drame · Jun Mochizuki · depuis 2006
+
+## [Les filles d'Awajima](/serie/les-filles-d-awajima/)
+
+Akata · drame, musique, romance · Takako Shimura et Tom Bertrand · depuis 2011
