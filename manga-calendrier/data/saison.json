@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-18T11:43:22.778Z",
+ "generatedAt": "2026-11-19T11:41:20.561Z",
  "seasons": [
   {
    "season": "FALL",
@@ -301,7 +301,7 @@
      "d": [
       2026,
       10,
-      1
+      2
      ],
      "u": "https://anilist.co/anime/213805",
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213805-Nokui3uWlIlw.png",
@@ -338,26 +338,6 @@
      "s": []
     },
     {
-     "id": 199340,
-     "t": "Rascal Does Not Dream of a Dear Friend",
-     "f": "MOVIE",
-     "st": "FINISHED",
-     "n": 1,
-     "d": [
-      2026,
-      10,
-      16
-     ],
-     "u": "https://anilist.co/anime/199340",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199340-YQlmzvmcJzyt.jpg",
-     "g": [
-      "Drama",
-      "Psychological",
-      "Romance"
-     ],
-     "s": []
-    },
-    {
      "id": 172192,
      "t": "A Returner's Magic Should be Special Season 2",
      "f": "TV",
@@ -381,6 +361,26 @@
        "u": "https://www.crunchyroll.com/series/GEXH3W207/a-returners-magic-should-be-special"
       }
      ]
+    },
+    {
+     "id": 199340,
+     "t": "Rascal Does Not Dream of a Dear Friend",
+     "f": "MOVIE",
+     "st": "FINISHED",
+     "n": 1,
+     "d": [
+      2026,
+      10,
+      16
+     ],
+     "u": "https://anilist.co/anime/199340",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx199340-YQlmzvmcJzyt.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Romance"
+     ],
+     "s": []
     },
     {
      "id": 207191,
@@ -455,6 +455,25 @@
      ]
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 186541,
      "t": "Reborn as a Space Mercenary: I Woke Up Piloting the Strongest Starship!",
      "f": "TV",
@@ -478,25 +497,6 @@
        "u": "https://www.crunchyroll.com/series/GT00384006/reborn-as-a-space-mercenary-i-woke-up-piloting-the-strongest-starship"
       }
      ]
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
     },
     {
      "id": 185756,
@@ -1383,10 +1383,10 @@
      "d": [
       2027,
       1,
-      7
+      8
      ],
      "u": "https://anilist.co/anime/183960",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx183960-qvkHfCrO6cAq.jpg",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx183960-Hgd9AMxsOyPa.jpg",
      "g": [
       "Action",
       "Adventure",
@@ -1743,8 +1743,8 @@
      "s": []
     },
     {
-     "id": 197095,
-     "t": "Kaketa Tsuki no Mercedes",
+     "id": 187303,
+     "t": "Giant Ojosama",
      "f": "TV",
      "st": "NOT_YET_RELEASED",
      "n": 0,
@@ -1753,12 +1753,12 @@
       1,
       0
      ],
-     "u": "https://anilist.co/anime/197095",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197095-NultpVkKUJWz.jpg",
+     "u": "https://anilist.co/anime/187303",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx187303-ZY8i5D8JA5cB.jpg",
      "g": [
       "Action",
-      "Adventure",
-      "Drama"
+      "Comedy",
+      "Ecchi"
      ],
      "s": []
     }
