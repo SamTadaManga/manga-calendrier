@@ -1,27 +1,21 @@
 ---
 title: "Éditions collector, coffrets et éditions spéciales manga de novembre 2026"
 date: 2026-11-01
-description: "8 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
+description: "5 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
 auto: true
 draft: false
 ---
 
-8 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
+5 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
 
 ## Collectors
 
 - **Agents of the Four Seasons - Coffret Collector** (Akata) : mer. 18 nov. · [la série](/serie/agents-of-the-four-seasons-coffret-collector/)
 
-## Coffrets
-
-- **Blue Box tome 13** (Delcourt) : jeu. 19 nov. · [la série](/serie/blue-box/)
-- **Nana Replay - Coffret tome 11** (Delcourt) : jeu. 19 nov. · [la série](/serie/nana-replay-coffret/)
-
 ## Éditions deluxe et prestige
 
 - **Berserk Prestige tome 7** (Glénat) : mer. 18 nov. · [la série](/serie/berserk-prestige/)
 - **Alice in Borderland Perfect Edition tome 2** (Delcourt) : jeu. 19 nov. · [la série](/serie/alice-in-borderland-perfect-edition/)
-- **Trigun Maximum Perfect Edition tome 4** (Delcourt) : jeu. 19 nov. · [la série](/serie/trigun-maximum-perfect-edition/)
 
 ## Éditions spéciales
 

@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-19T11:41:20.561Z",
+ "generatedAt": "2026-11-20T11:41:16.846Z",
  "seasons": [
   {
    "season": "FALL",
@@ -109,6 +109,30 @@
      ]
     },
     {
+     "id": 205909,
+     "t": "Firefly Wedding",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      9
+     ],
+     "u": "https://anilist.co/anime/205909",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205909-DM0fAzNQulod.jpg",
+     "g": [
+      "Drama",
+      "Romance"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383999"
+      }
+     ]
+    },
+    {
      "id": 159042,
      "t": "Reincarnated as a Sword Season 2",
      "f": "ONA",
@@ -130,30 +154,6 @@
       {
        "n": "Prime Video",
        "u": "https://www.amazon.com/gp/video/detail/B0HLCHQS6T"
-      }
-     ]
-    },
-    {
-     "id": 205909,
-     "t": "Firefly Wedding",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      9
-     ],
-     "u": "https://anilist.co/anime/205909",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205909-DM0fAzNQulod.jpg",
-     "g": [
-      "Drama",
-      "Romance"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00383999"
       }
      ]
     },
@@ -203,31 +203,6 @@
      ]
     },
     {
-     "id": 210482,
-     "t": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
-     "f": "ONA",
-     "st": "RELEASING",
-     "n": 11,
-     "d": [
-      2026,
-      9,
-      25
-     ],
-     "u": "https://anilist.co/anime/210482",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210482-P1VNKbqdJ6Zj.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Drama"
-     ],
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/82116553"
-      }
-     ]
-    },
-    {
      "id": 207329,
      "t": "The Laid-Off Cheat-Granting Mage Enjoys a Second Lease on Life",
      "f": "TV",
@@ -249,6 +224,31 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384016/"
+      }
+     ]
+    },
+    {
+     "id": 210482,
+     "t": "STEEL BALL RUN JoJo's Bizarre Adventure 2nd - 3rd STAGE",
+     "f": "ONA",
+     "st": "RELEASING",
+     "n": 11,
+     "d": [
+      2026,
+      9,
+      25
+     ],
+     "u": "https://anilist.co/anime/210482",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210482-P1VNKbqdJ6Zj.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Drama"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/82116553"
       }
      ]
     },
@@ -276,7 +276,7 @@
      "id": 143103,
      "t": "Witch on the Holy Night",
      "f": "MOVIE",
-     "st": "NOT_YET_RELEASED",
+     "st": "FINISHED",
      "n": 1,
      "d": [
       2026,
@@ -297,7 +297,7 @@
      "t": "The Ramparts of Ice Season 2",
      "f": "TV",
      "st": "RELEASING",
-     "n": 0,
+     "n": 13,
      "d": [
       2026,
       10,
@@ -1530,26 +1530,6 @@
      "s": []
     },
     {
-     "id": 210199,
-     "t": "The Fable 2nd Season",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      10
-     ],
-     "u": "https://anilist.co/anime/210199",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210199-THddm86dG5PI.jpg",
-     "g": [
-      "Action",
-      "Comedy",
-      "Drama"
-     ],
-     "s": []
-    },
-    {
      "id": 219548,
      "t": "Spirit Circle",
      "f": "TV",
@@ -1566,6 +1546,26 @@
       "Action",
       "Comedy",
       "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 210199,
+     "t": "The Fable 2nd Season",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      10
+     ],
+     "u": "https://anilist.co/anime/210199",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx210199-THddm86dG5PI.jpg",
+     "g": [
+      "Action",
+      "Comedy",
+      "Drama"
      ],
      "s": []
     },
@@ -1627,16 +1627,16 @@
     {
      "id": 202503,
      "t": "Majutsu wo Kiwamete Tabi ni Deta Tensei Elf, Moteamashita Jumyou de Ikeru Densetsu to Naru",
-     "f": "TV",
+     "f": "ONA",
      "st": "NOT_YET_RELEASED",
      "n": 0,
      "d": [
-      2027,
-      1,
-      0
+      2026,
+      12,
+      31
      ],
      "u": "https://anilist.co/anime/202503",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202503-U8b43fpnu9EI.png",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202503-JaapiDgTKFy8.png",
      "g": [
       "Action",
       "Adventure",
@@ -1653,7 +1653,7 @@
      "d": [
       2027,
       1,
-      0
+      2
      ],
      "u": "https://anilist.co/anime/174427",
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx174427-ozv3bFtwB08m.jpg",
@@ -1723,26 +1723,6 @@
      "s": []
     },
     {
-     "id": 194030,
-     "t": "Gacha wo Mawashite Nakama wo Fuyasu: Saikyou no Bishoujo Gundan wo Tsukuriagero",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/194030",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194030-vUznQtK7kodY.jpg",
-     "g": [
-      "Action",
-      "Adventure",
-      "Comedy"
-     ],
-     "s": []
-    },
-    {
      "id": 187303,
      "t": "Giant Ojosama",
      "f": "TV",
@@ -1759,6 +1739,26 @@
       "Action",
       "Comedy",
       "Ecchi"
+     ],
+     "s": []
+    },
+    {
+     "id": 194030,
+     "t": "Gacha wo Mawashite Nakama wo Fuyasu: Saikyou no Bishoujo Gundan wo Tsukuriagero",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/194030",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx194030-vUznQtK7kodY.jpg",
+     "g": [
+      "Action",
+      "Adventure",
+      "Comedy"
      ],
      "s": []
     }
