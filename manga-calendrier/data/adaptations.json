@@ -2068,7 +2068,7 @@
    }
   },
   "the-world-after-the-fall": {
-   "c": "2026-10-26",
+   "c": "2026-11-20",
    "a": [],
    "i": {
     "au": [
@@ -2090,7 +2090,8 @@
     "st": "RELEASING",
     "y": 2022,
     "v": 2
-   }
+   },
+   "cat": 1
   },
   "togen-anki-la-legende-du-sang-maudit": {
    "c": "2026-11-16",
@@ -2809,9 +2810,10 @@
    }
   },
   "the-bugle-call": {
-   "c": "2026-10-26",
+   "c": "2026-11-20",
    "a": [],
-   "i": null
+   "i": null,
+   "cat": 1
   },
   "ubel-blatt-ii": {
    "c": "2026-10-26",
@@ -27016,7 +27018,2593 @@
     "v": 2
    },
    "cat": 1
+  },
+  "my-love-story-with-yamada-kun-at-lvl-999": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "niji-iro-tohgarashi": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "online": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Tsukasa Kyouka",
+     "Midori Amagaeru"
+    ],
+    "sc": [
+     "Tsukasa Kyouka"
+    ],
+    "ar": [
+     "Tsukasa Kyouka"
+    ],
+    "g": [
+     "Drama",
+     "Horror",
+     "Psychological",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2013,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "otaku-otaku": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 99578,
+     "t": "Wotakoi: Love is Hard for Otaku",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/99578",
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/gp/video/detail/B07C3WL3VP"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Fujita",
+     "Éric Montésinos"
+    ],
+    "sc": [
+     "Fujita"
+    ],
+    "ar": [
+     "Fujita"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2014,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "otome-game": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Satoru Yamaguchi",
+     "Nami Hidaka",
+     "Rina Mapa"
+    ],
+    "sc": [
+     "Nami Hidaka"
+    ],
+    "ar": [
+     "Nami Hidaka"
+    ],
+    "g": [
+     "Comedy",
+     "Fantasy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2017,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "pink-diary": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "please-love-me": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Amayo Tsuge"
+    ],
+    "sc": [
+     "Amayo Tsuge"
+    ],
+    "ar": [
+     "Amayo Tsuge"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2006,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "psychic-academy": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 337,
+     "t": "Psychic Academy",
+     "st": "FINISHED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/337",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Katsu Aki"
+    ],
+    "sc": [
+     "Katsu Aki"
+    ],
+    "ar": [
+     "Katsu Aki"
+    ],
+    "g": [
+     "Drama",
+     "Ecchi",
+     "Romance",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 1999,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "racaille-de-bibliotheque": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "re-monster": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Haruyoshi Kobayakawa",
+     "Kogitsune Kanekiru",
+     "Meaghan Tucker",
+     "Robert Harkins"
+    ],
+    "sc": [
+     "Haruyoshi Kobayakawa"
+    ],
+    "ar": [
+     "Haruyoshi Kobayakawa"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2014,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "re-zero-re-life-in-a-different-world-from-zero-troisieme-arc-truth-of-zero": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "rebirth": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Mitsuaki Asou"
+    ],
+    "sc": [
+     "Mitsuaki Asou"
+    ],
+    "ar": [
+     "Mitsuaki Asou"
+    ],
+    "g": [
+     "Drama",
+     "Mystery",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2019,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "reincarnations-ii": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "rere": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Touko Minami"
+    ],
+    "sc": [
+     "Touko Minami"
+    ],
+    "ar": [
+     "Touko Minami"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2013,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "roji": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "rooster-fighter": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 179813,
+     "t": "Rooster Fighter",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/179813",
+     "s": [
+      {
+       "n": "Disney+",
+       "u": "https://www.disneyplus.com/browse/entity-75f4baad-151d-489d-8a9e-bec4ab49ed23"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00365727/rooster-fighter"
+      },
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/82647303"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Shuu Sakuratani"
+    ],
+    "sc": [
+     "Shuu Sakuratani"
+    ],
+    "ar": [
+     "Shuu Sakuratani"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "samidare": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "KEPPI"
+    ],
+    "sc": [
+     "KEPPI"
+    ],
+    "ar": [
+     "KEPPI"
+    ],
+    "g": [
+     "Hentai"
+    ],
+    "st": "FINISHED",
+    "y": 2002,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "sankarea-adorable-zombie": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "sasaki-et-miyano": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "scarlet-fan": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "shi-ki": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "shibuya-hell": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Hiroumi Aoi"
+    ],
+    "sc": [
+     "Hiroumi Aoi"
+    ],
+    "ar": [
+     "Hiroumi Aoi"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Horror",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2016,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "six-half": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Rikako Iketani"
+    ],
+    "sc": [
+     "Rikako Iketani"
+    ],
+    "ar": [
+     "Rikako Iketani"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2009,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "soil": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Atsushi Kaneko"
+    ],
+    "sc": [
+     "Atsushi Kaneko"
+    ],
+    "ar": [
+     "Atsushi Kaneko"
+    ],
+    "g": [
+     "Drama",
+     "Horror",
+     "Mystery",
+     "Psychological",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2004,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "strobe-edge": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 20596,
+     "t": "Blue Spring Ride",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/20596",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Io Sakisaka",
+     "Aude Charlier"
+    ],
+    "sc": [
+     "Io Sakisaka"
+    ],
+    "ar": [
+     "Io Sakisaka"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2011,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "subaru": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Saki Hiwatari"
+    ],
+    "sc": [
+     "Saki Hiwatari"
+    ],
+    "ar": [
+     "Saki Hiwatari"
+    ],
+    "g": [],
+    "st": "FINISHED",
+    "y": 1982,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "sudachi": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Yubune Toushiki"
+    ],
+    "sc": [
+     "Yubune Toushiki"
+    ],
+    "ar": [
+     "Yubune Toushiki"
+    ],
+    "g": [
+     "Hentai"
+    ],
+    "st": "FINISHED",
+    "y": 2025,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "tetsuwan-birdy": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 3974,
+     "t": "Birdy the Mighty: Decode",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/3974",
+     "s": []
+    },
+    {
+     "id": 5074,
+     "t": "Birdy the Mighty: Decode 02",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/5074",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Masami Yuuki"
+    ],
+    "sc": [
+     "Masami Yuuki"
+    ],
+    "ar": [
+     "Masami Yuuki"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 2003,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "the-druid-of-seoul-station": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Hwalseonggom",
+     "Seol-U Jin",
+     "Seong-Ho Moon"
+    ],
+    "sc": [
+     "Seong-Ho Moon"
+    ],
+    "ar": [
+     "Hwalseonggom"
+    ],
+    "g": [
+     "Action",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2021,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "the-gentlemen-s-alliance-cross": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "the-ice-guy-the-cool-girl": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "the-killer-inside": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Hajime Inoryu",
+     "Shouta Itou"
+    ],
+    "sc": [
+     "Hajime Inoryu"
+    ],
+    "ar": [
+     "Shouta Itou"
+    ],
+    "g": [
+     "Drama",
+     "Horror",
+     "Mystery",
+     "Psychological",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2018,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "the-legend-of-zelda-twilight-princess": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Akira Himekawa"
+    ],
+    "sc": [
+     "Akira Himekawa"
+    ],
+    "ar": [
+     "Akira Himekawa"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2016,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "the-most-notorious-talker": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "the-qwaser-of-stigmata": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 6500,
+     "t": "The Qwaser of Stigmata",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/6500",
+     "s": []
+    },
+    {
+     "id": 10073,
+     "t": "The Qwaser of Stigmata II",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/10073",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Kenetsu Satou",
+     "Hiroyuki Yoshino"
+    ],
+    "sc": [
+     "Hiroyuki Yoshino"
+    ],
+    "ar": [
+     "Kenetsu Satou"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Ecchi",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2006,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "the-top-secret": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "the-tyrant-who-fall-in-love": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "the-world-is-still-beautiful": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 20599,
+     "t": "The World is Still Beautiful",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/20599",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/the-world-is-still-beautiful"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Dai Shiina"
+    ],
+    "sc": [
+     "Dai Shiina"
+    ],
+    "ar": [
+     "Dai Shiina"
+    ],
+    "g": [
+     "Adventure",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2009,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "today-s-burger": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Umetaro Saitani",
+     "Rei Hanagata"
+    ],
+    "sc": [
+     "Rei Hanagata"
+    ],
+    "ar": [
+     "Umetaro Saitani"
+    ],
+    "g": [
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2015,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "ton-visage-au-clair-de-lune": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 192507,
+     "t": "In the Clear Moonlit Dusk",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/192507",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00334040/in-the-clear-moonlit-dusk"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Mika Yamamori"
+    ],
+    "sc": [
+     "Mika Yamamori"
+    ],
+    "ar": [
+     "Mika Yamamori"
+    ],
+    "g": [
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "too-close-to-me": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "tripeace": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Maru Tomoyuki"
+    ],
+    "sc": [
+     "Maru Tomoyuki"
+    ],
+    "ar": [
+     "Maru Tomoyuki"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2008,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "twinkle-stars": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Natsuki Takaya"
+    ],
+    "sc": [
+     "Natsuki Takaya"
+    ],
+    "ar": [
+     "Natsuki Takaya"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2007,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "venus-wa-kataomoi": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Yuki Nakaji"
+    ],
+    "sc": [
+     "Yuki Nakaji"
+    ],
+    "ar": [
+     "Yuki Nakaji"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 1999,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "we-are-always": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Ayu Fujimiya"
+    ],
+    "sc": [
+     "Ayu Fujimiya"
+    ],
+    "ar": [
+     "Ayu Fujimiya"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2007,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "witches-war": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Makoto Shiozuka",
+     "Homura Kawamoto"
+    ],
+    "sc": [
+     "Homura Kawamoto"
+    ],
+    "ar": [
+     "Makoto Shiozuka"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "world-war-demons": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "yuri-is-my-job": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 149028,
+     "t": "Yuri Is My Job!",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/149028",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GMEHME8VE/yuri-is-my-job"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Miman"
+    ],
+    "sc": [
+     "Miman"
+    ],
+    "ar": [
+     "Miman"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance"
+    ],
+    "st": "RELEASING",
+    "y": 2016,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "360-material": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Touko Minami"
+    ],
+    "sc": [
+     "Touko Minami"
+    ],
+    "ar": [
+     "Touko Minami"
+    ],
+    "g": [
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2010,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "50-nuances-de-gras": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 173388,
+     "t": "Plus-Sized Elf",
+     "st": "FINISHED",
+     "f": "TV_SHORT",
+     "u": "https://anilist.co/anime/173388",
+     "s": []
+    },
+    {
+     "id": 179126,
+     "t": "Plus-Sized Elf Specials",
+     "st": "FINISHED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/179126",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Synecdoche",
+     "Courtney Williams"
+    ],
+    "sc": [
+     "Synecdoche"
+    ],
+    "ar": [
+     "Synecdoche"
+    ],
+    "g": [
+     "Comedy",
+     "Ecchi",
+     "Fantasy",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2016,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "7-seeds": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 105807,
+     "t": "7SEEDS",
+     "st": "FINISHED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/105807",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/in/title/80183051"
+      }
+     ]
+    },
+    {
+     "id": 112686,
+     "t": "7SEEDS Part 2",
+     "st": "FINISHED",
+     "f": "ONA",
+     "u": "https://anilist.co/anime/112686",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/in/title/80183051"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yumi Tamura"
+    ],
+    "sc": [
+     "Yumi Tamura"
+    ],
+    "ar": [
+     "Yumi Tamura"
+    ],
+    "g": [
+     "Adventure",
+     "Drama",
+     "Horror",
+     "Mystery",
+     "Psychological"
+    ],
+    "st": "FINISHED",
+    "y": 2001,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "a-l-horizon": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "a-l-image-de-mona-lisa": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "after-god": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Sumi Eno"
+    ],
+    "sc": [
+     "Sumi Eno"
+    ],
+    "ar": [
+     "Sumi Eno"
+    ],
+    "g": [
+     "Action",
+     "Supernatural"
+    ],
+    "st": "RELEASING",
+    "y": 2021,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "angolmois": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 99412,
+     "t": "Angolmois: Record of Mongol Invasion",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/99412",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Nanahiko Takagi"
+    ],
+    "sc": [
+     "Nanahiko Takagi"
+    ],
+    "ar": [
+     "Nanahiko Takagi"
+    ],
+    "g": [
+     "Action",
+     "Drama"
+    ],
+    "st": "FINISHED",
+    "y": 2013,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "anima": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Natsumi Mukai"
+    ],
+    "sc": [
+     "Natsumi Mukai"
+    ],
+    "ar": [
+     "Natsumi Mukai"
+    ],
+    "g": [
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 1999,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "apres-la-pluie": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "artiste-un-chef-d-exception": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Tarou Samoyed"
+    ],
+    "sc": [
+     "Tarou Samoyed"
+    ],
+    "ar": [
+     "Tarou Samoyed"
+    ],
+    "g": [
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2016,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "asebi-et-les-aventuriers-du-ciel": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Taisuke Umeki"
+    ],
+    "sc": [
+     "Taisuke Umeki"
+    ],
+    "ar": [
+     "Taisuke Umeki"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy",
+     "Romance",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 2014,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "audition": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Kye-Young Chon"
+    ],
+    "sc": [
+     "Kye-Young Chon"
+    ],
+    "ar": [
+     "Kye-Young Chon"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 1998,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "big-order": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 21445,
+     "t": "Big Order",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/21445",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Sakae Esuno"
+    ],
+    "sc": [
+     "Sakae Esuno"
+    ],
+    "ar": [
+     "Sakae Esuno"
+    ],
+    "g": [
+     "Action",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2011,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "binetsu-shojo": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "black-jack": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 2214,
+     "t": "Black Jack 21",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/2214",
+     "s": []
+    },
+    {
+     "id": 1521,
+     "t": "Black Jack: The Movie",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/1521",
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/gp/video/detail/B07DWGGDB4/"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/black-jack-the-movie"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Osamu Tezuka"
+    ],
+    "sc": [
+     "Osamu Tezuka"
+    ],
+    "ar": [
+     "Osamu Tezuka"
+    ],
+    "g": [
+     "Drama"
+    ],
+    "st": "FINISHED",
+    "y": 1973,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "black-marriage": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Saki Aikawa"
+    ],
+    "sc": [
+     "Saki Aikawa"
+    ],
+    "ar": [
+     "Saki Aikawa"
+    ],
+    "g": [
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "blaue-rosen": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Mayu Shinjou",
+     "Inori Fukuda Trant"
+    ],
+    "sc": [
+     "Mayu Shinjou"
+    ],
+    "ar": [
+     "Mayu Shinjou"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2006,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "blessures-nocturnes": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Osamu Mizutani",
+     "Seiki Tsuchida"
+    ],
+    "sc": [
+     "Osamu Mizutani"
+    ],
+    "ar": [
+     "Seiki Tsuchida"
+    ],
+    "g": [
+     "Drama",
+     "Psychological"
+    ],
+    "st": "FINISHED",
+    "y": 2004,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "blue-giant": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 140499,
+     "t": "Blue Giant",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/140499",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81763062"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Shinichi Ishizuka",
+     "Ludwig Sacramento"
+    ],
+    "sc": [
+     "Shinichi Ishizuka"
+    ],
+    "ar": [
+     "Shinichi Ishizuka"
+    ],
+    "g": [
+     "Drama",
+     "Music",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2013,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "broken-blade": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 6772,
+     "t": "Broken Blade",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/6772",
+     "s": []
+    },
+    {
+     "id": 8514,
+     "t": "Broken Blade 2",
+     "st": "FINISHED",
+     "f": "MOVIE",
+     "u": "https://anilist.co/anime/8514",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Yunosuke Yoshinaga"
+    ],
+    "sc": [
+     "Yunosuke Yoshinaga"
+    ],
+    "ar": [
+     "Yunosuke Yoshinaga"
+    ],
+    "g": [
+     "Action",
+     "Fantasy",
+     "Mecha"
+    ],
+    "st": "FINISHED",
+    "y": 2007,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "called-game": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Kaneyoshi Izumi"
+    ],
+    "sc": [
+     "Kaneyoshi Izumi"
+    ],
+    "ar": [
+     "Kaneyoshi Izumi"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2017,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "chocola-et-vanilla": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "choubi-choubi": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "clevatess": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 178869,
+     "t": "Clevatess",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/178869",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/G8DHV78ZM/clevatess"
+      }
+     ]
+    },
+    {
+     "id": 198946,
+     "t": "Clevatess Season 2",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/198946",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/G8DHV78ZM/clevatess"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yuuji Iwahara"
+    ],
+    "sc": [
+     "Yuuji Iwahara"
+    ],
+    "ar": [
+     "Yuuji Iwahara"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Fantasy"
+    ],
+    "st": "RELEASING",
+    "y": 2020,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "come-to-me": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "corpse-party": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Chihiro",
+     "Liver Jam"
+    ],
+    "sc": [
+     "Chihiro"
+    ],
+    "ar": [
+     "Liver Jam"
+    ],
+    "g": [
+     "Horror",
+     "Mystery",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2015,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "darwin-s-incident": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "de-l-engagement-de-la-guerre": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "deep-sea-aquarium-magmell": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Kiyomi Sugishita"
+    ],
+    "sc": [
+     "Kiyomi Sugishita"
+    ],
+    "ar": [
+     "Kiyomi Sugishita"
+    ],
+    "g": [
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2017,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "defense-devil": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "In-Wan Yun",
+     "Kyeong-Il Yang"
+    ],
+    "sc": [
+     "In-Wan Yun"
+    ],
+    "ar": [
+     "Kyeong-Il Yang"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Ecchi",
+     "Mystery"
+    ],
+    "st": "FINISHED",
+    "y": 2009,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "detroit-metal-city": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Kiminori Wakasugi"
+    ],
+    "sc": [
+     "Kiminori Wakasugi"
+    ],
+    "ar": [
+     "Kiminori Wakasugi"
+    ],
+    "g": [
+     "Comedy",
+     "Music"
+    ],
+    "st": "FINISHED",
+    "y": 2005,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "divci-valka": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "don-t-call-it-mystery": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Yumi Tamura"
+    ],
+    "sc": [
+     "Yumi Tamura"
+    ],
+    "ar": [
+     "Yumi Tamura"
+    ],
+    "g": [
+     "Drama",
+     "Mystery"
+    ],
+    "st": "RELEASING",
+    "y": 2017,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "dungeon-reset": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Rio Skywalker",
+     "Daul"
+    ],
+    "sc": [],
+    "ar": [
+     "Rio Skywalker"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "dusk-maiden-of-amnesia": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 12445,
+     "t": "Dusk Maiden of Amnesia",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/12445",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Maybe"
+    ],
+    "sc": [
+     "Maybe"
+    ],
+    "ar": [
+     "Maybe"
+    ],
+    "g": [
+     "Horror",
+     "Mystery",
+     "Romance",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2008,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "eat-man": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 216644,
+     "t": "EAT-MAN The Over Order",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/216644",
+     "s": []
+    },
+    {
+     "id": 1704,
+     "t": "EAT-MAN",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/1704",
+     "s": [
+      {
+       "n": "Prime Video",
+       "u": "https://www.amazon.com/dp/B07XF6YXLT/r"
+      },
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/eat-man"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Akihito Yoshitomi"
+    ],
+    "sc": [
+     "Akihito Yoshitomi"
+    ],
+    "ar": [
+     "Akihito Yoshitomi"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Comedy",
+     "Fantasy",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 1996,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "ecoconstruction": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "embalming": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "entre-toi-et-moi": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "epilogue": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "evol": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Atsushi Kaneko"
+    ],
+    "sc": [
+     "Atsushi Kaneko"
+    ],
+    "ar": [
+     "Atsushi Kaneko"
+    ],
+    "g": [
+     "Action",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2020,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "excel-saga": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 379,
+     "t": "Excel Saga",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/379",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Koushi Rikudo"
+    ],
+    "sc": [
+     "Koushi Rikudo"
+    ],
+    "ar": [
+     "Koushi Rikudo"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Drama",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 1996,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "fire-punch": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Tatsuki Fujimoto"
+    ],
+    "sc": [
+     "Tatsuki Fujimoto"
+    ],
+    "ar": [
+     "Tatsuki Fujimoto"
+    ],
+    "g": [
+     "Action",
+     "Drama",
+     "Mystery",
+     "Psychological",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2016,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "front-mission-dog-life-dog-style": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Yasuo Ootagaki",
+     "C.H.LINE"
+    ],
+    "sc": [
+     "Yasuo Ootagaki"
+    ],
+    "ar": [
+     "C.H.LINE"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Mecha",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 2007,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "gals": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 1728,
+     "t": "Super GALS",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/1728",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/super-gals"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Mihona Fujii"
+    ],
+    "sc": [
+     "Mihona Fujii"
+    ],
+    "ar": [
+     "Mihona Fujii"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 1998,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "genesis": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Shintarou Kago"
+    ],
+    "sc": [
+     "Shintarou Kago"
+    ],
+    "ar": [
+     "Shintarou Kago"
+    ],
+    "g": [
+     "Comedy",
+     "Horror"
+    ],
+    "st": "FINISHED",
+    "y": 2001,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "giga-tokyo-toybox": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Ume"
+    ],
+    "sc": [
+     "Ume"
+    ],
+    "ar": [
+     "Ume"
+    ],
+    "g": [
+     "Comedy",
+     "Drama"
+    ],
+    "st": "FINISHED",
+    "y": 2006,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "girls-bravo": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 241,
+     "t": "Girls Bravo",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/241",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/girls-bravo"
+      }
+     ]
+    },
+    {
+     "id": 487,
+     "t": "GIRLS Bravo: second season",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/487",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/girls-bravo"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Mario Kaneda"
+    ],
+    "sc": [
+     "Mario Kaneda"
+    ],
+    "ar": [
+     "Mario Kaneda"
+    ],
+    "g": [
+     "Comedy",
+     "Ecchi",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2000,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "god-of-high-school": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 116006,
+     "t": "The God of High School",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/116006",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/the-god-of-high-school"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Yong-Je Park"
+    ],
+    "sc": [
+     "Yong-Je Park"
+    ],
+    "ar": [
+     "Yong-Je Park"
+    ],
+    "g": [
+     "Action",
+     "Adventure",
+     "Fantasy"
+    ],
+    "st": "FINISHED",
+    "y": 2011,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "gurren-lagann": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "hades-chasseur-de-psycho-demons": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "hanayamata": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 20575,
+     "t": "HaNaYaMaTa",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/20575",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/hanayamata"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Sou Hamayumiba"
+    ],
+    "sc": [
+     "Sou Hamayumiba"
+    ],
+    "ar": [
+     "Sou Hamayumiba"
+    ],
+    "g": [
+     "Comedy",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2011,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "happiness": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Shuuzou Oshimi"
+    ],
+    "sc": [
+     "Shuuzou Oshimi"
+    ],
+    "ar": [
+     "Shuuzou Oshimi"
+    ],
+    "g": [
+     "Drama",
+     "Horror",
+     "Supernatural"
+    ],
+    "st": "FINISHED",
+    "y": 2015,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "hemispheres": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "hero-skill": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "hi-score-girl": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 20574,
+     "t": "Hi Score Girl",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/20574",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/80997338"
+      }
+     ]
+    },
+    {
+     "id": 108581,
+     "t": "Hi Score Girl II",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/108581",
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/80997338"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Rensuke Oshikiri"
+    ],
+    "sc": [
+     "Rensuke Oshikiri"
+    ],
+    "ar": [
+     "Rensuke Oshikiri"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2010,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "hirayasumi": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 196333,
+     "t": "Hirayasumi",
+     "st": "NOT_YET_RELEASED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/196333",
+     "s": []
+    }
+   ],
+   "i": {
+    "au": [
+     "Keigo Shinzo"
+    ],
+    "sc": [
+     "Keigo Shinzo"
+    ],
+    "ar": [
+     "Keigo Shinzo"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2021,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "honey-and-clover": {
+   "c": "2026-11-20",
+   "a": [
+    {
+     "id": 16,
+     "t": "Honey and Clover",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/16",
+     "s": []
+    },
+    {
+     "id": 1142,
+     "t": "Honey and Clover II",
+     "st": "FINISHED",
+     "f": "TV",
+     "u": "https://anilist.co/anime/1142",
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/honey-and-clover"
+      }
+     ]
+    }
+   ],
+   "i": {
+    "au": [
+     "Chica Umino",
+     "Sabrina Heep"
+    ],
+    "sc": [
+     "Chica Umino"
+    ],
+    "ar": [
+     "Chica Umino"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2000,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "honey-come-honey": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Yuki Shiraishi"
+    ],
+    "sc": [
+     "Yuki Shiraishi"
+    ],
+    "ar": [
+     "Yuki Shiraishi"
+    ],
+    "g": [
+     "Comedy",
+     "Drama",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2017,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "hope-you-re-happy-lemon": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Mizuki Kishikawa"
+    ],
+    "sc": [
+     "Mizuki Kishikawa"
+    ],
+    "ar": [
+     "Mizuki Kishikawa"
+    ],
+    "g": [
+     "Comedy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2023,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "i-cannot-reach-you": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Mika"
+    ],
+    "sc": [
+     "Mika"
+    ],
+    "ar": [
+     "Mika"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2018,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "i-love-hana-kun": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Fuyu Kumaoka"
+    ],
+    "sc": [
+     "Fuyu Kumaoka"
+    ],
+    "ar": [
+     "Fuyu Kumaoka"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "RELEASING",
+    "y": 2011,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "i-love-you-so-i-kill-you": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Sousou Sakakibara",
+     "Majuro Kaname"
+    ],
+    "sc": [
+     "Majuro Kaname"
+    ],
+    "ar": [
+     "Sousou Sakakibara"
+    ],
+    "g": [
+     "Drama",
+     "Horror",
+     "Psychological",
+     "Romance",
+     "Thriller"
+    ],
+    "st": "FINISHED",
+    "y": 2015,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "ichi-the-killer": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Hideo Yamamoto"
+    ],
+    "sc": [
+     "Hideo Yamamoto"
+    ],
+    "ar": [
+     "Hideo Yamamoto"
+    ],
+    "g": [
+     "Action",
+     "Psychological"
+    ],
+    "st": "FINISHED",
+    "y": 1998,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "inazuma-eleven": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Tenya Yabuno"
+    ],
+    "sc": [
+     "Tenya Yabuno"
+    ],
+    "ar": [
+     "Tenya Yabuno"
+    ],
+    "g": [
+     "Action",
+     "Comedy",
+     "Fantasy",
+     "Sports"
+    ],
+    "st": "FINISHED",
+    "y": 2008,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "irresistible": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "izunas": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "jardin-secret": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Ammitsu",
+     "Éric Montésinos"
+    ],
+    "sc": [
+     "Ammitsu"
+    ],
+    "ar": [
+     "Ammitsu"
+    ],
+    "g": [
+     "Comedy",
+     "Romance",
+     "Slice of Life"
+    ],
+    "st": "FINISHED",
+    "y": 2017,
+    "v": 2
+   },
+   "cat": 1
+  },
+  "katsuo-l-arme-humaine": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": null,
+   "cat": 1
+  },
+  "kaze": {
+   "c": "2026-11-20",
+   "a": [],
+   "i": {
+    "au": [
+     "Masaomi Kanzaki"
+    ],
+    "sc": [
+     "Masaomi Kanzaki"
+    ],
+    "ar": [
+     "Masaomi Kanzaki"
+    ],
+    "g": [
+     "Action",
+     "Sci-Fi"
+    ],
+    "st": "FINISHED",
+    "y": 0,
+    "v": 2
+   },
+   "cat": 1
   }
  },
- "generatedAt": "2026-11-20T15:56:46.550Z"
+ "generatedAt": "2026-11-20T16:23:35.235Z"
 }
