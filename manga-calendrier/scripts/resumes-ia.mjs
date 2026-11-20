@@ -38,7 +38,8 @@ async function main() {
     writeFileSync(arg('sortie', 'taches.json'), JSON.stringify(taches.map((t) => ({ k: t.k, h: t.h, messages: consigne(t.x), x: t.x }))));
     console.log(`${taches.length} résumés à écrire.`);
   } else if (cmd === 'appliquer') {
-    const res = JSON.parse(readFileSync(arg('entree', 'resultats.json'), 'utf8'));
+    let res;
+    try { res = JSON.parse(readFileSync(arg('entree', 'resultats.json'), 'utf8')); } catch { console.log('Aucun résultat exploitable (le modèle n\'a rien produit) : rien à enregistrer.'); return; }
     const cible = lire('resumes-ia.json', {});
     const ia = { ...(cible.resumes || {}) };
     const refus = {}; let ok = 0;
