@@ -1,0 +1,97 @@
+name: Résumés réécrits par une IA locale
+# Réécrit, avec un petit modèle open source qui tourne sur le serveur GitHub (aucun service payant, aucune clé), le résumé de l'éditeur des grandes séries
+# (data/resumes-catalogue.json -> data/resumes-ia.json). Chaque texte est contrôlé (noms et chiffres présents dans la source, pas de copie, pas de bavardage) ;
+# un texte refusé n'est jamais publié : le résumé de l'éditeur reste affiché.
+# Lancement manuel : « essai » ne publie rien (les textes sont dans l'artefact « resumes-ia »). Passage de nuit : seulement si la variable de dépôt RESUMES_IA vaut « oui »
+# (Settings > Secrets and variables > Actions > Variables). Modèle réglable avec les variables RESUMES_MODELE_REPO et RESUMES_MODELE_FICHIER.
+on:
+  schedule:
+    - cron: '37 2 * * *'
+  workflow_dispatch:
+    inputs:
+      limite:
+        description: "Nombre de séries à traiter"
+        default: '20'
+      essai:
+        description: "Essai à blanc (ne rien enregistrer)"
+        type: boolean
+        default: true
+permissions:
+  contents: write
+concurrency:
+  group: resumes-ia
+  cancel-in-progress: false
+jobs:
+  resumes:
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.RESUMES_IA == 'oui' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 170
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    env:
+      MODELE_REPO: ${{ vars.RESUMES_MODELE_REPO || 'Qwen/Qwen3-4B-GGUF' }}
+      MODELE_FICHIER: ${{ vars.RESUMES_MODELE_FICHIER || 'Qwen3-4B-Q4_K_M.gguf' }}
+      IN_LIMITE: ${{ inputs.limite }}
+      IN_ESSAI: ${{ inputs.essai }}
+      EVENT: ${{ github.event_name }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Contrôler les réglages
+        run: |
+          case "$MODELE_REPO" in *[!A-Za-z0-9._/-]*) echo "Dépôt du modèle refusé."; exit 1;; esac
+          case "$MODELE_FICHIER" in *[!A-Za-z0-9._-]*) echo "Fichier du modèle refusé."; exit 1;; esac
+          LIMITE="${IN_LIMITE:-80}"
+          case "$LIMITE" in ''|*[!0-9]*) echo "Limite refusée."; exit 1;; esac
+          echo "LIMITE=$LIMITE" >> "$GITHUB_ENV"
+          if [ "$EVENT" = "workflow_dispatch" ] && [ "$IN_ESSAI" = "true" ]; then echo "ESSAI=--essai" >> "$GITHUB_ENV"; else echo "ESSAI=" >> "$GITHUB_ENV"; fi
+      - name: Préparer les résumés à écrire
+        run: node scripts/resumes-ia.mjs preparer --limite="$LIMITE" --sortie=taches.json
+      - name: Garder le modèle en cache
+        uses: actions/cache@v4
+        with:
+          path: ~/modele
+          key: modele-${{ env.MODELE_REPO }}-${{ env.MODELE_FICHIER }}
+      - name: Installer le moteur et télécharger le modèle
+        run: |
+          pip install --no-input llama-cpp-python --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+          mkdir -p ~/modele
+          [ -s ~/modele/modele.gguf ] || curl -fL --retry 3 -o ~/modele/modele.gguf "https://huggingface.co/$MODELE_REPO/resolve/main/$MODELE_FICHIER"
+          ls -la ~/modele
+      - name: Écrire les résumés
+        run: MODEL_PATH="$HOME/modele/modele.gguf" python scripts/llm-local.py taches.json resultats.json 120
+      - name: Contrôler et enregistrer les textes
+        run: MODELE="$MODELE_REPO/$MODELE_FICHIER" node scripts/resumes-ia.mjs appliquer --entree=resultats.json $ESSAI
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: resumes-ia
+          path: |
+            manga-calendrier/taches.json
+            manga-calendrier/resultats.json
+          retention-days: 14
+      - name: Enregistrer
+        if: ${{ env.ESSAI == '' }}
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/keep"; mkdir -p "$KEEP"
+          [ -f manga-calendrier/data/resumes-ia.json ] && cp manga-calendrier/data/resumes-ia.json "$KEEP/resumes-ia.json"
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            [ -f "$KEEP/resumes-ia.json" ] && cp "$KEEP/resumes-ia.json" manga-calendrier/data/resumes-ia.json
+            git add manga-calendrier/data/resumes-ia.json
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Résumés des grandes séries réécrits par l'IA : mise à jour"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1

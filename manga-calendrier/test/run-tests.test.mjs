@@ -1540,5 +1540,26 @@ test('BDfugue : résumés du catalogue pour les grandes séries', async () => {
   assert.ok(r['serie-longue'].t.length <= 700 && !/\\.Le /.test(r['serie-longue'].t) && !/\\. \\? /.test(r['serie-longue'].t), 'texte nettoyé et tronqué');
   const b = readFileSync(path.join(ROOT, 'scripts/build.mjs'), 'utf8');
   assert.ok(!/bdfugue-achetez/.test(b));
-  assert.match(b, /RESUMES\[c\.k\]/);
+  assert.match(b, /resumeCat\(c\.k\)/);
+});
+
+test('résumés IA : contrôle du texte (noms propres, copie, bavardage), sélection et affichage', async () => {
+  const { valider, empreinte } = await import('../scripts/resumes-ia-lib.mjs');
+  const { aTraiter } = await import('../scripts/resumes-ia.mjs');
+  const src = "Pendant ses années collèges, le pauvre Rentaro a essuyé cent râteaux amoureux. Au lycée, un dieu de l'amour lui prédit qu'il rencontrera cent filles qui lui sont destinées. Cependant, si il ne leur rend pas leur amour, elles mourront dans la souffrance.";
+  const bon = "Après cent échecs sentimentaux au collège, Rentaro espère trouver enfin l'amour au lycée. Un dieu de l'amour lui annonce qu'il croisera cent filles faites pour lui, mais qu'elles mourront s'il ne répond pas à leurs sentiments.";
+  assert.equal(valider(bon, src, '').ok, true);
+  assert.match(valider(bon.replace('Rentaro', 'Kenji'), src, '').motif, /absent/, 'nom inventé');
+  assert.match(valider(bon.replace('cent échecs', '32 échecs'), src, '').motif, /absent/, 'chiffre inventé');
+  assert.equal(valider(`Voici le résumé : ${bon}`, src, '').motif, 'bavardage');
+  assert.equal(valider(src, src, '').motif, 'copie de la source');
+  assert.equal(valider('Trop court.', src, '').ok, false);
+  assert.equal(valider(`${bon} Voir https://exemple.test`, src, '').motif, 'lien');
+  // sélection : séries longues d'abord, rien si le texte IA correspond déjà au résumé de l'éditeur
+  const bnf = { series: [{ k: 'a', n: 'A', e: 'Kana', v: [1, 2, 3] }, { k: 'b', n: 'B', e: 'Pika', v: [1, 2] }, { k: 'c', n: 'C', e: 'Pika', v: [1] }] };
+  const resumes = { a: { t: 'texte a', n: 1 }, b: { t: 'texte b', n: 1 } };
+  const ia = { a: { t: 'x', h: empreinte('texte a') } };
+  assert.deepEqual(aTraiter({ bnf, resumes, ia, adapt: {} }).map((x) => x.k), ['b'], 'a est déjà fait, c n\'a pas de résumé');
+  assert.deepEqual(aTraiter({ bnf, resumes, ia: {}, adapt: {} }, 1).map((x) => x.k), ['a'], 'les plus longues séries d\'abord, limite respectée');
+  assert.deepEqual(aTraiter({ bnf, resumes: { a: { t: 'texte a modifié', n: 1 } }, ia, adapt: {} }).map((x) => x.k), ['a'], 'résumé de l\'éditeur changé : à refaire');
 });
