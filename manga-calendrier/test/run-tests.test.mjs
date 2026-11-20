@@ -1542,3 +1542,14 @@ test('BDfugue : résumés du catalogue pour les grandes séries', async () => {
   assert.ok(!/bdfugue-achetez/.test(b));
   assert.match(b, /RESUMES\[c\.k\]/);
 });
+
+test('séries exclues à la main (data/series-exclues.json) : retirées comme le contenu adulte, « conserver » l\'emporte', async () => {
+  const { chargerAdulte, estAdulte } = await import('../scripts/adulte.mjs');
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  writeFileSync(path.join(tmp, 'series-exclues.json'), JSON.stringify({ series: { 'sans-image': 'sans couverture', 'gardee': 'x' } }));
+  writeFileSync(path.join(tmp, 'contenu-adulte.json'), JSON.stringify({ conserver: { gardee: 'ok' } }));
+  const cfg = chargerAdulte(tmp);
+  assert.equal(estAdulte(cfg, { slug: 'sans-image' }), true);
+  assert.equal(estAdulte(cfg, { slug: 'gardee' }), false);
+  assert.equal(estAdulte(cfg, { slug: 'autre' }), false);
+});
