@@ -1,12 +1,12 @@
 ---
 title: "Pika : les sorties manga de décembre 2026"
 date: 2026-12-01
-description: "22 sorties manga Pika annoncées pour décembre 2026."
+description: "21 sorties manga Pika annoncées pour décembre 2026."
 auto: true
 draft: false
 ---
 
-Pika publie 22 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
+Pika publie 21 références manga en décembre 2026. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/decembre-2026/).
 
 - **mer. 2 déc.** · [A Villainess for the Tyrant tome 3](/serie/a-villainess-for-the-tyrant/)
 - **mer. 2 déc.** · [Air Gear Unlimited tome 10](/serie/air-gear-unlimited/)
@@ -14,7 +14,6 @@ Pika publie 22 références manga en décembre 2026. Les dates viennent des plan
 - **mer. 2 déc.** · [Angel Sanctuary tome 4](/serie/angel-sanctuary/)
 - **mer. 2 déc.** · [Anyway, I'm falling in love with you tome 12](/serie/anyway-i-m-falling-in-love-with-you/)
 - **mer. 2 déc.** · [Bless tome 8](/serie/bless/)
-- **mer. 2 déc.** · [Blue Lock tome 36](/serie/blue-lock/)
 - **mer. 2 déc.** · [Dead Rock tome 6](/serie/dead-rock/)
 - **mer. 2 déc.** · [Fairy Tail - 100 Years Quest tome 23](/serie/fairy-tail-100-years-quest/)
 - **mer. 2 déc.** · [Fall in Love, False Angels tome 5](/serie/fall-in-love-false-angels/)
