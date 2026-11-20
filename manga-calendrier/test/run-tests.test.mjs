@@ -1574,3 +1574,33 @@ test('séries exclues à la main (data/series-exclues.json) : retirées comme le
   assert.equal(estAdulte(cfg, { slug: 'gardee' }), false);
   assert.equal(estAdulte(cfg, { slug: 'autre' }), false);
 });
+
+test('Ludum : flux, liens directs, bouton réservé aux tomes disponibles et activé seulement avec un numéro d\'affilié', async () => {
+  const { produitsLudum, liensLudum } = await import('../scripts/ludum-flux.mjs');
+  const { directFrom, buyUrl, shopsFrom, hasLink } = await import('../scripts/shops.mjs');
+  const cle = (d12) => d12 + String((10 - ([...d12].reduce((s, c, i) => s + Number(c) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const a = cle('978272341216'), b = cle('978272341395'), c = cle('978272341477'), d = cle('978272341478');
+  const csv = [
+    'ean13,id_produit,nom,serie,numero_tome,editeur,date_publication,etat,url_produit,url_image,prix_vente_ttc,date_precommande,"Date MAJ"',
+    `${a},1,"Akira - Tome 1","Série Akira",1,Glénat,1990-12-14,"sur commande",https://www.ludum.fr/mangas/akira-tome-1-1,https://images.centprod.com/302/abc-cover-full.jpg,15.50,,`,
+    `${b},2,"Akira - Tome 2 - Édition couleur","Série Akira",2,Glénat,1991-05-21,"en stock",https://www.ludum.fr/mangas/akira-tome-2-2,,15.50,,`,
+    `${c},3,"Akira - Tome 3","Série Akira",3,Glénat,1991-09-26,rupture,https://www.ludum.fr/mangas/akira-tome-3-3,https://images.centprod.com/302/def.jpg,15.50,,`,
+    `${d},4,"Piège","",,Glénat,1991-09-26,"en stock",https://evil.test/mangas/piege,https://evil.test/x.jpg,15.50,,`,
+  ].join('\n');
+  const p = produitsLudum(csv);
+  assert.equal(p.length, 3, 'l\'adresse étrangère est ignorée');
+  assert.deepEqual([p[0].serie, p[0].tome, p[0].slug, p[0].img], ['akira', '1', 'akira-tome-1-1', '302/abc-cover-full.jpg']);
+  assert.deepEqual([p[1].serie, p[1].tome], ['', ''], 'une édition spéciale ne sert pas à compléter le catalogue');
+  const liens = liensLudum(p, new Set([a, b, c]));
+  assert.deepEqual(Object.keys(liens).sort(), [a, b].sort(), 'un titre en rupture n\'a pas de lien');
+  const direct = directFrom({ base: 'https://www.ludum.fr/mangas/', liens });
+  assert.ok(direct && direct.plain);
+  assert.equal(directFrom({ base: 'https://www.ludum.fr.evil.test/mangas/', liens }), null);
+  assert.equal(shopsFrom({}).some((x) => x.id === 'ludum'), false, 'désactivé par défaut');
+  assert.equal(shopsFrom({ shops: { ludum: { enabled: true } } }).some((x) => x.id === 'ludum'), false, 'sans numéro d\'affilié : désactivé');
+  assert.equal(shopsFrom({ shops: { ludum: { enabled: true, aff: 'x"y' } } }).some((x) => x.id === 'ludum'), false, 'numéro invalide : désactivé');
+  const shop = { ...shopsFrom({ shops: { ludum: { enabled: true, aff: '48' } } }).find((x) => x.id === 'ludum'), direct };
+  assert.equal(buyUrl(shop, a), 'https://www.ludum.fr/mangas/akira-tome-1-1?aff=48');
+  assert.equal(hasLink(shop, c), false, 'pas de bouton sans fiche');
+  assert.equal(buyUrl(shop, c), '');
+});

@@ -24,6 +24,7 @@ try { state = { ...state, ...JSON.parse(readFileSync(file, 'utf8')) }; } catch {
 const done = new Set(state.done);
 state.cult ||= {}; // ISBN dont l'image Cultura a déjà été essayée en vain (date)
 state.bdf ||= {}; // idem pour BDfugue
+state.lud ||= {}; // idem pour Ludum
 // Images du flux Cultura (adresse en https://cdn.cultura.com/media/pim/ uniquement)
 const CULT = (() => {
   try {
@@ -40,6 +41,14 @@ const BDF = (() => {
     return Object.fromEntries(Object.entries(j.img || {}).filter(([i, u]) => /^\d{13}$/.test(i) && /^[\w./-]+$/.test(u)));
   } catch { return {}; }
 })();
+// Images du flux Ludum (https://images.centprod.com/) : utilisées seulement si data/ludum-images.json contient "autorise": true (accord de Ludum)
+const LUD = (() => {
+  try {
+    const j = JSON.parse(readFileSync(path.join(P.dataDir, 'ludum-images.json'), 'utf8'));
+    if (j.autorise !== true || j.base !== 'https://images.centprod.com/') return {};
+    return Object.fromEntries(Object.entries(j.img || {}).filter(([i, u]) => /^\d{13}$/.test(i) && /^[\w./-]{5,300}$/.test(u)));
+  } catch { return {}; }
+})();
 const today = new Date().toISOString().slice(0, 10);
 const recent = (d) => d && (Date.parse(today) - Date.parse(d)) / 864e5 < RETRY_DAYS;
 
@@ -51,21 +60,22 @@ if (DRY) mkdirSync(DRY, { recursive: true });
 let sharp;
 try { sharp = (await import('sharp')).default; } catch { console.error('Le module sharp est nécessaire : npm i --no-save sharp'); process.exit(1); }
 
-const list = targets({ manga: loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule'), bnf: loadBnf(P.dataDir), skip: (i) => done.has(i) || (recent(state.absent[i]) && !((CULT[i] && !recent(state.cult[i])) || (BDF[i] && !recent(state.bdf[i])))) }).slice(0, LIMIT);
+const list = targets({ manga: loadAllManga(P.dataDir).filter((r) => r.statut !== 'annule'), bnf: loadBnf(P.dataDir), skip: (i) => done.has(i) || (recent(state.absent[i]) && !((CULT[i] && !recent(state.cult[i])) || (BDF[i] && !recent(state.bdf[i])) || (LUD[i] && !recent(state.lud[i])))) }).slice(0, LIMIT);
 console.log(`${list.length} ISBN à traiter (déjà faits : ${done.size}, introuvables récemment : ${Object.keys(state.absent).length}).`);
 
-let cultOk = 0, bdfOk = 0; const tailles = [];
+let cultOk = 0, bdfOk = 0, ludOk = 0; const tailles = [];
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const sources = (t) => [
   ...(CULT[t.isbn] && !recent(state.cult[t.isbn]) ? [`https://cdn.cultura.com/media/pim/${CULT[t.isbn]}`] : []),
   ...(BDF[t.isbn] && !recent(state.bdf[t.isbn]) ? [`https://www.bdfugue.com/media/catalog/product/${BDF[t.isbn]}`] : []),
+  ...(LUD[t.isbn] && !recent(state.lud[t.isbn]) ? [`https://images.centprod.com/${LUD[t.isbn]}`] : []),
   ...(t.isbn10 ? [`https://m.media-amazon.com/images/P/${t.isbn10}.08.LZZZZZZZ.jpg`] : []),
   `https://covers.openlibrary.org/b/isbn/${t.isbn}-L.jpg?default=false`,
 ];
 async function grab(t) {
   for (const u of sources(t)) {
-    const isCult = u.startsWith('https://cdn.cultura.com/'), isBdf = u.startsWith('https://www.bdfugue.com/');
-    const echec = () => { if (isCult) state.cult[t.isbn] = today; if (isBdf) state.bdf[t.isbn] = today; };
+    const isCult = u.startsWith('https://cdn.cultura.com/'), isBdf = u.startsWith('https://www.bdfugue.com/'), isLud = u.startsWith('https://images.centprod.com/');
+    const echec = () => { if (isCult) state.cult[t.isbn] = today; if (isBdf) state.bdf[t.isbn] = today; if (isLud) state.lud[t.isbn] = today; };
     await sleep(1000);
     try {
       const r = await fetch(u, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(20000) });
@@ -75,6 +85,7 @@ async function grab(t) {
       if (!meta.width || meta.width < 100 || meta.height < 140 || meta.height < meta.width) { if (isCult) tailles.push(`${meta.width}x${meta.height}`); echec(); continue; } // pixel de remplacement, vignette, ou plus large que haute (une couverture de manga est plus haute que large)
       if (isCult) cultOk++;
       if (isBdf) bdfOk++;
+      if (isLud) ludOk++;
       return await sharp(buf).resize({ width: WIDTH, withoutEnlargement: true }).webp({ quality: 80 }).toBuffer();
     } catch { echec(); /* source suivante */ }
   }
@@ -96,5 +107,6 @@ for (const t of list) {
 }
 save();
 console.log(`Images BDfugue utilisées : ${bdfOk}.`);
+console.log(`Images Ludum utilisées : ${ludOk}.`);
 console.log(`Images Cultura utilisées : ${cultOk}${tailles.length ? ` ; refusées (trop petites) : ${tailles.length}, par exemple ${tailles.slice(0, 5).join(', ')}` : ''}.`);
 console.log(`Terminé : ${ok} couvertures ${r2 ? 'envoyées dans R2' : 'écrites dans ' + DRY}, ${miss} introuvables. Total en R2 : ${done.size}.`);

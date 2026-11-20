@@ -13,7 +13,7 @@ import { TABLEAU } from './tableau.js';
 
 export { Audience };
 
-export const SHOPS = ['amazon', 'fnac', 'cultura', 'bdfugue', 'goodies'];
+export const SHOPS = ['amazon', 'fnac', 'cultura', 'bdfugue', 'ludum', 'goodies'];
 export const PAGES = ['home', 'manga', 'serie', 'anime', 'mon-planning', 'recherche', 'editeur', 'sorties-manga', 'semaine', 'articles', 'autre'];
 const TTL = 60 * 60 * 24 * 400;
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
