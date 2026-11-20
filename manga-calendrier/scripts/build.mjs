@@ -6,6 +6,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { readChanges, keyOf } from './changes.mjs';
 import { isIsbn13, shopsFrom, buyUrl, directFrom } from './shops.mjs';
+import { empreinte } from './resumes-ia-lib.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frLongDate, frDayMonth, frShort, frMonth, ucfirst,
   loadConfig, loadAllManga, readAnime, loadArticles, displayTitle, mangaLabel, euro, STATUT_LABEL,
@@ -58,6 +59,14 @@ const genreSlug = (g) => slugify(GENRE_FR[g] || g);
 const GENRE_COUNT = (() => { const m = new Map(); for (const [k, v] of Object.entries(adaptations)) if (mangaSlugs.has(k) && Array.isArray(v?.i?.g)) for (const g of v.i.g) m.set(g, (m.get(g) || 0) + 1); return m; })();
 const genreOk = (g) => Boolean(GENRE_FR[g]) && (GENRE_COUNT.get(g) || 0) >= 3; // une page de genre n'existe qu'à partir de 3 séries
 const RESUMES = (() => { try { const r = JSON.parse(readFileSync(path.join(P.dataDir, 'resumes-catalogue.json'), 'utf8')).resumes; return r && typeof r === 'object' ? r : {}; } catch { return {}; } })();
+const RESUMES_IA = (() => { try { const r = JSON.parse(readFileSync(path.join(P.dataDir, 'resumes-ia.json'), 'utf8')).resumes; return r && typeof r === 'object' ? r : {}; } catch { return {}; } })();
+/** Résumé d'une grande série du catalogue : texte réécrit par l'IA s'il correspond au résumé actuel de l'éditeur, sinon le résumé de l'éditeur. */
+const resumeCat = (k) => {
+  const r = RESUMES[k];
+  if (!r || !r.t) return null;
+  const ia = RESUMES_IA[k];
+  return ia && ia.h === empreinte(r.t) && ia.t ? { t: ia.t, n: r.n, ia: true } : { t: r.t, n: r.n, ia: false };
+};
 const infoBox = (name) => {
   const i = infoOf(name);
   if (!i) return '';
@@ -919,7 +928,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
 <h1>${esc(c.n)} : tous les tomes</h1>
 <p class="lead"><strong>${esc(c.n)}</strong> compte ${esc(plural(n, 'tome paru', 'tomes parus'))} en France${c.e ? ` chez ${pubLink(c.e)}` : ''}${esc(years)}.${others} Aucune sortie n'est annoncée pour le moment dans nos plannings.</p>
 ${infoBox(c.n)}
-${RESUMES[c.k] ? `<section class="synopsis"><h2>Résumé${RESUMES[c.k].n ? ` du tome ${esc(RESUMES[c.k].n)}` : ''}</h2><p>${esc(RESUMES[c.k].t)}</p><p class="muted syn-src">Résumé de l'éditeur, repris du catalogue de BDfugue.</p></section>` : ''}
+${(() => { const r = resumeCat(c.k); return r ? `<section class="synopsis"><h2>Résumé${r.ia ? '' : (r.n ? ` du tome ${esc(r.n)}` : '')}</h2><p>${esc(r.t)}</p><p class="muted syn-src">${r.ia ? 'Résumé rédigé automatiquement par une IA à partir du résumé de l\'éditeur : il peut comporter des imperfections.' : 'Résumé de l\'éditeur, repris du catalogue de BDfugue.'}</p></section>` : ''; })()}
 </div></div>
 <h2>Les tomes</h2>${volList(c, c.v, holesOf(c))}
 ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}

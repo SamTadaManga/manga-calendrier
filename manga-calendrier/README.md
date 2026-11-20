@@ -260,3 +260,13 @@ Chaque nuit, le même script (`cultura-flux.mjs`) fait trois choses de plus avec
 - **Tomes manquants** : un tome du flux est ajouté au catalogue (`data/catalogue-ajouts.json`, `"src":"cultura"`) quand son titre est exactement « *nom de la série* Tome N », qu'il comble un trou de numérotation ou suit jusqu'à 3 tomes le dernier tome connu, que son ISBN a le même préfixe d'éditeur (8 premiers chiffres) que les tomes déjà connus de la série, et qu'il n'y a qu'un seul candidat. Pour annuler un ajout, supprimer sa ligne ou le déclarer dans `data/numerotation-ok.json`.
 - **Couvertures** : `data/cultura-images.json` liste les images Cultura des ISBN qui n'ont pas encore de couverture. « Couvertures de tomes (R2) » les essaie en premier (rejet si l'image est plus petite que 100 × 140 px ou plus large que haute) et garde le résultat dans R2 comme les autres. Supprimer ce fichier désactive la source.
 - Essai à blanc (workflow « Liens Cultura », case cochée) : affiche les trois bilans sans rien écrire.
+
+
+## Résumés réécrits par une IA locale
+
+Les grandes séries du catalogue (≥ `catalogueIndexMin` tomes) affichent le résumé du tome 1 fourni par l'éditeur (catalogue BDfugue). Le workflow « Résumés réécrits par une IA locale » peut le réécrire avec un petit modèle open source (Qwen3-4B, licence Apache 2.0, quantifié Q4) qui tourne sur le serveur GitHub, sans service payant.
+
+- Lancer d'abord à la main (Actions > Résumés réécrits par une IA locale > Run workflow), avec « essai » coché et une limite de 20 : les textes sont dans l'artefact `resumes-ia`.
+- Chaque texte est contrôlé (`scripts/resumes-ia-lib.mjs`) : noms propres et chiffres présents dans la source, pas de copie, pas de bavardage, longueur correcte. Un texte refusé n'est jamais publié.
+- Pour activer le passage de nuit : variable de dépôt `RESUMES_IA` = `oui`. Modèle réglable avec `RESUMES_MODELE_REPO` et `RESUMES_MODELE_FICHIER`.
+- Sur le site, un texte IA est signalé comme tel ; si le résumé de l'éditeur change, le texte IA est refait.
