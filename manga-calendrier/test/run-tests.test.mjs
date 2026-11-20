@@ -1330,7 +1330,9 @@ test('Cultura : lien Awin du site, adresse de recherche encodée', () => {
   assert.ok(c && c.sponsored);
   const u = bu(c, '9782413094630');
   assert.equal(u, 'https://www.awin1.com/cread.php?awinmid=113876&awinaffid=3130835&ued=' + encodeURIComponent('https://www.cultura.com/search/results?search_query=9782413094630'));
-  assert.ok(!sf(cfg).some((x) => x.id === 'bdfugue'));
+  const b = sf(cfg).find((x) => x.id === 'bdfugue');
+  assert.ok(b && b.sponsored, 'BDfugue activé avec son lien Effinity');
+  assert.equal(bu(b, '9782413094630'), 'https://track.effiliation.com/servlet/effi.redir?id_compteur=23333412&url=' + encodeURIComponent('https://www.bdfugue.com/catalogsearch/result/?q=9782413094630'));
 });
 
 test('flux Cultura : lecture du CSV, liens directs et repli', async () => {
@@ -1502,4 +1504,24 @@ test('SEO et IA : accueil orienté requêtes, FAQ, robots IA, llms.txt, sorties.
   assert.ok(Array.isArray(j.sorties) && j.sorties.every((x) => x.serie && x.date && ['confirme', 'estime'].includes(x.statut) && x.page.startsWith('https://exemple.test/serie/')));
   assert.ok(rd('a-propos/index.html').includes('Confirmée ou estimée') && rd('sitemap.xml').includes('/a-propos/'));
   assert.ok(rd('manga/index.html').includes('Manga à paraître') && rd('anime/index.html').includes('Anime à venir'));
+});
+
+test('catalogue BDfugue (Effinity) : lecture du CSV, liens directs et repli', async () => {
+  const { produitsEffinity, liensEffinity } = await import('../scripts/effinity-flux.mjs');
+  const { directFrom, buyUrl, shopsFrom } = await import('../scripts/shops.mjs');
+  const cle = (d12) => d12 + String((10 - ([...d12].reduce((s, c, i) => s + Number(c) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const isbn = cle('978250513379');
+  const lien = (slug) => `https://track.effiliation.com/servlet/effi.redir?id_compteur=23333413&url=${encodeURIComponent(`https://www.bdfugue.com/${slug}?ref=95&utm_source=effinity`)}`;
+  const csv = `"brand";"description";"gtin";"image_link";"link";"title"\n"Kana";"Un <b>héros</b>.";"${isbn}";"https://www.bdfugue.com/media/catalog/product/9/7/x_1_75.jpg";"${lien('kagurabachi-tome-3')}";"Kagurabachi tome 3"\n"Kana";"";"${isbn}";"https://exemple.evil/x.jpg";"https://evil.test/redir?url=https%3A%2F%2Fwww.bdfugue.com%2Fx";"Faux lien"\n`;
+  const p = produitsEffinity(csv);
+  assert.equal(p.length, 1, 'le lien étranger est ignoré');
+  assert.deepEqual([p[0].serie, p[0].tome, p[0].slug, p[0].img], ['kagurabachi', '3', 'kagurabachi-tome-3', '9/7/x_1_75.jpg']);
+  const { base, suffix, liens } = liensEffinity(p, new Set([isbn]));
+  const direct = directFrom({ base, site: 'https://www.bdfugue.com/', suffix, liens });
+  assert.ok(direct);
+  const shop = { ...shopsFrom({ shops: { bdfugue: { affiliate: 'https://track.effiliation.com/servlet/effi.redir?id_compteur=23333412&url={urlenc}' } } }).find((x) => x.id === 'bdfugue'), direct };
+  assert.equal(buyUrl(shop, isbn), `${base}${encodeURIComponent(`https://www.bdfugue.com/kagurabachi-tome-3${suffix}`)}`, 'lien direct vers la fiche');
+  const autre = cle('978250513380');
+  assert.ok(buyUrl(shop, autre).startsWith('https://track.effiliation.com/servlet/effi.redir?id_compteur=23333412&url=https%3A%2F%2Fwww.bdfugue.com%2Fcatalogsearch'), 'sans lien direct : recherche, avec le lien d\'affiliation');
+  assert.equal(directFrom({ base: 'https://evil.test/?url=', site: 'https://www.bdfugue.com/', liens: {} }), null, 'base inconnue refusée');
 });

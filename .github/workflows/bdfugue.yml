@@ -1,0 +1,56 @@
+name: Liens BDfugue (catalogue Effinity)
+# Télécharge le catalogue produits BDfugue (Effinity) et met à jour : data/bdfugue-liens.json (lien direct vers la fiche de chaque tome), data/catalogue-ajouts.json
+# (tomes absents du catalogue : trous de numérotation et tomes suivants, titre et préfixe ISBN identiques) et data/bdfugue-images.json (images pour les couvertures manquantes, utilisées par « Couvertures de tomes (R2) »).
+# Secret à créer dans Settings > Secrets and variables > Actions : EFFINITY_FEED_URL (adresse complète du catalogue, avec sa clé apikey). Sans lui, rien n'est fait.
+# Chaque nuit à 1 h 47 UTC (après le flux Cultura, même groupe : jamais en même temps), avant la mise à jour de 3 h 17 UTC ; le fichier n'est enregistré que s'il a changé.
+on:
+  schedule:
+    - cron: '47 1 * * *'
+  workflow_dispatch:
+    inputs:
+      essai:
+        description: "Essai à blanc (affiche le bilan sans rien enregistrer)"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: cultura
+  cancel-in-progress: false
+jobs:
+  bdfugue:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Lire le flux
+        run: node scripts/effinity-flux.mjs ${{ inputs.essai && '--essai' || '' }}
+        env:
+          EFFINITY_FEED_URL: ${{ secrets.EFFINITY_FEED_URL }}
+      - name: Enregistrer
+        if: ${{ !inputs.essai }}
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/keep"
+          mkdir -p "$KEEP"
+          FILES="bdfugue-liens.json bdfugue-images.json catalogue-ajouts.json contenu-adulte-auto.json"
+          for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            for f in $FILES; do [ -f "$KEEP/$f" ] && cp "$KEEP/$f" "manga-calendrier/data/$f"; done
+            for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && git add "manga-calendrier/data/$f"; done
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Catalogue BDfugue : liens, tomes du catalogue et images mis à jour"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1

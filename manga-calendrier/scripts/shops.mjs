@@ -40,16 +40,22 @@ export function shopsFrom(config) {
   });
 }
 
-/** Liens directs vers la fiche produit (flux Awin) : { base, liens: { isbn: id } } ; ignoré s'il est mal formé. */
+/** Liens directs vers la fiche produit : flux Awin { base, liens: { isbn: id } } ou flux Effinity { base, suffix, liens: { isbn: chemin } } ; ignoré s'il est mal formé. */
+export const EFFI_BASE = /^https:\/\/track\.effiliation\.com\/servlet\/effi\.redir\?id_compteur=\d{3,12}&url=$/;
 export function directFrom(raw) {
   if (!raw || typeof raw !== 'object' || typeof raw.liens !== 'object' || !raw.liens) return null;
-  if (!/^https:\/\/www\.awin1\.com\/pclick\.php\?(?:[a-z]=\d+&)+p=$/.test(raw.base || '')) return null;
-  return { base: raw.base, liens: raw.liens };
+  if (/^https:\/\/www\.awin1\.com\/pclick\.php\?(?:[a-z]=\d+&)+p=$/.test(raw.base || '')) return { base: raw.base, liens: raw.liens };
+  if (EFFI_BASE.test(raw.base || '') && /^https:\/\/www\.bdfugue\.com\/$/.test(raw.site || '')) {
+    const suffix = typeof raw.suffix === 'string' && /^\?[\w=&.%-]{0,200}$/.test(raw.suffix) ? raw.suffix : '';
+    return { base: raw.base, site: raw.site, suffix, liens: raw.liens };
+  }
+  return null;
 }
 
 export function buyUrl(shop, isbn) {
   const id = shop.direct && shop.direct.liens[isbn];
-  if (id && /^\d{3,20}$/.test(id)) return `${shop.direct.base}${id}`;
+  if (id && /^\d{3,20}$/.test(id) && !shop.direct.site) return `${shop.direct.base}${id}`;
+  if (id && shop.direct && shop.direct.site && /^[a-z0-9][a-z0-9-]{2,200}$/.test(id)) return `${shop.direct.base}${encodeURIComponent(`${shop.direct.site}${id}${shop.direct.suffix}`)}`;
   const url = shop.url(isbn);
   if (shop.tag) return `${url}${url.includes('?') ? '&' : '?'}tag=${encodeURIComponent(shop.tag)}`;
   if (!shop.affiliate) return url;
