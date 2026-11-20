@@ -5,8 +5,8 @@
 // Aucune clé : l'adresse du flux est publique. Elle peut être remplacée par la variable LUDUM_FEED_URL (doit rester sur https://www.ludum.fr/).
 // Usage : node scripts/ludum-flux.mjs [--essai]      (ou --fichier=flux.csv pour un fichier déjà téléchargé)
 //
-// Images : le champ « autorise » de data/ludum-images.json est conservé tel quel d'une exécution à l'autre ; il vaut false tant que
-// Ludum n'a pas confirmé par écrit qu'on peut afficher ses couvertures. Pour l'activer : mettre "autorise": true dans ce fichier.
+// Images : le champ « autorise » de data/ludum-images.json est conservé tel quel d'une exécution à l'autre (true : accord de Ludum reçu
+// le 20/11/2026 ; false pour arrêter d'utiliser ses couvertures). Absent à la première création du fichier : false.
 import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
