@@ -945,7 +945,7 @@ ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des li
 
     // pages par lettre (240 séries par page)
     const everyone = [
-      ...seriesList.map((S) => ({ k: S.k, n: S.name, e: S.editeur, count: S.cat ? Math.max(S.cat.v.length, S.rows.length) : S.rows.length, sub: S.next ? `${S.next.tome ? `T${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', cover: (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover) || (S.cat ? bnfThumb(S.cat, 300) : ''), live: true })),
+      ...seriesList.map((S) => ({ k: S.k, n: S.name, e: S.editeur, count: S.cat ? Math.max(S.cat.v.length, S.rows.length) : S.rows.length, sub: S.next ? `${S.next.tome ? `T${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', nd: S.next ? S.next.date : '', reel: [...S.rows].some((r) => /^https:\/\//.test(r.cover || '')), cover: (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover) || (S.cat ? bnfThumb(S.cat, 300) : ''), live: true })),
       ...byName.map((c) => ({ k: c.k, n: c.n, e: c.e, count: c.v.length, sub: '', cover: bnfThumb(c, 300), live: false })),
     ].sort((a, b) => a.n.localeCompare(b.n, 'fr'));
     const groups = new Map();
@@ -973,6 +973,16 @@ ${nav}<ul class="sgrid">${slice.map(lcard).join('')}</ul>${pager}<p class="more"
       }
     }
     catalogueHub = { letters: letterList.map((l) => ({ l, n: groups.get(l).length })), total: everyone.length };
+    // Page /series/ : 10 couvertures par lettre. D'abord les séries suivies dans les plannings (avec couverture, prochain tome le plus proche), puis les séries du catalogue
+    // qui ont une couverture (data/couvertures-controle.json), les plus longues d'abord. Affichage dans l'ordre alphabétique ; le reste est sur la page de la lettre.
+    const AVEC_COUV = (() => { try { return new Set(Object.entries(JSON.parse(readFileSync(path.join(P.dataDir, 'couvertures-controle.json'), 'utf8')).vus || {}).filter(([k, v]) => k.startsWith('series/') && v).map(([k]) => k.slice(7))); } catch { return new Set(); } })();
+    const PAR_LETTRE = 10;
+    const aCouv = (x) => !AVEC_COUV.size || (x.live ? x.reel || AVEC_COUV.has(x.k) : AVEC_COUV.has(x.k)); // sans contrôle des couvertures (fichier absent) : pas de tri par couverture
+    const rangHub = (a, b) => (a.live === b.live ? 0 : a.live ? -1 : 1) || (a.live ? (a.nd ? 0 : 1) - (b.nd ? 0 : 1) || a.nd.localeCompare(b.nd) : b.count - a.count) || a.n.localeCompare(b.n, 'fr');
+    catalogueHub.picks = new Map(letterList.map((l) => {
+      const choix = groups.get(l).filter(aCouv).sort(rangHub).slice(0, PAR_LETTRE).sort((a, b) => a.n.localeCompare(b.n, 'fr'));
+      return [l, choix.map((x) => lcard(x).replace('<li class="scard', `<li data-q="${esc(x.n.toLowerCase())}" class="scard`)).join('')]; // data-q : la recherche de la page filtre ces cartes
+    }));
   }
   const letters = [...new Set(seriesList.map((S) => (slugify(S.name)[0] || '#').toUpperCase()))].sort();
   const card = (S) => {
@@ -980,13 +990,15 @@ ${nav}<ul class="sgrid">${slice.map(lcard).join('')}</ul>${pager}<p class="more"
     return `<li class="scard p-${pubKey(S.editeur)}" data-q="${esc(S.name.toLowerCase())}"><a class="scard-link" href="/serie/${S.k}/">${showCovers ? coverBox(cr && cr.cover, `Couverture de ${S.name}`) : ''}`
       + `<strong>${esc(S.name)}</strong><span class="muted">${S.next ? `${S.next.tome ? `T${esc(S.next.tome)} · ` : ''}${esc(frShort(S.next.date))}` : 'rien d\'annoncé'}</span></a></li>`;
   };
-  const az = letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="sgrid">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L).map(card).join('')}</ul></section>`).join('');
+  const az = catalogueHub && catalogueHub.picks
+    ? catalogueHub.letters.map((x) => `<section data-group class="azgroup"><h2>${esc(x.l === '0-9' ? '0-9' : x.l.toUpperCase())}</h2><ul class="sgrid">${catalogueHub.picks.get(x.l)}</ul><p class="more"><a href="/series/lettre/${x.l}/">Voir les ${x.n.toLocaleString('fr-FR')} séries en ${esc(x.l === '0-9' ? '0-9' : x.l.toUpperCase())}</a></p></section>`).join('')
+    : letters.map((L) => `<section data-group class="azgroup"><h2>${esc(/\d/.test(L) ? '0-9' : L)}</h2><ul class="sgrid">${seriesList.filter((S) => (slugify(S.name)[0] || '#').toUpperCase() === L).map(card).join('')}</ul></section>`).join('');
   page('/series/', {
     title: catalogueHub ? 'Catalogue des séries manga : tous les tomes' : 'Toutes les séries manga : prochain tome',
     description: `Date du prochain tome de ${seriesList.length} séries manga publiées en France par Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga.`,
     body: `<h1>Séries manga</h1>
 <p class="lead">${catalogueHub ? `${esc(plural(catalogueHub.total, 'série', 'séries').replace(/^\d+/, (n) => Number(n).toLocaleString('fr-FR')))} de manga publiées en français, avec la liste de leurs tomes. ` : ''}${esc(plural(seriesList.length, 'série est suivie', 'séries sont suivies'))} dans les plannings des éditeurs : clique dessus pour voir la date de son prochain tome.</p>
-${catalogueHub ? `<h2>Tout le catalogue, de A à Z</h2><p class="chiprow" aria-label="Lettres">${catalogueHub.letters.map((x) => `<a class="chip" href="/series/lettre/${x.l}/">${esc(x.l === '0-9' ? '0-9' : x.l.toUpperCase())} <span class="n">${x.n}</span></a>`).join('')}</p><h2>Séries suivies dans les plannings</h2>` : ''}
+${catalogueHub ? `<h2>Tout le catalogue, de A à Z</h2><p class="chiprow" aria-label="Lettres">${catalogueHub.letters.map((x) => `<a class="chip" href="/series/lettre/${x.l}/">${esc(x.l === '0-9' ? '0-9' : x.l.toUpperCase())} <span class="n">${x.n}</span></a>`).join('')}</p><h2>Séries à suivre, lettre par lettre</h2>` : ''}
 ${seriesList.length ? `<div class="filters" id="filtres" hidden><input type="search" id="f" data-gs placeholder="Chercher une série, un anime, un auteur, un éditeur" aria-label="Chercher sur le site" autocomplete="off"></div>
 <p class="empty" id="aucun" hidden>Aucune série ne correspond.</p>${az}${FILTER_JS}` : '<p class="empty">Les séries apparaîtront après la première collecte.</p>'}`,
   });

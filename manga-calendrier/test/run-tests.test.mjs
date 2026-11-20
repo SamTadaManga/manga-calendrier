@@ -1663,3 +1663,17 @@ test('Ludum gagne : tome et série d\'un ISBN contradictoires, appliqués au cat
   assert.equal(fin.byK.get('bleach').v[0][0], '53');
   assert.equal(fin.byIsbn.get(b).k, 'phantom-busters');
 });
+
+test('Page /series/ : au plus 10 couvertures par lettre, lien vers la page de la lettre', () => {
+  const out = execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, OUT_DIR: mkdtempSync(path.join(os.tmpdir(), 'ser-')) }, encoding: 'utf8' });
+  assert.ok(/Site généré/.test(out));
+  const dist = /dans (.+?) :/.exec(out);
+  const html = readFileSync(path.join(dist ? dist[1] : 'dist', 'series', 'index.html'), 'utf8');
+  const sections = [...html.matchAll(/<section data-group class="azgroup"><h2>(.*?)<\/h2>(.*?)<\/section>/gs)];
+  assert.ok(sections.length >= 20, 'une section par lettre');
+  for (const [, titre, corps] of sections) {
+    const n = (corps.match(/<li [^>]*class="scard/g) || []).length;
+    assert.ok(n <= 10 && n >= 1, `${titre} : ${n} séries`);
+    assert.ok(/href="\/series\/lettre\/[a-z0-9-]+\/">Voir les [\d\s  ]+ séries en /.test(corps), `${titre} : lien vers la lettre`);
+  }
+});
