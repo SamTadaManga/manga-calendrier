@@ -1525,3 +1525,21 @@ test('catalogue BDfugue (Effinity) : lecture du CSV, liens directs et repli', as
   assert.ok(buyUrl(shop, autre).startsWith('https://track.effiliation.com/servlet/effi.redir?id_compteur=23333412&url=https%3A%2F%2Fwww.bdfugue.com%2Fcatalogsearch'), 'sans lien direct : recherche, avec le lien d\'affiliation');
   assert.equal(directFrom({ base: 'https://evil.test/?url=', site: 'https://www.bdfugue.com/', liens: {} }), null, 'base inconnue refusée');
 });
+
+test('BDfugue : bouton « Achetez sur BDfugue », résumés du catalogue pour les grandes séries', async () => {
+  const { resumesCatalogue } = await import('../scripts/effinity-flux.mjs');
+  const long = 'Rentaro cherche l\'amour véritable.Le dieu de l\'amour lui prédit cent rencontres. ? Mais il ne peut pas toutes les aimer, sinon elles mourront dans la souffrance, alors que faire ? '.repeat(6);
+  const bnf = { series: [
+    { k: 'serie-longue', n: 'Série longue', v: Array.from({ length: 12 }, (_, i) => [String(i + 1), `97825051${String(i).padStart(5, '0')}`, 2020]) },
+    { k: 'serie-courte', n: 'Série courte', v: [['1', '9782505000003', 2020]] },
+  ] };
+  const prod = (serie, tome, desc) => ({ serie: serie.toLowerCase().replace('é', 'e'), tome, desc, isbn: '9782505000003' });
+  const r = resumesCatalogue([prod('Série longue', '2', 'x'.repeat(100)), prod('Série longue', '1', long), prod('Série courte', '1', long)], bnf, 10);
+  assert.deepEqual(Object.keys(r), ['serie-longue'], 'seules les grandes séries, avec un résumé');
+  assert.equal(r['serie-longue'].n, 1, 'résumé du tome 1');
+  assert.ok(r['serie-longue'].t.length <= 700 && !/\\.Le /.test(r['serie-longue'].t) && !/\\. \\? /.test(r['serie-longue'].t), 'texte nettoyé et tronqué');
+  const b = readFileSync(path.join(ROOT, 'scripts/build.mjs'), 'utf8');
+  assert.match(b, /bdfugue-achetez\.png/);
+  assert.ok(existsSync(path.join(ROOT, 'scripts/assets/bdfugue-achetez.png')));
+  assert.match(b, /RESUMES\[c\.k\]/);
+});

@@ -6,7 +6,8 @@
 // Test hors ligne : node scripts/fetch-adaptations.mjs --from-file test/mock-adaptations.json
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import path from 'node:path';
-import { paths, now, parisKey, addDays, loadAllManga, slugify } from './lib.mjs';
+import { paths, now, parisKey, addDays, loadAllManga, slugify, loadConfig } from './lib.mjs';
+import { loadBnf } from './catalogue-bnf.mjs';
 import { streams, sleep } from './anilist.mjs';
 
 const ENDPOINT = 'https://graphql.anilist.co';
@@ -96,21 +97,33 @@ for (const r of loadAllManga(P.dataDir)) {
   if (!names.has(k)) names.set(k, r.serie);
   if (r.date >= today) upcoming.add(k);
 }
+// Séries du catalogue seul (BnF) assez longues pour avoir une page indexée : on leur cherche aussi auteur, genres et état de publication
+const catNames = new Map(), catSize = new Map();
+try {
+  const min = Math.max(1, Number(loadConfig(P.config).catalogueIndexMin) || 10);
+  for (const c of loadBnf(P.dataDir).series) {
+    const k = slugify(c.n);
+    if (k && c.v.length >= min && !names.has(k)) { catNames.set(k, c.n); catSize.set(k, c.v.length); }
+  }
+} catch { /* sans catalogue : calendrier seulement */ }
 const stale = (e) => {
   if (!e || !('i' in e)) return true;
   if (e.i && !e.i.v) return true; // anciennes fiches : relues pour séparer scénario et dessin
-  const age = e.a?.length ? (e.a.some((x) => x.st !== 'FINISHED') ? 7 : 60) : 21;
+  const age = e.a?.length ? (e.a.some((x) => x.st !== 'FINISHED') ? 7 : 60) : (e.cat && !e.i ? 90 : 21);
   return e.c <= addDays(today, -age);
 };
 const todo = [...names.keys()].filter((k) => stale(state.series[k]))
   .sort((a, b) => (upcoming.has(b) ? 1 : 0) - (upcoming.has(a) ? 1 : 0) || a.localeCompare(b));
+// puis le catalogue seul, les plus longues séries d'abord
+todo.push(...[...catNames.keys()].filter((k) => stale(state.series[k])).sort((a, b) => catSize.get(b) - catSize.get(a) || a.localeCompare(b)));
+for (const [k, n] of catNames) names.set(k, n);
 
 let done = 0, found = 0;
 for (const k of todo.slice(0, MAX)) {
   try {
     const media = mock ? (mock[k] || []) : await search(names.get(k));
     const a = pickAdaptations(media, k);
-    state.series[k] = { c: today, a, i: pickInfo(media, k) };
+    state.series[k] = { c: today, a, i: pickInfo(media, k), ...(catNames.has(k) ? { cat: 1 } : {}) };
     done++; if (a.length) found++;
   } catch (e) {
     console.error(`Arrêt anticipé (${e.message}) : le travail déjà fait est conservé.`);

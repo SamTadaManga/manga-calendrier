@@ -11,7 +11,8 @@ import { loadBnf } from './catalogue-bnf.mjs';
 import { decode } from './collectors.mjs';
 import { loadExceptions } from './trous.mjs';
 import { flat, saveAjouts } from './ajouts-lib.mjs';
-import { chargerAdulte, estAdulte } from './adulte.mjs';
+import { chargerAdulte, estAdulte, analyserTexte } from './adulte.mjs';
+import { loadConfig, paths as cheminsSite } from './lib.mjs';
 import { lignesCsv, completerCatalogue, analyserAdulte, imagesManquantes, isbnVoulus } from './cultura-flux.mjs';
 
 const SITE = 'https://www.bdfugue.com/';
@@ -53,6 +54,23 @@ export function liensEffinity(produits, voulus) {
     liens[p.isbn] = p.slug;
   }
   return { lignes: produits.length, base, suffix: suffix || '', liens };
+}
+
+/** Résumé du tome 1 (ou du plus petit tome connu) de chaque grande série du catalogue : { slug: { t: texte, n: numéro du tome } }. Texte de l'éditeur tel que fourni dans le catalogue produits, tronqué à la fin d'une phrase. */
+export function resumesCatalogue(produits, bnf, min = 10) {
+  const parSerie = new Map();
+  for (const p of produits) if (p.serie && p.tome && p.desc.length >= 80) (parSerie.get(p.serie) || parSerie.set(p.serie, []).get(p.serie)).push(p);
+  const out = {};
+  for (const s of bnf.series) {
+    if (s.v.length < min) continue;
+    const c = (parSerie.get(flat(s.n)) || []).sort((a, b) => Number(a.tome) - Number(b.tome))[0];
+    if (!c) continue;
+    let t = c.desc.replace(/\s+/g, ' ').replace(/([!?.])([A-ZÀ-ÝÉ])/g, '$1 $2').replace(/([.!"…])\s\?\s/g, '$1 ').replace(/^(résumé|synopsis)\s*:\s*/i, '').trim();
+    if (t.length > 650) { const cut = t.slice(0, 650); const i = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('! '), cut.lastIndexOf('? ')); t = i > 250 ? cut.slice(0, i + 1) : `${cut.slice(0, cut.lastIndexOf(' '))}…`; }
+    if (t.length < 80 || analyserTexte(s.n, t).exclure) continue;
+    out[s.k] = { t, n: Number(c.tome) };
+  }
+  return out;
 }
 
 async function main() {
@@ -113,7 +131,12 @@ async function main() {
   const images = imagesManquantes(produits, voulus, faits);
   console.log(`Couvertures : ${Object.keys(images).length} ISBN sans couverture ont une image chez BDfugue.`);
 
+  // 4. Résumés des grandes séries (pages catalogue indexées)
+  const resumes = resumesCatalogue(produits, bnf, Math.max(1, Number(loadConfig(cheminsSite().config).catalogueIndexMin) || 10));
+  console.log(`Résumés : ${Object.keys(resumes).length} séries du catalogue ont un résumé du tome 1.`);
+
   if (essai) { console.log('Essai à blanc : rien écrit.'); return; }
+  ecrire('resumes-catalogue.json', { source: 'Catalogue produits BDfugue (Effinity) : résumés de l\'éditeur', maj, resumes }, (old) => JSON.stringify(old.resumes || {}) === JSON.stringify(resumes));
   const tri = Object.fromEntries(Object.entries(liens).sort(([a], [b]) => a.localeCompare(b)));
   const l = ecrire('bdfugue-liens.json', { source: 'Catalogue produits BDfugue (Effinity)', maj, base, site: SITE, suffix, liens: tri }, (old) => old.base === base && old.suffix === suffix && stable(old.liens) === stable(liens));
   const im = ecrire('bdfugue-images.json', { source: 'Catalogue produits BDfugue (Effinity)', maj, base: IMG, img: images }, (old) => stable(old.img || {}) === stable(images));
