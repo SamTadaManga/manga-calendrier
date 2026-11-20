@@ -294,7 +294,7 @@ const buyBox = (r, size = '') => {
   if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
   const verb = r.date > today ? 'Précommander' : 'Acheter';
   const sm = size === 'sm';
-  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}${x.id === 'bdfugue' && x.sponsored ? ' stream-img' : ''}" data-sh="${esc(x.id)}" data-k="${esc(slugify(r.serie))}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${x.id === 'bdfugue' && x.sponsored ? '<img src="/bdfugue-achetez.png" alt="Achetez sur BDfugue" width="92" height="30" loading="lazy" decoding="async">' : (sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`)}</a>`).join('');
+  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" data-sh="${esc(x.id)}" data-k="${esc(slugify(r.serie))}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
   return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
 /* Goodies : une recherche Amazon sur le nom de la série (résultats affichés par Amazon, rien n'est copié). Désactivable avec "goodies": false */
@@ -1655,7 +1655,7 @@ write('data/recent.json', JSON.stringify({
   }));
 }
 for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'fiche-tome.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
-for (const f of ['bdfugue-achetez.png', 'icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
+for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
   start_url: '/', scope: '/', display: 'standalone', background_color: '#f4f1ff', theme_color: '#ffd21f',

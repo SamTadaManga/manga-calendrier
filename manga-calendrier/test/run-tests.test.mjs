@@ -1526,7 +1526,7 @@ test('catalogue BDfugue (Effinity) : lecture du CSV, liens directs et repli', as
   assert.equal(directFrom({ base: 'https://evil.test/?url=', site: 'https://www.bdfugue.com/', liens: {} }), null, 'base inconnue refusée');
 });
 
-test('BDfugue : bouton « Achetez sur BDfugue », résumés du catalogue pour les grandes séries', async () => {
+test('BDfugue : résumés du catalogue pour les grandes séries', async () => {
   const { resumesCatalogue } = await import('../scripts/effinity-flux.mjs');
   const long = 'Rentaro cherche l\'amour véritable.Le dieu de l\'amour lui prédit cent rencontres. ? Mais il ne peut pas toutes les aimer, sinon elles mourront dans la souffrance, alors que faire ? '.repeat(6);
   const bnf = { series: [
@@ -1539,7 +1539,6 @@ test('BDfugue : bouton « Achetez sur BDfugue », résumés du catalogue pour le
   assert.equal(r['serie-longue'].n, 1, 'résumé du tome 1');
   assert.ok(r['serie-longue'].t.length <= 700 && !/\\.Le /.test(r['serie-longue'].t) && !/\\. \\? /.test(r['serie-longue'].t), 'texte nettoyé et tronqué');
   const b = readFileSync(path.join(ROOT, 'scripts/build.mjs'), 'utf8');
-  assert.match(b, /bdfugue-achetez\.png/);
-  assert.ok(existsSync(path.join(ROOT, 'scripts/assets/bdfugue-achetez.png')));
+  assert.ok(!/bdfugue-achetez/.test(b));
   assert.match(b, /RESUMES\[c\.k\]/);
 });
