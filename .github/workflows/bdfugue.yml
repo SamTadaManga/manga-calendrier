@@ -41,7 +41,7 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           KEEP="$RUNNER_TEMP/keep"
           mkdir -p "$KEEP"
-          FILES="bdfugue-liens.json bdfugue-images.json catalogue-ajouts.json contenu-adulte-auto.json"
+          FILES="bdfugue-liens.json bdfugue-images.json resumes-catalogue.json catalogue-ajouts.json contenu-adulte-auto.json"
           for f in $FILES; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
           for i in 1 2 3 4 5; do
             git fetch origin main

@@ -57,6 +57,7 @@ const PUB_ST = { RELEASING: 'En cours de publication', FINISHED: 'Terminée', HI
 const genreSlug = (g) => slugify(GENRE_FR[g] || g);
 const GENRE_COUNT = (() => { const m = new Map(); for (const [k, v] of Object.entries(adaptations)) if (mangaSlugs.has(k) && Array.isArray(v?.i?.g)) for (const g of v.i.g) m.set(g, (m.get(g) || 0) + 1); return m; })();
 const genreOk = (g) => Boolean(GENRE_FR[g]) && (GENRE_COUNT.get(g) || 0) >= 3; // une page de genre n'existe qu'à partir de 3 séries
+const RESUMES = (() => { try { const r = JSON.parse(readFileSync(path.join(P.dataDir, 'resumes-catalogue.json'), 'utf8')).resumes; return r && typeof r === 'object' ? r : {}; } catch { return {}; } })();
 const infoBox = (name) => {
   const i = infoOf(name);
   if (!i) return '';
@@ -293,7 +294,7 @@ const buyBox = (r, size = '') => {
   if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
   const verb = r.date > today ? 'Précommander' : 'Acheter';
   const sm = size === 'sm';
-  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" data-sh="${esc(x.id)}" data-k="${esc(slugify(r.serie))}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
+  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}${x.id === 'bdfugue' && x.sponsored ? ' stream-img' : ''}" data-sh="${esc(x.id)}" data-k="${esc(slugify(r.serie))}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${x.id === 'bdfugue' && x.sponsored ? '<img src="/bdfugue-achetez.png" alt="Achetez sur BDfugue" width="92" height="30" loading="lazy" decoding="async">' : (sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`)}</a>`).join('');
   return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
 /* Goodies : une recherche Amazon sur le nom de la série (résultats affichés par Amazon, rien n'est copié). Désactivable avec "goodies": false */
@@ -905,6 +906,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
         { '@context': 'https://schema.org', '@type': 'ComicSeries', name: c.n, inLanguage: 'fr', url: `${base}/serie/${c.k}/`, numberOfEpisodes: n,
           ...(c.e ? { publisher: { '@type': 'Organization', name: c.e } } : {}),
           ...(bnfCover(c) ? { image: bnfCover(c) } : {}),
+          ...((infoOf(c.n) || {}).au?.length ? { author: infoOf(c.n).au.map((x) => ({ '@type': 'Person', name: x })) } : {}),
           hasPart: c.v.slice(0, 30).map((v) => ({ '@type': 'Book', name: `${c.n}${v[0] ? ` tome ${v[0]}` : ''}`, isbn: v[1], inLanguage: 'fr', ...(v[2] ? { datePublished: String(v[2]) } : {}), ...(c.e ? { publisher: { '@type': 'Organization', name: c.e } } : {}) })) },
       ]).replace(/</g, '\\u003c')}</script>` : '';
       page(`/serie/${c.k}/`, {
@@ -916,6 +918,8 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
         body: `<div class="series-head">${hero}<div>
 <h1>${esc(c.n)} : tous les tomes</h1>
 <p class="lead"><strong>${esc(c.n)}</strong> compte ${esc(plural(n, 'tome paru', 'tomes parus'))} en France${c.e ? ` chez ${pubLink(c.e)}` : ''}${esc(years)}.${others} Aucune sortie n'est annoncée pour le moment dans nos plannings.</p>
+${infoBox(c.n)}
+${RESUMES[c.k] ? `<section class="synopsis"><h2>Résumé${RESUMES[c.k].n ? ` du tome ${esc(RESUMES[c.k].n)}` : ''}</h2><p>${esc(RESUMES[c.k].t)}</p><p class="muted syn-src">Résumé de l'éditeur, repris du catalogue de BDfugue.</p></section>` : ''}
 </div></div>
 <h2>Les tomes</h2>${volList(c, c.v, holesOf(c))}
 ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
@@ -1651,7 +1655,7 @@ write('data/recent.json', JSON.stringify({
   }));
 }
 for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'fiche-tome.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
-for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
+for (const f of ['bdfugue-achetez.png', 'icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
   start_url: '/', scope: '/', display: 'standalone', background_color: '#f4f1ff', theme_color: '#ffd21f',

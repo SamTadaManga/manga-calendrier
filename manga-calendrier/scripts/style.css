@@ -716,3 +716,9 @@ ul.hscroll .tile-body>.t-shops{padding-top:4px}
 /* Réponse directe de l'accueil et questions fréquentes */
 .answer{margin:12px 0 0;padding:10px 14px;border-left:5px solid var(--edge);background:var(--panel);font-size:1.02rem;line-height:1.45}
 .faq h3{margin:18px 0 4px;font-size:1.02rem}.faq p{margin:0 0 6px;max-width:70ch}
+/* Bouton « Achetez sur BDfugue » fourni par le programme d'affiliation : l'image remplace le texte du bouton */
+a.stream.stream-img{padding:0;border:0;background:none;box-shadow:none;height:auto;min-width:0;line-height:0}
+a.stream.stream-img img{display:block;height:30px;width:auto}
+a.stream.stream-lg.stream-img{padding:0;height:auto}a.stream.stream-lg.stream-img img{height:44px}
+@media (hover:hover){a.stream.stream-img:hover{background:none;box-shadow:none;transform:none;filter:brightness(1.08)}}
+.shops-sm a.stream.stream-img,.vcard .shops-sm a.stream.stream-img{height:auto;flex:none}.shops-sm a.stream.stream-img img,.vcard .shops-sm a.stream.stream-img img{height:22px}
