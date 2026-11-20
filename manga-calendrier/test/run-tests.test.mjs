@@ -418,7 +418,7 @@ test('catalogue BnF : pages par série, pages par lettre, recherche, couvertures
   cpSync(path.join(ROOT, 'test/fixtures/catalogue-bnf.json'), path.join(dirs.DATA_DIR, 'catalogue-bnf.json'));
   const base = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
   const cfg = path.join(tmp, 'c.json');
-  writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.test', launched: true, showCovers: true, catalogueCovers: 'https://covers.exemple.test/series' }));
+  writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.test', launched: true, showCovers: true, catalogueCovers: 'https://covers.exemple.test/series', catalogueIndexMin: 3 }));
   execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, ...dirs, CONFIG_FILE: cfg }, encoding: 'utf8' });
   const rd = (f) => readFileSync(path.join(tmp, 'dist', f), 'utf8');
   const only = rd('serie/catalogue-seul/index.html');
@@ -433,6 +433,7 @@ test('catalogue BnF : pages par série, pages par lettre, recherche, couvertures
   const idx = JSON.parse(rd('data/search.json'));
   assert.ok(idx.catalogue.some((c) => c[1] === 'catalogue-seul' && c[3] === 3) && !idx.catalogue.some((c) => c[1] === 'serie-fictive-alpha'), 'index de recherche du catalogue');
   assert.ok(rd('sitemap.xml').includes('/serie/catalogue-seul/') && !rd('sitemap.xml').includes('/serie/zebre-bleu/'), 'sitemap : séries à 3 tomes ou plus seulement');
+  assert.ok(!/name="robots" content="noindex"/.test(only) && /name="robots" content="noindex"/.test(rd('serie/zebre-bleu/index.html')), 'pages catalogue trop courtes : noindex');
 });
 
 test('pages par mois, par série et index : générées, liées et dans le sitemap', () => {
@@ -1479,4 +1480,26 @@ test('Bluesky : nouvel essai après une erreur 5xx passagère, pas après une er
   n = 0;
   const r3 = await avecReessai(async () => { n++; return new Response('x', { status: 502 }); }, async () => {});
   assert.equal(r3.status, 502); assert.equal(n, 3, 'abandon après 3 essais');
+});
+
+test('SEO et IA : accueil orienté requêtes, FAQ, robots IA, llms.txt, sorties.json, à propos', () => {
+  const tmp = mkdtempSync(path.join(process.env.TMPDIR || os.tmpdir(), 'mc-'));
+  const dirs = { DATA_DIR: path.join(tmp, 'data'), ARTICLES_DIR: path.join(tmp, 'a'), AUTO_DIR: path.join(tmp, 'auto'), OUT_DIR: path.join(tmp, 'dist'), NOW: '2026-10-12T07:00:00Z' };
+  mkdirSync(dirs.DATA_DIR); mkdirSync(dirs.ARTICLES_DIR);
+  cpSync(path.join(ROOT, 'test/fixtures/manga.csv'), path.join(dirs.DATA_DIR, 'manga.csv'));
+  const base = JSON.parse(readFileSync(path.join(ROOT, 'test/fixtures/site.config.json'), 'utf8'));
+  const cfg = path.join(tmp, 'c.json');
+  writeFileSync(cfg, JSON.stringify({ ...base, siteUrl: 'https://exemple.test', launched: true }));
+  execFileSync(process.execPath, [path.join(ROOT, 'scripts/build.mjs')], { env: { ...process.env, ...dirs, CONFIG_FILE: cfg }, encoding: 'utf8' });
+  const rd = (f) => readFileSync(path.join(tmp, 'dist', f), 'utf8');
+  const home = rd('index.html');
+  assert.match(home, /<title>[^<]*prochaine sortie manga[^<]*<\/title>/i);
+  assert.ok(home.includes('Prochaine sortie manga en France :') && home.includes('FAQPage') && home.includes('Questions fréquentes'));
+  assert.match(rd('robots.txt'), /User-agent: GPTBot\nAllow: \//);
+  assert.match(rd('robots.txt'), /User-agent: ClaudeBot\nAllow: \//);
+  assert.ok(rd('llms.txt').startsWith('# ') && rd('llms.txt').includes('/sorties.json'));
+  const j = JSON.parse(rd('sorties.json'));
+  assert.ok(Array.isArray(j.sorties) && j.sorties.every((x) => x.serie && x.date && ['confirme', 'estime'].includes(x.statut) && x.page.startsWith('https://exemple.test/serie/')));
+  assert.ok(rd('a-propos/index.html').includes('Confirmée ou estimée') && rd('sitemap.xml').includes('/a-propos/'));
+  assert.ok(rd('manga/index.html').includes('Manga à paraître') && rd('anime/index.html').includes('Anime à venir'));
 });
