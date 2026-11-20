@@ -1,6 +1,8 @@
 // Base ISBN du site : croise toutes les sources qui contiennent des ISBN et écrit data/base-isbn.csv (une ligne par ISBN du site).
 // Sources : catalogue BnF + ajouts (catalogue-bnf.json, catalogue-ajouts.json), calendrier (manga.csv, manga-auto.csv),
 //           flux Cultura, BDfugue (Effinity) et Ludum (liens, ludum-produits.json), état des couvertures (couvertures-controle.json, couvertures-isbn.json).
+// Quand le catalogue ou le calendrier contredit Ludum sur le tome ou la série d'un ISBN, Ludum fait foi : la ligne reçoit la valeur de Ludum, l'écart est noté dans « alertes »,
+// et la décision est écrite dans data/isbn-ludum.json (appliquée ensuite par le site, voir scripts/isbn-ludum.mjs). Les sources lues ici sont toujours les sources brutes.
 // Le fichier est reconstruit entièrement à chaque passage (workflow « Base ISBN », chaque nuit) : il se complète tout seul quand une source s'enrichit.
 // Colonnes séparées par « ; », UTF-8 avec BOM (s'ouvre directement dans Excel). Aucune écriture si rien n'a changé.
 // Usage : node scripts/base-isbn.mjs [--essai]   (--essai : bilan seulement)
@@ -10,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { isIsbn13 } from './shops.mjs';
 import { loadBnf, readAjouts } from './catalogue-bnf.mjs';
 import { loadAllManga, slugify } from './lib.mjs';
+import { tomeLudum, decider } from './isbn-ludum.mjs';
 
 export const COLONNES = ['isbn13', 'serie', 'serie_slug', 'tome', 'editeur', 'titre', 'date_sortie', 'date_source', 'annee_bnf', 'statut', 'prix_ttc', 'prix_source', 'couverture', 'cultura', 'bdfugue', 'ludum', 'ludum_etat', 'sources', 'alertes'];
 
@@ -20,10 +23,10 @@ export const csvChamp = (v) => { const s = String(v ?? ''); return /[;"\r\n]/.te
 
 /** Rassemble les sources et renvoie { lignes: [objet par ISBN], bilan }. */
 export function construireBase(dir) {
-  const bnf = loadBnf(dir);
+  const bnf = loadBnf(dir, { brut: true });
   const ajouts = new Map(readAjouts(dir).ajouts.filter((a) => a.statut === 'ok').map((a) => [a.isbn, a.src || 'ajout']));
   const calendrier = new Map();
-  for (const r of loadAllManga(dir)) if (isIsbn13(r.isbn) && !calendrier.has(r.isbn)) calendrier.set(r.isbn, r);
+  for (const r of loadAllManga(dir, { brut: true })) if (isIsbn13(r.isbn) && !calendrier.has(r.isbn)) calendrier.set(r.isbn, r);
   const cult = lire(dir, 'cultura-liens.json').liens || {}, bdf = lire(dir, 'bdfugue-liens.json').liens || {}, lud = lire(dir, 'ludum-liens.json').liens || {};
   const fiches = lire(dir, 'ludum-produits.json').fiches || {};
   const vus = lire(dir, 'couvertures-controle.json').vus || {};
@@ -47,13 +50,15 @@ export function construireBase(dir) {
     if (r.prix) { l.prix = r.prix; l.prix_source = 'calendrier'; }
   }
   const maintenant = new Date().toISOString().slice(0, 10);
+  const decisions = decider(bnf, fiches, new Map([...calendrier].map(([i, r]) => [i, num(r.tome)])));
   for (const [isbn, l] of lignes) {
     const f = fiches[isbn];
     if (f) {
-      const [nom, ed, date, etat, prix, tome] = f;
+      const [nom, ed, date, etat, prix] = f;
       l.sources.add('ludum');
       l.ludum_etat = etat || '';
-      if (tome) l.tomes.ludum = num(tome);
+      const tl = tomeLudum(nom);
+      if (tl) l.tomes.ludum = tl.tome;
       l.editeur ||= ed || '';
       if (date) {
         if (!l.date) { l.date = date; l.date_source = 'ludum'; }
@@ -65,8 +70,18 @@ export function construireBase(dir) {
     if (cult[isbn]) l.sources.add('cultura');
     if (bdf[isbn]) l.sources.add('bdfugue');
     const vals = Object.entries(l.tomes).filter(([, t]) => t !== '');
-    if (new Set(vals.map(([, t]) => t)).size > 1) l.alertes.push(`tome: ${vals.map(([k, t]) => `${k}=${t}`).join(' ')}`);
     l.tome = l.tomes.calendrier || l.tomes.bnf || l.tomes.ludum || '';
+    const d = decisions[isbn];
+    if (d && vals.some(([k, t]) => k !== 'ludum' && t !== d.t)) l.alertes.push(`tome: ${vals.map(([k, t]) => `${k}=${t}`).join(' ')} → ludum`);
+    else if (new Set(vals.map(([, t]) => t)).size > 1) l.alertes.push(`tome: ${vals.map(([k, t]) => `${k}=${t}`).join(' ')}`);
+    if (d) {
+      l.tome = d.t;
+      if (d.x) {
+        const cible = d.k && bnf.byK.get(d.k);
+        l.alertes.push(`serie: bnf=${l.serie} ludum=${tomeLudum(fiches[isbn][0]).serie} → ${cible ? 'ludum' : 'retiré du catalogue'}`);
+        if (cible) { l.serie = cible.n; l.serie_slug = cible.k; l.editeur = cible.e || l.editeur; } else l.retire = true;
+      }
+    }
     l.couverture = vus[`isbn/${isbn}`] || faits.has(isbn) ? 'isbn' : (vus[`series/${l.serie_slug}`] ? 'serie' : 'aucune');
     l.cultura = cult[isbn] || ''; l.bdfugue = bdf[isbn] || ''; l.ludum = lud[isbn] || '';
     if (!l.date && !l.annee_bnf) l.alertes.push('date: aucune');
@@ -82,7 +97,9 @@ export function construireBase(dir) {
     contradictionsTome: n((r) => r.alertes.includes('tome:')), contradictionsDate: n((r) => r.alertes.includes('date: calendrier')), sansDate: n((r) => r.alertes.includes('date: aucune')),
     parSource: Object.fromEntries([...rows.reduce((m, r) => { for (const s of r.sources.split('+')) m.set(s, (m.get(s) || 0) + 1); return m; }, new Map())].sort()),
   };
-  return { lignes: rows, bilan };
+  bilan.decisions = Object.keys(decisions).length;
+  bilan.decisionsSerie = Object.values(decisions).filter((d) => d.x).length;
+  return { lignes: rows, bilan, decisions };
 }
 
 export function versCsv(lignes) {
@@ -92,11 +109,12 @@ export function versCsv(lignes) {
 function main() {
   const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data');
   const essai = process.argv.includes('--essai');
-  const { lignes, bilan: b } = construireBase(dir);
+  const { lignes, bilan: b, decisions } = construireBase(dir);
   console.log(`Base ISBN : ${b.isbn} ISBN (${Object.entries(b.parSource).map(([k, v]) => `${k} ${v}`).join(', ')}).`);
   console.log(`  Date connue : ${b.avecDate} · prix connu : ${b.avecPrix} · sans couverture : ${b.sansCouverture}.`);
   console.log(`  Liens directs : Cultura ${b.liensCultura}, BDfugue ${b.liensBdfugue}, Ludum ${b.liensLudum} · aucun lien direct : ${b.sansLien}.`);
   console.log(`  Contradictions entre sources : tome ${b.contradictionsTome}, date ${b.contradictionsDate} · sans aucune date : ${b.sansDate}.`);
+  console.log(`  Décisions « Ludum gagne » : ${b.decisions} ISBN (dont ${b.decisionsSerie} changés de série ou retirés).`);
   if (b.isbn < 1000) { console.error('Base trop petite : fichier laissé tel quel.'); process.exitCode = 1; return; }
   const cible = path.join(dir, 'base-isbn.csv');
   const csv = versCsv(lignes);
@@ -105,5 +123,11 @@ function main() {
   if (essai) { console.log('Essai à blanc : rien écrit.'); return; }
   if (ancien === csv) console.log('data/base-isbn.csv : inchangé.');
   else { writeFileSync(cible, csv); console.log('data/base-isbn.csv : écrit.'); }
+  const dec = path.join(dir, 'isbn-ludum.json');
+  const trie = Object.fromEntries(Object.entries(decisions).sort(([a], [c]) => a.localeCompare(c)));
+  let avant = {};
+  try { avant = JSON.parse(readFileSync(dec, 'utf8')).isbn || {}; } catch {}
+  if (JSON.stringify(avant) === JSON.stringify(trie)) console.log('data/isbn-ludum.json : inchangé.');
+  else { writeFileSync(dec, JSON.stringify({ source: 'Décisions « Ludum gagne » (scripts/base-isbn.mjs)', maj: new Date().toISOString().slice(0, 10), isbn: trie }) + '\n'); console.log('data/isbn-ludum.json : écrit.'); }
 }
 if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) { try { main(); } catch (e) { console.error(`Erreur : ${e.message}`); process.exitCode = 1; } }

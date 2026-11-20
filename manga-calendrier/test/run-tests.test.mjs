@@ -1633,3 +1633,33 @@ test('Base ISBN : croisement des sources, compléments et contradictions', async
   assert.ok(csv.startsWith('﻿' + COLONNES.join(';')));
   assert.equal(csv.trim().split('\n').length, 4);
 });
+
+test('Ludum gagne : tome et série d\'un ISBN contradictoires, appliqués au catalogue et au calendrier', async () => {
+  const { tomeLudum, memeSerie, decider } = await import('../scripts/isbn-ludum.mjs');
+  const { loadBnf } = await import('../scripts/catalogue-bnf.mjs');
+  assert.deepEqual(tomeLudum('Bleach - Tome 53 : The Deathberry Returns 2'), { serie: 'Bleach', tome: '53' });
+  assert.equal(tomeLudum('La Gameuse et son chat - Coffret Tomes 1 à 4'), null, 'coffret ignoré');
+  assert.equal(tomeLudum('Akira - Pack découverte Tome 1'), null, 'pack ignoré');
+  assert.ok(memeSerie('Inu Yasha', 'InuYasha') && memeSerie('Chi', 'Chi, c\'est mon prénom') && memeSerie('Ten Count', '10 count'));
+  assert.equal(memeSerie('Akane banashi', 'Phantom Busters'), false);
+  const cle = (d12) => d12 + String((10 - ([...d12].reduce((s, c, i) => s + Number(c) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const [a, b, c, d] = ['978272341216', '978272341395', '978272341477', '978272341538'].map(cle);
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'lud-'));
+  writeFileSync(path.join(dir, 'catalogue-bnf.json'), JSON.stringify({ series: [
+    { k: 'akane-banashi', n: 'Akane banashi', e: 'Ki-oon', v: [['14', a, 2025], ['15', b, 2026]] },
+    { k: 'phantom-busters', n: 'Phantom Busters', e: 'Ki-oon', v: [['5', c, 2025]] },
+    { k: 'bleach', n: 'Bleach', e: 'Glénat', v: [['2', d, 2013]] },
+  ] }));
+  const fiches = { [b]: ['Phantom Busters - Tome 6', 'Ki-oon', '', '', 7.5, '6'], [d]: ['Bleach - Tome 53 : Retour', 'Glénat', '', '', 7.5, '2'], [a]: ['Akane banashi - Tome 14', 'Ki-oon', '', '', 7.5, '14'] };
+  const dec = decider(loadBnf(dir, { brut: true }), fiches);
+  assert.deepEqual(dec[b], { t: '6', x: 1, k: 'phantom-busters' }, 'série différente : l\'ISBN rejoint la série de Ludum');
+  assert.deepEqual(dec[d], { t: '53' }, 'tome différent : Ludum gagne');
+  assert.equal(dec[a], undefined, 'pas de contradiction : rien à faire');
+  writeFileSync(path.join(dir, 'isbn-ludum.json'), JSON.stringify({ isbn: dec }));
+  const brut = loadBnf(dir, { brut: true }), fin = loadBnf(dir);
+  assert.deepEqual(brut.byK.get('akane-banashi').v.map((v) => v[1]), [a, b]);
+  assert.deepEqual(fin.byK.get('akane-banashi').v.map((v) => v[1]), [a], 'ISBN retiré de la mauvaise série');
+  assert.deepEqual(fin.byK.get('phantom-busters').v.map((v) => v[0]).sort(), ['5', '6']);
+  assert.equal(fin.byK.get('bleach').v[0][0], '53');
+  assert.equal(fin.byIsbn.get(b).k, 'phantom-busters');
+});
