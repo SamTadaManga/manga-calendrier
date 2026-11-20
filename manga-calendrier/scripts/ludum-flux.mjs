@@ -17,6 +17,7 @@ import { loadExceptions } from './trous.mjs';
 import { flat, saveAjouts } from './ajouts-lib.mjs';
 import { chargerAdulte, estAdulte } from './adulte.mjs';
 import { lignesCsv, completerCatalogue, imagesManquantes, isbnVoulus } from './cultura-flux.mjs';
+import { editionLudum } from './isbn-ludum.mjs';
 
 export const LUDUM_FLUX = 'https://www.ludum.fr/flux-mangas-ludum';
 export const LUDUM_BASE = 'https://www.ludum.fr/mangas/';
@@ -107,8 +108,8 @@ async function main() {
   console.log(`Couvertures : ${Object.keys(images).length} ISBN sans couverture ont une image chez Ludum (utilisation ${autorise ? 'autorisée' : 'NON autorisée pour l\'instant'}).`);
 
   if (essai) { console.log('Essai à blanc : rien écrit.'); return; }
-  // Fiches : { isbn: [titre, éditeur, date de parution, état, prix TTC, numéro de tome] } pour les ISBN du site (alimente data/base-isbn.csv)
-  const fiches = Object.fromEntries(produits.filter((p) => voulus.has(p.isbn)).sort((a, b) => a.isbn.localeCompare(b.isbn)).map((p) => [p.isbn, [p.nom, p.marque, p.date, p.etat, p.prix, p.num]]));
+  // Fiches : { isbn: [titre, éditeur, date de parution, état, prix TTC, numéro de tome] } pour les ISBN du site et les tomes d'éditions spéciales (alimente data/base-isbn.csv et data/isbn-ludum.json)
+  const fiches = Object.fromEntries(produits.filter((p) => voulus.has(p.isbn) || editionLudum(p.nom)).sort((a, b) => a.isbn.localeCompare(b.isbn)).map((p) => [p.isbn, [p.nom, p.marque, p.date, p.etat, p.prix, p.num]]));
   const fi = ecrire('ludum-produits.json', { source: 'Flux produits Ludum', maj, fiches }, (old) => stable(old.fiches || {}) === stable(fiches));
   console.log(`ludum-produits.json : ${Object.keys(fiches).length} fiches (${fi ? 'écrit' : 'inchangé'}).`);
   const tri = Object.fromEntries(Object.entries(liens).sort(([a], [b]) => a.localeCompare(b)));
