@@ -16,7 +16,7 @@ import { analyserTexte, chargerAdulte, estAdulte } from './adulte.mjs';
 const BASE_RE = /^https:\/\/www\.awin1\.com\/pclick\.php\?(?:[a-z]=\d+&)+p=$/;
 
 /** Texte CSV -> lignes (guillemets, doubles guillemets et retours à la ligne dans les champs gérés). */
-export function* lignesCsv(texte) {
+export function* lignesCsv(texte, sep = ',') {
   let champ = '', ligne = [], q = false;
   const n = texte.length;
   for (let i = 0; i < n; i++) {
@@ -24,7 +24,7 @@ export function* lignesCsv(texte) {
     if (q) {
       if (c === '"') { if (texte[i + 1] === '"') { champ += '"'; i++; } else q = false; } else champ += c;
     } else if (c === '"') q = true;
-    else if (c === ',') { ligne.push(champ); champ = ''; }
+    else if (c === sep) { ligne.push(champ); champ = ''; }
     else if (c === '\n' || c === '\r') {
       if (c === '\r' && texte[i + 1] === '\n') i++;
       ligne.push(champ); champ = '';
@@ -76,7 +76,7 @@ const pre = (isbn) => isbn.slice(0, 8); // préfixe éditeur : mêmes 8 premiers
  * Tomes que le catalogue ne connaît pas encore : trous de numérotation (petits et gros) et jusqu'à 3 tomes après le dernier connu.
  * Règle : titre « <série> Tome N » identique à la série, même préfixe d'ISBN que ses tomes connus, un seul candidat.
  */
-export function completerCatalogue(produits, bnf, ex, connus) {
+export function completerCatalogue(produits, bnf, ex, connus, src = 'cultura') {
   const parTitre = new Map();
   for (const p of produits) if (p.serie) { const k = `${p.serie}|${p.tome}`; (parTitre.get(k) || parTitre.set(k, []).get(k)).push(p); }
   const vus = new Set(connus);
@@ -85,7 +85,7 @@ export function completerCatalogue(produits, bnf, ex, connus) {
     return c.length === 1 ? c[0] : null;
   };
   const out = [];
-  const ajoute = (s, n, p, motif) => { vus.add(p.isbn); out.push({ k: s.k, n: s.n, e: s.e, t: String(n), isbn: p.isbn, y: 0, src: 'cultura', motif, statut: 'ok' }); };
+  const ajoute = (s, n, p, motif) => { vus.add(p.isbn); out.push({ k: s.k, n: s.n, e: s.e, t: String(n), isbn: p.isbn, y: 0, src, motif, statut: 'ok' }); };
   const G = findGaps(bnf.series, () => [], ex);
   const trous = new Set();
   for (const g of [...G.petit, ...G.gros]) {
