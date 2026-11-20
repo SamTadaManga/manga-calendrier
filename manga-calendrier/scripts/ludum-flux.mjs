@@ -31,7 +31,7 @@ export function produitsLudum(texte) {
   const it = lignesCsv(texte, ',');
   const tete = it.next().value || [];
   const col = (n) => tete.indexOf(n);
-  const iEan = col('ean13'), iNom = col('nom'), iEd = col('editeur'), iEtat = col('etat'), iUrl = col('url_produit'), iImg = col('url_image');
+  const iEan = col('ean13'), iNom = col('nom'), iEd = col('editeur'), iEtat = col('etat'), iUrl = col('url_produit'), iImg = col('url_image'), iPrix = col('prix_vente_ttc'), iDate = col('date_publication'), iNum = col('numero_tome');
   if (iEan < 0 || iNom < 0 || iUrl < 0) throw new Error('Flux inattendu : colonnes ean13, nom et url_produit introuvables.');
   const out = [], vus = new Set();
   for (const r of it) {
@@ -43,7 +43,7 @@ export function produitsLudum(texte) {
     const nom = decode(String(r[iNom] || '')).trim();
     const t = nom.match(/^(.+?) - Tome (\d{1,3})$/i);
     const img = String(iImg >= 0 ? r[iImg] : '').match(/^https:\/\/images\.centprod\.com\/([\w./-]{5,300})$/);
-    out.push({ isbn, nom, desc: '', marque: decode(String(iEd >= 0 ? r[iEd] : '')).trim(), etat: String(iEtat >= 0 ? r[iEtat] : '').trim().toLowerCase(), serie: t ? flat(t[1]) : '', tome: t ? String(Number(t[2])) : '', img: img ? img[1] : '', slug: u[1] });
+    out.push({ isbn, nom, desc: '', marque: decode(String(iEd >= 0 ? r[iEd] : '')).trim(), etat: String(iEtat >= 0 ? r[iEtat] : '').trim().toLowerCase(), serie: t ? flat(t[1]) : '', tome: t ? String(Number(t[2])) : '', img: img ? img[1] : '', slug: u[1], prix: Number.parseFloat(String(iPrix >= 0 ? r[iPrix] : '').replace(',', '.')) || 0, date: /^\d{4}-\d{2}-\d{2}$/.test(String(iDate >= 0 ? r[iDate] : '')) ? r[iDate] : '', num: /^\d{1,3}$/.test(String(iNum >= 0 ? r[iNum] : '').trim()) ? String(Number(r[iNum])) : '' });
   }
   return out;
 }
@@ -107,6 +107,10 @@ async function main() {
   console.log(`Couvertures : ${Object.keys(images).length} ISBN sans couverture ont une image chez Ludum (utilisation ${autorise ? 'autorisée' : 'NON autorisée pour l\'instant'}).`);
 
   if (essai) { console.log('Essai à blanc : rien écrit.'); return; }
+  // Fiches : { isbn: [titre, éditeur, date de parution, état, prix TTC, numéro de tome] } pour les ISBN du site (alimente data/base-isbn.csv)
+  const fiches = Object.fromEntries(produits.filter((p) => voulus.has(p.isbn)).sort((a, b) => a.isbn.localeCompare(b.isbn)).map((p) => [p.isbn, [p.nom, p.marque, p.date, p.etat, p.prix, p.num]]));
+  const fi = ecrire('ludum-produits.json', { source: 'Flux produits Ludum', maj, fiches }, (old) => stable(old.fiches || {}) === stable(fiches));
+  console.log(`ludum-produits.json : ${Object.keys(fiches).length} fiches (${fi ? 'écrit' : 'inchangé'}).`);
   const tri = Object.fromEntries(Object.entries(liens).sort(([a], [b]) => a.localeCompare(b)));
   const l = ecrire('ludum-liens.json', { source: 'Flux produits Ludum', maj, base: LUDUM_BASE, liens: tri }, (old) => stable(old.liens || {}) === stable(liens));
   const im = ecrire('ludum-images.json', { source: 'Flux produits Ludum', maj, autorise, base: LUDUM_IMG, img: images }, (old) => old.autorise === autorise && stable(old.img || {}) === stable(images));

@@ -1607,3 +1607,59 @@ test('Ludum : flux, liens directs, bouton réservé aux tomes disponibles et act
   assert.equal(hasLink(shop, c), false, 'pas de bouton sans fiche');
   assert.equal(buyUrl(shop, c), '');
 });
+
+test('Base ISBN : croisement des sources, compléments et contradictions', async () => {
+  const { construireBase, versCsv, COLONNES } = await import('../scripts/base-isbn.mjs');
+  const cle = (d12) => d12 + String((10 - ([...d12].reduce((s, c, i) => s + Number(c) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const a = cle('978272341216'), b = cle('978272341395'), c = cle('978272341477');
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'base-'));
+  writeFileSync(path.join(dir, 'catalogue-bnf.json'), JSON.stringify({ series: [{ k: 'akira', n: 'Akira', e: 'Glénat', v: [['1', a, 1990], ['2', b, 1991], ['3', c, 1991]] }] }));
+  writeFileSync(path.join(dir, 'manga.csv'), `Date de sortie,Éditeur,Série,Tome,Titre du tome (facultatif),ISBN-13,Prix (€),Statut,Source officielle (lien),Vérifié le,Notes\n2026-12-02,Glénat,Akira,1,,${a},,Annoncé,https://example.org/a,2026-11-20,\n`);
+  writeFileSync(path.join(dir, 'ludum-produits.json'), JSON.stringify({ fiches: { [a]: ['Akira - Tome 1', 'Glénat', '2026-12-30', 'précommande', 15.5, '1'], [b]: ['Akira - Tome 9', 'Glénat', '1991-05-21', 'sur commande', 15.5, '9'] } }));
+  writeFileSync(path.join(dir, 'ludum-liens.json'), JSON.stringify({ base: 'https://www.ludum.fr/mangas/', liens: { [a]: 'akira-tome-1-1' } }));
+  writeFileSync(path.join(dir, 'cultura-liens.json'), JSON.stringify({ base: 'x', liens: { [b]: '123' } }));
+  writeFileSync(path.join(dir, 'couvertures-isbn.json'), JSON.stringify({ done: [a] }));
+  const { lignes, bilan } = construireBase(dir);
+  assert.equal(bilan.isbn, 3);
+  const par = Object.fromEntries(lignes.map((l) => [l.isbn13, l]));
+  assert.equal(par[a].date_sortie, '2026-12-02'); assert.equal(par[a].date_source, 'calendrier');
+  assert.ok(par[a].alertes.includes('date: calendrier=2026-12-02 ludum=2026-12-30'), 'date contradictoire signalée');
+  assert.equal(par[a].prix_ttc, '15.50'); assert.equal(par[a].prix_source, 'ludum', 'prix complété par Ludum');
+  assert.equal(par[a].couverture, 'isbn'); assert.equal(par[a].ludum, 'akira-tome-1-1');
+  assert.ok(par[b].alertes.includes('tome: bnf=2 ludum=9'), 'tome contradictoire signalé');
+  assert.equal(par[b].cultura, '123');
+  assert.equal(par[c].couverture, 'aucune'); assert.ok(par[c].alertes.includes('date: aucune') === false, 'année BnF : pas d\'alerte de date');
+  const csv = versCsv(lignes);
+  assert.ok(csv.startsWith('﻿' + COLONNES.join(';')));
+  assert.equal(csv.trim().split('\n').length, 4);
+});
+
+test('Ludum gagne : tome et série d\'un ISBN contradictoires, appliqués au catalogue et au calendrier', async () => {
+  const { tomeLudum, memeSerie, decider } = await import('../scripts/isbn-ludum.mjs');
+  const { loadBnf } = await import('../scripts/catalogue-bnf.mjs');
+  assert.deepEqual(tomeLudum('Bleach - Tome 53 : The Deathberry Returns 2'), { serie: 'Bleach', tome: '53' });
+  assert.equal(tomeLudum('La Gameuse et son chat - Coffret Tomes 1 à 4'), null, 'coffret ignoré');
+  assert.equal(tomeLudum('Akira - Pack découverte Tome 1'), null, 'pack ignoré');
+  assert.ok(memeSerie('Inu Yasha', 'InuYasha') && memeSerie('Chi', 'Chi, c\'est mon prénom') && memeSerie('Ten Count', '10 count'));
+  assert.equal(memeSerie('Akane banashi', 'Phantom Busters'), false);
+  const cle = (d12) => d12 + String((10 - ([...d12].reduce((s, c, i) => s + Number(c) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const [a, b, c, d] = ['978272341216', '978272341395', '978272341477', '978272341538'].map(cle);
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'lud-'));
+  writeFileSync(path.join(dir, 'catalogue-bnf.json'), JSON.stringify({ series: [
+    { k: 'akane-banashi', n: 'Akane banashi', e: 'Ki-oon', v: [['14', a, 2025], ['15', b, 2026]] },
+    { k: 'phantom-busters', n: 'Phantom Busters', e: 'Ki-oon', v: [['5', c, 2025]] },
+    { k: 'bleach', n: 'Bleach', e: 'Glénat', v: [['2', d, 2013]] },
+  ] }));
+  const fiches = { [b]: ['Phantom Busters - Tome 6', 'Ki-oon', '', '', 7.5, '6'], [d]: ['Bleach - Tome 53 : Retour', 'Glénat', '', '', 7.5, '2'], [a]: ['Akane banashi - Tome 14', 'Ki-oon', '', '', 7.5, '14'] };
+  const dec = decider(loadBnf(dir, { brut: true }), fiches);
+  assert.deepEqual(dec[b], { t: '6', x: 1, k: 'phantom-busters' }, 'série différente : l\'ISBN rejoint la série de Ludum');
+  assert.deepEqual(dec[d], { t: '53' }, 'tome différent : Ludum gagne');
+  assert.equal(dec[a], undefined, 'pas de contradiction : rien à faire');
+  writeFileSync(path.join(dir, 'isbn-ludum.json'), JSON.stringify({ isbn: dec }));
+  const brut = loadBnf(dir, { brut: true }), fin = loadBnf(dir);
+  assert.deepEqual(brut.byK.get('akane-banashi').v.map((v) => v[1]), [a, b]);
+  assert.deepEqual(fin.byK.get('akane-banashi').v.map((v) => v[1]), [a], 'ISBN retiré de la mauvaise série');
+  assert.deepEqual(fin.byK.get('phantom-busters').v.map((v) => v[0]).sort(), ['5', '6']);
+  assert.equal(fin.byK.get('bleach').v[0][0], '53');
+  assert.equal(fin.byIsbn.get(b).k, 'phantom-busters');
+});

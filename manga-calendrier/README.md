@@ -218,6 +218,10 @@ Pour remplacer un lien par un lien d'affiliation, ajouter dans `site.config.json
 
 Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse normale), `{urlenc}` (adresse normale encodée). Seuls les liens en `https://` sont acceptés. Dès qu'un lien d'affiliation est actif, le site ajoute `rel="sponsored"`, une mention sous les tomes et un paragraphe « Liens d'affiliation » dans les mentions légales.
 
+## Base ISBN (croisement des sources)
+
+`data/base-isbn.csv` est reconstruit chaque nuit (workflow « Base ISBN », 5 h 17 UTC, après les flux Cultura, BDfugue et Ludum) : une ligne par ISBN du site, avec série, tome, éditeur, titre, date de sortie (calendrier, sinon Ludum), prix, état de la couverture (`isbn`, `serie` ou `aucune`), liens directs Cultura / BDfugue / Ludum, sources qui connaissent l'ISBN et une colonne `alertes` : tome différent selon les sources, date du calendrier différente de celle de Ludum, aucune date. Séparateur « ; », UTF-8 avec BOM (s'ouvre dans Excel). **En cas de contradiction entre le catalogue ou le calendrier et la fiche Ludum d'un même ISBN (numéro de tome ou série), Ludum fait foi** : la valeur de Ludum est écrite dans la base, la décision dans `data/isbn-ludum.json`, et le site l'applique (`scripts/isbn-ludum.mjs`, lu par `loadBnf` et `loadAllManga`). Le numéro de tome vient du titre Ludum (« Série - Tome N ») ; coffrets et packs sont ignorés ; si le numéro est déjà pris par un autre ISBN de la série, rien n'est changé. Les dates ne sont jamais remplacées par celles de Ludum (elles ne servent qu'à compléter la base). Le fichier se complète tout seul quand une source s'enrichit. Essai : `node scripts/base-isbn.mjs --essai`.
+
 ## Catalogue des séries (BnF) et couvertures R2
 
 `/series/` sert aussi de catalogue : environ 8 000 séries de manga publiées en français, avec la liste de leurs tomes (numéro, année, ISBN, boutons d'achat). Pages `/serie/<nom>/` pour chaque série, pages `/series/lettre/<a-z>/` (240 séries par page) et recherche globale étendue (index `catalogue` dans `data/search.json`).

@@ -4,6 +4,7 @@ import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { chargerAdulte, estAdulte } from './adulte.mjs';
+import { lireDecisions } from './isbn-ludum.mjs';
 
 export const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 export const TZ = 'Europe/Paris';
@@ -190,7 +191,8 @@ export function parseMangaCSV(text) {
 // Fusionne la saisie manuelle (manga.csv) et la collecte automatique (manga-auto.csv) : la saisie manuelle gagne.
 const keyOf = (r) => (r.isbn.length >= 10 ? `i:${r.isbn}` : `s:${slugify(r.serie)}|${r.tome}`);
 const altKey = (r) => `s:${slugify(r.serie)}|${r.tome}`;
-export function loadAllManga(dir) {
+/** opts.brut : sans les décisions « Ludum gagne » sur le numéro de tome (data/isbn-ludum.json). */
+export function loadAllManga(dir, opts = {}) {
   const manual = loadManga(path.join(dir, 'manga.csv'));
   const auto = loadManga(path.join(dir, 'manga-auto.csv'));
   const taken = new Set(manual.flatMap((r) => (r.tome ? [keyOf(r), altKey(r)] : [keyOf(r)])));
@@ -206,7 +208,9 @@ export function loadAllManga(dir) {
   });
   const cmp = (a, b) => String(a).localeCompare(String(b), 'fr', { numeric: true });
   const adulte = chargerAdulte(dir);
-  return [...manual, ...kept].filter((r) => !estAdulte(adulte, r)).sort((a, b) => cmp(a.date, b.date) || cmp(a.editeur, b.editeur) || cmp(a.serie, b.serie) || cmp(a.tome, b.tome));
+  const dec = opts.brut ? new Map() : lireDecisions(dir);
+  const corrige = (r) => { const d = dec.get(r.isbn); return d && !d.x && r.tome && r.tome !== d.t ? { ...r, tome: d.t } : r; };
+  return [...manual, ...kept].map(corrige).filter((r) => !estAdulte(adulte, r)).sort((a, b) => cmp(a.date, b.date) || cmp(a.editeur, b.editeur) || cmp(a.serie, b.serie) || cmp(a.tome, b.tome));
 }
 export const mangaLabel =(r) => `${r.serie}${r.tome ? ` tome ${r.tome}` : ''}`;
 export const euro = (n) => `${n.toFixed(2).replace('.', ',')} €`;

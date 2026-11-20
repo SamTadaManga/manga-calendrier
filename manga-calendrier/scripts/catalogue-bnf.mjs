@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { chargerAdulte, estAdulte } from './adulte.mjs';
+import { lireDecisions, appliquerDecisions } from './isbn-ludum.mjs';
 
 // Compléments au catalogue : data/catalogue-ajouts.json, écrit par bnf-maj.mjs et trous-combler.mjs (le fichier du catalogue, lui, vient du CSV et peut être régénéré).
 // { ajouts: [{ k, n, e, t: tome, isbn, y: année, src: 'bnf' | 'google', statut: 'ok' | 'a-valider', l?: libellé }] } : seuls les ajouts « ok » entrent dans le site.
@@ -10,7 +11,7 @@ export function readAjouts(dir) {
   try { const j = JSON.parse(readFileSync(path.join(dir, 'catalogue-ajouts.json'), 'utf8')); return { ...j, ajouts: Array.isArray(j.ajouts) ? j.ajouts : [] }; } catch { return { ajouts: [] }; }
 }
 
-/** opts.tout : ne retire pas le contenu adulte (pour l'analyser et le purger). */
+/** opts.tout : ne retire pas le contenu adulte (pour l'analyser et le purger). opts.brut : n'applique pas les décisions « Ludum gagne » (data/isbn-ludum.json), pour recalculer ces décisions. */
 export function loadBnf(dir, opts = {}) {
   let raw;
   try { raw = JSON.parse(readFileSync(path.join(dir, 'catalogue-bnf.json'), 'utf8')); } catch { raw = { series: [] }; }
@@ -24,6 +25,7 @@ export function loadBnf(dir, opts = {}) {
     s.v.push(a.l ? [String(a.t || ''), a.isbn, Number(a.y) || 0, a.l] : [String(a.t || ''), a.isbn, Number(a.y) || 0]);
     seen.add(a.isbn);
   }
+  if (!opts.brut) appliquerDecisions(base, lireDecisions(dir));
   const adulte = opts.tout ? chargerAdulte('') : chargerAdulte(dir);
   const series = [...base.values()].filter((s) => s.v.length && (opts.tout || !estAdulte(adulte, { slug: s.k, serie: s.n, editeur: s.e }))).map((s) => { s.v = s.v.filter((v) => !adulte.isbn.has(v[1])); if (Array.isArray(s.p)) s.p = s.p.filter((e) => !estAdulte(adulte, { editeur: e })); /* « aussi publié chez » : pas de label adulte */ s.v.sort((x, y) => (Number(x[0]) || 1e6) - (Number(y[0]) || 1e6) || x[2] - y[2] || x[1].localeCompare(y[1])); return s; })
     .sort((a, b) => a.k.localeCompare(b.k));

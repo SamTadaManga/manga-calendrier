@@ -1,0 +1,48 @@
+name: Base ISBN (croisement des sources)
+# Reconstruit data/base-isbn.csv : une ligne par ISBN du site, en croisant le catalogue BnF et ses ajouts, le calendrier, les flux Cultura, BDfugue et Ludum
+# et l'état des couvertures. Le fichier signale les contradictions entre sources (colonne « alertes ») et se complète tout seul quand une source s'enrichit.
+# Chaque nuit à 5 h 17 UTC, après les flux produits (Cultura 1 h 27, BDfugue 1 h 47, Ludum 4 h 47) ; même groupe qu'eux : jamais en même temps.
+# Quand le catalogue ou le calendrier contredit Ludum sur le tome ou la série d'un ISBN, Ludum fait foi : la décision est écrite dans data/isbn-ludum.json et appliquée par le site.
+# Colonnes séparées par « ; », UTF-8 avec BOM : le fichier s'ouvre directement dans Excel. Rien n'est enregistré s'il n'a pas changé.
+on:
+  schedule:
+    - cron: '17 5 * * *'
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: cultura
+  cancel-in-progress: false
+jobs:
+  base:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Croiser les sources
+        run: node scripts/base-isbn.mjs
+      - name: Enregistrer
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/keep"
+          mkdir -p "$KEEP"
+          for f in base-isbn.csv isbn-ludum.json; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            node manga-calendrier/scripts/base-isbn.mjs >/dev/null 2>&1 || for f in base-isbn.csv isbn-ludum.json; do cp "$KEEP/$f" "manga-calendrier/data/$f"; done
+            git add manga-calendrier/data/base-isbn.csv manga-calendrier/data/isbn-ludum.json
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Base ISBN : mise à jour du croisement des sources"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1
