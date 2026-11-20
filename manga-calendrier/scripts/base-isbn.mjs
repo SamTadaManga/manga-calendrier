@@ -50,7 +50,13 @@ export function construireBase(dir) {
     if (r.prix) { l.prix = r.prix; l.prix_source = 'calendrier'; }
   }
   const maintenant = new Date().toISOString().slice(0, 10);
-  const decisions = decider(bnf, fiches, new Map([...calendrier].map(([i, r]) => [i, num(r.tome)])));
+  const decisions = decider(bnf, fiches, new Map([...calendrier].map(([i, r]) => [i, num(r.tome)])), new Set([...calendrier.values()].map((r) => slugify(r.serie))));
+  // Tomes d'éditions spéciales connus de Ludum seulement : ils entrent dans la base (et sur le site) avec la série d'édition
+  for (const [isbn, d] of Object.entries(decisions)) if (d.a && !lignes.has(isbn)) {
+    const l = ligne(isbn);
+    Object.assign(l, { serie: d.n, serie_slug: d.k, editeur: d.e || '' });
+    l.sources.add('ludum-edition');
+  }
   for (const [isbn, l] of lignes) {
     const f = fiches[isbn];
     if (f) {
@@ -77,8 +83,8 @@ export function construireBase(dir) {
     if (d) {
       l.tome = d.t;
       if (d.x) {
-        const cible = d.k && bnf.byK.get(d.k);
-        l.alertes.push(`serie: bnf=${l.serie} ludum=${tomeLudum(fiches[isbn][0]).serie} → ${cible ? 'ludum' : 'retiré du catalogue'}`);
+        const cible = d.k && (bnf.byK.get(d.k) || (d.n && { n: d.n, k: d.k, e: d.e }));
+        l.alertes.push(`serie: bnf=${l.serie} ludum=${tomeLudum(fiches[isbn][0])?.serie || fiches[isbn][0]} → ${cible ? (d.n ? `édition ${d.n}` : 'ludum') : 'retiré du catalogue'}`);
         if (cible) { l.serie = cible.n; l.serie_slug = cible.k; l.editeur = cible.e || l.editeur; } else l.retire = true;
       }
     }

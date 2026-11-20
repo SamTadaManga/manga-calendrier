@@ -222,6 +222,24 @@ Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse norma
 
 `data/base-isbn.csv` est reconstruit chaque nuit (workflow « Base ISBN », 5 h 17 UTC, après les flux Cultura, BDfugue et Ludum) : une ligne par ISBN du site, avec série, tome, éditeur, titre, date de sortie (calendrier, sinon Ludum), prix, état de la couverture (`isbn`, `serie` ou `aucune`), liens directs Cultura / BDfugue / Ludum, sources qui connaissent l'ISBN et une colonne `alertes` : tome différent selon les sources, date du calendrier différente de celle de Ludum, aucune date. Séparateur « ; », UTF-8 avec BOM (s'ouvre dans Excel). **En cas de contradiction entre le catalogue ou le calendrier et la fiche Ludum d'un même ISBN (numéro de tome ou série), Ludum fait foi** : la valeur de Ludum est écrite dans la base, la décision dans `data/isbn-ludum.json`, et le site l'applique (`scripts/isbn-ludum.mjs`, lu par `loadBnf` et `loadAllManga`). Le numéro de tome vient du titre Ludum (« Série - Tome N ») ; coffrets et packs sont ignorés ; si le numéro est déjà pris par un autre ISBN de la série, rien n'est changé. Les dates ne sont jamais remplacées par celles de Ludum (elles ne servent qu'à compléter la base). Le fichier se complète tout seul quand une source s'enrichit. Essai : `node scripts/base-isbn.mjs --essai`.
 
+### Éditions spéciales (séries d'édition)
+
+Un titre Ludum « Série - Tome N - Édition X » (Édition originale, Perfect Edition, Deluxe, Intégrale, Nouvelle édition…) forme sa propre série « Série - Édition X », avec la même adresse que dans le calendrier des éditeurs (`Yu-Gi-Oh! – Édition Millénium` donne `/serie/yu-gi-oh-edition-millenium/`) : calendrier, catalogue et Ludum se retrouvent sur une seule page. Une édition n'est séparée de sa série d'origine que si elle est vraiment distincte : le calendrier en fait déjà une série, ou bien c'est une réédition d'au moins 2 tomes (la série d'origine a déjà un autre ISBN pour le même numéro) qui n'est pas la version dominante de la série (plus de 60 % de ses ISBN). Les tomes de ces éditions connus seulement de Ludum sont ajoutés. Les promotions (« Édition découverte », « Offre découverte »), romans, coffrets, sens de lecture et suffixes composés ne créent pas de série. Les décisions sont dans `data/isbn-ludum.json` (`x` : quitte sa série, `k` / `n` / `e` : série d'arrivée, nom et éditeur, `a` : ajout d'un ISBN absent du catalogue).
+
+### Circuit des données ISBN
+
+| Source | Fichier(s) `data/` | Workflow (UTC) |
+|---|---|---|
+| Catalogue BnF + ajouts | `catalogue-bnf.json`, `catalogue-ajouts.json` | Catalogue (dim.), flux ci-dessous |
+| Calendrier des éditeurs | `manga.csv`, `manga-auto.csv` | Mise à jour (3 h 17) |
+| Cultura (Awin) | `cultura-liens.json`, `cultura-images.json` | Cultura (1 h 27) |
+| BDfugue (Effinity) | `bdfugue-liens.json`, `bdfugue-images.json`, `resumes-catalogue.json` | BDfugue (1 h 47) |
+| Ludum | `ludum-liens.json`, `ludum-images.json`, `ludum-produits.json` | Ludum (4 h 47) |
+| Couvertures | `couvertures-isbn.json`, `couvertures-controle.json` | Couvertures R2 (20 h 47), contrôle (4 h 17) |
+| **Base croisée** | `base-isbn.csv`, `isbn-ludum.json` | **Base ISBN (5 h 17)** |
+
+Les flux écrivent chacun leurs fichiers ; la base ISBN lit toujours les sources brutes (sans les décisions), les croise, écrit le CSV et les décisions « Ludum gagne » ; le site (`loadBnf`, `loadAllManga`) applique ces décisions à chaque génération. Un seul endroit décide donc de la série et du tome d'un ISBN.
+
 ## Catalogue des séries (BnF) et couvertures R2
 
 `/series/` sert aussi de catalogue : environ 8 000 séries de manga publiées en français, avec la liste de leurs tomes (numéro, année, ISBN, boutons d'achat). Pages `/serie/<nom>/` pour chaque série, pages `/series/lettre/<a-z>/` (240 séries par page) et recherche globale étendue (index `catalogue` dans `data/search.json`).

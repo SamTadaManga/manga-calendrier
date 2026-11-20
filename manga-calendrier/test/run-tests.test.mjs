@@ -1677,3 +1677,40 @@ test('Page /series/ : au plus 10 couvertures par lettre, lien vers la page de la
     assert.ok(/href="\/series\/lettre\/[a-z0-9-]+\/">Voir les [\d\s  ]+ séries en /.test(corps), `${titre} : lien vers la lettre`);
   }
 });
+
+test('Éditions Ludum : série d\'édition distincte, version dominante conservée, tomes ajoutés', async () => {
+  const { editionLudum, decider } = await import('../scripts/isbn-ludum.mjs');
+  const { loadBnf } = await import('../scripts/catalogue-bnf.mjs');
+  assert.equal(editionLudum('Yu-Gi-Oh! - Tome 1 - Édition Millénium').k, 'yu-gi-oh-edition-millenium');
+  assert.equal(editionLudum('Valkyrie Apocalypse - Tome 1 - Édition découverte 3 €'), null, 'promotion');
+  assert.equal(editionLudum('Gunnm Last Order - Tome 19 - Sens français'), null, 'sens de lecture');
+  assert.equal(editionLudum('X - Tome 1 - Perfect Edition - Édition collector'), null, 'suffixe composé');
+  const cle = (d12) => d12 + String((10 - ([...d12].reduce((s, c, i) => s + Number(c) * (i % 2 ? 3 : 1), 0) % 10)) % 10);
+  const isbn = (n) => cle(`97825051${String(n).padStart(4, '0')}`);
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'ed-'));
+  // yu-gi-oh : tome 1 et 2 existent déjà (anciennes éditions) -> réédition Millénium ; doro : l'« édition originale » est la série elle-même (dominante)
+  writeFileSync(path.join(dir, 'catalogue-bnf.json'), JSON.stringify({ series: [
+    { k: 'yu-gi-oh', n: 'Yu-Gi-Oh', e: 'Kana', v: [['1', isbn(1), 1998], ['2', isbn(2), 1999], ['3', isbn(3), 1999], ['4', isbn(4), 2000], ['1', isbn(5), 2026], ['2', isbn(6), 2026]] },
+    { k: 'doro', n: 'Doro', e: 'Soleil', v: [['1', isbn(11), 2010], ['2', isbn(12), 2010], ['3', isbn(13), 2011], ['1', isbn(14), 2020]] },
+  ] }));
+  const fiches = {
+    [isbn(5)]: ['Yu-Gi-Oh! - Tome 1 - Édition Millénium', 'KANA', '', '', 13.95, '1'],
+    [isbn(6)]: ['Yu-Gi-Oh! - Tome 2 - Édition Millénium', 'KANA', '', '', 13.95, '2'],
+    [isbn(7)]: ['Yu-Gi-Oh! - Tome 3 - Édition Millénium', 'KANA', '', '', 13.95, '3'], // pas au catalogue : ajouté
+    [isbn(11)]: ['Doro - Tome 1 - Édition originale', 'SOLEIL', '', '', 7.5, '1'],
+    [isbn(12)]: ['Doro - Tome 2 - Édition originale', 'SOLEIL', '', '', 7.5, '2'],
+    [isbn(13)]: ['Doro - Tome 3 - Édition originale', 'SOLEIL', '', '', 7.5, '3'],
+  };
+  const dec = decider(loadBnf(dir, { brut: true }), fiches);
+  assert.deepEqual(dec[isbn(5)], { t: '1', x: 1, k: 'yu-gi-oh-edition-millenium', n: 'Yu-Gi-Oh! - Édition Millénium', e: 'Kana' });
+  assert.deepEqual(dec[isbn(7)], { t: '3', a: 1, k: 'yu-gi-oh-edition-millenium', n: 'Yu-Gi-Oh! - Édition Millénium', e: 'Kana' });
+  assert.equal(dec[isbn(11)], undefined, 'version dominante : la série reste telle quelle');
+  writeFileSync(path.join(dir, 'isbn-ludum.json'), JSON.stringify({ isbn: dec }));
+  const fin = loadBnf(dir);
+  assert.deepEqual(fin.byK.get('yu-gi-oh').v.map((v) => v[1]), [isbn(1), isbn(2), isbn(3), isbn(4)], 'les anciennes éditions restent');
+  assert.deepEqual(fin.byK.get('yu-gi-oh-edition-millenium').v.map((v) => v[0]).sort(), ['1', '2', '3'], 'série d\'édition créée, tome 3 ajouté');
+  assert.equal(fin.byIsbn.get(isbn(7)).k, 'yu-gi-oh-edition-millenium');
+  // une édition déjà présente dans le calendrier forme sa série même sans doublon dans le catalogue
+  const cal = decider(loadBnf(dir, { brut: true }), { [isbn(12)]: fiches[isbn(12)] }, new Map(), new Set(['doro-edition-originale']));
+  assert.equal(cal[isbn(12)].k, 'doro-edition-originale');
+});
