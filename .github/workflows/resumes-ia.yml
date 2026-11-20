@@ -2,6 +2,7 @@ name: Résumés réécrits par une IA locale
 # Réécrit, avec un petit modèle open source qui tourne sur le serveur GitHub (aucun service payant, aucune clé), le résumé de l'éditeur des grandes séries
 # (data/resumes-catalogue.json -> data/resumes-ia.json). Chaque texte est contrôlé (noms et chiffres présents dans la source, pas de copie, pas de bavardage) ;
 # un texte refusé n'est jamais publié : le résumé de l'éditeur reste affiché.
+# Ce workflow ne peut rien bloquer : file d'attente à part (groupe resumes-ia), durée limitée à 75 minutes, et un échec ne laisse que cette exécution en rouge ; le site garde alors les résumés de l'éditeur.
 # Lancement manuel : « essai » ne publie rien (les textes sont dans l'artefact « resumes-ia »). Passage de nuit : seulement si la variable de dépôt RESUMES_IA vaut « oui »
 # (Settings > Secrets and variables > Actions > Variables). Modèle réglable avec les variables RESUMES_MODELE_REPO et RESUMES_MODELE_FICHIER.
 on:
@@ -25,7 +26,7 @@ jobs:
   resumes:
     if: ${{ github.event_name == 'workflow_dispatch' || vars.RESUMES_IA == 'oui' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 170
+    timeout-minutes: 75 # largement assez pour ~80 résumés ; ce workflow a son propre groupe de file d'attente et ne retient aucun autre workflow
     defaults:
       run:
         working-directory: manga-calendrier
@@ -65,8 +66,9 @@ jobs:
           [ -s ~/modele/modele.gguf ] || curl -fL --retry 3 -o ~/modele/modele.gguf "https://huggingface.co/$MODELE_REPO/resolve/main/$MODELE_FICHIER"
           ls -la ~/modele
       - name: Écrire les résumés
-        run: MODEL_PATH="$HOME/modele/modele.gguf" python scripts/llm-local.py taches.json resultats.json 120
+        run: MODEL_PATH="$HOME/modele/modele.gguf" python scripts/llm-local.py taches.json resultats.json 50
       - name: Contrôler et enregistrer les textes
+        if: ${{ !cancelled() }}
         run: MODELE="$MODELE_REPO/$MODELE_FICHIER" node scripts/resumes-ia.mjs appliquer --entree=resultats.json $ESSAI
       - uses: actions/upload-artifact@v4
         if: always()
@@ -77,7 +79,7 @@ jobs:
             manga-calendrier/resultats.json
           retention-days: 14
       - name: Enregistrer
-        if: ${{ env.ESSAI == '' }}
+        if: ${{ !cancelled() && env.ESSAI == '' }}
         working-directory: .
         run: |
           git config user.name "github-actions[bot]"
