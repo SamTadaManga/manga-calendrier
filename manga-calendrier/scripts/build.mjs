@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { readChanges, keyOf } from './changes.mjs';
-import { isIsbn13, shopsFrom, buyUrl, directFrom } from './shops.mjs';
+import { isIsbn13, shopsFrom, buyUrl, directFrom, hasLink } from './shops.mjs';
 import { empreinte } from './resumes-ia-lib.mjs';
 import {
   paths, now, parisKey, parisHM, addDays, frDate, frLongDate, frDayMonth, frShort, frMonth, ucfirst,
@@ -296,14 +296,16 @@ function coverBox(src, alt, w = 200, h = 300) {
 /* Où acheter : un lien par boutique (adresse normale, ou lien d'affiliation si renseigné dans la config) */
 const DIRECT = (() => { try { return directFrom(JSON.parse(readFileSync(path.join(P.dataDir, 'cultura-liens.json'), 'utf8'))); } catch { return null; } })();
 const DIRECT_BDF = (() => { try { return directFrom(JSON.parse(readFileSync(path.join(P.dataDir, 'bdfugue-liens.json'), 'utf8'))); } catch { return null; } })();
-const SHOPLIST = shopsFrom(config).map((x) => (x.id === 'cultura' && x.sponsored && DIRECT ? { ...x, direct: DIRECT } : (x.id === 'bdfugue' && x.sponsored && DIRECT_BDF ? { ...x, direct: DIRECT_BDF } : x)));
+const DIRECT_LUD = (() => { try { return directFrom(JSON.parse(readFileSync(path.join(P.dataDir, 'ludum-liens.json'), 'utf8'))); } catch { return null; } })();
+const SHOPLIST = shopsFrom(config).map((x) => (x.id === 'cultura' && x.sponsored && DIRECT ? { ...x, direct: DIRECT } : (x.id === 'bdfugue' && x.sponsored && DIRECT_BDF ? { ...x, direct: DIRECT_BDF } : (x.id === 'ludum' ? { ...x, direct: DIRECT_LUD } : x)))).filter((x) => x.id !== 'ludum' || x.direct);
 const AFFILIATE_ON = SHOPLIST.some((x) => x.sponsored);
 const CART = '<svg viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M1 1.5h2l1.2 6h5.6l1-4H3.6" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round"/><circle cx="5" cy="10" r="1" fill="currentColor"/><circle cx="9" cy="10" r="1" fill="currentColor"/></svg>';
 const buyBox = (r, size = '') => {
   if (!isIsbn13(r.isbn) || !SHOPLIST.length) return '';
   const verb = r.date > today ? 'Précommander' : 'Acheter';
   const sm = size === 'sm';
-  const links = SHOPLIST.map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" data-sh="${esc(x.id)}" data-k="${esc(slugify(r.serie))}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
+  const links = SHOPLIST.filter((x) => hasLink(x, r.isbn)).map((x) => `<a class="stream shop${size === 'lg' ? ' stream-lg' : ''} s-${esc(x.id)}" data-sh="${esc(x.id)}" data-k="${esc(slugify(r.serie))}" href="${esc(buyUrl(x, r.isbn))}" rel="${x.sponsored ? 'sponsored ' : ''}nofollow noopener" target="_blank" title="${verb} sur ${esc(x.name)}" aria-label="${verb} ${esc(mangaLabel(r))} sur ${esc(x.name)}">${sm ? esc(x.short || x.name) : `${CART}${esc(x.name)}`}</a>`).join('');
+  if (!links) return '';
   return `<div class="shops${size === 'lg' ? ' shops-lg' : ''}${sm ? ' shops-sm' : ''}">${sm ? '' : `<span class="shops-l">${verb}</span>`}${links}</div>`;
 };
 /* Goodies : une recherche Amazon sur le nom de la série (résultats affichés par Amazon, rien n'est copié). Désactivable avec "goodies": false */

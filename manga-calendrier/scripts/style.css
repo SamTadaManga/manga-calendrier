@@ -460,6 +460,7 @@ a.stream.s-goodies{background:var(--panel);color:var(--ink);border:2px solid var
 a.stream.s-amazon{background:#ff9900;color:#111}
 a.stream.s-cultura{background:#0d5aa7;color:#fff}
 a.stream.s-bdfugue{background:#cc0000;color:#fff}
+a.stream.s-ludum{background:#1f3a5f;color:#fff}
 .tile-body strong a{color:inherit;text-decoration:none;background:none}
 .tile-body strong a:hover{text-decoration:underline;text-decoration-color:var(--brand);text-decoration-thickness:3px}
 .tile-body .shops{margin-top:6px}

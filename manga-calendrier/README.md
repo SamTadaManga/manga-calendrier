@@ -214,6 +214,8 @@ Pour remplacer un lien par un lien d'affiliation, ajouter dans `site.config.json
 }
 ```
 
+**Ludum** (flux public `https://www.ludum.fr/flux-mangas-ludum`, workflow « Liens Ludum », chaque nuit) : il fournit le lien direct de chaque tome disponible, les tomes absents du catalogue et des couvertures. Le bouton reste caché tant que le numéro d'affilié n'est pas renseigné : `"ludum": { "enabled": true, "aff": "NUMERO" }` (le lien devient `https://www.ludum.fr/mangas/<fiche>?aff=NUMERO`). Il n'apparaît que pour les tomes dont la fiche est connue. Les images Ludum ne sont utilisées qu'après accord écrit de Ludum : mettre `"autorise": true` dans `data/ludum-images.json` (la valeur est conservée par le workflow).
+
 Variables : `{isbn}`, `{isbn10}` (ISBN en 978 seulement), `{url}` (adresse normale), `{urlenc}` (adresse normale encodée). Seuls les liens en `https://` sont acceptés. Dès qu'un lien d'affiliation est actif, le site ajoute `rel="sponsored"`, une mention sous les tomes et un paragraphe « Liens d'affiliation » dans les mentions légales.
 
 ## Catalogue des séries (BnF) et couvertures R2
