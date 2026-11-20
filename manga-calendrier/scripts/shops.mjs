@@ -25,7 +25,7 @@ export const SHOPS = [
   { id: 'cultura', name: 'Cultura', short: 'CULT', url: (i) => `https://www.cultura.com/search/results?search_query=${i}` },
   { id: 'bdfugue', name: 'BDfugue', short: 'BDF', url: (i) => `https://www.bdfugue.com/catalogsearch/result/?q=${i}` },
   // Ludum : pas de page de recherche par ISBN, donc le bouton n'apparaît que pour les tomes dont le flux donne la fiche (onlyDirect).
-  // Désactivé tant que shops.ludum.enabled n'est pas true ET que shops.ludum.aff (numéro d'affilié) n'est pas renseigné (optIn).
+  // Désactivé tant que shops.ludum.enabled n'est pas true (optIn). Sans shops.ludum.aff (numéro d'affilié) : lien simple vers la fiche, non sponsorisé.
   { id: 'ludum', name: 'Ludum', short: 'LUD', onlyDirect: true, optIn: true, url: () => '' },
 ];
 
@@ -35,8 +35,8 @@ const fill = (tpl, vars) => tpl.replace(/\{(isbn10|isbn|urlenc|url)\}/g, (_, k) 
 export function shopsFrom(config) {
   const conf = config && typeof config.shops === 'object' && config.shops ? config.shops : {};
   const numAff = (s) => (typeof conf[s.id]?.aff === 'string' || typeof conf[s.id]?.aff === 'number') && /^\d{1,8}$/.test(String(conf[s.id].aff).trim()) ? String(conf[s.id].aff).trim() : '';
-  return SHOPS.filter((s) => (s.optIn ? conf[s.id]?.enabled === true && numAff(s) : conf[s.id]?.enabled !== false)).map((s) => {
-    if (s.id === 'ludum') return { ...s, affiliate: '', tag: '', aff: numAff(s), sponsored: true };
+  return SHOPS.filter((s) => (s.optIn ? conf[s.id]?.enabled === true : conf[s.id]?.enabled !== false)).map((s) => {
+    if (s.id === 'ludum') return { ...s, affiliate: '', tag: '', aff: numAff(s), sponsored: Boolean(numAff(s)) };
     const aff = typeof conf[s.id]?.affiliate === 'string' ? conf[s.id].affiliate.trim() : '';
     const tag = typeof conf[s.id]?.tag === 'string' && /^[a-z0-9][a-z0-9-]{2,39}$/i.test(conf[s.id].tag.trim()) ? conf[s.id].tag.trim() : '';
     const affiliate = /^https:\/\/[^\s"<>]+$/.test(aff) ? aff : '';

@@ -1,8 +1,8 @@
 name: Liens Ludum (flux produits)
 # Télécharge le flux produits public de Ludum (https://www.ludum.fr/flux-mangas-ludum, mis à jour chaque jour vers 5 h heure de Paris) et met à jour :
 # data/ludum-liens.json (lien direct vers la fiche de chaque tome disponible), data/catalogue-ajouts.json (tomes absents du catalogue : trous de numérotation et tomes suivants)
-# et data/ludum-images.json (images pour les couvertures manquantes ; utilisées seulement si ce fichier contient "autorise": true, c'est-à-dire après accord de Ludum).
-# Aucun secret nécessaire. Le bouton Ludum du site reste caché tant que site.config.json ne contient pas shops.ludum = { "enabled": true, "aff": "<numéro d'affilié>" }.
+# et data/ludum-images.json (images pour les couvertures manquantes ; utilisées tant que ce fichier contient "autorise": true).
+# Aucun secret nécessaire. Le bouton Ludum du site dépend de shops.ludum dans site.config.json ({ "enabled": true, "aff": "<numéro d'affilié, facultatif>" }).
 # Chaque nuit à 4 h 47 UTC (après la mise à jour du flux), même groupe que les autres flux produits : jamais en même temps. Le fichier n'est enregistré que s'il a changé.
 on:
   schedule:

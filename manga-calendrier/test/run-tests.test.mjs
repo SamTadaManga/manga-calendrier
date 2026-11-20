@@ -1597,10 +1597,13 @@ test('Ludum : flux, liens directs, bouton réservé aux tomes disponibles et act
   assert.ok(direct && direct.plain);
   assert.equal(directFrom({ base: 'https://www.ludum.fr.evil.test/mangas/', liens }), null);
   assert.equal(shopsFrom({}).some((x) => x.id === 'ludum'), false, 'désactivé par défaut');
-  assert.equal(shopsFrom({ shops: { ludum: { enabled: true } } }).some((x) => x.id === 'ludum'), false, 'sans numéro d\'affilié : désactivé');
-  assert.equal(shopsFrom({ shops: { ludum: { enabled: true, aff: 'x"y' } } }).some((x) => x.id === 'ludum'), false, 'numéro invalide : désactivé');
+  const sans = { ...shopsFrom({ shops: { ludum: { enabled: true } } }).find((x) => x.id === 'ludum'), direct };
+  assert.ok(sans && !sans.sponsored, 'sans numéro d\'affilié : actif mais non sponsorisé');
+  assert.equal(buyUrl(sans, a), 'https://www.ludum.fr/mangas/akira-tome-1-1', 'lien simple vers la fiche, sans paramètre');
+  assert.equal(shopsFrom({ shops: { ludum: { enabled: true, aff: 'x"y' } } }).find((x) => x.id === 'ludum').aff, '', 'numéro invalide ignoré');
   const shop = { ...shopsFrom({ shops: { ludum: { enabled: true, aff: '48' } } }).find((x) => x.id === 'ludum'), direct };
   assert.equal(buyUrl(shop, a), 'https://www.ludum.fr/mangas/akira-tome-1-1?aff=48');
+  assert.ok(shop.sponsored);
   assert.equal(hasLink(shop, c), false, 'pas de bouton sans fiche');
   assert.equal(buyUrl(shop, c), '');
 });
