@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-20T16:54:39.435Z",
+ "generatedAt": "2026-11-21T11:02:32.414Z",
  "seasons": [
   {
    "season": "FALL",
@@ -1582,7 +1582,11 @@
      ],
      "u": "https://anilist.co/anime/213877",
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213877-NK48aPaVO29y.jpg",
-     "g": [],
+     "g": [
+      "Action",
+      "Comedy",
+      "Supernatural"
+     ],
      "s": []
     },
     {
