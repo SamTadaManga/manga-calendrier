@@ -1835,4 +1835,14 @@
 {"k":"the-lapins-cretins","n":"The lapins crétins","e":"Glénat","t":"10","isbn":"9782344068274","y":0,"src":"bdfugue","motif":"suite","statut":"ok"},
 {"k":"the-lapins-cretins","n":"The lapins crétins","e":"Glénat","t":"11","isbn":"9782344068281","y":0,"src":"bdfugue","motif":"suite","statut":"ok"},
 {"k":"the-summer-hikaru-died","n":"The Summer Hikaru Died","e":"Pika","t":"8","isbn":"9791043308482","y":0,"src":"bdfugue","motif":"suite","statut":"ok"},
-{"k":"toilet-bound-hanako-kun","n":"Toilet-bound Hanako-kun","e":"Pika","t":"25","isbn":"9791043308277","y":0,"src":"bdfugue","motif":"suite","statut":"ok"}]}
+{"k":"toilet-bound-hanako-kun","n":"Toilet-bound Hanako-kun","e":"Pika","t":"25","isbn":"9791043308277","y":0,"src":"bdfugue","motif":"suite","statut":"ok"},
+{"k":"s","n":"Viewfinder","e":"Asuka","t":"1","isbn":"9782849657799","y":0,"src":"ludum","motif":"trou","statut":"ok"},
+{"k":"s","n":"Viewfinder","e":"Asuka","t":"2","isbn":"9782849658475","y":0,"src":"ludum","motif":"trou","statut":"ok"},
+{"k":"s","n":"Viewfinder","e":"Asuka","t":"4","isbn":"9782820300188","y":0,"src":"ludum","motif":"trou","statut":"ok"},
+{"k":"13e-piste-la","n":"La 13e piste","e":"Ki-oon","t":"4","isbn":"9791032725122","y":0,"src":"ludum","motif":"suite","statut":"ok"},
+{"k":"blade-bastard","n":"Blade & Bastard","e":"Pika","t":"6","isbn":"9791043314483","y":0,"src":"ludum","motif":"suite","statut":"ok"},
+{"k":"danse-du-soleil-et-de-la-lune-la","n":"La danse du soleil et de la lune","e":"Ki-oon","t":"11","isbn":"9791032723388","y":0,"src":"ludum","motif":"suite","statut":"ok"},
+{"k":"diable-s-habille-en-papa-le","n":"Le diable s'habille en papa","e":"Mana Books","t":"4","isbn":"9791035509439","y":0,"src":"ludum","motif":"suite","statut":"ok"},
+{"k":"lycoris-recoil","n":"Lycoris Recoil","e":"Panini Manga","t":"8","isbn":"9791039149662","y":0,"src":"ludum","motif":"suite","statut":"ok"},
+{"k":"sukima","n":"Sukima","e":"Casterman","t":"4","isbn":"9782203303911","y":0,"src":"ludum","motif":"suite","statut":"ok"},
+{"k":"the-summer-hikaru-died","n":"The Summer Hikaru Died","e":"Pika","t":"9","isbn":"9791043315602","y":0,"src":"ludum","motif":"suite","statut":"ok"}]}
