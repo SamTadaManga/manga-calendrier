@@ -20,6 +20,10 @@ Akata · mystère · Rito Asami et Tom Bertrand · depuis 2022
 
 Pika · action, aventure, fantasy · Yoonz et 3B2S · depuis 2019
 
+## [Dorohedoro](/serie/dorohedoro/)
+
+Soleil · action, aventure, comédie · Q Hayashida · depuis 2000
+
 ## [Angel Sanctuary](/serie/angel-sanctuary/)
 
 Pika · fantasy, mystère, romance · Kaori Yuki · depuis 1994
@@ -27,7 +31,3 @@ Pika · fantasy, mystère, romance · Kaori Yuki · depuis 1994
 ## [Pandora Hearts](/serie/pandora-hearts/)
 
 Ki-oon · action, aventure, drame · Jun Mochizuki · depuis 2006
-
-## [Les filles d'Awajima](/serie/les-filles-d-awajima/)
-
-Akata · drame, musique, romance · Takako Shimura et Tom Bertrand · depuis 2011
