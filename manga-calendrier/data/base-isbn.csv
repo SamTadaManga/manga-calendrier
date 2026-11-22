@@ -625,10 +625,10 @@
 9782385314286;A Sign of Affection;a-sign-of-affection;11;Akata;;;;2025;;;;isbn;46391903964;a-sign-of-affection-tome-11;;;bdfugue+bnf+cultura;
 9782385691912;A Sign of Affection;a-sign-of-affection;12;Akata;;;;2025;;;;isbn;42314677509;a-sign-of-affection-tome-12;;;bdfugue+bnf+cultura;
 9782385692964;A Sign of Affection;a-sign-of-affection;13;Akata;;;;2026;;;;isbn;44014015007;a-sign-of-affection-tome-13;;;bdfugue+bnf+cultura;
-9782386160370;A Sign of Affection;a-sign-of-affection;14;Akata;;;;2026;;;;isbn;45410248466;a-sign-of-affection-tome-14-collector;;;bdfugue+bnf+cultura;
+9782386160370;A Sign of Affection;a-sign-of-affection;14;Akata;;;;2026;;;;isbn;45410248466;;;;bnf+cultura;
 9782355927713;A silent voice;a-silent-voice;1;Ki-oon;A Silent Voice - Tome 1;2015-01-22;ludum;2015;Paru;6.95;ludum;serie;42314664787;a-silent-voice-t-1;a-silent-voice-tome-1-1007420;sur commande;bdfugue+bnf+cultura+ludum;
 9782371022843;A silent voice;a-silent-voice;1;Ki-oon;;;;2021;;;;isbn;42314670269;a-silent-voice-roman;;;bdfugue+bnf+cultura;
-9782355927942;A silent voice;a-silent-voice;2;Ki-oon;A Silent Voice - Tome 2;2015-03-12;ludum;2015;Paru;6.95;ludum;isbn;42314664795;;;rupture;bnf+cultura+ludum;
+9782355927942;A silent voice;a-silent-voice;2;Ki-oon;A Silent Voice - Tome 2;2015-03-12;ludum;2015;Paru;6.95;ludum;isbn;42314664795;a-silent-voice-t-2;a-silent-voice-tome-2-1007421;sur commande;bdfugue+bnf+cultura+ludum;
 9782355928222;A silent voice;a-silent-voice;3;Ki-oon;A Silent Voice - Tome 3;2015-05-15;ludum;2015;Paru;6.95;ludum;isbn;42314664807;a-silent-voice-t-3;a-silent-voice-tome-3-1007422;sur commande;bdfugue+bnf+cultura+ludum;
 9782355928390;A silent voice;a-silent-voice;4;Ki-oon;A Silent Voice - Tome 4;2015-07-02;ludum;2015;Paru;6.95;ludum;isbn;42314664815;a-silent-voice-t04;a-silent-voice-tome-4-1007423;sur commande;bdfugue+bnf+cultura+ludum;
 9782355928659;A silent voice;a-silent-voice;5;Ki-oon;A Silent Voice - Tome 5;2015-10-08;ludum;2015;Paru;6.95;ludum;isbn;42314664825;a-silent-voice-t05;a-silent-voice-tome-5-1007424;sur commande;bdfugue+bnf+cultura+ludum;
@@ -1058,7 +1058,7 @@
 9791032719381;Akane banashi;akane-banashi;12;Ki-oon;Akane-banashi - Tome 12;2025-09-04;ludum;2025;Paru;6.95;ludum;isbn;41872229011;akane-banashi-tome-12;akane-banashi-tome-12-1009036;sur commande;bdfugue+bnf+cultura+ludum;
 9791032724514;Akane banashi;akane-banashi;13;Ki-oon;Akane-banashi - Tome 13;2026-02-12;ludum;2026;Paru;6.95;ludum;isbn;43746273700;akane-banashi-tome-13;akane-banashi-tome-13-1009042;sur commande;bdfugue+bnf+cultura+ludum;
 9791032724231;Akane banashi;akane-banashi;14;Ki-oon;Akane-banashi - Tome 14;2026-04-02;ludum;2026;Paru;6.95;ludum;isbn;44195356103;akane-banashi-tome-14;akane-banashi-tome-14-1009041;sur commande;bdfugue+bnf+cultura+ludum;
-9791032723821;Akane banashi;akane-banashi;15;Ki-oon;Akane-banashi - Tome 15;2026-07-02;ludum;;Paru;6.95;ludum;serie;44719351552;akane-banashi-tome-15;akane-banashi-tome-15-1009040;sur commande;ajout-cultura+bdfugue+cultura+ludum;
+9791032723821;Akane banashi;akane-banashi;15;Ki-oon;Akane-banashi - Tome 15;2026-07-02;ludum;;Paru;6.95;ludum;isbn;44719351552;akane-banashi-tome-15;akane-banashi-tome-15-1009040;sur commande;ajout-cultura+bdfugue+cultura+ludum;
 9791032723425;Akane banashi;akane-banashi;16;Ki-oon;Akane-banashi - Tome 16;0000-00-00;ludum;2026;Paru;6.95;ludum;isbn;45550171283;akane-banashi-tome-16;akane-banashi-tome-16-1009039;en stock;bdfugue+bnf+cultura+ludum;
 9782353484256;Akari;akari;1;Lézard noir;;;;2025;;;;isbn;44099633478;akari;;;bdfugue+bnf+cultura;
 9782811619510;Akatsuki;akatsuki;1;Pika;;;;2016;;;;isbn;;;;;bnf;
@@ -1871,6 +1871,7 @@
 9782302103887;Welcome to Animal crossing New horizons;animal-crossing;10;Soleil;Animal Crossing : New Horizons - Le Journal de l'île - Tome 10;2025-07-02;ludum;2025;Paru;8.50;ludum;isbn;42314659946;animal-crossing-new-horizons-le-journal-de-l-ile-tome-10;animal-crossing-new-horizons-le-journal-de-l-ile-tome-10-1000065;sur commande;bdfugue+bnf+cultura+ludum;
 9782302105911;Welcome to Animal crossing New horizons;animal-crossing;11;Soleil;Animal Crossing : New Horizons - Le Journal de l'île - Tome 11;2025-12-03;ludum;2025;Paru;8.50;ludum;isbn;42267608037;animal-crossing-new-horizons-le-journal-de-l-ile-tome-11;animal-crossing-new-horizons-le-journal-de-l-ile-tome-11-1000066;sur commande;bdfugue+bnf+cultura+ludum;
 9782302100251;Animal Crossing, new horizons;animal-crossing-new-horizons;2;Soleil;;;;2023;;;;isbn;42314659800;animal-crossing-new-horizons-l-ile-de-la-detente-tome-2;;;bdfugue+bnf+cultura;
+9782302108783;Animal Crossing : New Horizons - Le Journal de l'île;animal-crossing-new-horizons-le-journal-de-l-ile;13;Soleil;;2027-01-21;calendrier;;annonce;;;isbn;;;;;calendrier;
 9791035810306;Animal Farm;animal-farm;1;Belin éducation;;;;2020;;;;aucune;;;;;bnf;
 9791035823757;Animal Farm;animal-farm;1;Belin éducation;;;;2023;;;;isbn;45138126645;;;;bnf+cultura;
 9782382817216;Animal human;animal-human;1;Mangetsu;;;;2025;;;;isbn;41848854191;animal-human-tome-1;;;bdfugue+bnf+cultura;
@@ -3646,7 +3647,7 @@
 9782302079090;Be-twin you & me;be-twin-you-me;10;Soleil;;;;2019;;;;isbn;46239142135;be-twin-you-me-tome-10;;;bdfugue+bnf+cultura;
 9782302080386;Be-twin you & me;be-twin-you-me;11;Soleil;;;;2020;;;;isbn;45375163277;be-twin-you-and-me-tome-11;;;bdfugue+bnf+cultura;
 9782820303783;His favorite;be-x-boy-magazine;1;Asuka;;;;2012;;;;isbn;43449462895;;;;bnf+cultura;
-9782820304551;His favorite;be-x-boy-magazine;2;Asuka;;;;2012;;;;isbn;;his-favorite-t-2;;;bdfugue+bnf;
+9782820304551;His favorite;be-x-boy-magazine;2;Asuka;;;;2012;;;;isbn;;;;;bnf;
 9782820305008;His favorite;be-x-boy-magazine;3;Asuka;;;;2012;;;;isbn;;his-favorite-t-3;;;bdfugue+bnf;
 9782820306227;His favorite;be-x-boy-magazine;4;Asuka;;;;2013;;;;isbn;41036375018;his-favorite-t-4;;;bdfugue+bnf+cultura;
 9782820306890;His favorite;be-x-boy-magazine;5;Asuka;;;;2013;;;;isbn;42314698535;his-favorite-t05;;;bdfugue+bnf+cultura;
@@ -4153,7 +4154,7 @@
 9782811670146;Black-box;black-box;2;Pika;;;;2022;;;;isbn;41818665533;black-box-tome-2;;;bdfugue+bnf+cultura;
 9782811670368;Black-box;black-box;3;Pika;;;;2022;;;;isbn;44783396667;black-box-tome-3;;;bdfugue+bnf+cultura;
 9782811670375;Black-box;black-box;4;Pika;;;;2022;;;;isbn;41818665535;black-box-tome-4;;;bdfugue+bnf+cultura;
-9782811672232;Black-box;black-box;5;Pika;;;;2022;;;;isbn;42123337823;black-box-tome-5;;;bdfugue+bnf+cultura;
+9782811672232;Black-box;black-box;5;Pika;;;;2022;;;;isbn;42123337823;;;;bnf+cultura;
 9782811677305;Black-box;black-box;6;Pika;;;;2023;;;;isbn;;;;;bnf;
 9782818935231;Black bullet;black-bullet;1;Bamboo;;;;2016;;;;isbn;;;;;bnf;
 9782818935576;Black bullet;black-bullet;2;Bamboo;;;;2016;;;;isbn;45205261741;;;;bnf+cultura;
@@ -4236,7 +4237,7 @@
 9782820335197;Black clover;black-clover;16;Crunchyroll;Black Clover - Tome 16;2019-01-09;ludum;;Paru;7.05;ludum;isbn;42314698916;black-clover-tome-16;;rupture;ajout-cultura+bdfugue+cultura+ludum;
 9782820335333;Black clover;black-clover;17;Crunchyroll;Black Clover - Tome 17;2019-03-20;ludum;;Paru;7.05;ludum;isbn;42314698924;;;rupture;ajout-cultura+cultura+ludum;
 9782820335487;Black clover;black-clover;18;Crunchyroll;Black Clover - Tome 18;2019-05-15;ludum;;Paru;7.05;ludum;isbn;42314698932;black-clover-tome-18;black-clover-tome-18-1010513;sur commande;ajout-cultura+bdfugue+cultura+ludum;
-9782820335661;Black clover;black-clover;19;Crunchyroll;Black Clover - Tome 19;2019-07-03;ludum;;Paru;7.05;ludum;isbn;;black-clover-tome-19;black-clover-tome-19-1010514;sur commande;ajout-bdfugue+bdfugue+ludum;
+9782820335661;Black clover;black-clover;19;Crunchyroll;Black Clover - Tome 19;2019-07-03;ludum;;Paru;7.05;ludum;isbn;;black-clover-tome-19;;rupture;ajout-bdfugue+bdfugue+ludum;
 9782820335777;Black clover;black-clover;20;Crunchyroll;Black Clover - Tome 20;2019-09-11;ludum;;Paru;7.05;ludum;isbn;42314698950;black-clover-tome-20;black-clover-tome-20-1010515;sur commande;ajout-cultura+bdfugue+cultura+ludum;
 9782820335944;Black clover;black-clover;21;Crunchyroll;Black Clover - Tome 21;2019-11-13;ludum;;Paru;7.05;ludum;isbn;42314698957;black-clover-tome-21;;rupture;ajout-cultura+bdfugue+cultura+ludum;
 9782820337726;Black clover;black-clover;22;Crunchyroll;Black Clover - Tome 22;2020-02-12;ludum;;Paru;7.05;ludum;isbn;42314698975;black-clover-tome-22;;rupture;ajout-cultura+bdfugue+cultura+ludum;
@@ -4367,13 +4368,6 @@
 9782368770412;Black x black;black-x-black;42;IDP;;;;2014;;;;isbn;;;;;bnf;
 9782849654620;Blackjack neo;blackjack-neo;1;Asuka;;;;2008;;;;isbn;;;;;bnf;
 9782849655252;Blackjack neo;blackjack-neo;2;Asuka;;;;2008;;;;isbn;;;;;bnf;
-9782376320630;Blade & Bastard;blade-bastard;1;Pika;;;;2026;;;;isbn;43656754614;blade-bastard-roman-tome-1;;;bdfugue+bnf+cultura;
-9791043301681;Blade & Bastard;blade-bastard;1;Pika;Blade & Bastard - Tome 1;2026-03-04;ludum;2026;Paru;7.20;ludum;isbn;43656758127;blade-bastard-tome-1-9791043301681;blade-bastard-tome-1-1017111;sur commande;bdfugue+bnf+cultura+ludum;
-9791043302893;Blade & Bastard;blade-bastard;2;Pika;Blade & Bastard - Tome 2;2026-05-06;ludum;2026;Paru;7.20;ludum;isbn;44093739918;blade-bastard-tome-2;blade-bastard-tome-2-1017112;sur commande;bdfugue+bnf+cultura+ludum;
-9791043305818;Blade & Bastard;blade-bastard;3;Pika;Blade & Bastard - Tome 3;2026-07-08;ludum;2026;Paru;7.20;ludum;isbn;44592381980;blade-bastard-tome-3;blade-bastard-tome-3-1017113;sur commande;bdfugue+bnf+cultura+ludum;
-9791043307737;Blade & Bastard;blade-bastard;4;Pika;Blade & Bastard - Tome 4;2026-09-10;ludum;2026;Paru;7.20;ludum;isbn;45146034589;blade-bastard-tome-4;blade-bastard-tome-4-1017114;sur commande;bdfugue+bnf+cultura+ludum;
-9791043308529;Blade & Bastard;blade-bastard;5;Pika;Blade & Bastard - Tome 5;2026-11-18;ludum;;Paru;7.20;ludum;serie;;blade-bastard-tome-5;blade-bastard-tome-5-1017115;sur commande;ajout-bdfugue+bdfugue+ludum;
-9791043314483;Blade & Bastard;blade-bastard;6;Pika;Blade & Bastard - Tome 6;2027-03-17;ludum;;A paraître;7.20;ludum;serie;;;blade-bastard-tome-6-1017116;précommande;ajout-ludum+ludum;
 9782811679682;Blade of the Phantom Master;blade-of-the-phantom-master;1;Pika;;;;2024;;;;isbn;42314697126;blade-of-the-phantom-master-tome-1-le-nouvel-angyo-onshi;;;bdfugue+bnf+cultura;
 9782811679699;Blade of the Phantom Master;blade-of-the-phantom-master;2;Pika;;;;2024;;;;isbn;42314697127;blade-of-the-phantom-master-le-nouvel-angyo-onshi-tome-2;;;bdfugue+bnf+cultura;
 9782811679705;Blade of the Phantom Master;blade-of-the-phantom-master;3;Pika;;;;2024;;;;isbn;42314697128;blade-of-the-phantom-master-tome-3;;;bdfugue+bnf+cultura;
@@ -4500,7 +4494,7 @@
 9782723493086;Bleach;bleach;53;Glénat;Bleach - Tome 53 : The Deathberry Returns 2;2013-05-08;ludum;2013;Paru;7.20;ludum;isbn;41036353386;bleach-t53;bleach-tome-53-the-deathberry-returns-2-1000552;sur commande;bdfugue+bnf+cultura+ludum;tome: bnf=2 ludum=53 → ludum
 9782723493093;Bleach;bleach;54;Glénat;Bleach - Tome 54 : Goodbye to Our Xcution;2013-07-03;ludum;2013;Paru;7.20;ludum;isbn;;bleach-t-54;;rupture;bdfugue+bnf+ludum;
 9782723493246;Bleach;bleach;55;Glénat;Bleach - Tome 55 : The Blood Warfare;2013-10-09;ludum;2013;Paru;7.20;ludum;isbn;46837912528;bleach-tome-55;bleach-tome-55-the-blood-warfare-1000554;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Blood + ludum=Bleach → ludum
-9782723498197;Bleach;bleach;56;Glénat;Bleach - Tome 56 : March of the StarCross;2014-01-22;ludum;2014;Paru;7.20;ludum;isbn;41036353579;bleach-tome-56;bleach-tome-56-march-of-the-starcross-1000555;sur commande;bdfugue+bnf+cultura+ludum;
+9782723498197;Bleach;bleach;56;Glénat;Bleach - Tome 56 : March of the StarCross;2014-01-22;ludum;2014;Paru;7.20;ludum;isbn;41036353579;bleach-tome-56;;rupture;bdfugue+bnf+cultura+ludum;
 9782723498203;Bleach;bleach;57;Glénat;Bleach - Tome 57 : Out of Bloom;2014-03-05;ludum;2014;Paru;7.20;ludum;isbn;42314687649;bleach-tome-57;bleach-tome-57-out-of-bloom-1000556;sur commande;bdfugue+bnf+cultura+ludum;
 9782723499088;Bleach;bleach;58;Glénat;Bleach - Tome 58 : The Fire;2014-05-07;ludum;2014;Paru;7.20;ludum;isbn;42082003750;bleach-tome-58;bleach-tome-58-the-fire-1000557;sur commande;bdfugue+bnf+cultura+ludum;
 9782723499262;Bleach;bleach;59;Glénat;Bleach - Tome 59 : The Battle;2014-07-02;ludum;2014;Paru;7.20;ludum;isbn;41036353683;bleach-tome-59;bleach-tome-59-the-battle-1000558;sur commande;bdfugue+bnf+cultura+ludum;
@@ -4783,6 +4777,7 @@
 9782413086512;Blue Box;blue-box;11;Tonkam;;;;2026;;;;isbn;42910464864;blue-box-tome-11;;;bdfugue+bnf+cultura;
 9782413086529;Blue Box;blue-box;12;Tonkam;;;;;;;;isbn;44033657458;blue-box-tome-12;;;ajout-cultura+bdfugue+cultura;date: aucune
 9782413086536;Blue Box;blue-box;13;Tonkam;;;;;;;;isbn;44927631246;blue-box-tome-13;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782413090205;Blue Box;blue-box;14;Delcourt;;2027-01-21;calendrier;;annonce;;;serie;;;;;calendrier;
 9782811638306;Blue corner;blue-corner;1;Pika;;;;2018;;;;serie;;;;;bnf;
 9782811675660;Blue corner;blue-corner;1;Pika;;;;2024;;;;isbn;42314697044;blue-corner-9782811675660;;;bdfugue+bnf+cultura;
 9782368527894;Blue eyes sword;blue-eyes-sword;1;Kurokawa;;;;2019;;;;isbn;;blue-eyes-sword-tome-1;;;bdfugue+bnf;
@@ -8158,8 +8153,8 @@
 9782820354334;Dandadan - Édition collector;dandadan-edition-collector;20;Crunchyroll;Dandadan - Tome 20 - Édition collector;2025-11-19;ludum;2025;Paru;21.99;ludum;isbn;43681473556;dandadan-tome-20-collector;dandadan-tome-20-edition-collector-1005839;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Dandadan ludum=Dandadan - Tome 20 - Édition collector → édition Dandadan - Édition collector
 9782820353306;Dandadan - Édition limitée;dandadan-edition-limitee;18;Crunchyroll;Dandadan - Tome 18 - Édition limitée;2025-06-25;ludum;2025;Paru;7.29;ludum;isbn;42314699371;;;rupture;bnf+cultura+ludum;serie: bnf=Dandadan ludum=Dandadan → édition Dandadan - Édition limitée
 9782820355096;Dandadan - Édition limitée;dandadan-edition-limitee;21;Crunchyroll;Dandadan - Tome 21 - Édition limitée;2026-01-21;ludum;2026;Paru;7.99;ludum;isbn;46509269172;;;rupture;bnf+cultura+ludum;serie: bnf=Dandadan ludum=Dandadan → édition Dandadan - Édition limitée
-9782820356499;Dandadan - Édition limitée;dandadan-edition-limitee;23;Crunchyroll;Dandadan - Tome 23 - Édition limitée;2026-07-01;ludum;2026;Paru;7.99;ludum;isbn;44981722073;;;rupture;bnf+cultura+ludum;serie: bnf=Dandadan ludum=Dandadan → édition Dandadan - Édition limitée
-9782820301871;Dandadan - Édition limitée;dandadan-edition-limitee;24;Crunchyroll;Dandadan - Tome 24 - Édition limitée;2026-11-18;ludum;;Paru;7.99;ludum;aucune;45362298435;dandadan-tome-24-collector;dandadan-tome-24-edition-limitee-1012630;en stock;bdfugue+cultura+ludum+ludum-edition;
+9782820356499;Dandadan - Édition limitée;dandadan-edition-limitee;23;Crunchyroll;Dandadan - Tome 23 - Édition limitée;2026-07-01;ludum;2026;Paru;7.99;ludum;isbn;44981722073;dandadan-tome-23-edition-limitee;dandadan-tome-23-edition-limitee-1005842;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Dandadan ludum=Dandadan → édition Dandadan - Édition limitée
+9782820301871;Dandadan - Édition limitée;dandadan-edition-limitee;24;Crunchyroll;Dandadan - Tome 24 - Édition limitée;2026-11-18;ludum;;Paru;7.99;ludum;isbn;45362298435;dandadan-tome-24-collector;dandadan-tome-24-edition-limitee-1012630;en stock;bdfugue+cultura+ludum+ludum-edition;
 9782382122518;Dandara;dandara;1;Akata;;;;2022;;;;isbn;;dandara;;;bdfugue+bnf;
 9782211078832;Le Danemark d'Andersen;danemark-d-andersen-le;1;École des loisirs;;;;2004;;;;isbn;;;;;bnf;
 9791035500870;Danganronpa;danganronpa;1;Mana Books;;;;2019;;;;serie;42314707784;danganronpa-tome-1;;;bdfugue+bnf+cultura;
@@ -9205,10 +9200,10 @@
 9782849461518;Di Gi Charat;di-gi-charat;2;Soleil;;;;2005;;;;isbn;;;;;bnf;
 9782849461839;Di Gi Charat;di-gi-charat;3;Soleil;;;;2005;;;;isbn;;;;;bnf;
 9782849461952;Di Gi Charat;di-gi-charat;4;Soleil;;;;2005;;;;isbn;;;;;bnf;
-9791035508869;Le diable s'habille en papa;diable-s-habille-en-papa-le;1;Mana Books;Le diable s'habille en papa - Tome 1 : Père et fils;2026-06-04;ludum;;Paru;7.95;ludum;aucune;;le-diable-s-habille-en-papa-tome-1;le-diable-s-habille-en-papa-tome-1-pere-et-fils-1014223;sur commande;ajout-bdfugue+bdfugue+ludum;
+9791035508869;Le diable s'habille en papa;diable-s-habille-en-papa-le;1;Mana Books;Le diable s'habille en papa - Tome 1 : Père et fils;2026-06-04;ludum;;Paru;7.95;ludum;isbn;44937195623;le-diable-s-habille-en-papa-tome-1;le-diable-s-habille-en-papa-tome-1-pere-et-fils-1014223;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9791035509040;Le diable s'habille en papa;diable-s-habille-en-papa-le;2;Mana Books;Le diable s'habille en papa - Tome 2 : Mère et fils;2026-08-20;ludum;2026;Paru;7.95;ludum;isbn;45131116848;le-diable-s-habille-en-papa-tome-2;le-diable-s-habille-en-papa-tome-2-mere-et-fils-1014224;sur commande;bdfugue+bnf+cultura+ludum;tome: bnf=1 ludum=2 → ludum
-9791035509279;Le diable s'habille en papa;diable-s-habille-en-papa-le;3;Mana Books;Le diable s'habille en papa - Tome 3 : Amis;2026-10-01;ludum;;Paru;7.95;ludum;aucune;46198717285;le-diable-s-habille-en-papa-tome-3;le-diable-s-habille-en-papa-tome-3-amis-1014225;sur commande;ajout-cultura+bdfugue+cultura+ludum;
-9791035509439;Le diable s'habille en papa;diable-s-habille-en-papa-le;4;Mana Books;Le diable s'habille en papa - Tome 4;2026-12-03;ludum;;A paraître;7.95;ludum;aucune;;;le-diable-s-habille-en-papa-tome-4-1014226;précommande;ajout-ludum+ludum;
+9791035509279;Le diable s'habille en papa;diable-s-habille-en-papa-le;3;Mana Books;Le diable s'habille en papa - Tome 3 : Amis;2026-10-01;ludum;;Paru;7.95;ludum;isbn;46198717285;le-diable-s-habille-en-papa-tome-3;le-diable-s-habille-en-papa-tome-3-amis-1014225;sur commande;ajout-cultura+bdfugue+cultura+ludum;
+9791035509439;Le diable s'habille en papa;diable-s-habille-en-papa-le;4;Mana Books;Le diable s'habille en papa - Tome 4;2026-12-03;ludum;;A paraître;7.95;ludum;isbn;;;le-diable-s-habille-en-papa-tome-4-1014226;précommande;ajout-ludum+ludum;
 9782355922121;Diabolic garden;diabolic-garden;1;Ki-oon;;;;2010;;;;isbn;;;;;bnf;
 9782355922404;Diabolic garden;diabolic-garden;2;Ki-oon;;;;2011;;;;isbn;;;;;bnf;
 9782355922718;Diabolic garden;diabolic-garden;3;Ki-oon;;;;2011;;;;isbn;46886476021;;;;bnf+cultura;
@@ -9383,7 +9378,7 @@
 9782756068640;Divine Nanami;divine-nanami;19;Akata;;;;2015;;;;isbn;41868543847;divine-nanami-t-19;;;bdfugue+bnf+cultura;
 9782756068657;Divine Nanami;divine-nanami;20;Akata;;;;2015;;;;isbn;41868543848;divine-nanami-t20;;;bdfugue+bnf+cultura;
 9782756076911;Divine Nanami;divine-nanami;21;Akata;;;;2016;;;;isbn;;;;;bnf;
-9782756076928;Divine Nanami;divine-nanami;22;Akata;;;;2016;;;;isbn;41857300776;divine-nanami-t22;;;bdfugue+bnf+cultura;
+9782756076928;Divine Nanami;divine-nanami;22;Akata;;;;2016;;;;isbn;41857300776;;;;bnf+cultura;
 9782756082738;Divine Nanami;divine-nanami;23;Akata;;;;2017;;;;isbn;43598781110;divine-nanami-tome-23;;;bdfugue+bnf+cultura;
 9782756095851;Divine Nanami;divine-nanami;24;Akata;;;;2017;;;;isbn;41862899693;divine-nanami-tome-24;;;bdfugue+bnf+cultura;
 9782413000747;Divine Nanami;divine-nanami;25;Akata;;;;2017;;;;isbn;42314677759;divine-nanami-tome-25;;;bdfugue+bnf+cultura;
@@ -9721,6 +9716,7 @@
 9782302005006;Dorohedoro;dorohedoro;7;Soleil;Dorohedoro - Tome 7 - Édition originale;2009-03-25;ludum;2009;Paru;12.99;ludum;isbn;43866213806;;;rupture;bnf+cultura+ludum;
 9782302009189;Dorohedoro;dorohedoro;8;Soleil;Dorohedoro - Tome 8 - Édition originale;2010-03-10;ludum;2010;Paru;12.99;ludum;isbn;;;;rupture;bnf+ludum;
 9782302013452;Dorohedoro;dorohedoro;9;Soleil;Dorohedoro - Tome 9 - Édition originale;2010-11-17;ludum;2010;Paru;12.99;ludum;isbn;;;;rupture;bnf+ludum;
+9782302105423;Dorohedoro;dorohedoro;9;Soleil;Dorohedoro T09 - Chaos Edition;2027-01-21;calendrier;;annonce;;;serie;;;;;calendrier;
 9782302017962;Dorohedoro;dorohedoro;10;Soleil;Dorohedoro - Tome 10 - Édition originale;2011-10-12;ludum;2011;Paru;12.99;ludum;isbn;;;;rupture;bnf+ludum;
 9782302019317;Dorohedoro;dorohedoro;11;Soleil;Dorohedoro - Tome 11 - Édition originale;2012-04-04;ludum;2012;Paru;12.99;ludum;isbn;42314658327;dorohedoro-t-11;dorohedoro-tome-11-edition-originale-1001119;sur commande;bdfugue+bnf+cultura+ludum;
 9782302024540;Dorohedoro;dorohedoro;12;Soleil;Dorohedoro - Tome 12 - Édition originale;2012-11-07;ludum;2012;Paru;12.99;ludum;isbn;42314658450;dorohedoro-t-12;dorohedoro-tome-12-edition-originale-1001120;sur commande;bdfugue+bnf+cultura+ludum;
@@ -10987,7 +10983,7 @@
 9791043303531;L'épouse damnée et le chasseur de démons;epouse-damnee-et-le-chasseur-de-demons-l;5;Pika;L'Épouse damnée et le chasseur de démons - Tome 5;2026-05-20;ludum;2026;Paru;7.20;ludum;isbn;44093739919;l-epouse-damnee-et-le-chasseur-de-demons-tome-5;l-epouse-damnee-et-le-chasseur-de-demons-tome-5-1017146;sur commande;bdfugue+bnf+cultura+ludum;
 9791043303555;L'épouse damnée et le chasseur de démons;epouse-damnee-et-le-chasseur-de-demons-l;6;Pika;L'Épouse damnée et le chasseur de démons - Tome 6;2026-08-26;ludum;2026;Paru;7.20;ludum;isbn;44937195893;l-epouse-damnee-et-le-chasseur-de-demons-tome-6;l-epouse-damnee-et-le-chasseur-de-demons-tome-6-1017147;sur commande;bdfugue+bnf+cultura+ludum;
 9791043310775;L'épouse damnée et le chasseur de démons;epouse-damnee-et-le-chasseur-de-demons-l;7;Pika;L'Épouse damnée et le chasseur de démons - Tome 7;2026-11-18;ludum;;Paru;7.20;ludum;isbn;45868198552;l-epouse-damnee-et-le-chasseur-de-demons-tome-7;l-epouse-damnee-et-le-chasseur-de-demons-tome-7-1017148;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
-9791043312489;L'épouse damnée et le chasseur de démons;epouse-damnee-et-le-chasseur-de-demons-l;8;Pika;L'Épouse damnée et le chasseur de démons - Tome 8;2027-02-17;ludum;;A paraître;7.20;ludum;aucune;;;l-epouse-damnee-et-le-chasseur-de-demons-tome-8-1017149;précommande;ajout-ludum+ludum;
+9791043312489;L'épouse damnée et le chasseur de démons;epouse-damnee-et-le-chasseur-de-demons-l;8;Pika;L'Épouse damnée et le chasseur de démons - Tome 8;2027-02-17;ludum;;A paraître;7.20;ludum;isbn;;;l-epouse-damnee-et-le-chasseur-de-demons-tome-8-1017149;précommande;ajout-ludum+ludum;
 9791043312502;L'épouse damnée et le chasseur de démons;epouse-damnee-et-le-chasseur-de-demons-l;9;Pika;L'Épouse damnée et le chasseur de démons - Tome 9;2027-05-05;ludum;;A paraître;7.20;ludum;aucune;;;l-epouse-damnee-et-le-chasseur-de-demons-tome-9-1017150;précommande;ajout-ludum+ludum;
 9782382764176;L'épouse de la bête;epouse-de-la-bete-l;1;IDP;;;;2024;;;;isbn;;;;;bnf;
 9782353252558;L'épouse du dieu de l'eau;epouse-du-dieu-de-l-eau-l;1;Clair de lune;;;;2010;;;;isbn;;;;;bnf;
@@ -12455,6 +12451,7 @@
 9791032716113;Frieren;frieren;13;Ki-oon;Frieren - Tome 13;2024-12-05;ludum;2024;Paru;7.95;ludum;isbn;42314707081;frieren-tome-13;frieren-tome-13-1005220;sur commande;bdfugue+bnf+cultura+ludum;
 9791032716137;Frieren;frieren;14;Ki-oon;Frieren - Tome 14;2025-07-03;ludum;2025;Paru;7.95;ludum;isbn;42314707082;frieren-tome-14;frieren-tome-14-1005218;sur commande;bdfugue+bnf+cultura+ludum;
 9791032721216;Frieren;frieren;15;Ki-oon;Frieren - Tome 15;2026-04-02;ludum;2026;Paru;7.95;ludum;isbn;43960315881;frieren-tome-15;frieren-tome-15-1005225;sur commande;bdfugue+bnf+cultura+ludum;
+9791032724170;Frieren - Prélude;frieren-prelude;;Ki-oon;Frieren : Prélude;2026-06-04;ludum;2026;Paru;13.00;ludum;aucune;;;frieren-prelude-1005227;en stock;ajout-bnf+ludum;
 9782382817315;Froid glacial;froid-glacial;1;Mangetsu;;;;2025;;;;isbn;41848854192;froid-glacial-9782382817315;;;bdfugue+bnf+cultura;
 9791039132657;From 5 to 9;from-5-to-9;1;Panini Manga;From 5 to 9 - Tome 1 - Nouvelle édition;2025-01-08;ludum;2025;Paru;8.29;ludum;isbn;42314709462;from-5-to-9-tome-1-9791039132657;from-5-to-9-tome-1-nouvelle-edition-1013885;sur commande;bdfugue+bnf+cultura+ludum;
 9791039133357;From 5 to 9;from-5-to-9;2;Panini Manga;From 5 to 9 - Tome 2 - Nouvelle édition;2025-03-05;ludum;2025;Paru;8.29;ludum;isbn;42314709523;from-5-to-9-tome-2-nouvelle-edition;from-5-to-9-tome-2-nouvelle-edition-1013886;sur commande;bdfugue+bnf+cultura+ludum;
@@ -13077,7 +13074,8 @@
 9782385033026;Konjiki no gash bell !!;gash-bell;14;Meian;;;;2025;;;;isbn;41036341584;gash-bell-perfect-edition-tome-14;;;bdfugue+bnf+cultura;
 9782385033033;Konjiki no gash bell !!;gash-bell;15;Meian;;;;2025;;;;isbn;41868543347;gash-bell-perfect-edition-tome-15;;;bdfugue+bnf+cultura;
 9782385033040;Konjiki no gash bell !!;gash-bell;16;Meian;;;;2025;;;;isbn;41974457468;gash-bell-perfect-edition-tome-16;;;bdfugue+bnf+cultura;
-9791032723340;Gaslight Stray Dog Detectives;gaslight-stray-dog-detectives;3;Ki-oon;Gaslight Stray Dog Detectives - Tome 3;2026-11-05;calendrier;;paru;7.95;calendrier;isbn;46639550405;gaslight-stray-dog-detectives-tome-3;gaslight-stray-dog-detectives-tome-3-1008027;en stock;bdfugue+calendrier+cultura+ludum;
+9791032723340;Gaslight stray dog detectives;gaslight-stray-dog-detectives;3;Ki-oon;Gaslight Stray Dog Detectives - Tome 3;2026-11-05;calendrier;2026;paru;7.95;calendrier;isbn;46639550405;gaslight-stray-dog-detectives-tome-3;gaslight-stray-dog-detectives-tome-3-1008027;en stock;ajout-bnf+bdfugue+calendrier+cultura+ludum;
+9791032725108;Gaslight stray dog detectives;gaslight-stray-dog-detectives;4;Ki-oon;Gaslight Stray Dog Detectives - Tome 4;2027-02-18;ludum;;A paraître;7.95;ludum;aucune;;;gaslight-stray-dog-detectives-tome-4-1016247;précommande;ajout-ludum+ludum;
 9782351809754;Gate;gate;1;Ototo;;;;2016;;;;isbn;;gate-au-dela-de-la-porte;;;bdfugue+bnf;
 9782759506804;Gate;gate;1;Ototo;;;;2011;;;;serie;;;;;bnf;
 9782351809778;Gate;gate;2;Ototo;;;;2016;;;;isbn;;gate-au-dela-de-la-porte-tome-2;;;bdfugue+bnf;
@@ -13251,8 +13249,8 @@
 9782372874144;Gift ±;gift;11;Komikku;;;;2019;;;;isbn;;;;;bnf;
 9782372874427;Gift ±;gift;13;Komikku;;;;2019;;;;isbn;;;;;bnf;
 9782372874892;Gift ±;gift;14;Komikku;;;;;;;;isbn;;gift-tome-14;;;ajout-bdfugue+bdfugue;date: aucune
-9782372874908;Gift ±;gift;15;Komikku;;;;;;;;serie;45494615996;;;;ajout-cultura+cultura;date: aucune
-9782372875134;Gift ±;gift;16;Komikku;;;;;;;;serie;44365539318;;;;ajout-cultura+cultura;date: aucune
+9782372874908;Gift ±;gift;15;Komikku;;;;;;;;isbn;45494615996;;;;ajout-cultura+cultura;date: aucune
+9782372875134;Gift ±;gift;16;Komikku;;;;;;;;isbn;44365539318;;;;ajout-cultura+cultura;date: aucune
 9782379505393;Gifted;gifted;1;Vega-Dupuis;;;;2024;;;;isbn;42314674302;gifted-tome-1;;;bdfugue+bnf+cultura;
 9782379505409;Gifted;gifted;2;Vega-Dupuis;;;;2024;;;;isbn;46146281098;gifted-tome-2;;;bdfugue+bnf+cultura;
 9782379505416;Gifted;gifted;3;Vega-Dupuis;;;;2024;;;;isbn;46146281099;gifted-tome-3;;;bdfugue+bnf+cultura;
@@ -15217,7 +15215,7 @@
 9782820353610;Hokkaido Gals Are Super Adorable !;hokkaido-gals-are-super-adorable;12;Crunchyroll;;;;2026;;;;isbn;;;;;bnf;
 9782820354457;Hokkaido Gals Are Super Adorable !;hokkaido-gals-are-super-adorable;13;Crunchyroll;;;;2026;;;;isbn;43493453393;hokkaido-gals-are-super-adorable-tome-13;;;bdfugue+bnf+cultura;
 9782820354624;Hokkaido Gals Are Super Adorable !;hokkaido-gals-are-super-adorable;14;Crunchyroll;;;;2026;;;;isbn;44079003112;hokkaido-gals-are-super-adorable-tome-14;;;bdfugue+bnf+cultura;
-9782820356482;Hokkaido Gals Are Super Adorable !;hokkaido-gals-are-super-adorable;14;Crunchyroll;;;;2026;;;;serie;46411686890;;;;bnf+cultura;
+9782820356482;Hokkaido Gals Are Super Adorable !;hokkaido-gals-are-super-adorable;14;Crunchyroll;;;;2026;;;;serie;46411686890;hokkaido-gals-are-super-adorable-tome-14-edition-collector;;;bdfugue+bnf+cultura;
 9782505008934;Hokusai;hokusai;1;Kana;;;;2010;;;;isbn;;;;;bnf;
 9782505061564;Hokusai;hokusai;1;Kana;;;;;;;;serie;42314683687;hokusai-one-shot-9782505061564;;;bdfugue+bnf+cultura;date: aucune
 9782353481217;Holiday junction;holiday-junction;1;Lézard noir;;;;2018;;;;isbn;42314664128;holiday-junction;;;bdfugue+bnf+cultura;
@@ -16647,6 +16645,26 @@
 9782351805084;Irrésistible ivresse;irresistible-ivresse;1;Taifu Comics;;;;2011;;;;isbn;;;;;bnf;
 9782351805312;Irrésistible ivresse;irresistible-ivresse;2;Taifu Comics;;;;2011;;;;isbn;;;;;bnf;
 9782351807095;Irrésistible ivresse;irresistible-ivresse;3;Taifu Comics;;;;2013;;;;isbn;;;;;bnf;
+9782373496635;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;1;Nobi Nobi !;;;;;;;;aucune;;;;;ajout-bnf;date: aucune
+9782373493870;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;2;Nobi Nobi !;Iruma à l'école des démons - Tome 2;2020-10-14;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-2-1011143;sur commande;ajout-bnf+ludum;
+9782373495003;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;3;Nobi Nobi !;Iruma à l'école des démons - Tome 3;2020-11-18;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-3-1011144;sur commande;ajout-bnf+ludum;
+9782373495010;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;4;Nobi Nobi !;Iruma à l'école des démons - Tome 4;2020-12-09;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-4-1011145;sur commande;ajout-bnf+ludum;
+9782373495331;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;5;Nobi Nobi !;Iruma à l'école des démons - Tome 5;2021-01-27;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-5-1011146;sur commande;ajout-bnf+ludum;
+9782373495348;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;6;Nobi Nobi !;Iruma à l'école des démons - Tome 6;2021-03-17;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-6-1011147;sur commande;ajout-bnf+ludum;
+9782373495355;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;7;Nobi Nobi !;Iruma à l'école des démons - Tome 7;2021-05-26;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-7-1011148;sur commande;ajout-bnf+ludum;
+9782373495362;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;8;Nobi Nobi !;Iruma à l'école des démons - Tome 8;2021-07-15;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-8-1011150;sur commande;ajout-bnf+ludum;
+9782373495379;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;9;Nobi Nobi !;Iruma à l'école des démons - Tome 9;2021-09-08;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-9-1011149;sur commande;ajout-bnf+ludum;
+9782373495386;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;10;Nobi Nobi !;Iruma à l'école des démons - Tome 10;2021-11-17;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-10-1011151;sur commande;ajout-bnf+ludum;
+9782373495645;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;11;Nobi Nobi !;Iruma à l'école des démons - Tome 11;2022-01-05;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-11-1011152;sur commande;ajout-bnf+ludum;
+9782373495652;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;12;Nobi Nobi !;Iruma à l'école des démons - Tome 12;2022-03-02;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-12-1011153;sur commande;ajout-bnf+ludum;
+9782373495669;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;13;Nobi Nobi !;Iruma à l'école des démons - Tome 13;2022-05-11;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-13-1011154;sur commande;ajout-bnf+ludum;
+9782373495690;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;14;Nobi Nobi !;Iruma à l'école des démons - Tome 14;2022-07-13;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-14-1011155;sur commande;ajout-bnf+ludum;
+9782373497144;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;15;Nobi Nobi !;Iruma à l'école des démons - Tome 15;2022-09-14;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-15-1011156;sur commande;ajout-bnf+ludum;
+9782373497168;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;16;Nobi Nobi !;Iruma à l'école des démons - Tome 16;2022-11-02;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-16-1011157;sur commande;ajout-bnf+ludum;
+9782373499162;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;17;Nobi Nobi !;Iruma à l'école des démons - Tome 17;2023-01-18;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-17-1011158;sur commande;ajout-bnf+ludum;
+9782373499285;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;18;Nobi Nobi !;Iruma à l'école des démons - Tome 18;2023-04-05;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-18-1011159;sur commande;ajout-bnf+ludum;
+9782373499292;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;19;Nobi Nobi !;Iruma à l'école des démons - Tome 19;2023-07-05;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-19-1011160;sur commande;ajout-bnf+ludum;
+9782373499308;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;20;Nobi Nobi !;Iruma à l'école des démons - Tome 20;2023-10-18;ludum;;Paru;7.20;ludum;aucune;;;iruma-a-l-ecole-des-demons-tome-20-1011161;sur commande;ajout-bnf+ludum;
 9782384960880;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;21;Nobi Nobi !;Iruma à l'école des démons - Tome 21;2024-02-21;ludum;;Paru;7.20;ludum;isbn;42314677004;iruma-a-l-ecole-des-demons-tome-21;iruma-a-l-ecole-des-demons-tome-21-1011162;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9782384961627;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;22;Nobi Nobi !;Iruma à l'école des démons - Tome 22;2024-04-17;ludum;;Paru;7.20;ludum;isbn;42314677016;iruma-a-l-ecole-des-demons-tome-22;iruma-a-l-ecole-des-demons-tome-22-1011163;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9782384962679;Iruma à l'école des démons;iruma-a-l-ecole-des-demons;23;Nobi Nobi !;Iruma à l'école des démons - Tome 23;2024-06-19;ludum;;Paru;7.20;ludum;isbn;42314677036;iruma-a-l-ecole-des-demons-tome-23;iruma-a-l-ecole-des-demons-tome-23-1011164;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
@@ -16784,7 +16802,7 @@
 9782344064375;Jaadug̈ar;jaadugar;3;Glénat;;;;2025;;;;isbn;43085677165;jaadugar-la-legende-de-fatima-tome-3;;;bdfugue+bnf+cultura;
 9782344068724;Jaadug̈ar;jaadugar;4;Glénat;;;;2025;;;;isbn;43085677169;jaadugar-la-legende-de-fatima-tome-4;;;bdfugue+bnf+cultura;
 9782344072219;Jaadug̈ar;jaadugar;5;Glénat;;;;2025;;;;isbn;43085677174;jaadugar-la-legende-de-fatima-tome-5;;;bdfugue+bnf+cultura;
-9782344077603;Jaadugar, la légende de Fatima;jaadugar-la-legende-de-fatima;6;Glénat;;2027-01-20;calendrier;;annonce;;;aucune;46886475745;;;;calendrier+cultura;
+9782344077603;Jaadugar, la légende de Fatima;jaadugar-la-legende-de-fatima;6;Glénat;;2027-01-20;calendrier;;annonce;;;isbn;46886475745;;;;calendrier+cultura;
 9782723498814;Jabberwocky;jabberwocky;1;Glénat;;;;2015;;;;isbn;;jabberwocky-tome-1;;;bdfugue+bnf;
 9782723498821;Jabberwocky;jabberwocky;2;Glénat;;;;2015;;;;isbn;;jabberwocky-tome-2;;;bdfugue+bnf;
 9782723498838;Jabberwocky;jabberwocky;3;Glénat;;;;2015;;;;isbn;41036353619;jabberwocky-t-03;;;bdfugue+bnf+cultura;
@@ -17593,9 +17611,9 @@
 9782355921384;La mélodie du vent;kamisama;;Ki-oon;;;;2010;;;;isbn;;;;;bnf;
 9782915513271;La mélodie du vent;kamisama;;Ki-oon;;;;2006;;;;isbn;;;;;bnf;
 9782915513523;La mélodie du vent;kamisama;;Ki-oon;;;;2007;;;;isbn;;;;;bnf;
-9782355927614;La mélodie du vent;kamisama;1;Ki-oon;Kamisama - Tome 1;2014-11-27;ludum;2014;Paru;9.95;ludum;isbn;;;;rupture;bnf+ludum;serie: bnf=La mélodie du vent ludum=Kamisama → retiré du catalogue
-9782355927720;La mélodie du vent;kamisama;2;Ki-oon;Kamisama - Tome 2;2015-01-22;ludum;2015;Paru;9.95;ludum;isbn;;;;rupture;bnf+ludum;serie: bnf=La mélodie du vent ludum=Kamisama → retiré du catalogue
-9782355928079;La mélodie du vent;kamisama;3;Ki-oon;Kamisama - Tome 3;2015-05-21;ludum;2015;Paru;9.95;ludum;isbn;;;;rupture;bnf+ludum;serie: bnf=La mélodie du vent ludum=Kamisama → retiré du catalogue
+9782355927614;La mélodie du vent;kamisama;1;Ki-oon;;;;2014;;;;isbn;;;;;bnf;
+9782355927720;La mélodie du vent;kamisama;2;Ki-oon;;;;2015;;;;isbn;;;;;bnf;
+9782355928079;La mélodie du vent;kamisama;3;Ki-oon;;;;2015;;;;isbn;;;;;bnf;
 9782505019213;Kamisama dolls;kamisama-dolls;1;Kana;;;;2013;;;;isbn;;;;;bnf;
 9782505019220;Kamisama dolls;kamisama-dolls;2;Kana;;;;2013;;;;isbn;;;;;bnf;
 9782505019237;Kamisama dolls;kamisama-dolls;3;Kana;;;;2013;;;;isbn;;;;;bnf;
@@ -18392,7 +18410,7 @@
 9782302105201;Kirby Fantasy;kirby-fantasy;11;Soleil;;;;2025;;;;isbn;41678144451;kirby-fantasy-tome-11;;;bdfugue+bnf+cultura;
 9782302106611;Kirby Fantasy;kirby-fantasy;12;Soleil;;;;;;;;isbn;43493433356;kirby-fantasy-gloutonnerie-a-dream-land-tome-12;;;ajout-bdfugue+bdfugue+cultura;date: aucune
 9782302107694;Kirby Fantasy;kirby-fantasy;13;Soleil;;;;;;;;isbn;44511122312;kirby-fantasy-tome-13;;;ajout-bdfugue+bdfugue+cultura;date: aucune
-9782413020189;Kirihito;kirihito;;Delcourt;;;;2019;;;;isbn;42314678043;kirihito-edition-prestige;;;bdfugue+bnf+cultura;
+9782413020189;Kirihito;kirihito;;Delcourt;;;;2019;;;;isbn;42314678043;;;;bnf+cultura;
 9782847898927;Kirihito;kirihito;1;Delcourt;;;;2005;;;;isbn;;;;;bnf;
 9782847899368;Kirihito;kirihito;2;Delcourt;;;;2005;;;;isbn;;;;;bnf;
 9782756000374;Kirihito;kirihito;3;Delcourt;;;;2005;;;;isbn;;;;;bnf;
@@ -18900,16 +18918,16 @@
 9782820354365;L'Arcane de l'Aube - Red Edition;l-arcane-de-l-aube-red-edition;3;Kazé;L'Arcane de l'Aube - Tome 3 - Red Edition;2026-08-26;ludum;;Paru;13.29;ludum;isbn;44628940866;l-arcane-de-l-aube-red-edition-tome-3;l-arcane-de-l-aube-tome-3-red-edition-1011997;sur commande;bdfugue+cultura+ludum+ludum-edition;
 9782820354570;L'Arcane de l'Aube - Red Edition;l-arcane-de-l-aube-red-edition;4;Kazé;L'Arcane de l'Aube - Tome 4 - Red Edition;2026-10-07;ludum;2026;Paru;13.29;ludum;isbn;45124062462;l-arcane-de-l-aube-red-edition-tome-4;l-arcane-de-l-aube-tome-4-red-edition-1011998;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=L'arcane de l'aube ludum=L'Arcane de l'Aube → édition L'Arcane de l'Aube - Red Edition
 9782820355874;L'Arcane de l'Aube - Red Edition;l-arcane-de-l-aube-red-edition;5;Kazé;L'Arcane de l'Aube - Tome 5 - Red Edition;2026-12-02;ludum;;A paraître;13.29;ludum;isbn;45124062469;l-arcane-de-l-aube-tome-5-red-edition;l-arcane-de-l-aube-tome-5-red-edition-1011999;précommande;bdfugue+cultura+ludum+ludum-edition;
-9782820302632;L'Arcane de l'Aube - Red Edition;l-arcane-de-l-aube-red-edition;6;Kazé;L'Arcane de l'Aube - Tome 6 - Red Edition;2027-02-17;ludum;;A paraître;13.29;ludum;aucune;46281071886;;l-arcane-de-l-aube-tome-6-red-edition-1012000;précommande;cultura+ludum+ludum-edition;
+9782820302632;L'Arcane de l'Aube - Red Edition;l-arcane-de-l-aube-red-edition;6;Kazé;L'Arcane de l'Aube - Tome 6 - Red Edition;2027-02-17;ludum;;A paraître;13.29;ludum;isbn;46281071886;;l-arcane-de-l-aube-tome-6-red-edition-1012000;précommande;cultura+ludum+ludum-edition;
 9782811694890;L'Atelier des Sorciers - Édition collector;l-atelier-des-sorciers-edition-collector;13;Pika;L'Atelier des Sorciers - Tome 13 - Édition collector;2024-10-16;ludum;2024;Paru;12.00;ludum;isbn;;;;rupture;bnf+ludum;serie: bnf=L'atelier des sorciers ludum=L'Atelier des Sorciers - Tome 13 - Édition collector → édition L'Atelier des Sorciers - Édition collector
 9791043301483;L'Atelier des Sorciers - Édition collector;l-atelier-des-sorciers-edition-collector;14;Pika;L'Atelier des Sorciers - Tome 14 - Édition collector;2025-08-20;ludum;;Paru;19.90;ludum;aucune;;;;rupture;ludum+ludum-edition;
-9791043307652;L'Atelier des Sorciers - Édition collector;l-atelier-des-sorciers-edition-collector;15;Pika;L'Atelier des Sorciers - Tome 15 - Édition collector;2026-05-13;ludum;;Paru;12.00;ludum;aucune;44432618142;l-atelier-des-sorciers-tome-15-collector;;sur commande;bdfugue+cultura+ludum+ludum-edition;
+9791043307652;L'Atelier des Sorciers - Édition collector;l-atelier-des-sorciers-edition-collector;15;Pika;L'Atelier des Sorciers - Tome 15 - Édition collector;2026-05-13;ludum;;Paru;12.00;ludum;aucune;;;;sur commande;ludum+ludum-edition;
 9782811698874;L'Atelier des Sorciers - Édition Grimoire;l-atelier-des-sorciers-edition-grimoire;1;Pika;L'Atelier des Sorciers - Tome 1 - Édition Grimoire;2025-01-22;ludum;2025;Paru;19.95;ludum;isbn;42314697551;l-atelier-des-sorciers-tome-1-edition-grimoire;l-atelier-des-sorciers-tome-1-edition-grimoire-1006735;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=L'atelier des sorciers ludum=L'Atelier des Sorciers → édition L'Atelier des Sorciers - Édition Grimoire
 9791043300677;L'Atelier des Sorciers - Édition Grimoire;l-atelier-des-sorciers-edition-grimoire;2;Pika;L'Atelier des Sorciers - Tome 2 - Édition Grimoire;2025-04-09;ludum;2025;Paru;19.95;ludum;isbn;42314710605;l-atelier-des-sorciers-tome-2-edition-grimoire;l-atelier-des-sorciers-tome-2-edition-grimoire-1006736;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=L'atelier des sorciers ludum=L'Atelier des Sorciers → édition L'Atelier des Sorciers - Édition Grimoire
 9791043301414;L'Atelier des Sorciers - Édition Grimoire;l-atelier-des-sorciers-edition-grimoire;3;Pika;L'Atelier des Sorciers - Tome 3 - Édition Grimoire;2025-07-02;ludum;2025;Paru;19.95;ludum;isbn;42314710612;l-atelier-des-sorciers-tome-3-edition-grimoire;l-atelier-des-sorciers-tome-3-edition-grimoire-1006739;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=L'atelier des sorciers ludum=L'Atelier des Sorciers → édition L'Atelier des Sorciers - Édition Grimoire
 9791043301421;L'Atelier des Sorciers - Édition Grimoire;l-atelier-des-sorciers-edition-grimoire;4;Pika;L'Atelier des Sorciers - Tome 4 - Édition Grimoire;2025-10-01;ludum;2025;Paru;19.95;ludum;isbn;41544977512;l-atelier-des-sorciers-tome-4-edition-grimoire;l-atelier-des-sorciers-tome-4-edition-grimoire-1006737;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=L'atelier des sorciers ludum=L'Atelier des Sorciers → édition L'Atelier des Sorciers - Édition Grimoire
 9791043301438;L'Atelier des Sorciers - Édition Grimoire;l-atelier-des-sorciers-edition-grimoire;5;Pika;L'Atelier des Sorciers - Tome 5 - Édition Grimoire;2026-05-13;ludum;2026;Paru;19.95;ludum;isbn;43656758126;l-atelier-des-sorciers-edition-grimoire-tome-5;l-atelier-des-sorciers-tome-5-edition-grimoire-1006740;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=L'atelier des sorciers ludum=L'Atelier des Sorciers → édition L'Atelier des Sorciers - Édition Grimoire
-9791043301445;L'Atelier des Sorciers - Édition Grimoire;l-atelier-des-sorciers-edition-grimoire;6;Pika;L'Atelier des Sorciers - Tome 6 - Édition Grimoire;2026-11-04;ludum;;Paru;19.95;ludum;aucune;44638319916;l-atelier-des-sorciers-tome-6-edition-grimoire;l-atelier-des-sorciers-tome-6-edition-grimoire-1006742;sur commande;bdfugue+cultura+ludum+ludum-edition;
+9791043301445;L'Atelier des Sorciers - Édition Grimoire;l-atelier-des-sorciers-edition-grimoire;6;Pika;L'Atelier des Sorciers - Tome 6 - Édition Grimoire;2026-11-04;ludum;;Paru;19.95;ludum;isbn;44638319916;l-atelier-des-sorciers-tome-6-edition-grimoire;l-atelier-des-sorciers-tome-6-edition-grimoire-1006742;sur commande;bdfugue+cultura+ludum+ludum-edition;
 9782811617196;L-DK;l-dk;1;Pika;;;;2015;;;;isbn;;l-dk-t-1;;;bdfugue+bnf;
 9782811618384;L-DK;l-dk;2;Pika;;;;2015;;;;isbn;;l-dk-t-2;;;bdfugue+bnf;
 9782811618827;L-DK;l-dk;3;Pika;;;;2015;;;;isbn;;l-dk-tome-3;;;bdfugue+bnf;
@@ -19177,15 +19195,15 @@
 9791032725023;Le battement des cils;le-battement-des-cils;1;Ki-oon;;2027-01-28;calendrier;;annonce;7.95;calendrier;isbn;46273607514;;;;calendrier+cultura;
 9782377840977;"Le mythe ""Saint Seiya""";le-mythe-saint-seiya;1;Third;;;;2019;;;;isbn;42314673806;;;;bnf+cultura;
 9791070250259;Le Secret d'Aiko;le-secret-d-aiko;10;Panini Manga;Le Secret d'Aiko - Tome 10 - Nouvelle édition;2026-12-09;calendrier;;annonce;8.29;ludum;isbn;45107423138;;le-secret-d-aiko-tome-10-nouvelle-edition-1014128;précommande;calendrier+cultura+ludum;
-9791039133029;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;1;Panini Manga;Le Secret d'Aiko - Tome 1 - Nouvelle édition;2025-02-05;ludum;;Paru;8.29;ludum;aucune;;le-secret-d-aiko-tome-1;;sur commande;bdfugue+ludum+ludum-edition;
-9791039134118;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;2;Panini Manga;Le Secret d'Aiko - Tome 2 - Nouvelle édition;2025-04-09;ludum;;Paru;8.29;ludum;aucune;42314709561;le-secret-d-aiko-tome-2-nouvelle-edition;;sur commande;bdfugue+cultura+ludum+ludum-edition;
-9791039135009;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;3;Panini Manga;Le Secret d'Aiko - Tome 3 - Nouvelle édition;2025-06-18;ludum;;Paru;8.29;ludum;aucune;41036396456;le-secret-d-aiko-tome-3;;sur commande;bdfugue+cultura+ludum+ludum-edition;
-9791039138130;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;4;Panini Manga;Le Secret d'Aiko - Tome 4 - Nouvelle édition;2025-08-13;ludum;;Paru;8.29;ludum;aucune;46482868816;le-secret-d-aiko-tome-4-nouvelle-edition;;sur commande;bdfugue+cultura+ludum+ludum-edition;
-9791039140317;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;5;Panini Manga;Le Secret d'Aiko - Tome 5 - Nouvelle édition;2025-10-22;ludum;;Paru;8.29;ludum;aucune;41689182094;le-secret-d-aiko-tome-5-9791039140317;;sur commande;bdfugue+cultura+ludum+ludum-edition;
-9791039140553;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;6;Panini Manga;Le Secret d'Aiko - Tome 6 - Nouvelle édition;2025-12-10;ludum;;Paru;8.29;ludum;aucune;41678145056;le-secret-d-aiko-tome-6-9791039140553;;sur commande;bdfugue+cultura+ludum+ludum-edition;
-9791039143493;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;7;Panini Manga;Le Secret d'Aiko - Tome 7 - Nouvelle édition;2026-03-04;ludum;;Paru;8.29;ludum;aucune;43332913978;le-secret-d-aiko-tome-7-9791039143493;;sur commande;bdfugue+cultura+ludum+ludum-edition;
-9791039145374;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;8;Panini Manga;T08375310669901;2026-06-10;ludum;2026;Paru;8.29;ludum;isbn;43971224845;le-secret-d-aiko-tome-8-nouvelle-edition;;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Le secret d'Aiko ludum=Le Secret d'Aiko → édition Le Secret d'Aiko - Nouvelle édition
-9791039149129;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;9;Panini Manga;Le Secret d'Aiko - Tome 9 - Nouvelle édition;2026-09-02;ludum;2026;Paru;8.29;ludum;isbn;44628941213;le-secret-d-aiko-tome-9-9791039149129;;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Le secret d'Aiko ludum=Le Secret d'Aiko → édition Le Secret d'Aiko - Nouvelle édition
+9791039133029;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;1;Panini Manga;Le Secret d'Aiko - Tome 1 - Nouvelle édition;2025-02-05;ludum;;Paru;8.29;ludum;aucune;;;;sur commande;ludum+ludum-edition;
+9791039134118;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;2;Panini Manga;Le Secret d'Aiko - Tome 2 - Nouvelle édition;2025-04-09;ludum;;Paru;8.29;ludum;aucune;;;;sur commande;ludum+ludum-edition;
+9791039135009;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;3;Panini Manga;Le Secret d'Aiko - Tome 3 - Nouvelle édition;2025-06-18;ludum;;Paru;8.29;ludum;aucune;;;;sur commande;ludum+ludum-edition;
+9791039138130;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;4;Panini Manga;Le Secret d'Aiko - Tome 4 - Nouvelle édition;2025-08-13;ludum;;Paru;8.29;ludum;aucune;;;;sur commande;ludum+ludum-edition;
+9791039140317;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;5;Panini Manga;Le Secret d'Aiko - Tome 5 - Nouvelle édition;2025-10-22;ludum;;Paru;8.29;ludum;aucune;;;;sur commande;ludum+ludum-edition;
+9791039140553;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;6;Panini Manga;Le Secret d'Aiko - Tome 6 - Nouvelle édition;2025-12-10;ludum;;Paru;8.29;ludum;aucune;;;;sur commande;ludum+ludum-edition;
+9791039143493;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;7;Panini Manga;Le Secret d'Aiko - Tome 7 - Nouvelle édition;2026-03-04;ludum;;Paru;8.29;ludum;aucune;;;;sur commande;ludum+ludum-edition;
+9791039145374;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;8;Panini Manga;T08375310669901;2026-06-10;ludum;2026;Paru;8.29;ludum;isbn;;;;sur commande;bnf+ludum;serie: bnf=Le secret d'Aiko ludum=Le Secret d'Aiko → édition Le Secret d'Aiko - Nouvelle édition
+9791039149129;Le Secret d'Aiko - Nouvelle édition;le-secret-d-aiko-nouvelle-edition;9;Panini Manga;Le Secret d'Aiko - Tome 9 - Nouvelle édition;2026-09-02;ludum;2026;Paru;8.29;ludum;isbn;;;;sur commande;bnf+ludum;serie: bnf=Le secret d'Aiko ludum=Le Secret d'Aiko → édition Le Secret d'Aiko - Nouvelle édition
 9782505008613;Léa ne se souvient pas comment fonctionne l'aspirateur;lea-ne-se-souvient-pas-comment-fonctionne-l-aspirateur;1;Dargaud Bénélux;;;;2010;;;;isbn;;;;;bnf;
 9782756032238;Leçons d'amour;lecons-d-amour;1;Delcourt;;;;2014;;;;isbn;;;;;bnf;
 9782756032245;Leçons d'amour;lecons-d-amour;2;Delcourt;;;;2015;;;;isbn;;;;;bnf;
@@ -19396,6 +19414,7 @@
 9791035507275;Les carnets de l'apothicaire;les-carnets-de-l-apothicaire;14;Mana Books;;;;;;;;isbn;42142733214;les-carnets-de-l-apothicaire-enquetes-a-la-cour-tome-14;;;ajout-bnf+bdfugue+cultura;date: aucune
 9791035507435;Les carnets de l'apothicaire;les-carnets-de-l-apothicaire;15;Mana Books;;;;;;;;isbn;42910469261;les-carnets-de-l-apothicaire-enquetes-a-la-cour-tome-15;;;ajout-bnf+bdfugue+cultura;date: aucune
 9791035508371;Les carnets de l'apothicaire;les-carnets-de-l-apothicaire;16;Mana Books;;;;;;;;isbn;43172256107;les-carnets-de-l-apothicaire-enquetes-a-la-cour-tome-16;;;ajout-bnf+bdfugue+cultura;date: aucune
+9791032723531;Les carnets de l'apothicaire;les-carnets-de-l-apothicaire;17;Mana Books;Les Carnets de l'apothicaire - Tome 17;2026-11-19;ludum;2026;Paru;7.95;ludum;aucune;46033918397;les-carnets-de-l-apothicaire-tome-17;les-carnets-de-l-apothicaire-tome-17-1006539;en stock;ajout-bnf+bdfugue+cultura+ludum;
 9791032723548;Les Carnets de l'apothicaire;les-carnets-de-l-apothicaire;17;Ki-oon;Les Carnets de l'apothicaire - Tome 17 - Édition collector;2026-11-19;calendrier;;paru;34.90;calendrier;isbn;46886481903;les-carnets-de-l-apothicaire-tome-17-collector;les-carnets-de-l-apothicaire-tome-17-edition-collector-1006540;sur commande;bdfugue+calendrier+cultura+ludum;
 9791035508784;Les carnets de l'apothicaire;les-carnets-de-l-apothicaire;18;Mana Books;;;;;;;;isbn;44256994847;les-carnets-de-l-apothicaire-enquetes-a-la-cour-tome-18;;;ajout-bnf+bdfugue+cultura;date: aucune
 9791035508937;Les carnets de l'apothicaire;les-carnets-de-l-apothicaire;19;Mana Books;;;;;;;;isbn;44719351820;les-carnets-de-l-apothicaire-enquetes-a-la-cour-tome-19;;;ajout-bnf+bdfugue+cultura;date: aucune
@@ -20015,7 +20034,7 @@
 9782809409048;Love Berrish;love-berrish;4;Panini Manga;;;;2009;;;;isbn;;;;;bnf;
 9782809409246;Love Berrish;love-berrish;5;Panini Manga;;;;2009;;;;isbn;;;;;bnf;
 9782808700108;Love Bullet;love-bullet;1;Vega-Dupuis;Love Bullet - Tome 1;2026-03-13;ludum;2026;Paru;8.35;ludum;isbn;43910403477;love-bullet-tome-1;love-bullet-tome-1-1012472;sur commande;bdfugue+bnf+cultura+ludum;
-9782808700344;Love Bullet;love-bullet;2;Vega-Dupuis;Love Bullet - Tome 2;2026-10-30;ludum;;Paru;8.35;ludum;isbn;45868194717;love-bullet-tome-2;love-bullet-tome-2-1012473;précommande;ajout-cultura+bdfugue+cultura+ludum;
+9782808700344;Love Bullet;love-bullet;2;Vega-Dupuis;Love Bullet - Tome 2;2026-10-30;ludum;;Paru;8.35;ludum;isbn;45868194717;love-bullet-tome-2;love-bullet-tome-2-1012473;sur commande;ajout-cultura+bdfugue+cultura+ludum;
 9782754500272;Love celeb;love-celeb;1;Akiko;;;;2006;;;;isbn;46122914136;;;;bnf+cultura;
 9782754500319;Love celeb;love-celeb;2;Akiko;;;;2006;;;;isbn;45205260778;;;;bnf+cultura;
 9782754500364;Love celeb;love-celeb;3;Akiko;;;;2006;;;;isbn;;;;;bnf;
@@ -20557,7 +20576,7 @@
 9791039134675;Lycoris Recoil;lycoris-recoil;5;Panini Manga;Lycoris Recoil - Tome 5;2025-06-04;ludum;2025;Paru;7.29;ludum;isbn;42314709602;lycoris-recoil-tome-5;lycoris-recoil-tome-5-1013372;sur commande;bdfugue+bnf+cultura+ludum;
 9791039139182;Lycoris Recoil;lycoris-recoil;6;Panini Manga;Lycoris Recoil - Tome 6;2025-10-08;ludum;2025;Paru;7.29;ludum;isbn;41564621496;lycoris-recoil-tome-6;lycoris-recoil-tome-6-1013374;sur commande;bdfugue+bnf+cultura+ludum;
 9791039143011;Lycoris Recoil;lycoris-recoil;7;Panini Manga;T07;2026-06-24;ludum;2026;Paru;7.29;ludum;isbn;43971224715;lycoris-recoil-tome-7;lycoris-recoil-tome-7-1013375;sur commande;bdfugue+bnf+cultura+ludum;
-9791039149662;Lycoris Recoil;lycoris-recoil;8;Panini Manga;Lycoris Recoil - Tome 8;2027-01-27;ludum;;A paraître;7.29;ludum;serie;;;lycoris-recoil-tome-8-1013376;précommande;ajout-ludum+ludum;
+9791039149662;Lycoris Recoil;lycoris-recoil;8;Panini Manga;Lycoris Recoil - Tome 8;2027-01-27;ludum;;A paraître;7.29;ludum;isbn;45063474132;;lycoris-recoil-tome-8-1013376;précommande;ajout-ludum+cultura+ludum;
 9782364810952;Lyrica;lyrica;1;IMHO;;;;2024;;;;isbn;41901442238;lyrica;;;bdfugue+bnf+cultura;
 9782845991675;Lythtis;lythtis;1;Pika;;;;2002;;;;isbn;;;;;bnf;
 9782845992054;Lythtis;lythtis;2;Pika;;;;2002;;;;isbn;;;;;bnf;
@@ -21197,7 +21216,7 @@
 9782385030476;Make up with mud;make-up-with-mud;7;Meian;;;;2024;;;;isbn;42314677114;make-up-with-mud-tome-7;;;bdfugue+bnf+cultura;
 9782385038212;Make up with mud;make-up-with-mud;8;Meian;;;;2025;;;;isbn;42910463557;make-up-with-mud-tome-8;;;bdfugue+bnf+cultura;
 9791043307355;Makeine too many losing heroines !;makeine-too-many-losing-heroines;1;Nobi Nobi !;Makeine : Too Many Losing Heroines ! - Tome 1;0000-00-00;ludum;2026;Paru;7.20;ludum;isbn;45868198549;makeine-too-many-losing-heroines-tome-1;makeine-too-many-losing-heroines-tome-1-1010919;sur commande;ajout-bnf+bdfugue+cultura+ludum;
-9791043307379;Makeine too many losing heroines !;makeine-too-many-losing-heroines;2;Nobi Nobi !;Makeine : Too Many Losing Heroines ! - Tome 2;2027-01-20;ludum;;A paraître;7.20;ludum;aucune;;;makeine-too-many-losing-heroines-tome-2-1010918;précommande;ajout-ludum+ludum;
+9791043307379;Makeine too many losing heroines !;makeine-too-many-losing-heroines;2;Nobi Nobi !;Makeine : Too Many Losing Heroines ! - Tome 2;2027-01-20;ludum;;A paraître;7.20;ludum;isbn;;;makeine-too-many-losing-heroines-tome-2-1010918;précommande;ajout-ludum+ludum;
 9782809428803;Makenki;makenki;1;Panini Manga;;;;2013;;;;isbn;;;;;bnf;
 9782809430035;Makenki;makenki;2;Panini Manga;;;;2013;;;;isbn;;;;;bnf;
 9782809431230;Makenki;makenki;3;Panini Manga;;;;2013;;;;isbn;45868194775;;;;bnf+cultura;
@@ -21605,7 +21624,7 @@
 9782820348791;Marriage toxin;marriage-toxin;7;Crunchyroll;Marriage Toxin - Tome 7;2024-11-13;ludum;;Paru;7.29;ludum;isbn;42314699228;marriage-toxin-tome-7;marriage-toxin-tome-7-1013429;sur commande;ajout-ludum+bdfugue+cultura+ludum;
 9782820349002;Marriage toxin;marriage-toxin;8;Crunchyroll;Marriage Toxin - Tome 8;2025-01-15;ludum;;Paru;7.29;ludum;isbn;42314699242;marriage-toxin-tome-8;marriage-toxin-tome-8-1013430;sur commande;ajout-ludum+bdfugue+cultura+ludum;
 9782820351982;Marriage toxin;marriage-toxin;9;Crunchyroll;Marriage Toxin - Tome 9;2025-04-16;ludum;;Paru;7.29;ludum;isbn;46363789543;marriage-toxin-tome-9;marriage-toxin-tome-9-1013433;sur commande;ajout-ludum+bdfugue+cultura+ludum;
-9782820353368;Marriage toxin;marriage-toxin;10;Crunchyroll;Marriage Toxin - Tome 10 - Édition collector;2025-07-02;ludum;;Paru;8.29;ludum;aucune;42314699372;marriage-toxin-tome-10-collector;marriage-toxin-tome-10-edition-collector-1013435;sur commande;ajout-cultura+bdfugue+cultura+ludum;
+9782820353368;Marriage toxin;marriage-toxin;10;Crunchyroll;Marriage Toxin - Tome 10 - Édition collector;2025-07-02;ludum;;Paru;8.29;ludum;isbn;42314699372;marriage-toxin-tome-10-collector;marriage-toxin-tome-10-edition-collector-1013435;sur commande;ajout-cultura+bdfugue+cultura+ludum;
 9782820352002;Marriage toxin;marriage-toxin;11;Crunchyroll;Marriage Toxin - Tome 11;2025-10-08;ludum;;Paru;7.29;ludum;isbn;41678144821;marriage-toxin-tome-11;marriage-toxin-tome-11-1013434;sur commande;ajout-ludum+bdfugue+cultura+ludum;
 9782820353542;Marriage toxin;marriage-toxin;12;Crunchyroll;Marriage Toxin - Tome 12;2026-01-07;ludum;;Paru;7.29;ludum;isbn;42910467892;marriage-toxin-tome-12;marriage-toxin-tome-12-1013436;sur commande;ajout-ludum+bdfugue+cultura+ludum;
 9782820354433;Marriage toxin;marriage-toxin;13;Crunchyroll;Marriage Toxin - Tome 13;2026-04-01;ludum;;Paru;7.29;ludum;isbn;43397724379;marriage-toxin-tome-13;marriage-toxin-tome-13-1013437;sur commande;ajout-ludum+bdfugue+cultura+ludum;
@@ -23218,6 +23237,7 @@
 9791041120680;Mushoku Tensei;mushoku-tensei;1;Bamboo;Mushoku Tensei : Le Magicien déchu - Tome 1;2026-09-10;ludum;2026;Paru;7.95;ludum;isbn;45626577303;mushoku-tensei-le-magicien-dechu-tome-1;mushoku-tensei-le-magicien-dechu-tome-1-1013151;sur commande;bdfugue+bnf+cultura+ludum;
 9782818941812;Mushoku Tensei;mushoku-tensei;2;Bamboo;Mushoku Tensei - Tome 2;2017-07-05;ludum;2017;Paru;7.95;ludum;serie;42314697976;mushoku-tensei-tome-2;mushoku-tensei-tome-2-1013113;sur commande;bdfugue+bnf+cultura+ludum;
 9782818967690;Mushoku Tensei;mushoku-tensei;2;Bamboo;Mushoku Tensei : Les Aventures de Roxy - Tome 2;2019-05-02;ludum;2019;Paru;7.95;ludum;isbn;;mushoku-tensei-les-aventures-de-roxy-t-2;mushoku-tensei-les-aventures-de-roxy-tome-2-1013122;sur commande;bdfugue+bnf+ludum;
+9791041120697;Mushoku Tensei;mushoku-tensei;2;Bamboo;Mushoku Tensei : Le Magicien déchu - Tome 2;2026-11-04;ludum;2026;Paru;7.95;ludum;serie;;;mushoku-tensei-le-magicien-dechu-tome-2-1013152;sur commande;ajout-bnf+ludum;
 9782818942833;Mushoku Tensei;mushoku-tensei;3;Bamboo;Mushoku Tensei - Tome 3;2017-09-20;ludum;2017;Paru;7.95;ludum;serie;42314697987;mushoku-tensei-tome-3;mushoku-tensei-tome-3-1013114;sur commande;bdfugue+bnf+cultura+ludum;
 9782818975404;Mushoku Tensei;mushoku-tensei;3;Bamboo;Mushoku Tensei : Les Aventures de Roxy - Tome 3;2019-10-30;ludum;2019;Paru;7.95;ludum;isbn;;mushoku-tensei-les-aventures-de-roxy-tome-3;mushoku-tensei-les-aventures-de-roxy-tome-3-1013124;sur commande;bdfugue+bnf+ludum;
 9782818943700;Mushoku Tensei;mushoku-tensei;4;Bamboo;Mushoku Tensei - Tome 4;2017-11-02;ludum;2017;Paru;7.95;ludum;serie;;mushoku-tensei-t-4;mushoku-tensei-tome-4-1013115;sur commande;bdfugue+bnf+ludum;
@@ -23350,7 +23370,7 @@
 9791032713785;My hero academia;my-hero-academia;;Ki-oon;;;;2023;;;;isbn;43085686274;my-hero-academia-world-heroes-mission;;;bdfugue+bnf+cultura;
 9791032716366;My hero academia;my-hero-academia;;Ki-oon;;;;2024;;;;isbn;43085686275;my-hero-academia-le-dessin-facile;;;bdfugue+bnf+cultura;
 9791032722237;My hero academia;my-hero-academia;;Ki-oon;;;;2026;;;;isbn;44628941146;my-hero-academia-you-re-next;;;bdfugue+bnf+cultura;
-9791032723241;My Hero Academia;my-hero-academia;;Ki-oon;My Hero Academia - Coffret intégrale Tomes 29 à 35;2026-11-05;calendrier;;paru;48.65;calendrier;isbn;46033918388;coffret-integrale-my-hero-academia-tomes-29-a-35;my-hero-academia-coffret-integrale-tomes-29-a-35-1016294;sur commande;bdfugue+calendrier+cultura+ludum;
+9791032723241;My Hero Academia;my-hero-academia;;Ki-oon;My Hero Academia - Coffret intégrale Tomes 29 à 35;2026-11-05;calendrier;;paru;48.65;calendrier;isbn;46033918388;coffret-integrale-my-hero-academia-tomes-29-a-35;;rupture;bdfugue+calendrier+cultura+ludum;
 9791032723258;My Hero Academia;my-hero-academia;;Ki-oon;My Hero Academia - Coffret intégrale Tomes 36 à 42;2026-11-05;calendrier;;paru;48.65;calendrier;isbn;46033918389;coffret-integrale-my-hero-academia-tomes-36-a-42;my-hero-academia-coffret-integrale-tomes-36-a-42-1016295;sur commande;bdfugue+calendrier+cultura+ludum;
 9791032724248;My hero academia;my-hero-academia;;Ki-oon;;;;2026;;;;isbn;44079003374;my-hero-academia-ultra-age-final-fanbook;;;bdfugue+bnf+cultura;
 9791032724927;My hero academia;my-hero-academia;;Ki-oon;;;;2025;;;;isbn;42335643132;my-hero-academia-artbook-officiel-ultra-artworks;;;bdfugue+bnf+cultura;
@@ -23358,20 +23378,20 @@
 9791032703908;My hero academia;my-hero-academia;1;Ki-oon;;;;2019;;;;serie;;roman-my-hero-academia-tome-1;;;bdfugue+bnf;
 9791032707081;My hero academia;my-hero-academia;1;Ki-oon;;;;2020;;;;serie;42314706810;my-hero-academia-team-up-mission-tome-1;;;bdfugue+bnf+cultura;
 9791032710821;My hero academia;my-hero-academia;1;Ki-oon;;;;2022;;;;isbn;42314706900;my-hero-academia-smash-tome-1;;;bdfugue+bnf+cultura;
-9782355929472;My hero academia;my-hero-academia;2;Ki-oon;My Hero Academia - Tome 2;2016-04-14;ludum;2016;Paru;3.00;ludum;serie;;my-hero-academia-t02;my-hero-academia-tome-2-1006636;sur commande;bdfugue+bnf+ludum;
+9782355929472;My hero academia;my-hero-academia;2;Ki-oon;My Hero Academia - Tome 2;2016-04-14;ludum;2016;Paru;3.00;ludum;serie;;my-hero-academia-t02;my-hero-academia-tome-2-1006636;en stock;bdfugue+bnf+ludum;
 9791032704707;My hero academia;my-hero-academia;2;Ki-oon;;;;2019;;;;serie;42314706705;my-hero-academia-les-dossiers-secrets-de-ua-tome-2;;;bdfugue+bnf+cultura;
 9791032707487;My hero academia;my-hero-academia;2;Ki-oon;;;;2021;;;;serie;42314706817;my-hero-academia-ultra-analysis;;;bdfugue+bnf+cultura;
 9791032707685;My hero academia;my-hero-academia;2;Ki-oon;;;;2021;;;;serie;;my-hero-academia-team-up-mission-tome-2;;;bdfugue+bnf;
 9791032711200;My hero academia;my-hero-academia;2;Ki-oon;;;;2022;;;;isbn;42314706918;my-hero-academia-smash-tome-2;;;bdfugue+bnf+cultura;
-9782355929724;My hero academia;my-hero-academia;3;Ki-oon;My Hero Academia - Tome 3;2016-06-09;ludum;2016;Paru;3.00;ludum;serie;;my-hero-academia-t03;my-hero-academia-tome-3-1006638;sur commande;bdfugue+bnf+ludum;
+9782355929724;My hero academia;my-hero-academia;3;Ki-oon;My Hero Academia - Tome 3;2016-06-09;ludum;2016;Paru;3.00;ludum;serie;;my-hero-academia-t03;my-hero-academia-tome-3-1006638;en stock;bdfugue+bnf+ludum;
 9791032705773;My hero academia;my-hero-academia;3;Ki-oon;;;;2020;;;;serie;46135925386;my-hero-academia-les-dossiers-secrets-de-ua-tome-3-roman;;;bdfugue+bnf+cultura;
 9791032710395;My hero academia;my-hero-academia;3;Ki-oon;;;;2022;;;;isbn;42314706893;my-hero-academia-team-up-mission-tome-3;;;bdfugue+bnf+cultura;
 9791032711781;My hero academia;my-hero-academia;3;Ki-oon;;;;2022;;;;serie;42314706943;my-hero-academia-smash-tome-3;;;bdfugue+bnf+cultura;
-9782355929885;My hero academia;my-hero-academia;4;Ki-oon;My Hero Academia - Tome 4;2016-07-07;ludum;2016;Paru;6.95;ludum;serie;42314664883;my-hero-academia-tome-4;my-hero-academia-tome-4-1006639;sur commande;bdfugue+bnf+cultura+ludum;
+9782355929885;My hero academia;my-hero-academia;4;Ki-oon;My Hero Academia - Tome 4;2016-07-07;ludum;2016;Paru;6.95;ludum;serie;42314664883;my-hero-academia-tome-4;my-hero-academia-tome-4-1006639;en stock;bdfugue+bnf+cultura+ludum;
 9791032706312;My hero academia;my-hero-academia;4;Ki-oon;;;;2020;;;;serie;46135925387;shonen-my-hero-roman-my-hero-academia-les-dossiers-secrets-de-ua-t04-vol04;;;bdfugue+bnf+cultura;
 9791032712085;My hero academia;my-hero-academia;4;Ki-oon;;;;2022;;;;serie;42314706962;my-hero-academia-smash-tome-4;;;bdfugue+bnf+cultura;
 9791032713174;My hero academia;my-hero-academia;4;Ki-oon;;;;2023;;;;isbn;42314707000;my-hero-academia-team-up-mission-tome-4;;;bdfugue+bnf+cultura;
-9791032700068;My hero academia;my-hero-academia;5;Ki-oon;My Hero Academia - Tome 5;2016-09-08;ludum;2016;Paru;6.95;ludum;serie;42314706517;my-hero-academia-tome-5;my-hero-academia-tome-5-1006641;sur commande;bdfugue+bnf+cultura+ludum;
+9791032700068;My hero academia;my-hero-academia;5;Ki-oon;My Hero Academia - Tome 5;2016-09-08;ludum;2016;Paru;6.95;ludum;serie;42314706517;my-hero-academia-tome-5;my-hero-academia-tome-5-1006641;en stock;bdfugue+bnf+cultura+ludum;
 9791032710531;My hero academia;my-hero-academia;5;Ki-oon;;;;2021;;;;serie;46146290726;roman-my-hero-academia-les-dossiers-secrets-de-ua-tome-5;;;bdfugue+bnf+cultura;
 9791032713082;My hero academia;my-hero-academia;5;Ki-oon;;;;2023;;;;serie;46639550314;my-hero-academia-smash-tome-5;;;bdfugue+bnf+cultura;
 9791032716342;My hero academia;my-hero-academia;5;Ki-oon;;;;2024;;;;isbn;42314707091;my-hero-academia-team-up-mission-tome-5;;;bdfugue+bnf+cultura;
@@ -23681,7 +23701,7 @@
 9782847894172;Nana;nana;;Akata;;;;2004;;;;isbn;;;;;bnf;
 9782847894530;Nana;nana;;Akata;;;;2004;;;;isbn;46837914162;;;;bnf+cultura;
 9782847897876;Nana;nana;;Akata;;;;2005;;;;isbn;;;;;bnf;
-9782413088172;Nana;nana;1;Akata;Nana Remix - Coffret Tomes 1 à 10;2025-11-19;ludum;2025;Paru;85.00;ludum;isbn;43830302727;nana-remix-coffret-tomes-1-a-10;nana-remix-coffret-tomes-1-a-10-1002594;en stock;bdfugue+bnf+cultura+ludum;
+9782413088172;Nana;nana;1;Akata;Nana Remix - Coffret Tomes 1 à 10;2025-11-19;ludum;2025;Paru;85.00;ludum;isbn;43830302727;nana-remix-coffret-tomes-1-a-10;nana-remix-coffret-tomes-1-a-10-1002594;sur commande;bdfugue+bnf+cultura+ludum;
 9782840555230;Nana;nana;1;Akata;;;;2000;;;;serie;;;;;bnf;
 9782840559573;Nana;nana;1;Akata;Nana - Tome 1;2004-01-01;ludum;2002;Paru;7.29;ludum;serie;42314699888;nana-tome-1;nana-tome-1-1002605;en stock;bdfugue+bnf+cultura+ludum;
 9782840556664;Nana;nana;2;Akata;;;;2001;;;;serie;;;;;bnf;
@@ -23690,7 +23710,7 @@
 9782847891294;Nana;nana;4;Akata;Nana - Tome 4;2004-01-01;ludum;2003;Paru;7.29;ludum;isbn;42314700883;nana-tome-4;nana-tome-4-1002608;sur commande;bdfugue+bnf+cultura+ludum;
 9782847891348;Nana;nana;5;Akata;Nana - Tome 5;2004-01-01;ludum;2003;Paru;7.29;ludum;isbn;42314700885;nana-t-5;nana-tome-5-1002609;sur commande;bdfugue+bnf+cultura+ludum;
 9782847891935;Nana;nana;6;Akata;Nana - Tome 6;2004-01-01;ludum;2003;Paru;7.29;ludum;isbn;42314700897;nana-t-6;nana-tome-6-1002610;sur commande;bdfugue+bnf+cultura+ludum;
-9782847893069;Nana;nana;7;Akata;Nana - Tome 7;2004-01-01;ludum;2003;Paru;7.29;ludum;isbn;42314700915;;;rupture;bnf+cultura+ludum;
+9782847893069;Nana;nana;7;Akata;Nana - Tome 7;2004-01-01;ludum;2003;Paru;7.29;ludum;isbn;42314700915;;nana-tome-7-1002611;sur commande;bnf+cultura+ludum;
 9782847893588;Nana;nana;8;Akata;Nana - Tome 8;2004-03-24;ludum;2004;Paru;7.29;ludum;isbn;42314700930;nana-tome-8;nana-tome-8-1002612;sur commande;bdfugue+bnf+cultura+ludum;
 9782847893854;Nana;nana;9;Akata;Nana - Tome 9;2004-06-30;ludum;2004;Paru;8.50;ludum;isbn;42314700933;nana-tome-9;nana-tome-9-1002613;sur commande;bdfugue+bnf+cultura+ludum;
 9782847893861;Nana;nana;10;Akata;Nana - Tome 10;2004-11-24;ludum;2004;Paru;7.29;ludum;isbn;42314700934;nana-tome-10;nana-tome-10-1002614;sur commande;bdfugue+bnf+cultura+ludum;
@@ -24409,7 +24429,7 @@
 9782353483563;No manga no life;no-manga-no-life;1;Lézard noir;;;;2024;;;;isbn;43085677634;no-manga-no-life-tome-1;;;bdfugue+bnf+cultura;
 9782353483969;No manga no life;no-manga-no-life;2;Lézard noir;;;;2025;;;;isbn;42314664252;no-manga-no-life-tome-2;;;bdfugue+bnf+cultura;
 9791042020903;No\Name;no-name;1;Kurokawa;No\Name - Tome 1;2026-01-15;ludum;2026;Paru;7.95;ludum;isbn;43007248152;no-name-tome-1;no-name-tome-1-1012505;sur commande;bdfugue+bnf+cultura+ludum;
-9791042022006;No\Name;no-name;2;Kurokawa;No\Name - Tome 2;2026-01-15;ludum;;Paru;7.95;ludum;serie;;no-name-tome-2;no-name-tome-2-1012506;sur commande;ajout-bdfugue+bdfugue+ludum;
+9791042022006;No\Name;no-name;2;Kurokawa;No\Name - Tome 2;2026-01-15;ludum;;Paru;7.95;ludum;isbn;43007248153;no-name-tome-2;no-name-tome-2-1012506;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9782372876223;No revenge for Mary;no-revenge-for-mary;1;Komikku;No revenge for Mary - Tome 1;2022-07-07;ludum;2022;Paru;7.99;ludum;isbn;;no-revenge-for-mary-tome-1;no-revenge-for-mary-tome-1-1016556;sur commande;bdfugue+bnf+ludum;
 9782372876391;No revenge for Mary;no-revenge-for-mary;2;Komikku;No revenge for Mary - Tome 2;2022-09-29;ludum;2022;Paru;7.99;ludum;isbn;45645076056;no-revenge-for-mary-tome-2;no-revenge-for-mary-tome-2-1016557;sur commande;bdfugue+bnf+cultura+ludum;
 9782372876872;No revenge for Mary;no-revenge-for-mary;3;Komikku;No revenge for Mary - Tome 3;2023-04-06;ludum;2023;Paru;7.99;ludum;isbn;42314670593;no-revenge-for-mary-tome-3;no-revenge-for-mary-tome-3-1016558;sur commande;bdfugue+bnf+cultura+ludum;
@@ -25752,7 +25772,7 @@
 9782302103481;Pandora seven;pandora-seven;4;Soleil;;;;2025;;;;isbn;41036321023;pandora-seven-tome-4;;;bdfugue+bnf+cultura;
 9782302105096;Pandora Seven;pandora-seven;5;Soleil;;2026-12-10;calendrier;;annonce;;;isbn;44927629271;;;;calendrier+cultura;
 9791032720103;PandoraHearts - Perfect Edition;pandorahearts-perfect-edition;1;Ki-oon;PandoraHearts - Tome 1 - Perfect Edition;2025-01-02;ludum;2025;Paru;16.00;ludum;isbn;42314707240;pandora-hearts-perfect-edition-tome-1;pandorahearts-tome-1-perfect-edition-1016284;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Pandora hearts ludum=PandoraHearts → édition PandoraHearts - Perfect Edition
-9791032720110;PandoraHearts - Perfect Edition;pandorahearts-perfect-edition;2;Ki-oon;PandoraHearts - Tome 2 - Perfect Edition;2025-03-06;ludum;;Paru;16.00;ludum;aucune;42314707241;pandora-hearts-perfect-edition-tome-2;pandorahearts-tome-2-perfect-edition-1016283;sur commande;bdfugue+cultura+ludum+ludum-edition;
+9791032720110;PandoraHearts - Perfect Edition;pandorahearts-perfect-edition;2;Ki-oon;PandoraHearts - Tome 2 - Perfect Edition;2025-03-06;ludum;;Paru;16.00;ludum;isbn;42314707241;pandora-hearts-perfect-edition-tome-2;pandorahearts-tome-2-perfect-edition-1016283;sur commande;bdfugue+cultura+ludum+ludum-edition;
 9791032720127;PandoraHearts - Perfect Edition;pandorahearts-perfect-edition;3;Ki-oon;PandoraHearts - Tome 3 - Perfect Edition;2025-07-03;ludum;2025;Paru;16.00;ludum;isbn;42314707242;pandora-hearts-perfect-edition-tome-3;pandorahearts-tome-3-perfect-edition-1016286;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Pandora hearts ludum=PandoraHearts → édition PandoraHearts - Perfect Edition
 9791032720134;PandoraHearts - Perfect Edition;pandorahearts-perfect-edition;4;Ki-oon;PandoraHearts - Tome 4 - Perfect Edition;2025-09-04;ludum;2025;Paru;16.00;ludum;isbn;41767235061;pandorahearts-perfect-edition-tome-4;pandorahearts-tome-4-perfect-edition-1016285;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Pandora hearts ludum=PandoraHearts → édition PandoraHearts - Perfect Edition
 9791032720141;PandoraHearts - Perfect Edition;pandorahearts-perfect-edition;5;Ki-oon;PandoraHearts - Tome 5 - Perfect Edition;2025-12-04;ludum;2025;Paru;16.00;ludum;isbn;41531462263;pandora-hearts-perfect-edition-tome-5;pandorahearts-tome-5-perfect-edition-1016287;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Pandora hearts ludum=PandoraHearts → édition PandoraHearts - Perfect Edition
@@ -26128,8 +26148,8 @@
 9782847891447;Les quatre clefs;persona;3;Akata;;;;2003;;;;isbn;;;;;bnf;
 9791035500979;P3;persona-3;1;Mana Books;;;;2019;;;;isbn;42314707788;persona-3-tome-1;;;bdfugue+bnf+cultura;
 9791035501068;P3;persona-3;2;Mana Books;;;;2019;;;;isbn;42314707792;persona-3-tome-2;;;bdfugue+bnf+cultura;
-9791035501167;P3;persona-3;3;Mana Books;;;;2019;;;;serie;41036393641;;;;bnf+cultura;
-9791035501709;P3;persona-3;3;Mana Books;Persona 5 - Tome 3;2020-05-28;ludum;2020;Paru;7.95;ludum;isbn;42314707810;persona-5-tome-3;persona-5-tome-3-1016326;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=P3 ludum=Persona 5 → retiré du catalogue
+9791035501167;P3;persona-3;3;Mana Books;;;;2019;;;;isbn;41036393641;;;;bnf+cultura;
+9791035501709;P3;persona-3;3;Mana Books;;;;2020;;;;isbn;;;;;bnf;
 9791035501235;P3;persona-3;4;Mana Books;;;;2019;;;;isbn;41036393643;persona-3-tome-4;;;bdfugue+bnf+cultura;
 9791035501327;P3;persona-3;5;Mana Books;;;;2019;;;;isbn;;persona-3-tome-5;;;bdfugue+bnf;
 9791035501440;P3;persona-3;6;Mana Books;;;;2019;;;;isbn;41036393655;persona-3-tome-6;;;bdfugue+bnf+cultura;
@@ -26216,7 +26236,7 @@
 9782377176571;La petite faiseuse de livres;petite-faiseuse-de-livres-la;;Ototo;XI;;;2026;;;;isbn;43705917858;;;;bnf+cultura;
 9782377172542;La petite faiseuse de livres;petite-faiseuse-de-livres-la;1;Ototo;;;;2019;;;;aucune;;;;;bnf;
 9782377174379;La petite faiseuse de livres;petite-faiseuse-de-livres-la;1;Ototo;;;;2021;;;;isbn;42314673436;la-petite-faiseuse-de-livres-saison-2-tome-1;;;bdfugue+bnf+cultura;
-9782377172894;La petite faiseuse de livres;petite-faiseuse-de-livres-la;2;Ototo;;;;2019;;;;aucune;42123337466;la-petite-faiseuse-de-livres-tome-2;;;bdfugue+bnf+cultura;
+9782377172894;La petite faiseuse de livres;petite-faiseuse-de-livres-la;2;Ototo;;;;2019;;;;aucune;42123337466;;;;bnf+cultura;
 9782377174430;La petite faiseuse de livres;petite-faiseuse-de-livres-la;2;Ototo;;;;2021;;;;isbn;42314673439;la-petite-faiseuse-de-livre-saison-2-tome-2;;;bdfugue+bnf+cultura;
 9782377173051;La petite faiseuse de livres;petite-faiseuse-de-livres-la;3;Ototo;;;;2020;;;;aucune;42123337467;la-petite-faiseuse-de-livres-tome-3;;;bdfugue+bnf+cultura;
 9782377174577;La petite faiseuse de livres;petite-faiseuse-de-livres-la;3;Ototo;;;;2022;;;;isbn;42314673444;la-petite-faiseuse-de-livres-saison-2-tome-3;;;bdfugue+bnf+cultura;
@@ -26635,11 +26655,11 @@
 9782302065505;Plus question de fuir !;plus-question-de-fuir;8;Soleil;;;;2018;;;;isbn;45396506925;;;;bnf+cultura;
 9782302080157;Plus question de fuir !;plus-question-de-fuir;9;Soleil;;;;2019;;;;isbn;41036320099;plus-question-de-fuir-tome-9;;;bdfugue+bnf+cultura;
 9782302092143;Plus question de fuir !;plus-question-de-fuir;10;Soleil;;;;2020;;;;isbn;45396506930;;;;bnf+cultura;
-9782505002093;Pluto;pluto;1;Kana;Pluto - Tome 1;2010-02-18;ludum;2010;Paru;8.10;ludum;isbn;42314682989;pluto-t-1;pluto-tome-1-1002786;sur commande;bdfugue+bnf+cultura+ludum;
-9782505002109;Pluto;pluto;2;Kana;Pluto - Tome 2;2010-02-18;ludum;2010;Paru;8.10;ludum;isbn;42314682990;pluto-t-2;pluto-tome-2-1002785;sur commande;bdfugue+bnf+cultura+ludum;
-9782505008729;Pluto;pluto;3;Kana;Pluto - Tome 3;2010-04-01;ludum;2010;Paru;8.10;ludum;isbn;42314683226;pluto-t-3;pluto-tome-3-1002787;sur commande;bdfugue+bnf+cultura+ludum;
-9782505009122;Pluto;pluto;4;Kana;Pluto - Tome 4;2010-07-01;ludum;2010;Paru;8.10;ludum;isbn;42314683244;pluto-t-4;pluto-tome-4-1002788;sur commande;bdfugue+bnf+cultura+ludum;
-9782505009665;Pluto;pluto;5;Kana;Pluto - Tome 5;2010-09-30;ludum;2010;Paru;8.10;ludum;isbn;42314683258;pluto-t-5;pluto-tome-5-1002789;sur commande;bdfugue+bnf+cultura+ludum;
+9782505002093;Pluto;pluto;1;Kana;Pluto - Tome 1;2010-02-18;ludum;2010;Paru;8.10;ludum;isbn;42314682989;pluto-t-1;pluto-tome-1-1002786;en stock;bdfugue+bnf+cultura+ludum;
+9782505002109;Pluto;pluto;2;Kana;Pluto - Tome 2;2010-02-18;ludum;2010;Paru;8.10;ludum;isbn;42314682990;pluto-t-2;pluto-tome-2-1002785;en stock;bdfugue+bnf+cultura+ludum;
+9782505008729;Pluto;pluto;3;Kana;Pluto - Tome 3;2010-04-01;ludum;2010;Paru;8.10;ludum;isbn;42314683226;pluto-t-3;pluto-tome-3-1002787;en stock;bdfugue+bnf+cultura+ludum;
+9782505009122;Pluto;pluto;4;Kana;Pluto - Tome 4;2010-07-01;ludum;2010;Paru;8.10;ludum;isbn;42314683244;pluto-t-4;pluto-tome-4-1002788;en stock;bdfugue+bnf+cultura+ludum;
+9782505009665;Pluto;pluto;5;Kana;Pluto - Tome 5;2010-09-30;ludum;2010;Paru;8.10;ludum;isbn;42314683258;pluto-t-5;pluto-tome-5-1002789;en stock;bdfugue+bnf+cultura+ludum;
 9782505010289;Pluto;pluto;6;Kana;Pluto - Tome 6;2011-01-06;ludum;2011;Paru;8.10;ludum;isbn;42237034721;pluto-6;pluto-tome-6-1002790;sur commande;bdfugue+bnf+cultura+ludum;
 9782505010814;Pluto;pluto;7;Kana;Pluto - Tome 7;2011-04-14;ludum;2011;Paru;8.10;ludum;isbn;42314683303;pluto-t-7;pluto-tome-7-1002791;sur commande;bdfugue+bnf+cultura+ludum;
 9782505011781;Pluto;pluto;8;Kana;Pluto - Tome 8;2011-06-30;ludum;2011;Paru;8.10;ludum;isbn;42314683336;pluto-t-8;pluto-tome-8-1002792;sur commande;bdfugue+bnf+cultura+ludum;
@@ -27585,6 +27605,7 @@
 9782277238775;Les quatre filles du Dr March;quatre-filles-du-dr-march-les;;Ed. J'ai lu;;;;1995;;;;isbn;;;;;bnf;
 9782755689501;Les quatre filles du Dr March;quatre-filles-du-dr-march-les;;Ed. J'ai lu;;;;2021;;;;isbn;;;;;bnf;
 9782880973889;Les quatre filles du Dr March;quatre-filles-du-dr-march-les;;Ed. J'ai lu;;;;1991;;;;aucune;;;;;bnf;
+9782413090274;Quatre filles et une coloc;quatre-filles-et-une-coloc;3;Delcourt;;2027-01-21;calendrier;;annonce;;;aucune;;;;;calendrier;
 9782505113959;Quatre frères pour moi !;quatre-freres-pour-moi;1;Kana;;;;2023;;;;isbn;42314684670;quatre-freres-pour-moi-tome-1;;;bdfugue+bnf+cultura;
 9782505113966;Quatre frères pour moi !;quatre-freres-pour-moi;2;Kana;;;;2023;;;;isbn;42314684671;quatre-freres-pour-moi-tome-2;;;bdfugue+bnf+cultura;
 9782505113973;Quatre frères pour moi !;quatre-freres-pour-moi;3;Kana;;;;2023;;;;isbn;;quatre-freres-pour-moi-tome-3;;;bdfugue+bnf;
@@ -27756,7 +27777,7 @@
 9791033530626;Radiant;radiant;20;Ankama;;;;;;;;isbn;46209378102;radiant-tome-20;;;ajout-bdfugue+bdfugue+cultura;date: aucune
 9782382882689;Radio storm;radio-storm;1;Kbooks;;;;2024;;;;isbn;42314676556;radio-storm-tome-1;;;bdfugue+bnf+cultura;
 9782382882696;Radio storm;radio-storm;2;Kbooks;;;;2025;;;;isbn;42314676557;radio-storm-tome-2;;;bdfugue+bnf+cultura;
-9782382882702;Radio storm;radio-storm;3;Kbooks;;;;2025;;;;isbn;42267608672;radio-storm-tome-3;;;bdfugue+bnf+cultura;
+9782382882702;Radio storm;radio-storm;3;Kbooks;;;;2025;;;;isbn;42267608672;;;;bnf+cultura;
 9782382884638;Radio storm;radio-storm;4;Kbooks;;;;2026;;;;isbn;43718259920;radio-storm-tome-4;;;bdfugue+bnf+cultura;
 9782372872706;Rafnas;rafnas;1;Komikku;;;;2017;;;;isbn;;;;;bnf;
 9782372872713;Rafnas;rafnas;2;Komikku;;;;2017;;;;isbn;;;;;bnf;
@@ -27928,7 +27949,7 @@
 9791032719398;Ranking of kings;ranking-of-kings;17;Ki-oon;Ranking of Kings - Tome 17;2025-12-04;ludum;2025;Paru;7.95;ludum;isbn;46411687635;;;rupture;bnf+cultura+ludum;
 9791032724422;Ranking of kings;ranking-of-kings;18;Ki-oon;Ranking of Kings - Tome 18;2026-03-19;ludum;2026;Paru;7.95;ludum;isbn;43839690901;ranking-of-kings-tome-18;ranking-of-kings-tome-18-1016654;sur commande;bdfugue+bnf+cultura+ludum;
 9791032723654;Ranking of kings;ranking-of-kings;19;Ki-oon;Ranking of Kings - Tome 19;2026-08-13;ludum;2026;Paru;7.95;ludum;isbn;45019806620;ranking-of-kings-tome-19;ranking-of-kings-tome-19-1016653;sur commande;bdfugue+bnf+cultura+ludum;
-9791032723234;Ranking of kings;ranking-of-kings;20;Ki-oon;Ranking of Kings - Tome 20;2026-12-03;ludum;;A paraître;7.95;ludum;serie;;ranking-of-kings-tome-20;ranking-of-kings-tome-20-1016652;précommande;ajout-bdfugue+bdfugue+ludum;
+9791032723234;Ranking of kings;ranking-of-kings;20;Ki-oon;Ranking of Kings - Tome 20;2026-12-03;ludum;;A paraître;7.95;ludum;isbn;46651668915;ranking-of-kings-tome-20;ranking-of-kings-tome-20-1016652;précommande;ajout-bdfugue+bdfugue+cultura+ludum;
 9782876952270;Ranma 1/2;ranma-1-2;1;Glénat;;;;1994;;;;isbn;;;;;bnf;
 9782876952300;Ranma 1/2;ranma-1-2;2;Glénat;;;;1994;;;;isbn;;;;;bnf;
 9782876952317;Ranma 1/2;ranma-1-2;3;Glénat;;;;1994;;;;isbn;;;;;bnf;
@@ -28487,7 +28508,7 @@
 9782385314552;Remember me;remember-me;3;Akata;;;;2025;;;;isbn;;remember-me-la-magie-de-l-amour-tome-3;;;bdfugue+bnf;
 9782385691974;Remember me;remember-me;4;Akata;;;;2025;;;;isbn;41963844333;remember-me-la-magie-de-l-amour-tome-4;;;bdfugue+bnf+cultura;
 9782385692551;Remember me;remember-me;5;Akata;;;;2026;;;;isbn;43308871095;remember-me-la-magie-de-l-amour-tome-5;;;bdfugue+bnf+cultura;
-9782386160011;Remember Me;remember-me;7;Akata;;2027-01-27;calendrier;;annonce;;;aucune;46886477416;;;;calendrier+cultura;
+9782386160011;Remember Me;remember-me;7;Akata;;2027-01-27;calendrier;;annonce;;;isbn;46886477416;;;;calendrier+cultura;
 9782759500888;Rémina;remina;1;Tonkam;;;;2007;;;;isbn;;;;;bnf;
 9782359102956;Remington;remington;;Ankama;;;;2012;;;;isbn;46009372666;;;;bnf+cultura;
 9791033570400;Remington;remington;;Ankama;;;;2026;;;;isbn;45131116828;wakfu-remington;;;bdfugue+bnf+cultura;
@@ -28885,6 +28906,7 @@
 9782754803625;Rohan au Louvre;rohan-au-louvre;1;Futuropolis;;;;2010;;;;isbn;42314690047;rohan-au-louvre;;;bdfugue+bnf+cultura;
 9782756078519;Rohan Kishibe;rohan-kishibe;1;Delcourt;JoJo's : Rohan Kishibe - Tome 1;2016-04-06;ludum;2016;Paru;7.29;ludum;isbn;;rohan-kishibe;jojo-s-rohan-kishibe-tome-1-1008856;sur commande;bdfugue+bnf+ludum;
 9782413015321;Rohan Kishibe;rohan-kishibe;2;Delcourt;JoJo's : Rohan Kishibe - Tome 2;2019-03-13;ludum;2019;Paru;7.29;ludum;isbn;46146283226;rohan-kishibe-tome-2;jojo-s-rohan-kishibe-tome-2-1008781;sur commande;bdfugue+bnf+cultura+ludum;
+9782413096450;Rohan Kishibe;rohan-kishibe;3;Delcourt;;2027-01-21;calendrier;;annonce;;;serie;;;;;calendrier;
 9782382760840;Le roi Alpha déchu;roi-alpha-dechu-le;1;IDP;;;;2021;;;;isbn;42314675817;le-roi-alpha-dechu;;;bdfugue+bnf+cultura;
 9782203007512;Le roi banal;roi-banal-le;1;KSTR;;;;2009;;;;isbn;;;;;bnf;
 9782203245143;Le roi cerf;roi-cerf-le;1;Casterman;;;;2022;;;;isbn;;le-roi-cerf-tome-1;;;bdfugue+bnf;
@@ -29328,12 +29350,12 @@
 9782344077580;Ryukyu Buccaneer;ryukyu-buccaneer;1;Glénat;Ryukyu Buccaneer - Tome 1 - Édition collector;2026-10-07;ludum;;Paru;7.90;ludum;aucune;45380016533;;;rupture;ajout-bnf+cultura+ludum;
 9782344077597;Ryukyu Buccaneer;ryukyu-buccaneer;2;Glénat;Ryukyu Buccaneer - Tome 2;2027-01-06;calendrier;;annonce;7.90;ludum;isbn;46722797040;;ryukyu-buccaneer-tome-2-1007887;précommande;ajout-cultura+calendrier+cultura+ludum;
 9782849656891;Viewfinder;s;;Asuka;;;;2009;;;;isbn;;;;;bnf;
-9782849657799;Viewfinder;s;1;Asuka;Viewfinder - Tome 1;2010-03-25;ludum;;Paru;7.99;ludum;serie;;;;rupture;ajout-ludum+ludum;
-9782849658475;Viewfinder;s;2;Asuka;Viewfinder - Tome 2;2010-07-01;ludum;;Paru;7.99;ludum;serie;;;;rupture;ajout-ludum+ludum;
+9782849657799;Viewfinder;s;1;Asuka;Viewfinder - Tome 1;2010-03-25;ludum;;Paru;7.99;ludum;isbn;46318576977;;;rupture;ajout-ludum+cultura+ludum;
+9782849658475;Viewfinder;s;2;Asuka;Viewfinder - Tome 2;2010-07-01;ludum;;Paru;7.99;ludum;isbn;45454421993;;;rupture;ajout-ludum+cultura+ludum;
 9782849659847;Viewfinder;s;3;Asuka;Viewfinder - Tome 3;2010-11-25;ludum;2010;Paru;7.99;ludum;isbn;46886481259;;;rupture;bnf+cultura+ludum;serie: bnf=One ludum=Viewfinder → ludum
-9782820300188;Viewfinder;s;4;Asuka;Viewfinder - Tome 4;2011-02-10;ludum;;Paru;7.99;ludum;serie;;;;rupture;ajout-ludum+ludum;
-9782820301185;Viewfinder;s;5;Asuka;Viewfinder - Tome 5;2011-05-26;ludum;;Paru;7.99;ludum;serie;46886480977;viewfinder-t-5;viewfinder-tome-5-1013453;sur commande;ajout-cultura+bdfugue+cultura+ludum;
-9782820302342;Viewfinder;s;6;Asuka;Viewfinder - Tome 6;2011-11-17;ludum;;Paru;7.99;ludum;serie;;viewfinder-t-6;viewfinder-tome-6-1013454;sur commande;ajout-bdfugue+bdfugue+ludum;
+9782820300188;Viewfinder;s;4;Asuka;Viewfinder - Tome 4;2011-02-10;ludum;;Paru;7.99;ludum;isbn;;;;rupture;ajout-ludum+ludum;
+9782820301185;Viewfinder;s;5;Asuka;Viewfinder - Tome 5;2011-05-26;ludum;;Paru;7.99;ludum;isbn;46886480977;viewfinder-t-5;viewfinder-tome-5-1013453;sur commande;ajout-cultura+bdfugue+cultura+ludum;
+9782820302342;Viewfinder;s;6;Asuka;Viewfinder - Tome 6;2011-11-17;ludum;;Paru;7.99;ludum;isbn;;viewfinder-t-6;viewfinder-tome-6-1013454;sur commande;ajout-bdfugue+bdfugue+ludum;
 9782820307538;Viewfinder;s;7;Asuka;;;;2014;;;;isbn;;;;;bnf;
 9782759507566;S** friend;s-friend;1;Tonkam;;;;2012;;;;isbn;;;;;bnf;
 9782382768426;S&N;s-n;1;IDP;;;;2026;;;;isbn;43971221061;s-n;;;bdfugue+bnf+cultura;
@@ -29870,7 +29892,7 @@
 9782302015388;Saruyama;saruyama;7;Soleil;;;;2011;;;;isbn;;;;;bnf;
 9782302015722;Saruyama;saruyama;8;Soleil;;;;2011;;;;isbn;;;;;bnf;
 9782385690274;Sasaki et Miyano;sasaki-et-miyano;;Akata;Sasaki et Miyano - Anthologie officielle;2024-07-11;ludum;2024;Paru;8.05;ludum;isbn;42314677488;sasaki-et-miyano-anthologie-officielle;sasaki-et-miyano-anthologie-officielle-1015391;sur commande;bdfugue+bnf+cultura+ludum;
-9782382122440;Sasaki et Miyano;sasaki-et-miyano;1;Akata;Sasaki et Miyano - Tome 1;2022-03-10;ludum;2022;Paru;7.95;ludum;isbn;45750664196;sasaki-et-miyano-tome-1;sasaki-et-miyano-tome-1-1015381;sur commande;bdfugue+bnf+cultura+ludum;
+9782382122440;Sasaki et Miyano;sasaki-et-miyano;1;Akata;Sasaki et Miyano - Tome 1;2022-03-10;ludum;2022;Paru;7.95;ludum;isbn;45750664196;;;rupture;bnf+cultura+ludum;
 9782382122457;Sasaki et Miyano;sasaki-et-miyano;2;Akata;Sasaki et Miyano - Tome 2;2022-03-10;ludum;2022;Paru;7.95;ludum;isbn;45293163072;sasaki-et-miyano-tome-2;sasaki-et-miyano-tome-2-1015382;sur commande;bdfugue+bnf+cultura+ludum;
 9782382122693;Sasaki et Miyano;sasaki-et-miyano;3;Akata;Sasaki et Miyano - Tome 3;2022-05-25;ludum;2022;Paru;7.95;ludum;isbn;42314675230;sasaki-et-miyano-tome-3;sasaki-et-miyano-tome-3-1015383;sur commande;bdfugue+bnf+cultura+ludum;
 9782382124055;Sasaki et Miyano;sasaki-et-miyano;4;Akata;Sasaki et Miyano - Tome 4;2022-08-25;ludum;2022;Paru;8.05;ludum;isbn;42314675251;sasaki-et-miyano-tome-4;sasaki-et-miyano-tome-4-1015384;sur commande;bdfugue+bnf+cultura+ludum;
@@ -31827,6 +31849,7 @@
 9782413083726;Sorcière d'un autre monde;sorciere-d-un-autre-monde;6;Tonkam;;;;2024;;;;isbn;42314681383;sorciere-d-un-autre-monde-tome-6;;;bdfugue+bnf+cultura;
 9782413089223;Sorcière d'un autre monde;sorciere-d-un-autre-monde;7;Tonkam;;;;2025;;;;isbn;41036344552;sorciere-d-un-autre-monde-tome-7;;;bdfugue+bnf+cultura;
 9782413092490;Sorcière d'un autre monde;sorciere-d-un-autre-monde;8;Tonkam;;;;;;;;isbn;44033657490;sorciere-d-un-autre-monde-tome-8;;;ajout-cultura+bdfugue+cultura;date: aucune
+9782413097679;Sorcière d'un autre monde;sorciere-d-un-autre-monde;9;Delcourt;;2027-01-21;calendrier;;annonce;;;serie;;;;;calendrier;
 9782351004050;La sorcière de l'Ouest;sorciere-de-l-ouest-la;1;Kami;;;;2008;;;;isbn;;;;;bnf;
 9782351004500;La sorcière de l'Ouest;sorciere-de-l-ouest-la;3;Kami;;;;2008;;;;aucune;;;;;bnf;
 9782351004685;La sorcière de l'Ouest;sorciere-de-l-ouest-la;3;Kami;;;;2008;;;;aucune;;;;;bnf;
@@ -32216,6 +32239,7 @@
 9791039140607;Spriggan;spriggan;8;Panini Manga;;;;2025;;;;isbn;41678145057;spriggan-perfect-edition-tome-8;;;bdfugue+bnf+cultura;
 9782413090007;Spring storm and monster;spring-storm-and-monster;1;Delcourt;;;;2026;;;;isbn;42910465057;spring-storm-and-monster-tome-1;;;bdfugue+bnf+cultura;
 9782413090014;Spring storm and monster;spring-storm-and-monster;2;Delcourt;;;;;;;;isbn;44033657465;spring-storm-and-monster-tome-2;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782413090021;Spring Storm and Monster;spring-storm-and-monster;3;Delcourt;;2027-01-21;calendrier;;annonce;;;serie;;;;;calendrier;
 9791032700426;Springald;springald;1;Ki-oon;;;;2016;;;;isbn;42314706532;springald;;;bdfugue+bnf+cultura;
 9782820301192;Sprite;sprite;1;Kazé;;;;2011;;;;isbn;;;;;bnf;
 9782820301574;Sprite;sprite;2;Kazé;;;;2011;;;;isbn;;;;;bnf;
@@ -32244,14 +32268,14 @@
 9782380711493;Spy x Family;spy-x-family;5;Kurokawa;Spy x Family - Tome 5;2021-08-19;ludum;2021;Paru;7.30;ludum;isbn;42314674755;spy-x-family-tome-5;spy-x-family-tome-5-1006291;sur commande;bdfugue+bnf+cultura+ludum;
 9782380711509;Spy x Family;spy-x-family;6;Kurokawa;Spy x Family - Tome 6;2021-11-10;ludum;2021;Paru;7.30;ludum;isbn;42314674756;spy-x-family-tome-6;spy-x-family-tome-6-1006289;sur commande;bdfugue+bnf+cultura+ludum;
 9782380712605;Spy x Family;spy-x-family;7;Kurokawa;Spy x Family - Tome 7;2022-02-10;ludum;2022;Paru;7.30;ludum;isbn;42314674785;spy-x-family-tome-7;spy-x-family-tome-7-1006292;sur commande;bdfugue+bnf+cultura+ludum;
-9782380712957;Spy x Family;spy-x-family;8;Kurokawa;Spy x Family - Tome 8;2022-06-30;ludum;2022;Paru;7.30;ludum;isbn;42314674802;;spy-x-family-tome-8-1006294;précommande;bnf+cultura+ludum;
+9782380712957;Spy x Family;spy-x-family;8;Kurokawa;Spy x Family - Tome 8;2022-06-30;ludum;2022;Paru;7.30;ludum;isbn;42314674802;spy-x-family-tome-8;spy-x-family-tome-8-1006294;précommande;bdfugue+bnf+cultura+ludum;
 9782380712964;Spy x Family;spy-x-family;9;Kurokawa;Spy x Family - Tome 9;2022-09-01;ludum;2022;Paru;7.30;ludum;isbn;42314674803;spy-x-family-tome-9;spy-x-family-tome-9-1006295;sur commande;bdfugue+bnf+cultura+ludum;
 9782380712971;Spy x Family;spy-x-family;10;Kurokawa;Spy x Family - Tome 10;2022-12-01;ludum;2022;Paru;7.30;ludum;isbn;42314674804;spy-x-family-tome-10;spy-x-family-tome-10-1006293;sur commande;bdfugue+bnf+cultura+ludum;
 9782380714340;Spy x Family;spy-x-family;11;Kurokawa;Spy x Family - Tome 11 - Édition ultra-collector;2023-10-12;ludum;2023;Paru;39.95;ludum;isbn;42314674863;spy-x-family-tome-11-collector-9782380714340;spy-x-family-tome-11-edition-ultra-collector-1006296;sur commande;bdfugue+bnf+cultura+ludum;
 9782380715378;Spy x Family;spy-x-family;11;Kurokawa;Spy x Family - Tome 11;2023-10-12;ludum;2023;Paru;7.30;ludum;serie;42314674903;spy-x-family-tome-11;spy-x-family-tome-11-1006297;sur commande;bdfugue+bnf+cultura+ludum;
 9791042014025;Spy x Family;spy-x-family;12;Kurokawa;Spy x Family - Tome 12;2024-03-14;ludum;2024;Paru;7.30;ludum;isbn;42314710220;spy-x-family-tome-12;spy-x-family-tome-12-1006298;sur commande;bdfugue+bnf+cultura+ludum;
 9791042014704;Spy x Family;spy-x-family;13;Kurokawa;Spy x Family - Tome 13;2024-10-10;ludum;2024;Paru;7.30;ludum;isbn;42314710268;spy-x-family-tome-13;spy-x-family-tome-13-1006299;sur commande;bdfugue+bnf+cultura+ludum;
-9791042018726;Spy x Family;spy-x-family;14;Kurokawa;Spy x Family - Tome 14;2025-03-13;ludum;2025;Paru;7.30;ludum;isbn;42314710566;;;rupture;bnf+cultura+ludum;
+9791042018726;Spy x Family;spy-x-family;14;Kurokawa;Spy x Family - Tome 14;2025-03-13;ludum;2025;Paru;7.30;ludum;isbn;42314710566;;spy-x-family-tome-14-1006300;précommande;bnf+cultura+ludum;
 9791042018733;Spy x Family;spy-x-family;15;Kurokawa;Spy x Family - Tome 15;2025-10-09;ludum;2025;Paru;7.30;ludum;isbn;42910469574;spy-x-family-tome-15;spy-x-family-tome-15-1006301;sur commande;bdfugue+bnf+cultura+ludum;
 9791042021030;Spy x Family;spy-x-family;16;Kurokawa;Spy x Family - Tome 16;2026-04-23;ludum;2026;Paru;7.30;ludum;isbn;43493462252;spy-x-family-tome-16;spy-x-family-tome-16-1006303;sur commande;bdfugue+bnf+cultura+ludum;
 9791042021870;Spy x Family;spy-x-family;17;Kurokawa;Spy x Family - Tome 17;2026-11-12;ludum;;Paru;7.30;ludum;isbn;46332929087;spy-x-family-tome-17;spy-x-family-tome-17-1009046;en stock;ajout-cultura+bdfugue+cultura+ludum;
@@ -32427,6 +32451,7 @@
 9782818968239;Strange fruit;strange-fruit;4;Bamboo;;;;2019;;;;isbn;46001570605;strange-fruit-tome-4;;;bdfugue+bnf+cultura;
 9782382814772;Strange Lessons by Professor Terror;strange-lessons-by-professor-terror;1;Mangetsu;Strange Lessons by Professor Terror - Tome 1;0000-00-00;ludum;2026;Paru;8.45;ludum;isbn;44033657347;strange-lessons-by-professor-terror-tome-1;strange-lessons-by-professor-terror-tome-1-1011065;sur commande;bdfugue+bnf+cultura+ludum;
 9782382815045;Strange Lessons by Professor Terror;strange-lessons-by-professor-terror;2;Mangetsu;Strange Lessons by Professor Terror - Tome 2;0000-00-00;ludum;2026;Paru;8.45;ludum;isbn;45138114503;strange-lessons-by-professor-terror-tome-2;strange-lessons-by-professor-terror-tome-2-1011066;sur commande;ajout-bnf+bdfugue+cultura+ludum;
+9782386160080;Strange natives;strange-natives;;Akata;;;;2026;;;;isbn;;;;;ajout-bnf;
 9782811633066;Stranger case;stranger-case;1;Pika;Stranger Case - Tome 1;2018-01-10;ludum;2018;Paru;7.20;ludum;isbn;;stranger-case-tome-1;stranger-case-tome-1-1017217;sur commande;bdfugue+bnf+ludum;
 9782811633073;Stranger case;stranger-case;2;Pika;Stranger Case - Tome 2;2018-03-07;ludum;2018;Paru;7.20;ludum;isbn;46135923862;stranger-case-tome-2;stranger-case-tome-2-1017218;sur commande;bdfugue+bnf+cultura+ludum;
 9782811641009;Stranger case;stranger-case;3;Pika;Stranger Case - Tome 3;2018-05-02;ludum;2018;Paru;7.20;ludum;isbn;46886480665;stranger-case-tome-3;stranger-case-tome-3-1017219;sur commande;bdfugue+bnf+cultura+ludum;
@@ -32619,8 +32644,8 @@
 9791023522990;Sukeroku;sukeroku;;Seuil / Olivier / Points / Nouvel Attila / Verso;;;;2026;;;;serie;;;;;bnf;
 9791023523003;Sukeroku;sukeroku;;Seuil / Olivier / Points / Nouvel Attila / Verso;;;;2026;;;;serie;;;;;bnf;
 9782203302655;Sukima;sukima;1;Casterman;Sukima - Tome 1;2026-04-29;ludum;2026;Paru;14.50;ludum;isbn;44345338285;sukima-tome-1;sukima-tome-1-1010238;sur commande;bdfugue+bnf+cultura+ludum;
-9782203302754;Sukima;sukima;2;Casterman;Sukima - Tome 2;2026-07-01;ludum;;Paru;14.50;ludum;serie;44818763339;sukima-tome-2;sukima-tome-2-1010239;sur commande;ajout-cultura+bdfugue+cultura+ludum;
-9782203302709;Sukima;sukima;3;Casterman;Sukima - Tome 3;0000-00-00;ludum;;Paru;14.50;ludum;serie;;sukima-tome-3;sukima-tome-3-1010240;sur commande;ajout-bdfugue+bdfugue+ludum;
+9782203302754;Sukima;sukima;2;Casterman;Sukima - Tome 2;2026-07-01;ludum;;Paru;14.50;ludum;isbn;44818763339;sukima-tome-2;sukima-tome-2-1010239;sur commande;ajout-cultura+bdfugue+cultura+ludum;
+9782203302709;Sukima;sukima;3;Casterman;Sukima - Tome 3;0000-00-00;ludum;;Paru;14.50;ludum;isbn;45965134357;sukima-tome-3;sukima-tome-3-1010240;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9782203303911;Sukima;sukima;4;Casterman;Sukima - Tome 4;0000-00-00;ludum;;Paru;14.50;ludum;serie;;;sukima-tome-4-1010241;a paraître;ajout-ludum+ludum;
 9789948026945;Sukūn;sukun;1;Kalimāt;;;;2017;;;;isbn;;;;;bnf;
 9782280352482;Une sulfureuse vengeance;sulfureuse-vengeance-une;;Harlequin;;;;2017;;;;isbn;;;;;bnf;
@@ -32669,6 +32694,7 @@
 9782302107014;Super ball girls;super-ball-girls;3;Soleil;;;;2026;;;;isbn;42910459881;super-ball-girls-tome-3;;;bdfugue+bnf+cultura;
 9782302107021;Super ball girls;super-ball-girls;4;Soleil;;;;;;;;isbn;44033656537;super-ball-girls-tome-4;;;ajout-cultura+bdfugue+cultura;date: aucune
 9782302107700;Super ball girls;super-ball-girls;5;Soleil;;;;;;;;isbn;44511122313;super-ball-girls-tome-5;;;ajout-cultura+bdfugue+cultura;date: aucune
+9782302109100;Super Ball Girls;super-ball-girls;6;Soleil;;2027-01-21;calendrier;;annonce;;;serie;;;;;calendrier;
 9782302044753;Super darling !;super-darling;1;Soleil;;;;2015;;;;isbn;;;;;bnf;
 9782302046917;Super darling !;super-darling;2;Soleil;;;;2015;;;;isbn;;;;;bnf;
 9782413009955;Super HxEros;super-hxeros;1;Tonkam;;;;2020;;;;isbn;42314677863;super-hxeros-tome-1;;;bdfugue+bnf+cultura;
@@ -32863,7 +32889,7 @@
 9782756025278;Switch girl !!;switch-girl;;Akata;;;;2010;;;;isbn;;;;;bnf;
 9782756028651;Switch girl !!;switch-girl;;Akata;;;;2012;;;;isbn;;;;;bnf;
 9782756015118;Switch girl !!;switch-girl;1;Akata;;;;2009;;;;isbn;;switch-girl-t-1;;;bdfugue+bnf;
-9782756015231;Switch girl !!;switch-girl;2;Akata;;;;2009;;;;isbn;43746273295;switch-girl-t-2;;;bdfugue+bnf+cultura;
+9782756015231;Switch girl !!;switch-girl;2;Akata;;;;2009;;;;isbn;43746273295;;;;bnf+cultura;
 9782756015248;Switch girl !!;switch-girl;3;Akata;;;;2009;;;;isbn;;switch-girl-t-3;;;bdfugue+bnf;
 9782756017631;Switch girl !!;switch-girl;4;Akata;;;;2009;;;;isbn;;switch-girl-t-4;;;bdfugue+bnf;
 9782756017648;Switch girl !!;switch-girl;5;Akata;;;;2009;;;;isbn;;switch-girl-t-5;;;bdfugue+bnf;
@@ -34441,7 +34467,7 @@
 9782811698133;The Summer Hikaru Died;the-summer-hikaru-died;5;Pika;The Summer Hikaru Died - Tome 5;2025-04-02;ludum;2025;Paru;7.70;ludum;isbn;42314697536;the-summer-hikaru-died-tome-5;the-summer-hikaru-died-tome-5-1003303;sur commande;bdfugue+bnf+cultura+ludum;
 9791043300172;The Summer Hikaru Died;the-summer-hikaru-died;6;Pika;The Summer Hikaru Died - Tome 6;2025-10-01;ludum;2025;Paru;7.70;ludum;isbn;41963853326;the-summer-hikaru-died-tome-6;the-summer-hikaru-died-tome-6-1003304;sur commande;bdfugue+bnf+cultura+ludum;
 9791043305795;The Summer Hikaru Died;the-summer-hikaru-died;7;Pika;T 07;2026-04-01;ludum;2026;Paru;7.70;ludum;isbn;43877529432;the-summer-hikaru-died-tome-7;the-summer-hikaru-died-tome-7-1003305;sur commande;bdfugue+bnf+cultura+ludum;
-9791043308482;The Summer Hikaru Died;the-summer-hikaru-died;8;Pika;The Summer Hikaru Died - Tome 8;2026-10-21;ludum;;Paru;7.70;ludum;serie;;the-summer-hikaru-died-tome-8;the-summer-hikaru-died-tome-8-1016781;sur commande;ajout-bdfugue+bdfugue+ludum;
+9791043308482;The Summer Hikaru Died;the-summer-hikaru-died;8;Pika;The Summer Hikaru Died - Tome 8;2026-10-21;ludum;;Paru;7.70;ludum;isbn;45362301796;the-summer-hikaru-died-tome-8;the-summer-hikaru-died-tome-8-1016781;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9791043315602;The Summer Hikaru Died;the-summer-hikaru-died;9;Pika;The Summer Hikaru Died - Tome 9;2027-04-07;ludum;;A paraître;7.70;ludum;serie;;;the-summer-hikaru-died-tome-9-1016783;précommande;ajout-ludum+ludum;
 9782368770870;The switch of first love;the-switch-of-first-love;99;IDP;;;;2014;;;;isbn;;;;;bnf;
 9782368778784;The swordsman;the-swordsman;;Meian;;;;2019;;;;isbn;42314667685;the-swordsman-integrale-tomes-1-a-9-coffret-collector-limite;;;bdfugue+bnf+cultura;
@@ -34523,7 +34549,7 @@
 9782811696870;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;6;Pika;The Warrior Princess and the Barbaric King - Tome 6;2025-05-14;ludum;2025;Paru;7.20;ludum;isbn;42314697495;the-warrior-princess-and-the-barbaric-king-tome-6;the-warrior-princess-and-the-barbaric-king-tome-6-1017191;sur commande;bdfugue+bnf+cultura+ludum;
 9782811696894;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;7;Pika;The Warrior Princess and the Barbaric King - Tome 7;2025-09-17;ludum;2025;Paru;7.20;ludum;isbn;41537608439;the-warrior-princess-and-the-barbaric-king-tome-7;the-warrior-princess-and-the-barbaric-king-tome-7-1017192;sur commande;bdfugue+bnf+cultura+ludum;
 9791043303371;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;8;Pika;The Warrior Princess and the Barbaric King - Tome 8;2025-11-19;ludum;2025;Paru;7.20;ludum;isbn;42417293036;the-warrior-princess-and-the-barbaric-king-tome-8;the-warrior-princess-and-the-barbaric-king-tome-8-1017193;sur commande;bdfugue+bnf+cultura+ludum;
-9791043304989;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;9;Pika;The Warrior Princess and the Barbaric King - Tome 9;2026-03-18;ludum;2026;Paru;7.20;ludum;isbn;43663062315;the-warrior-princess-and-the-barbaric-king-tome-9;the-warrior-princess-and-the-barbaric-king-tome-9-1017194;sur commande;bdfugue+bnf+cultura+ludum;
+9791043304989;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;9;Pika;The Warrior Princess and the Barbaric King - Tome 9;2026-03-18;ludum;2026;Paru;7.20;ludum;isbn;43663062315;the-warrior-princess-and-the-barbaric-king-tome-9;;rupture;bdfugue+bnf+cultura+ludum;
 9791043308109;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;10;Pika;The Warrior Princess and the Barbaric King - Tome 10;2026-07-08;ludum;2026;Paru;7.20;ludum;isbn;44592381986;the-warrior-princess-and-the-barbaric-king-tome-10;the-warrior-princess-and-the-barbaric-king-tome-10-1017195;sur commande;bdfugue+bnf+cultura+ludum;
 9791043311888;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;11;Pika;The Warrior Princess and the Barbaric King - Tome 11;2026-11-18;ludum;;Paru;7.20;ludum;isbn;45868198564;the-warrior-princess-and-the-barbaric-king-tome-11;the-warrior-princess-and-the-barbaric-king-tome-11-1017196;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9791043314728;The Warrior Princess and the Barbaric King;the-warrior-princess-and-the-barbaric-king;12;Pika;The Warrior Princess and the Barbaric King - Tome 12;2027-04-21;ludum;;A paraître;7.20;ludum;serie;;;the-warrior-princess-and-the-barbaric-king-tome-12-1017197;précommande;ajout-ludum+ludum;
@@ -34976,7 +35002,7 @@
 9791043301759;Toilet-bound Hanako-kun;toilet-bound-hanako-kun;22;Pika;Toilet-bound Hanako-kun - Tome 22;2025-07-02;ludum;2025;Paru;7.70;ludum;isbn;42314710620;toilet-bound-hanako-kun-tome-22;toilet-bound-hanako-kun-tome-22-1006864;sur commande;bdfugue+bnf+cultura+ludum;
 9791043303043;Toilet-bound Hanako-kun;toilet-bound-hanako-kun;23;Pika;Toilet-bound Hanako-kun - Tome 23;2025-11-05;ludum;2025;Paru;7.70;ludum;isbn;42267610088;toilet-bound-hanako-kun-tome-23;toilet-bound-hanako-kun-tome-23-1006865;sur commande;bdfugue+bnf+cultura+ludum;
 9791043305740;Toilet-bound Hanako-kun;toilet-bound-hanako-kun;24;Pika;Toilet-bound Hanako-kun - Tome 24;2026-03-04;ludum;2026;Paru;7.70;ludum;isbn;43488628043;toilet-bound-hanako-kun-tome-24;toilet-bound-hanako-kun-tome-24-1006866;sur commande;bdfugue+bnf+cultura+ludum;
-9791043308277;Toilet-bound Hanako-kun;toilet-bound-hanako-kun;25;Pika;;;;;;;;serie;;toilet-bound-hanako-kun-tome-25;;;ajout-bdfugue+bdfugue;date: aucune
+9791043308277;Toilet-bound Hanako-kun;toilet-bound-hanako-kun;25;Pika;;;;;;;;isbn;45362301795;toilet-bound-hanako-kun-tome-25;;;ajout-bdfugue+bdfugue+cultura;date: aucune
 9782811678043;Toilet-bound Hanako-kun - Édition collector;toilet-bound-hanako-kun-edition-collector;11;Pika;Toilet-bound Hanako-kun - Tome 11 - Édition collector;2023-01-04;ludum;2023;Paru;11.50;ludum;isbn;;;;rupture;bnf+ludum;serie: bnf=Toilet-bound Hanako-kun ludum=Toilet-bound Hanako-kun - Tome 11 - Édition collector → édition Toilet-bound Hanako-kun - Édition collector
 9782811683764;Toilet-bound Hanako-kun - Édition collector;toilet-bound-hanako-kun-edition-collector;15;Pika;Toilet-bound Hanako-kun - Tome 15 - Édition collector;2023-09-20;ludum;;Paru;11.50;ludum;isbn;44365541643;;;rupture;cultura+ludum+ludum-edition;
 9791043312007;Toilet-bound Hanako-kun - Édition collector;toilet-bound-hanako-kun-edition-collector;25;Pika;Toilet-bound Hanako-kun - Tome 25 - Édition collector;2026-10-21;ludum;2026;Paru;20.00;ludum;isbn;45693925299;toilet-bound-hanako-kun-tome-25-collector;toilet-bound-hanako-kun-tome-25-edition-collector-1016780;sur commande;bdfugue+bnf+cultura+ludum;serie: bnf=Toilet-bound Hanako-kun ludum=Toilet-bound Hanako-kun - Tome 25 - Édition collector → édition Toilet-bound Hanako-kun - Édition collector
@@ -35434,18 +35460,18 @@
 9782351802342;Tout sauf un ange !!;tout-sauf-un-ange;8;Taifu Comics;;;;2008;;;;isbn;;;;;bnf;
 9782376973744;Tout savoir sur Goldorak et les robots géants;tout-savoir-sur-goldorak-et-les-robots-geants;1;Ynnis;;;;2024;;;;isbn;;;;;bnf;
 9782280118118;Toutes griffes dehors;toutes-griffes-dehors;;Harlequin;;;;2001;;;;serie;;;;;bnf;
-9782385313210;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;1;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-1-vf;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313227;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;2;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-2;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313234;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;3;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-3;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313241;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;4;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-4;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313258;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;5;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-5;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313265;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;6;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-6;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313272;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;7;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-7;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313289;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;8;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-8;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313296;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;9;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-9;;;ajout-bdfugue+bdfugue;date: aucune
-9782385313302;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;10;Akata;;;;;;;;aucune;;toutes-les-raisons-de-s-aimer-tome-10;;;ajout-bdfugue+bdfugue;date: aucune
+9782385313210;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;1;Akata;;;;;;;;isbn;46382679901;toutes-les-raisons-de-s-aimer-tome-1-vf;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313227;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;2;Akata;;;;;;;;isbn;46382679902;toutes-les-raisons-de-s-aimer-tome-2;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313234;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;3;Akata;;;;;;;;isbn;42314677388;toutes-les-raisons-de-s-aimer-tome-3;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313241;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;4;Akata;;;;;;;;isbn;42314677389;toutes-les-raisons-de-s-aimer-tome-4;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313258;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;5;Akata;;;;;;;;isbn;46382679903;toutes-les-raisons-de-s-aimer-tome-5;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313265;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;6;Akata;;;;;;;;isbn;42192556499;toutes-les-raisons-de-s-aimer-tome-6;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313272;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;7;Akata;;;;;;;;isbn;46382679904;toutes-les-raisons-de-s-aimer-tome-7;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313289;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;8;Akata;;;;;;;;isbn;42323511018;toutes-les-raisons-de-s-aimer-tome-8;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313296;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;9;Akata;;;;;;;;isbn;42910463577;toutes-les-raisons-de-s-aimer-tome-9;;;ajout-bdfugue+bdfugue+cultura;date: aucune
+9782385313302;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;10;Akata;;;;;;;;isbn;44896932929;toutes-les-raisons-de-s-aimer-tome-10;;;ajout-bdfugue+bdfugue+cultura;date: aucune
 9782385313319;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;11;Akata;;;;;;;;isbn;45418233289;toutes-les-raisons-de-s-aimer-tome-11;;;ajout-bnf+bdfugue+cultura;date: aucune
-9782385313326;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;12;Akata;;;;;;;;aucune;46886477372;;;;ajout-cultura+cultura;date: aucune
+9782385313326;Toutes les raisons de s'aimer;toutes-les-raisons-de-s-aimer;12;Akata;;;;;;;;isbn;46886477372;;;;ajout-cultura+cultura;date: aucune
 9782377173389;Tower of god;tower-of-god;1;Ototo;;;;;;;;isbn;42314673406;tower-of-god-tome-1;;;ajout-cultura+bdfugue+cultura;date: aucune
 9782377175796;Tower of god;tower-of-god;2;Ototo;;;;2026;;;;isbn;43085679102;tower-of-god-saison-2-tome-2;;;bdfugue+bnf+cultura;
 9782377173754;Tower of god;tower-of-god;3;Ototo;;;;;;;;isbn;42294562970;tower-of-god-tome-3;;;ajout-cultura+bdfugue+cultura;date: aucune
@@ -36025,32 +36051,6 @@
 9782355290152;Two pieces;two-pieces;3;Gekkô;;;;2009;;;;isbn;;;;;bnf;
 9782368777411;Two sides of the same coin;two-sides-of-the-same-coin;1;IDP;;;;2021;;;;isbn;;two-sides-of-the-same-coin-tome-1;;;bdfugue+bnf;
 9782368777428;Two sides of the same coin;two-sides-of-the-same-coin;2;IDP;;;;2021;;;;isbn;;two-sides-of-the-same-coin-tome-2;;;bdfugue+bnf;
-9782915513585;Übel Blatt;ubel-blatt;0;Ki-oon;;;;2007;;;;isbn;42314704131;ubel-blatt-t-0;;;bdfugue+bnf+cultura;
-9782915513684;Übel Blatt;ubel-blatt;1;Ki-oon;;;;2007;;;;isbn;42314704133;ubel-blatt-t-1;;;bdfugue+bnf+cultura;
-9782915513783;Übel Blatt;ubel-blatt;2;Ki-oon;;;;2007;;;;isbn;42314704134;ubel-blatt-t-2;;;bdfugue+bnf+cultura;
-9782915513875;Übel Blatt;ubel-blatt;3;Ki-oon;;;;2007;;;;isbn;;;;;bnf;
-9782355920004;Übel Blatt;ubel-blatt;4;Ki-oon;;;;2008;;;;isbn;;ubel-blatt-t-4;;;bdfugue+bnf;
-9791032723685;Übel Blatt;ubel-blatt;4;Ki-oon;Übel Blatt II - Tome 4;2026-10-01;ludum;2026;Paru;7.95;ludum;isbn;45494621337;ubel-blatt-ii-tome-4;ubel-blatt-ii-tome-4-1014138;sur commande;bdfugue+bnf+cultura+ludum;
-9782355920073;Übel Blatt;ubel-blatt;5;Ki-oon;;;;2008;;;;isbn;;ubel-blatt-t-5;;;bdfugue+bnf;
-9782355920202;Übel Blatt;ubel-blatt;6;Ki-oon;;;;2008;;;;isbn;42159931174;ubel-blatt-t-6;;;bdfugue+bnf+cultura;
-9782355920349;Übel Blatt;ubel-blatt;7;Ki-oon;;;;2008;;;;isbn;42314664522;ubel-blatt-t-7;;;bdfugue+bnf+cultura;
-9782355920356;Übel Blatt;ubel-blatt;8;Ki-oon;;;;2009;;;;isbn;42314664523;ubel-blatt-t-8;;;bdfugue+bnf+cultura;
-9782355920776;Übel Blatt;ubel-blatt;9;Ki-oon;;;;2009;;;;isbn;42314664531;ubel-blatt-t-9;;;bdfugue+bnf+cultura;
-9782355921124;Übel Blatt;ubel-blatt;10;Ki-oon;;;;2009;;;;isbn;41593479860;ubel-blatt-t-10;;;bdfugue+bnf+cultura;
-9782355921773;Übel Blatt;ubel-blatt;11;Ki-oon;;;;2012;;;;isbn;42314664552;ubel-blatt-t-11;;;bdfugue+bnf+cultura;
-9782355924644;Übel Blatt;ubel-blatt;12;Ki-oon;;;;2012;;;;isbn;42314664664;ubel-blatt-t-12;;;bdfugue+bnf+cultura;
-9782355925528;Übel Blatt;ubel-blatt;13;Ki-oon;;;;2013;;;;isbn;42314664703;ubel-blatt-t13;;;bdfugue+bnf+cultura;
-9782355926044;Übel Blatt;ubel-blatt;14;Ki-oon;;;;2013;;;;isbn;42314664723;ubel-blatt-tome-14;;;bdfugue+bnf+cultura;
-9782355926921;Übel Blatt;ubel-blatt;15;Ki-oon;;;;2014;;;;isbn;46265035835;;;;bnf+cultura;
-9782355927553;Übel Blatt;ubel-blatt;16;Ki-oon;;;;2015;;;;isbn;41036328083;ubel-blatt-t-16;;;bdfugue+bnf+cultura;
-9782355928734;Übel Blatt;ubel-blatt;17;Ki-oon;;;;2015;;;;isbn;41036328221;ubel-blatt-t17;;;bdfugue+bnf+cultura;
-9782355929557;Übel Blatt;ubel-blatt;18;Ki-oon;;;;2016;;;;isbn;42314664861;ubel-blatt-t18;;;bdfugue+bnf+cultura;
-9791032700136;Übel Blatt;ubel-blatt;19;Ki-oon;;;;2017;;;;isbn;41893657080;ubel-blatt-tome-19;;;bdfugue+bnf+cultura;
-9791032701812;Übel Blatt;ubel-blatt;20;Ki-oon;;;;2017;;;;serie;;ubel-blatt-tome-20;;;bdfugue+bnf;
-9791032702673;Übel Blatt;ubel-blatt;21;Ki-oon;;;;2018;;;;isbn;41036392096;ubel-blatt-t21;;;bdfugue+bnf+cultura;
-9791032703373;Übel Blatt;ubel-blatt;22;Ki-oon;;;;2018;;;;isbn;41593481022;ubel-blatt-tome-22;;;bdfugue+bnf+cultura;
-9791032703670;Übel Blatt;ubel-blatt;23;Ki-oon;;;;2019;;;;isbn;43219718592;;;;bnf+cultura;
-9791032704967;Übel Blatt;ubel-blatt;23;Ki-oon;;;;2019;;;;serie;42314706718;ubel-blatt-tome-23;;;bdfugue+bnf+cultura;
 9791032720356;Übel Blatt II;ubel-blatt-ii;1;Ki-oon;Übel Blatt II - Tome 1;2025-04-03;ludum;;Paru;7.95;ludum;isbn;42314707247;ubel-blatt-ii-tome-1;ubel-blatt-ii-tome-1-1014135;sur commande;ajout-cultura+bdfugue+cultura+ludum;
 9791032720363;Übel Blatt II;ubel-blatt-ii;2;Ki-oon;Übel Blatt II - Tome 2;2025-07-03;ludum;2025;Paru;7.95;ludum;isbn;42314707248;ubel-blatt-ii-tome-2;ubel-blatt-ii-tome-2-1014136;sur commande;bdfugue+bnf+cultura+ludum;
 9791032720370;Übel Blatt II;ubel-blatt-ii;3;Ki-oon;Übel Blatt II - Tome 3;2026-01-08;ludum;2026;Paru;7.95;ludum;isbn;43383396297;ubel-blatt-ii-tome-3;ubel-blatt-ii-tome-3-1014137;sur commande;bdfugue+bnf+cultura+ludum;
@@ -36078,7 +36078,7 @@
 9782351802632;Ma colocataire Ulala;ulala-ma-colocataire;3;Taifu Comics;;;;2008;;;;isbn;;;;;bnf;
 9782351802649;Ma colocataire Ulala;ulala-ma-colocataire;4;Taifu Comics;;;;2008;;;;isbn;;;;;bnf;
 9782491277499;Ullambana;ullambana;112;Patayo;;;;2022;;;;serie;;;;;bnf;
-9782820355133;Ultimate exorcist Kiyoshi;ultimate-exorcist-kiyoshi;1;Kazé;Ultimate Exorcist Kiyoshi - Tome 1;2026-07-08;ludum;;Paru;7.29;ludum;isbn;44128855889;ultimate-exorcist-kiyoshi-tome-1;;rupture;ajout-bdfugue+bdfugue+cultura+ludum;
+9782820355133;Ultimate exorcist Kiyoshi;ultimate-exorcist-kiyoshi;1;Kazé;Ultimate Exorcist Kiyoshi - Tome 1;2026-07-08;ludum;;Paru;7.29;ludum;isbn;44128855889;ultimate-exorcist-kiyoshi-tome-1;ultimate-exorcist-kiyoshi-tome-1-1013603;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
 9782820355140;Ultimate exorcist Kiyoshi;ultimate-exorcist-kiyoshi;2;Kazé;Ultimate Exorcist Kiyoshi - Tome 2;2026-07-08;ludum;2026;Paru;7.29;ludum;isbn;44128855890;ultimate-exorcist-kiyoshi-tome-2;ultimate-exorcist-kiyoshi-tome-2-1013604;sur commande;bdfugue+bnf+cultura+ludum;
 9782820355713;Ultimate exorcist Kiyoshi;ultimate-exorcist-kiyoshi;3;Kazé;Ultimate Exorcist Kiyoshi - Tome 3;2026-09-02;ludum;;Paru;7.29;ludum;isbn;44628940886;ultimate-exorcist-kiyoshi-tome-3;ultimate-exorcist-kiyoshi-tome-3-1013605;sur commande;ajout-bnf+bdfugue+cultura+ludum;
 9782820355935;Ultimate exorcist Kiyoshi;ultimate-exorcist-kiyoshi;4;Kazé;Ultimate Exorcist Kiyoshi - Tome 4;2026-11-04;ludum;;Paru;7.29;ludum;isbn;45082650569;ultimate-exorcist-kiyoshi-tome-4;ultimate-exorcist-kiyoshi-tome-4-1013607;sur commande;ajout-bdfugue+bdfugue+cultura+ludum;
@@ -38387,7 +38387,7 @@
 9782918857266;Yôsei;yosei;1;Nobi Nobi !;;;;2013;;;;serie;;;;;bnf;
 9782918857648;Yôsei;yosei;1;Nobi Nobi !;;;;2014;;;;serie;;;;;bnf;
 9782918857853;Yôsei;yosei;1;Nobi Nobi !;;;;2015;;;;serie;;;;;bnf;
-9782302091863;Yoshi's new island;yoshi-s-new-island;1;Soleil;;;;2021;;;;isbn;;yoshi-new-island;;;bdfugue+bnf;
+9782302091863;Yoshi's new island;yoshi-s-new-island;1;Soleil;;;;2021;;;;isbn;;;;;bnf;
 9782351420713;Yotsuba & !;yotsuba;1;Kurokawa;Yotsuba & ! - Tome 1;2006-08-17;ludum;2006;Paru;7.95;ludum;isbn;42314663320;yotsuba-t-1;yotsuba--tome-1-1015780;sur commande;bdfugue+bnf+cultura+ludum;
 9782351420720;Yotsuba & !;yotsuba;2;Kurokawa;Yotsuba & ! - Tome 2;2006-10-12;ludum;2006;Paru;7.95;ludum;isbn;42314663321;yotsuba-t-2;yotsuba--tome-2-1015781;sur commande;bdfugue+bnf+cultura+ludum;
 9782351420737;Yotsuba & !;yotsuba;3;Kurokawa;Yotsuba & ! - Tome 3;2006-12-14;ludum;2006;Paru;7.95;ludum;isbn;46122908122;yotsuba-t-3;yotsuba--tome-3-1015782;sur commande;bdfugue+bnf+cultura+ludum;
