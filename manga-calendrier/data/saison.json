@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-22T11:27:01.391Z",
+ "generatedAt": "2026-11-23T12:41:23.609Z",
  "seasons": [
   {
    "season": "FALL",
@@ -499,6 +499,26 @@
      ]
     },
     {
+     "id": 208025,
+     "t": "I'm Dating a Dark Summoner",
+     "f": "TV_SHORT",
+     "st": "RELEASING",
+     "n": 12,
+     "d": [
+      2026,
+      10,
+      5
+     ],
+     "u": "https://anilist.co/anime/208025",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208025-JKvqWNr8rz8l.jpg",
+     "g": [
+      "Comedy",
+      "Ecchi",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 185756,
      "t": "As a Reincarnated Aristocrat, I'll Use My Appraisal Skill to Rise in the World Season 3",
      "f": "TV",
@@ -521,26 +541,6 @@
        "u": "https://www.crunchyroll.com/series/GG5H5XQMD/as-a-reincarnated-aristocrat-ill-use-my-appraisal-skill-to-rise-in-the-world"
       }
      ]
-    },
-    {
-     "id": 208025,
-     "t": "I'm Dating a Dark Summoner",
-     "f": "TV_SHORT",
-     "st": "RELEASING",
-     "n": 12,
-     "d": [
-      2026,
-      10,
-      5
-     ],
-     "u": "https://anilist.co/anime/208025",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx208025-JKvqWNr8rz8l.jpg",
-     "g": [
-      "Comedy",
-      "Ecchi",
-      "Fantasy"
-     ],
-     "s": []
     },
     {
      "id": 191788,
@@ -691,6 +691,30 @@
      ]
     },
     {
+     "id": 205896,
+     "t": "Full Clearing Another World under a Goddess with Zero Believers",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 0,
+     "d": [
+      2026,
+      10,
+      11
+     ],
+     "u": "https://anilist.co/anime/205896",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
+     "g": [
+      "Adventure",
+      "Fantasy"
+     ],
+     "s": [
+      {
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
+      }
+     ]
+    },
+    {
      "id": 204011,
      "t": "PSYREN",
      "f": "TV",
@@ -712,30 +736,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00371866/psyren"
-      }
-     ]
-    },
-    {
-     "id": 205896,
-     "t": "Full Clearing Another World under a Goddess with Zero Believers",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 0,
-     "d": [
-      2026,
-      10,
-      11
-     ],
-     "u": "https://anilist.co/anime/205896",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205896-ElrV8oVAsuax.jpg",
-     "g": [
-      "Adventure",
-      "Fantasy"
-     ],
-     "s": [
-      {
-       "n": "Crunchyroll",
-       "u": "https://www.crunchyroll.com/series/GT00383992/full-clearing-another-world-under-a-goddess-with-zero-believers"
       }
      ]
     },
@@ -1464,7 +1464,7 @@
       6
      ],
      "u": "https://anilist.co/anime/197619",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197619-tBmuk1M3fbgd.jpg",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx197619-EZYu0cg8NADa.jpg",
      "g": [
       "Drama",
       "Fantasy",
@@ -1669,6 +1669,25 @@
      "s": []
     },
     {
+     "id": 207782,
+     "t": "Odebu Akujo ni Tensei Shitara, Naze ka Last Boss Ouji-sama ni Shuuchaku Sareteimasu",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/207782",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207782-wKac51K7adn3.jpg",
+     "g": [
+      "Fantasy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
      "id": 213497,
      "t": "Sudachi no Maoujou",
      "f": "TV",
@@ -1685,25 +1704,6 @@
       "Action",
       "Adventure",
       "Comedy"
-     ],
-     "s": []
-    },
-    {
-     "id": 207782,
-     "t": "Odebu Akujo ni Tensei Shitara, Naze ka Last Boss Ouji-sama ni Shuuchaku Sareteimasu",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/207782",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207782-wKac51K7adn3.jpg",
-     "g": [
-      "Fantasy",
-      "Romance"
      ],
      "s": []
     },
