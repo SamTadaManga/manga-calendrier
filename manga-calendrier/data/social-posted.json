@@ -244,5 +244,14 @@
  },
  "mail-2026-11-20": {
   "at": "2026-11-20T06:12:37.282Z"
+ },
+ "semaine-2026-11-23": {
+  "bluesky": {
+   "at": "2026-11-23T06:12:44.330Z",
+   "id": "at://did:plc:utmfgrrz5d3bd46r2qbh44wd/app.bsky.feed.post/3n2xhxpwtob2f"
+  }
+ },
+ "mail-2026-11-23": {
+  "at": "2026-11-23T06:12:46.997Z"
  }
 }
