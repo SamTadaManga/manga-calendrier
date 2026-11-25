@@ -684,6 +684,7 @@ function serieMeta(S, n) {
   const what = n.tome ? `${S.name} tome ${n.tome}` : S.name;
   let title = `${what} : date de sortie le ${when}`;
   if (title.length > 58) title = `${what} : sortie le ${when}`;
+  if (title.length > 62) title = `${what} : date de sortie`; // garde le numéro du tome, que les gens tapent
   if (title.length > 62) title = fallbackTitle;
   const pub = n.editeur ? ` chez ${n.editeur}` : '';
   let description = `Prochain tome de ${S.name} : ${n.tome ? `le tome ${n.tome} sort` : 'sortie'} le ${when}${pub}. Dates des tomes suivants, ISBN et où l'acheter.`;
@@ -962,6 +963,7 @@ ${(() => { const r = resumeCat(c.k); return r ? `<section class="synopsis"><h2>R
 </div></div>
 <h2>Les tomes</h2>${volList(c, c.v, holesOf(c))}
 ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
+<section class="faq faq-serie"><h2>Questions fréquentes sur ${esc(c.n)}</h2><h3>Quand sort le prochain tome de ${esc(c.n)} ?</h3><p>Aucun nouveau tome de ${esc(c.n)} n'est annoncé pour le moment dans les plannings des éditeurs que nous suivons.</p><h3>Combien de tomes de ${esc(c.n)} sont parus en France ?</h3><p>${esc(plural(n, 'tome est paru', 'tomes sont parus'))} en France${c.e ? ` chez ${esc(c.e)}` : ''}${y1 ? `, le dernier en ${y1}` : ''}.</p></section>
 <p class="muted facts-src">Liste des tomes : <a href="https://catalogue.bnf.fr" rel="noopener nofollow">catalogue général de la BnF</a> (licence ouverte). Les dates exactes de sortie ne sont connues que pour les séries suivies dans les plannings.</p>
 <p class="chiprow">${prev ? `<a class="chip" href="/serie/${prev.k}/">← ${esc(prev.n)}</a>` : ''}${next ? `<a class="chip" href="/serie/${next.k}/">${esc(next.n)} →</a>` : ''}</p>
 <p class="more"><a href="/series/lettre/${L}/">Séries en ${esc(L === '0-9' ? '0-9' : L.toUpperCase())}</a> · <a href="/series/">Toutes les séries</a>${c.e && trackedPub(c.e) ? ` · <a href="/editeur/${slugify(c.e)}/">Sorties ${esc(c.e)}</a>` : ''}</p>`,
