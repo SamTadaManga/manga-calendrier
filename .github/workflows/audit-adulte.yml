@@ -1,0 +1,76 @@
+name: Audit du contenu adulte
+# Lancement manuel. Interroge AniList et MangaUpdates (et MyAnimeList si demandé) pour chaque série du site, croise avec le résumé, les couvertures et l'éditeur,
+# puis écrit manga-calendrier/audit-adulte/audit-adulte.csv (séries à relire, la plus suspecte en premier), audit-adulte-complet.csv et editeurs.csv.
+# Les résultats des bases sont gardés dans data/audit-adulte-cache.json : un nouveau lancement ne redemande que ce qui manque.
+# Rien n'est retiré du site par ce workflow : tu remplis la colonne « decision » (retirer / conserver), puis « node scripts/adulte-audit.mjs appliquer » prépare les ajouts à data/contenu-adulte.json.
+on:
+  workflow_dispatch:
+    inputs:
+      limite:
+        description: "Nombre maximum de séries à interroger (environ 0,8 s par série)"
+        default: '8000'
+      minutes:
+        description: "Durée maximale de l'interrogation, en minutes"
+        default: '240'
+      sources:
+        description: "Bases : anilist,mangaupdates,jikan (jikan = MyAnimeList, plus lent)"
+        default: 'anilist,mangaupdates'
+      refaire:
+        description: "Tout redemander, même ce qui est déjà en mémoire"
+        type: boolean
+        default: false
+permissions:
+  contents: write
+concurrency:
+  group: audit-adulte
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 290
+    defaults:
+      run:
+        working-directory: manga-calendrier
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Interroger les bases et écrire les CSV
+        env:
+          IN_LIMITE: ${{ inputs.limite }}
+          IN_MINUTES: ${{ inputs.minutes }}
+          IN_SOURCES: ${{ inputs.sources }}
+          IN_REFAIRE: ${{ inputs.refaire }}
+        run: |
+          case "$IN_LIMITE" in ''|*[!0-9]*) echo "Limite refusée."; exit 1;; esac
+          case "$IN_MINUTES" in ''|*[!0-9]*) echo "Durée refusée."; exit 1;; esac
+          case "$IN_SOURCES" in ''|*[!a-z,]*) echo "Bases refusées."; exit 1;; esac
+          EXTRA=""; [ "$IN_REFAIRE" = "true" ] && EXTRA="--refaire"
+          node scripts/adulte-audit.mjs auditer --limite="$IN_LIMITE" --minutes="$IN_MINUTES" --sources="$IN_SOURCES" $EXTRA | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: audit-adulte
+          path: manga-calendrier/audit-adulte/
+      - name: Enregistrer
+        working-directory: .
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          KEEP="$RUNNER_TEMP/keep"
+          mkdir -p "$KEEP/audit-adulte"
+          cp manga-calendrier/data/audit-adulte-cache.json "$KEEP/" 2>/dev/null || true
+          cp manga-calendrier/audit-adulte/*.csv "$KEEP/audit-adulte/" 2>/dev/null || true
+          for i in 1 2 3 4 5; do
+            git fetch origin main
+            git reset --hard origin/main
+            mkdir -p manga-calendrier/audit-adulte
+            [ -f "$KEEP/audit-adulte-cache.json" ] && cp "$KEEP/audit-adulte-cache.json" manga-calendrier/data/
+            cp "$KEEP"/audit-adulte/*.csv manga-calendrier/audit-adulte/ 2>/dev/null || true
+            git add manga-calendrier/data/audit-adulte-cache.json manga-calendrier/audit-adulte 2>/dev/null || true
+            if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
+            git commit -m "Audit du contenu adulte : résultats"
+            if git push origin HEAD:main; then exit 0; fi
+            sleep 5
+          done
+          exit 1
