@@ -1774,8 +1774,10 @@ test('Visibilité IA/moteurs : réponse datée sur les séries et les mois, tome
   const home = lire('index.html');
   assert.match(home, /"sameAs":\["https:\/\/x\.com\/Tada_Ebook"/, 'profils déclarés dans le JSON-LD');
   assert.match(lire('changements', 'index.html'), /<h1>Tomes reportés et changements de date<\/h1>/);
-  const series = readdirSync(path.join(dist, 'serie')).map((k) => lire('serie', k, 'index.html')).find((h) => h.includes('faq-serie'));
+  const series = readdirSync(path.join(dist, 'serie')).map((k) => lire('serie', k, 'index.html')).find((h) => h.includes('faq-serie') && h.includes('Plannings des éditeurs vérifiés'));
   assert.ok(series && /Plannings des éditeurs vérifiés le <time datetime="\d{4}-\d{2}-\d{2}">/.test(series) && /Quand sort le prochain tome de/.test(series) && /"dateModified":"\d{4}-\d{2}-\d{2}"/.test(series), 'page série : question, réponse, date de vérification');
+  const cat = lire('serie', 'imperatrice-remariee-l', 'index.html');
+  assert.match(cat, /Questions fréquentes sur[\s\S]*Combien de tomes de .* sont parus en France/, 'page catalogue : FAQ');
   const mois = readdirSync(path.join(dist, 'sorties-manga')).filter((d) => /-\d{4}$/.test(d)).map((d) => lire('sorties-manga', d, 'index.html')).find((h) => h.includes('Au programme de'));
   assert.ok(mois && /Liste mise à jour le <time datetime="\d{4}-\d{2}-\d{2}">/.test(mois), 'page mois : résumé et date de mise à jour');
   const { urlsAEnvoyer } = await import('../scripts/indexnow.mjs');
