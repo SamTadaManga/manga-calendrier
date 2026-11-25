@@ -1,6 +1,6 @@
 // Publication quotidienne sur les réseaux : choisit les sorties, dessine les visuels, publie là où les identifiants existent,
 // et prépare un dossier prêt à publier à la main (TikTok, ou tout autre réseau sans identifiants).
-// Usage : node scripts/social.mjs [--kinds=auto|jour,semaine,nouveautes] [--platforms=bluesky,x,instagram,pinterest]
+// Usage : node scripts/social.mjs [--kinds=auto|jour,semaine,nouveautes] [--platforms=bluesky,x,instagram,threads,pinterest]
 //         [--date=AAAA-MM-JJ] [--out=social-out] [--dry-run] [--force]
 // --dry-run : dessine les images et écrit les textes, ne publie rien. --force : republie même si c'est déjà fait.
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
@@ -8,7 +8,7 @@ import path from 'node:path';
 import { paths, loadAllManga, readAnime, loadConfig, parisKey, now, weekdayOfKey } from './lib.mjs';
 import { compose } from './social-contenu.mjs';
 import { jobs, render } from './social-visuels.mjs';
-import { postBluesky, postX, postInstagram, postPinterest, blueskyReady, xReady, instagramReady, pinterestReady } from './social-publier.mjs';
+import { postBluesky, postX, postInstagram, postThreads, postPinterest, blueskyReady, xReady, instagramReady, threadsReady, pinterestReady } from './social-publier.mjs';
 import { r2Client } from './r2.mjs';
 import { loadBnf } from './catalogue-bnf.mjs';
 import { sendMail } from './mail.mjs';
@@ -26,9 +26,9 @@ const site = config.siteUrl || 'https://prochaintome.fr';
 const wd = weekdayOfKey(today); // 0 = dimanche
 const requested = arg('kinds', 'auto');
 const kinds = requested === 'auto' ? ['jour', ...(wd === 1 ? ['semaine'] : []), ...(wd === 4 ? ['nouveautes'] : [])] : requested.split(',');
-const ALL = ['bluesky', 'x', 'instagram', 'pinterest'];
+const ALL = ['bluesky', 'x', 'instagram', 'threads', 'pinterest'];
 const want = arg('platforms') ? arg('platforms').split(',') : ALL;
-const READY = { bluesky: blueskyReady(env), x: xReady(env), instagram: instagramReady(env), pinterest: pinterestReady(env) };
+const READY = { bluesky: blueskyReady(env), x: xReady(env), instagram: instagramReady(env), threads: threadsReady(env), pinterest: pinterestReady(env) };
 
 const logFile = path.join(P.dataDir, 'social-posted.json');
 let posted = {}; try { posted = JSON.parse(readFileSync(logFile, 'utf8')); } catch {}
@@ -53,7 +53,7 @@ for (const kind of kinds) {
   const byName = Object.fromEntries(files.map((f) => [f.name, f]));
   const buf = (n) => readFileSync(byName[n].file);
   const carousel = (fmt) => files.filter((f) => f.name.startsWith(`${fmt}-`)).sort((a, b) => a.name.localeCompare(b.name, 'en', { numeric: true }));
-  writeFileSync(path.join(dir, 'textes.md'), `# ${data.key}\n\n## Bluesky\n\n${data.text.bluesky}\n\n## X\n\n${data.text.x}\n\n## Instagram (carrousel instagram-*.jpg)\n\n${data.text.instagram}\n\n## TikTok (photos tiktok-*.jpg, mode diaporama)\n\n${data.text.tiktok}\n\n## Pinterest (pinterest.jpg)\n\nTitre : ${data.text.pinterest.title}\n\nDescription : ${data.text.pinterest.description}\n\nLien : ${data.text.pinterest.link}\n`);
+  writeFileSync(path.join(dir, 'textes.md'), `# ${data.key}\n\n## Bluesky\n\n${data.text.bluesky}\n\n## X\n\n${data.text.x}\n\n## Instagram (carrousel instagram-*.jpg)\n\n${data.text.instagram}\n\n## Threads (instagram-1.jpg conseillée)\n\n${data.text.threads}\n\n## TikTok (photos tiktok-*.jpg, mode diaporama)\n\n${data.text.tiktok}\n\n## Pinterest (pinterest.jpg)\n\nTitre : ${data.text.pinterest.title}\n\nDescription : ${data.text.pinterest.description}\n\nLien : ${data.text.pinterest.link}\n`);
 
   packs.push({ data, dir, files });
   const done = (p) => posted[data.key]?.[p];
@@ -74,15 +74,17 @@ for (const kind of kinds) {
       if (p === 'bluesky') res = await postBluesky({ text: data.text.bluesky, link: data.text.blueskyLink, images: [{ buf: buf('bluesky-x'), alt: data.alt, w: 1200, h: 675 }] }, env);
       if (p === 'x') res = await postX({ text: data.text.x, images: [{ buf: buf('bluesky-x') }] }, env);
       if (p === 'instagram') { urls ??= await upload(); res = await postInstagram({ caption: data.text.instagram, urls: carousel('instagram').map((f) => urls[f.name]) }, env); }
+      if (p === 'threads') { urls ??= await upload(); res = await postThreads({ text: data.text.threads, urls: carousel('instagram').slice(0, 4).map((f) => urls[f.name]) }, env); }
       if (p === 'pinterest') { urls ??= await upload(); res = await postPinterest({ ...data.text.pinterest, alt: data.alt, url: urls.pinterest }, env); }
       mark(p, res?.id); console.log(`  ${p} : publié.`);
     } catch (e) { failures++; console.error(`  ${p} : ÉCHEC — ${e.message}`); }
   }
 }
 // E-mail du matin : images et textes pour les réseaux publiés à la main (par défaut X, Pinterest, TikTok).
-// Variables : SMTP_USER (adresse Gmail), SMTP_PASS (mot de passe d'application), MAIL_TO (défaut : SMTP_USER), MAIL_PLATFORMS (défaut : x,pinterest,tiktok)
+// Variables : SMTP_USER (adresse Gmail), SMTP_PASS (mot de passe d'application), MAIL_TO (défaut : SMTP_USER), MAIL_PLATFORMS (défaut : x,tiktok + réseaux sans API configurée)
 if (!DRY && env.SMTP_USER && env.SMTP_PASS && packs.length) {
-  const wanted = (env.MAIL_PLATFORMS || 'x,pinterest,tiktok').split(',').map((x) => x.trim()).filter(Boolean);
+  // Par défaut : X et TikTok (pas d'API) + tout réseau dont l'API n'est pas encore configurée. Pinterest reprend les posts Instagram (publication automatique côté Pinterest) : plus d'envoi dès que l'API Instagram marche.
+  const wanted = (env.MAIL_PLATFORMS || ['x', 'tiktok', ...(READY.instagram ? [] : ['instagram']), ...(READY.threads ? [] : ['threads']), ...(READY.pinterest || READY.instagram ? [] : ['pinterest'])].join(',')).split(',').map((x) => x.trim()).filter(Boolean);
   if (posted[`mail-${today}`] && !FORCE) console.log('  e-mail : déjà envoyé.');
   else {
     const sections = []; const att = new Map();
@@ -92,6 +94,7 @@ if (!DRY && env.SMTP_USER && env.SMTP_PASS && packs.length) {
       if (wanted.includes('x')) { add('bluesky-x'); sections.push(`--- X (image : ${data.key}-bluesky-x.jpg)\n\n${t.x}`); }
       if (wanted.includes('pinterest')) { add('pinterest'); sections.push(`--- Pinterest (image : ${data.key}-pinterest.jpg)\n\nTitre : ${t.pinterest.title}\n\nDescription : ${t.pinterest.description}\n\nLien : ${t.pinterest.link}`); }
       if (wanted.includes('tiktok')) { files.filter((f) => f.name.startsWith('tiktok-')).forEach((f) => add(f.name)); sections.push(`--- TikTok (images : ${data.key}-tiktok-*.jpg, mode photos)\n\n${t.tiktok}`); }
+      if (wanted.includes('threads')) { sections.push(`--- Threads (image conseillée : ${data.key}-instagram-1.jpg)\n\n${t.threads}`); add('instagram-1'); }
       if (wanted.includes('instagram')) { files.filter((f) => f.name.startsWith('instagram-')).forEach((f) => add(f.name)); sections.push(`--- Instagram (carrousel : ${data.key}-instagram-*.jpg)\n\n${t.instagram}`); }
     }
     try {
