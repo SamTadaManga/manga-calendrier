@@ -144,7 +144,7 @@ test('chaîne complète : fetch (simulé), articles du jour, build', () => {
     assert.ok(existsSync(dist(f)), `fichier manquant : ${f}`);
   }
   assert.ok(!existsSync(dist('articles/brouillon/index.html')), 'un brouillon ne doit pas être publié');
-  assert.ok(existsSync(dist('og.png')) && read(dirs.OUT_DIR, 'index.html').includes('property="og:image" content="https://test.example.org/og.png"'), 'image de partage');
+  assert.ok(existsSync(dist('og.png')) && read(dirs.OUT_DIR, 'index.html').includes('property="og:image" content="https://test.example.org/og.png?v=2"'), 'image de partage');
   assert.ok(!existsSync(dist('articles/futur/index.html')), 'un article daté du futur ne doit pas être publié');
   assert.ok(!existsSync(dist('articles/modele/index.html')) && !existsSync(dist('articles/_modele/index.html')));
 
@@ -461,7 +461,7 @@ test('pages par mois, par série et index : générées, liées et dans le sitem
   assert.match(rd(`sorties-manga/${monthLinks[0]}/index.html`), /Sorties manga de/);
   // référencement : icône lisible par Google, données structurées des mois et des séries, en-têtes de cache
   assert.ok(existsSync(path.join(tmp, 'dist/favicon.ico')) && existsSync(path.join(tmp, 'dist/favicon-48.png')));
-  assert.match(rd('index.html'), /rel="icon" href="\/favicon\.ico"/);
+  assert.match(rd('index.html'), /rel="icon" href="\/favicon\.ico\?v=2"/);
   assert.ok(!/rel="icon" href="data:/.test(rd('index.html')), 'pas d\'icône en data: (Google ne la lit pas)');
   const ldOf = (f) => [...rd(f).matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].flatMap((m) => [].concat(JSON.parse(m[1])));
   const monthLd = ldOf(`sorties-manga/${monthLinks[0]}/index.html`).find((j) => j['@type'] === 'CollectionPage');
