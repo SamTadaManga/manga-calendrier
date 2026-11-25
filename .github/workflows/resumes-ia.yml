@@ -85,12 +85,12 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           KEEP="$RUNNER_TEMP/keep"; mkdir -p "$KEEP"
-          [ -f manga-calendrier/data/resumes-ia.json ] && cp manga-calendrier/data/resumes-ia.json "$KEEP/resumes-ia.json"
+          for f in resumes-ia.json resumes-ia-essais.json; do [ -f "manga-calendrier/data/$f" ] && cp "manga-calendrier/data/$f" "$KEEP/$f"; done
           for i in 1 2 3 4 5; do
             git fetch origin main
             git reset --hard origin/main
-            [ -f "$KEEP/resumes-ia.json" ] && cp "$KEEP/resumes-ia.json" manga-calendrier/data/resumes-ia.json
-            git add manga-calendrier/data/resumes-ia.json
+            for f in resumes-ia.json resumes-ia-essais.json; do [ -f "$KEEP/$f" ] && cp "$KEEP/$f" "manga-calendrier/data/$f"; done
+            git add manga-calendrier/data/resumes-ia.json manga-calendrier/data/resumes-ia-essais.json
             if git diff --cached --quiet; then echo "Rien à enregistrer."; exit 0; fi
             git commit -m "Résumés des grandes séries réécrits par l'IA : mise à jour"
             if git push origin HEAD:main; then exit 0; fi
