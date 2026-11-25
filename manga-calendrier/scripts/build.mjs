@@ -740,7 +740,8 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   const BNF = loadBnf(P.dataDir);
   const COVER_BASE = (() => { const u = typeof config.catalogueCovers === 'string' ? config.catalogueCovers.trim() : ''; return /^https:\/\/[^\s"<>]+$/.test(u) ? u.replace(/\/?$/, '/') : ''; })();
   const COVER_ISBN = new Map(manga.filter((r) => r.isbn && /^https:\/\//.test(r.cover || '')).map((r) => [r.isbn, r.cover]));
-  const bnfCover = (c) => (showCovers && COVER_BASE ? `${COVER_BASE}${c.k}.webp` : '');
+  // Couverture de série : series/<k>.webp ; si ce fichier manque dans R2 (data/couvertures-controle.json), repli sur la couverture du premier tome rangée dans R2 (isbn/<isbn>.webp).
+  const bnfCover = (c) => (showCovers && COVER_BASE ? (couvertureRepli(c) || `${COVER_BASE}${c.k}.webp`) : '');
   for (const S of seriesList) { // une série du calendrier et la même dans le catalogue : même page
     const c = BNF.byK.get(S.k) || S.rows.map((r) => BNF.byIsbn.get(r.isbn)).find(Boolean);
     if (c && !c.page) { c.page = S.k; S.cat = c; }
@@ -758,6 +759,13 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
   // Les autres éditions (réimpressions) sont dans un menu déroulant, sans JavaScript.
   const ISBN_BASE = COVER_BASE ? COVER_BASE.replace(/series\/?$/, 'isbn/') : '';
   const ISBN_R2 = (() => { try { return new Set(JSON.parse(readFileSync(path.join(P.dataDir, 'couvertures-isbn.json'), 'utf8')).done || []); } catch { return new Set(); } })();
+  const CTRL_VUS = (() => { try { return JSON.parse(readFileSync(path.join(P.dataDir, 'couvertures-controle.json'), 'utf8')).vus || {}; } catch { return {}; } })();
+  const CTRL_OK = Object.keys(CTRL_VUS).length > 0;
+  const couvertureRepli = (c) => {
+    if (!ISBN_BASE || !CTRL_OK || CTRL_VUS[`series/${c.k}`]) return '';
+    const tomes = (c.v || []).filter((v) => ISBN_R2.has(v[1]) || CTRL_VUS[`isbn/${v[1]}`]).sort((a, b) => (Number(a[0]) || 1e6) - (Number(b[0]) || 1e6));
+    return tomes.length ? `${ISBN_BASE}${tomes[0][1]}.webp` : '';
+  };
   const isbn10 = (i) => { if (!/^978\d{10}$/.test(i)) return ''; const d = i.slice(3, 12); let t = 0; for (let k = 0; k < 9; k++) t += (10 - k) * Number(d[k]); const c = (11 - (t % 11)) % 11; return d + (c === 10 ? 'X' : c); };
   // Sources par ISBN, dans l'ordre : couverture de l'éditeur (calendrier), Amazon.fr, Open Library. Le navigateur passe à la suivante si l'image manque.
   const isbnCovers = (isbn) => {
@@ -977,7 +985,7 @@ ${nav}<ul class="sgrid">${slice.map(lcard).join('')}</ul>${pager}<p class="more"
     // qui ont une couverture (data/couvertures-controle.json), les plus longues d'abord. Affichage dans l'ordre alphabétique ; le reste est sur la page de la lettre.
     const AVEC_COUV = (() => { try { return new Set(Object.entries(JSON.parse(readFileSync(path.join(P.dataDir, 'couvertures-controle.json'), 'utf8')).vus || {}).filter(([k, v]) => k.startsWith('series/') && v).map(([k]) => k.slice(7))); } catch { return new Set(); } })();
     const PAR_LETTRE = 10;
-    const aCouv = (x) => !AVEC_COUV.size || (x.live ? x.reel || AVEC_COUV.has(x.k) : AVEC_COUV.has(x.k)); // sans contrôle des couvertures (fichier absent) : pas de tri par couverture
+    const aCouv = (x) => !AVEC_COUV.size || (x.live ? x.reel || AVEC_COUV.has(x.k) : AVEC_COUV.has(x.k) || /\/isbn\//.test(x.cover || '')); // sans contrôle des couvertures (fichier absent) : pas de tri par couverture
     const rangHub = (a, b) => (a.live === b.live ? 0 : a.live ? -1 : 1) || (a.live ? (a.nd ? 0 : 1) - (b.nd ? 0 : 1) || a.nd.localeCompare(b.nd) : b.count - a.count) || a.n.localeCompare(b.n, 'fr');
     catalogueHub.picks = new Map(letterList.map((l) => {
       const choix = groups.get(l).filter(aCouv).sort(rangHub).slice(0, PAR_LETTRE).sort((a, b) => a.n.localeCompare(b.n, 'fr'));

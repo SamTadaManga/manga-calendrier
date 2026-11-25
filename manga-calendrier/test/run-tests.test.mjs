@@ -1714,3 +1714,17 @@ test('Éditions Ludum : série d\'édition distincte, version dominante conserv�
   const cal = decider(loadBnf(dir, { brut: true }), { [isbn(12)]: fiches[isbn(12)] }, new Map(), new Set(['doro-edition-originale']));
   assert.equal(cal[isbn(12)].k, 'doro-edition-originale');
 });
+
+test('Couverture de série absente de R2 : repli sur la couverture du premier tome', () => {
+  const dataDir = path.join(ROOT, 'data');
+  const vus = JSON.parse(readFileSync(path.join(dataDir, 'couvertures-controle.json'), 'utf8')).vus || {};
+  const faits = new Set(JSON.parse(readFileSync(path.join(dataDir, 'couvertures-isbn.json'), 'utf8')).done || []);
+  const bnf = JSON.parse(readFileSync(path.join(dataDir, 'catalogue-bnf.json'), 'utf8')).series;
+  const s = bnf.find((c) => !vus[`series/${c.k}`] && c.v.some((v) => faits.has(v[1])) && /^[a-z0-9-]+$/.test(c.k));
+  assert.ok(s, 'une série sans image de série mais avec une couverture de tome');
+  const out = execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, OUT_DIR: mkdtempSync(path.join(os.tmpdir(), 'rep-')) }, encoding: 'utf8' });
+  const dist = /dans (.+?) :/.exec(out);
+  const html = readFileSync(path.join(ROOT, dist ? dist[1] : 'dist', 'serie', s.k, 'index.html'), 'utf8');
+  assert.ok(/\/isbn\/\d{13}\.webp/.test(html), `${s.k} : couverture de tome utilisée`);
+  assert.ok(!html.includes(`/series/${s.k}.webp`), `${s.k} : plus d'image de série inexistante`);
+});
