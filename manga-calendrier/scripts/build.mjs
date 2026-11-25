@@ -183,7 +183,7 @@ ${ANALYTICS}
 </head>
 <body${pathname === '/404.html' ? ' data-404' : ''}>
 <a class="skip" href="#contenu">Aller au contenu</a>
-<header class="site-header"><div class="wrap hbar"><a class="brand" href="/"><span class="mark" aria-hidden="true"></span>${esc(config.siteName)}</a><div class="tools"></div><nav aria-label="Navigation principale">${nav}</nav></div></header>
+<header class="site-header"><div class="wrap hbar"><a class="brand" href="/"><img class="logo-img" src="/logo.svg" alt="${esc(config.siteName)}" width="172" height="54"></a><div class="tools"></div><nav aria-label="Navigation principale">${nav}</nav></div></header>
 <main class="wrap" id="contenu">
 ${body}
 </main>
@@ -1688,6 +1688,7 @@ write('data/recent.json', JSON.stringify({
   }));
 }
 for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'fiche-tome.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+write('logo.svg', readFileSync(path.join(SCRIPTS, 'assets', 'logo', 'logo-clair.svg'), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
