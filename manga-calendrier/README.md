@@ -294,3 +294,14 @@ Les grandes séries du catalogue (≥ `catalogueIndexMin` tomes) affichent le r�
 - Chaque texte est contrôlé (`scripts/resumes-ia-lib.mjs`) : noms propres et chiffres présents dans la source, pas de copie, pas de bavardage, longueur correcte. Un texte refusé n'est jamais publié.
 - Pour activer le passage de nuit : variable de dépôt `RESUMES_IA` = `oui`. Modèle réglable avec `RESUMES_MODELE_REPO` et `RESUMES_MODELE_FICHIER`.
 - Sur le site, un texte IA est signalé comme tel ; si le résumé de l'éditeur change, le texte IA est refait.
+
+## Audit du contenu érotique ou pornographique
+
+`scripts/adulte-audit.mjs` aide à repérer les séries à retirer. Lancement : Actions → « Audit du contenu adulte » → Run workflow (environ 1 h 30 pour tout le site).
+
+1. Pour chaque série, il interroge AniList et MangaUpdates (MyAnimeList en option) : drapeau « adulte », genres Hentai / Smut / Adult / Ecchi, étiquettes explicites. Il y ajoute les repères du résumé, les scores des couvertures (modèle d'image) et la part de séries signalées chez l'éditeur.
+2. Il écrit `audit-adulte/audit-adulte.csv` (séries à relire, les plus suspectes d'abord), `audit-adulte-complet.csv` (toutes) et `editeurs.csv` (éditeurs dont beaucoup de séries sont signalées). Séparateur `;`, ouvrable dans Excel.
+3. Tu remplis la colonne `decision` : `retirer` ou `conserver` (une note facultative dans `note`).
+4. `node scripts/adulte-audit.mjs appliquer audit-adulte/audit-adulte.csv` écrit `audit-adulte/a-ajouter.json`, à fusionner dans `data/contenu-adulte.json` (rubriques `series`, `conserver`, `editeurs`). Le script ne modifie jamais ce fichier.
+
+Les résultats des bases sont gardés dans `data/audit-adulte-cache.json` : un nouveau lancement ne redemande que ce qui manque. Une correspondance de titre incertaine (ressemblance < 0,85) n'est jamais prise comme preuve.

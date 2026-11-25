@@ -1786,3 +1786,44 @@ test('Visibilité IA/moteurs : réponse datée sur les séries et les mois, tome
   const cle = readFileSync(path.join(ROOT, 'scripts/assets/indexnow-key.txt'), 'utf8').trim();
   assert.equal(lire(`${cle}.txt`).trim(), cle, 'fichier-clé IndexNow à la racine');
 });
+
+test('Audit du contenu adulte : ressemblance, jugement, CSV, reprise, décisions', async () => {
+  const a = await import('../scripts/adulte-audit.mjs');
+  assert.equal(a.ressemblance("L'Impératrice remariée", 'Impératrice remariée L'), 1);
+  assert.ok(a.ressemblance('Orange', 'Orange pulpeux') < 0.85, 'un titre plus court ne suffit pas');
+  const adulte = { sim: 1, titre: 'X', adulte: true, genres: ['Hentai'], tags: [], url: 'https://anilist.co/manga/1' };
+  assert.equal(a.juger({ a: adulte }).niveau, 'porno');
+  assert.equal(a.juger({ m: { sim: 1, genres: ['Adult', 'Smut'], tags: [] } }).niveau, 'erotique');
+  assert.equal(a.juger({ a: { sim: 0.6, adulte: true, genres: ['Hentai'], tags: [] } }).niveau, 'inconnu', 'correspondance douteuse : pas de verdict');
+  assert.equal(a.juger({ a: { sim: 1, genres: ['Ecchi'], tags: [] } }).niveau, 'suggestif');
+  assert.equal(a.juger({ a: { sim: 1, genres: ['Action'], tags: [] } }).niveau, 'ras');
+  assert.equal(a.juger({}, { exclure: '', revoir: ['erotique'] }).niveau, 'a-verifier');
+  assert.equal(a.juger({}, { exclure: '', revoir: [] }, [0.1, 0.9]).niveau, 'a-verifier', 'couverture très suggestive');
+  assert.equal(a.juger({ a: { sim: 1, genres: ['Action'], tags: ['Nudity', 'Rape'] } }).niveau, 'erotique');
+  // CSV : séparateur ; guillemets doublés, retour à la ligne, lecture inverse
+  const csv = a.versCsv(['x', 'y'], [{ x: 'a;b', y: 'dit "oui"\nlà' }]);
+  assert.deepEqual(a.lireCsv(csv), [{ x: 'a;b', y: 'dit "oui"\nlà' }]);
+  // passage avec de fausses réponses d'AniList, puis reprise sans nouvel appel
+  const appels = [];
+  const f = async (url, opt) => {
+    appels.push(url);
+    const nom = JSON.parse(opt.body).variables.s;
+    const media = nom === 'Serie Chaude' ? [{ id: 9, siteUrl: 'https://anilist.co/manga/9', isAdult: true, genres: ['Hentai'], title: { romaji: 'Serie Chaude' }, synonyms: [], tags: [] }] : [{ id: 8, siteUrl: 'https://anilist.co/manga/8', isAdult: false, genres: ['Action'], title: { romaji: nom }, synonyms: [], tags: [] }];
+    return { ok: true, status: 200, headers: new Map(), json: async () => ({ data: { Page: { media } } }) };
+  };
+  const series = [{ k: 'serie-chaude', n: 'Serie Chaude', e: 'Irodori', tomes: 2, annees: '2023', texte: '' }, { k: 'one-piece', n: 'One Piece', e: 'Glénat', tomes: 100, annees: '2000-2025', texte: '' }];
+  const cache = {};
+  const r = await a.auditer({ series, cache, sources: ['anilist'], limite: 10, fin: Date.now() + 60000, f, journal: () => {} });
+  assert.equal(r.faits, 2); assert.equal(appels.length, 2);
+  const r2 = await a.auditer({ series, cache, sources: ['anilist'], limite: 10, fin: Date.now() + 60000, f, journal: () => {} });
+  assert.equal(r2.faits, 0); assert.equal(appels.length, 2, 'ce qui est déjà fait n\'est pas redemandé');
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'audit-'));
+  const res = a.ecrireCsv(series, cache, {}, dir);
+  assert.equal(res.porno, 1); assert.equal(res.ras, 1);
+  const lignes = a.lireCsv(readFileSync(path.join(dir, 'audit-adulte.csv'), 'utf8'));
+  assert.equal(lignes.length, 1); assert.equal(lignes[0].adresse, 'serie-chaude'); assert.match(lignes[0].signaux, /AniList : classé adulte/);
+  // décisions
+  lignes[0].decision = 'retirer';
+  const out = a.appliquer(a.versCsv(a.COLONNES, [lignes[0], { ...lignes[0], adresse: 'autre', decision: 'conserver', note: 'faux positif' }, { ...lignes[0], adresse: 'rien', decision: '' }]));
+  assert.deepEqual(Object.keys(out.series), ['serie-chaude']); assert.deepEqual(Object.keys(out.conserver), ['autre']);
+});
