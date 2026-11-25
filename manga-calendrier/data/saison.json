@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-24T13:44:12.568Z",
+ "generatedAt": "2026-11-25T12:56:21.518Z",
  "seasons": [
   {
    "season": "FALL",
@@ -426,6 +426,25 @@
      "s": []
     },
     {
+     "id": 206949,
+     "t": "Nia Liston: The Merciless Maiden",
+     "f": "TV",
+     "st": "RELEASING",
+     "n": 25,
+     "d": [
+      2026,
+      10,
+      6
+     ],
+     "u": "https://anilist.co/anime/206949",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
+     "g": [
+      "Action",
+      "Fantasy"
+     ],
+     "s": []
+    },
+    {
      "id": 206814,
      "t": "Dragon Ball Super: Beerus",
      "f": "TV",
@@ -453,25 +472,6 @@
        "u": "https://www.crunchyroll.com/series/GT00389311/dragon-ball-super-beerus"
       }
      ]
-    },
-    {
-     "id": 206949,
-     "t": "Nia Liston: The Merciless Maiden",
-     "f": "TV",
-     "st": "RELEASING",
-     "n": 25,
-     "d": [
-      2026,
-      10,
-      6
-     ],
-     "u": "https://anilist.co/anime/206949",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx206949-4HYI3YuP0eLI.png",
-     "g": [
-      "Action",
-      "Fantasy"
-     ],
-     "s": []
     },
     {
      "id": 186541,
@@ -1168,10 +1168,10 @@
      "d": [
       2027,
       1,
-      0
+      9
      ],
      "u": "https://anilist.co/anime/202564",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202564-gLnCiyS8vHsB.jpg",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx202564-gueNtbyEJWfm.jpg",
      "g": [
       "Comedy",
       "Ecchi",
@@ -1327,7 +1327,7 @@
      "d": [
       2027,
       1,
-      0
+      3
      ],
      "u": "https://anilist.co/anime/186741",
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx186741-jfAFI71jie1x.jpg",
@@ -1365,7 +1365,7 @@
      "d": [
       2027,
       1,
-      0
+      9
      ],
      "u": "https://anilist.co/anime/213360",
      "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213360-xNEWCLeQkXkI.jpg",
@@ -1424,7 +1424,7 @@
       0
      ],
      "u": "https://anilist.co/anime/205130",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205130-dC5WuIvGMMgr.png",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx205130-oasZ91IQMhMN.jpg",
      "g": [
       "Adventure",
       "Drama",
