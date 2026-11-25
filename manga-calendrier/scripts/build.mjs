@@ -188,6 +188,7 @@ ${ANALYTICS}
 ${body}
 </main>
 <footer class="site-footer"><div class="wrap">
+<p>Mangas en France chez Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
 <p>Horaires des épisodes : <a href="https://anilist.co" rel="noopener">AniList</a>, diffusion japonaise. Dates des mangas : plannings officiels des éditeurs, susceptibles de changer.</p>
 <p><a href="/manga.ics">Agenda manga (.ics)</a><a href="/anime.ics">Agenda anime (.ics)</a>${siteUrlOk ? '<a href="/feed.xml">Flux RSS</a>' : ''}<a href="/nouveautes/">Nouveautés</a><a href="/changements/">Changements</a><a href="/mes-animes/">Mes animes</a><a href="/mon-planning/">Mon planning</a>${NL.on ? '<a href="/newsletter/">Newsletter</a>' : ''}${reportLink()}<a href="/editeurs/">Éditeurs</a><a href="/genres/">Genres</a><a href="/partager/">Visuels à partager</a><a href="/etat/">État des données</a><a href="/a-propos/">À propos et méthode</a><a href="/mentions-legales/">Mentions légales</a></p>
 </div></footer>
@@ -470,7 +471,6 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const body = `
 <section class="week" aria-labelledby="t-week">
 <div class="week-head"><h1 id="t-week" class="logo"><span class="lg-a">Prochaine sortie manga</span> <span class="lg-b"><i>et</i> <b>prochain tome</b><u>,</u></span> <span class="lg-c">jour par jour</span></h1>
-<p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
 ${HOME_ANSWER}
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>
 <section aria-labelledby="t-days">
