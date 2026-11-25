@@ -1,4 +1,4 @@
-{"maj":"2026-11-24","ajouts":[{"k":"isekai-samurai","n":"Isekai samurai","e":"Meian","t":"5","isbn":"9782385039080","y":2026,"src":"bnf","statut":"ok"},
+{"maj":"2026-11-25","ajouts":[{"k":"isekai-samurai","n":"Isekai samurai","e":"Meian","t":"5","isbn":"9782385039080","y":2026,"src":"bnf","statut":"ok"},
 {"k":"the-new-gate","n":"The new gate","e":"Meian","t":"9","isbn":"9782385031190","y":0,"src":"bnf","statut":"ok"},
 {"k":"today-she-is-not-here","n":"Today, she is not here","e":"Meian","t":"5","isbn":"9782386585456","y":2026,"src":"bnf","statut":"ok"},
 {"k":"grand-blue","n":"Grand blue","e":"Meian","t":"24","isbn":"9782385036973","y":0,"src":"bnf","statut":"ok"},
@@ -1892,4 +1892,6 @@
 {"k":"the-strange-house","n":"The strange house","e":"Kana","t":"6","isbn":"9782505144755","y":0,"src":"ludum","motif":"suite","statut":"ok"},
 {"k":"tokyo-cannabis","n":"Tokyo cannabis","e":"Kana","t":"9","isbn":"9782505197607","y":0,"src":"ludum","motif":"suite","statut":"ok"},
 {"k":"whisper-it-in-the-night","n":"Whisper it in the night","e":"Kana","t":"3","isbn":"9782505142843","y":0,"src":"ludum","motif":"suite","statut":"ok"},
-{"k":"yakuza-zen","n":"Yakuza zen","e":"Vega-Dupuis","t":"4","isbn":"9782808706773","y":0,"src":"ludum","motif":"suite","statut":"ok"}]}
+{"k":"yakuza-zen","n":"Yakuza zen","e":"Vega-Dupuis","t":"4","isbn":"9782808706773","y":0,"src":"ludum","motif":"suite","statut":"ok"},
+{"k":"video-girl-ai","n":"Vidéo girl Aï","e":"Tonkam","t":"14","isbn":"9782759508426","y":0,"src":"cultura","motif":"suite","statut":"ok"},
+{"k":"video-girl-ai","n":"Vidéo girl Aï","e":"Tonkam","t":"15","isbn":"9782759508433","y":0,"src":"cultura","motif":"suite","statut":"ok"}]}
