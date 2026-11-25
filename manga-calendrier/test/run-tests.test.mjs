@@ -1752,3 +1752,21 @@ test('Pages par lettre : chaque série est rangée sous la première lettre de s
   }
   assert.ok(n > 1000, `${n} séries vérifiées`);
 });
+
+test('Visibilité IA/moteurs : réponse datée sur les séries et les mois, tomes décalés, sameAs, IndexNow', async () => {
+  const out = execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, OUT_DIR: mkdtempSync(path.join(os.tmpdir(), 'seo-')) }, encoding: 'utf8' });
+  const dist = path.join(ROOT, /dans (.+?) :/.exec(out)[1]);
+  const lire = (...p) => readFileSync(path.join(dist, ...p), 'utf8');
+  const home = lire('index.html');
+  assert.match(home, /"sameAs":\["https:\/\/x\.com\/Tada_Ebook"/, 'profils déclarés dans le JSON-LD');
+  assert.match(lire('changements', 'index.html'), /<h1>Tomes reportés et changements de date<\/h1>/);
+  const series = readdirSync(path.join(dist, 'serie')).map((k) => lire('serie', k, 'index.html')).find((h) => h.includes('faq-serie'));
+  assert.ok(series && /Plannings des éditeurs vérifiés le <time datetime="\d{4}-\d{2}-\d{2}">/.test(series) && /Quand sort le prochain tome de/.test(series) && /"dateModified":"\d{4}-\d{2}-\d{2}"/.test(series), 'page série : question, réponse, date de vérification');
+  const mois = readdirSync(path.join(dist, 'sorties-manga')).filter((d) => /-\d{4}$/.test(d)).map((d) => lire('sorties-manga', d, 'index.html')).find((h) => h.includes('Au programme de'));
+  assert.ok(mois && /Liste mise à jour le <time datetime="\d{4}-\d{2}-\d{2}">/.test(mois), 'page mois : résumé et date de mise à jour');
+  const { urlsAEnvoyer } = await import('../scripts/indexnow.mjs');
+  const u = urlsAEnvoyer({ dossier: '', maintenant: new Date('2026-12-31T10:00:00Z'), events: [{ day: '2026-12-30', s: 'One Piece' }, { day: '2026-12-01', s: 'Vieux' }] });
+  assert.ok(u.includes('https://prochaintome.fr/sorties-manga/decembre-2026/') && u.includes('https://prochaintome.fr/sorties-manga/janvier-2027/') && u.includes('https://prochaintome.fr/serie/one-piece/') && !u.some((x) => x.includes('vieux')), 'IndexNow : mois courant et suivant, séries récemment modifiées');
+  const cle = readFileSync(path.join(ROOT, 'scripts/assets/indexnow-key.txt'), 'utf8').trim();
+  assert.equal(lire(`${cle}.txt`).trim(), cle, 'fichier-clé IndexNow à la racine');
+});
