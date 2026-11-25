@@ -206,7 +206,9 @@ ${body}
 let searchSeries = [];
 let searchCatalogue = [];
 let catalogueHub = null;
-const letterKey = (k) => { const c = String(k || '')[0] || ''; return /[a-z]/.test(c) ? c : '0-9'; };
+// Lettre d'une série = première lettre de son NOM affiché (sans accent, ponctuation d'ouverture ignorée) : « L'abominable chevalier » est en L, « Évolution » en E. Chiffres et alphabets non latins : 0-9.
+const nomTri = (n) => String(n || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/œ/gi, 'oe').replace(/æ/gi, 'ae').replace(/ß/g, 'ss').replace(/^[^\p{L}\p{N}]+/u, '').toLowerCase();
+const letterKey = (n) => { const c = nomTri(n)[0] || ''; return /[a-z]/.test(c) ? c : '0-9'; };
 function animeNotice() {
   if (!ANIME_STALE) return '';
   if (!anime.generatedAt) return '<p class="notice warn" role="status">Le programme des épisodes n\'a pas encore pu être récupéré. Il apparaîtra dès que la source (AniList) répondra.</p>';
@@ -914,7 +916,7 @@ ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p cla
       const i = idxOf.get(c.k);
       const same = byName.filter((o, j) => o.e && o.e === c.e && j !== i).slice(0, 0);
       const prev = byName[i - 1], next = byName[i + 1];
-      const L = letterKey(c.k);
+      const L = letterKey(c.n);
       const cover = r2img(c, `Couverture de ${c.n}`, 160, 240);
       const hero = cover ? `<div class="cover series-cover"><span class="ph" aria-hidden="true">${esc(c.n)}</span>${cover}</div>` : '';
       const ld = siteUrlOk ? `<script type="application/ld+json">${JSON.stringify([
@@ -955,9 +957,9 @@ ${AFFILIATE_ON ? `<p class="muted affil-note">Certains liens d'achat sont des li
     const everyone = [
       ...seriesList.map((S) => ({ k: S.k, n: S.name, e: S.editeur, count: S.cat ? Math.max(S.cat.v.length, S.rows.length) : S.rows.length, sub: S.next ? `${S.next.tome ? `T${S.next.tome} · ` : ''}${frShort(S.next.date)}` : '', nd: S.next ? S.next.date : '', reel: [...S.rows].some((r) => /^https:\/\//.test(r.cover || '')), cover: (([...S.rows].reverse().find((r) => /^https:\/\//.test(r.cover || '')) || {}).cover) || (S.cat ? bnfThumb(S.cat, 300) : ''), live: true })),
       ...byName.map((c) => ({ k: c.k, n: c.n, e: c.e, count: c.v.length, sub: '', cover: bnfThumb(c, 300), live: false })),
-    ].sort((a, b) => a.n.localeCompare(b.n, 'fr'));
+    ].sort((a, b) => nomTri(a.n).localeCompare(nomTri(b.n), 'fr') || a.n.localeCompare(b.n, 'fr'));
     const groups = new Map();
-    for (const x of everyone) { const L = letterKey(x.k); if (!groups.has(L)) groups.set(L, []); groups.get(L).push(x); }
+    for (const x of everyone) { const L = letterKey(x.n); if (!groups.has(L)) groups.set(L, []); groups.get(L).push(x); }
     const letterList = [...groups.keys()].sort((a, b) => (a === '0-9' ? -1 : b === '0-9' ? 1 : a.localeCompare(b)));
     const PER = 96;
     const lcard = (x) => `<li class="scard p-${pubKey(x.e)}"><a class="scard-link" href="/serie/${x.k}/"><div class="cover"><span class="ph" aria-hidden="true">${esc(x.n)}</span>${showCovers && x.cover ? `<img class="cover-img" src="${esc(x.cover)}" alt="Couverture de ${esc(x.n)}" width="200" height="300" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div><strong>${esc(x.n)}</strong><span class="muted">${x.sub ? `${esc(x.sub)}` : `${esc(plural(x.count, 'tome', 'tomes'))}${x.e ? ` · ${esc(x.e)}` : ''}`}</span></a></li>`;
