@@ -21,6 +21,8 @@ const SCRIPTS = path.dirname(fileURLToPath(import.meta.url));
 const config = loadConfig(P.config);
 const today = parisKey(now());
 // Vérification du site par Pinterest (balise publique, pas un secret). Réglable avec "pinterestVerify" dans site.config.json, "" pour la retirer.
+// Profils officiels du site (JSON-LD sameAs) : « socialProfiles » dans site.config.json les remplace
+const SAME_AS = Array.isArray(config.socialProfiles) ? config.socialProfiles.filter((u) => /^https:\/\//.test(u)) : ['https://x.com/Tada_Ebook', 'https://bsky.app/profile/prochaintome.bsky.social', 'https://www.pinterest.com/prochaintome/'];
 const PIN_VERIFY = typeof config.pinterestVerify === 'string' ? config.pinterestVerify : 'f9e3eebb5f9b396beea575d305660e16';
 const siteUrlOk = /^https?:\/\//.test(config.siteUrl || '') && !/REMPLACE/i.test(config.siteUrl);
 const base = siteUrlOk ? config.siteUrl.replace(/\/+$/, '') : '';
@@ -247,6 +249,8 @@ function editionOf(r) {
 }
 
 const updatedIso = (anime.generatedAt ? new Date(anime.generatedAt) : now()).toISOString();
+const majIso = updatedIso.slice(0, 10);
+const majFr = frDate(parisKey(new Date(updatedIso)));
 const changes = readChanges(path.join(P.dataDir, 'changes.json'));
 const events = [...changes.events].sort((a, b) => (a.day < b.day ? 1 : a.day > b.day ? -1 : 0));
 const moves = new Map(); // tome -> dernier changement de date récent
@@ -271,6 +275,15 @@ function changeItem(ev) {
   return `<li class="rel p-${pk}"><div class="rel-title"><strong>${serieLink(ev.s)}</strong>${ev.t ? ` <span class="tome">tome ${esc(ev.t)}</span>` : ''}</div>`
     + `<div class="meta"><span class="badge ${cls}">${label}</span><span>${esc(text)}</span><span class="pub">${esc(ev.e)}</span>${/^https?:\/\//.test(ev.u || '') ? `<a href="${esc(ev.u)}" rel="noopener nofollow">Fiche éditeur</a>` : ''}</div></li>`;
 }
+
+// Tomes décalés : changements de date des 7 derniers jours (reports, avancées, annonces, retraits)
+const recents = events.filter((e) => e.day >= addDays(today, -7));
+const reports = recents.filter((e) => e.type === 'date' && e.to > e.from);
+const avances = recents.filter((e) => e.type === 'date' && e.to < e.from);
+const nvx = recents.filter((e) => e.type === 'nouveau');
+const retires = recents.filter((e) => e.type === 'retire');
+const nomTome = (e) => `${e.s}${e.t ? ` tome ${e.t}` : ''}`;
+const DECALES_HOME = reports.length || avances.length ? `<section aria-labelledby="t-dec"><h2 id="t-dec">Tomes décalés cette semaine</h2><p class="muted">${[reports.length ? plural(reports.length, 'tome reporté', 'tomes reportés') : '', avances.length ? plural(avances.length, 'tome avancé', 'tomes avancés') : ''].filter(Boolean).map(esc).join(', ')} dans les plannings des éditeurs ces 7 derniers jours.</p><ul class="list panel">${[...reports, ...avances].slice(0, 5).map(changeItem).join('')}</ul><p class="more"><a href="/changements/">Tous les changements de date</a></p></section>` : '';
 
 function tile(r) {
   const pk = pubKey(r.editeur);
@@ -478,6 +491,7 @@ ${HOME_ANSWER}
 <ul class="strip">${strip}</ul>
 <p class="more"><a href="/semaine/">Voir la semaine en détail</a></p>
 </section>
+${DECALES_HOME}
 <section class="pour-toi" id="pour-toi" aria-labelledby="t-pt" hidden><h2 id="t-pt">Pour toi cette semaine</h2><div id="pt-body"></div></section>
 <div class="since panel" id="since" hidden></div>
 </section>
@@ -513,7 +527,7 @@ ${FAQ_HTML}
 ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p class="more"><a href="/articles/">Tous les articles</a></p>` : '<p class="empty">Les premiers articles arrivent bientôt.</p>'}
 </section>`;
   page('/', { title: config.siteName, description: config.homeDescription || "Prochaine sortie manga en France : tomes à paraître, dates de sortie confirmées ou estimées, et anime à venir de la semaine, jour par jour.", body,
-    extraHead: siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.siteName, alternateName: ['ProchainTome', 'prochaintome.fr'], url: `${base}/`, inLanguage: 'fr', publisher: { '@type': 'Organization', name: config.siteName, url: `${base}/`, logo: { '@type': 'ImageObject', url: `${base}/icon-512.png?v=2`, width: 512, height: 512 } }, potentialAction: { '@type': 'SearchAction', target: `${base}/recherche/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } }).replace(/</g, '\\u003c')}</script><script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }).replace(/</g, '\\u003c')}</script>` : '' });
+    extraHead: siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.siteName, alternateName: ['ProchainTome', 'prochaintome.fr'], url: `${base}/`, inLanguage: 'fr', publisher: { '@type': 'Organization', name: config.siteName, url: `${base}/`, sameAs: SAME_AS, logo: { '@type': 'ImageObject', url: `${base}/icon-512.png?v=2`, width: 512, height: 512 } }, potentialAction: { '@type': 'SearchAction', target: `${base}/recherche/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } }).replace(/</g, '\\u003c')}</script><script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }).replace(/</g, '\\u003c')}</script>` : '' });
 }
 
 /* ------------------------------------------------------- filtres (partagés) */
@@ -701,11 +715,13 @@ function serieMeta(S, n) {
     for (const r of rows) counts.set(pubKey(r.editeur), (counts.get(pubKey(r.editeur)) || 0) + 1);
     const legend = [...counts].map(([k, n]) => `<span class="legend"><i class="dot p-${k}"></i>${esc(PUBS[k] || 'Autres éditeurs')} ${n}</span>`).join('');
     page(`/sorties-manga/${monthSlug(mk)}/`, {
-      title: `Sorties manga ${label} : tous les tomes`,
+      title: `Sorties manga ${label} : liste complète des tomes et dates`,
       extraHead: listLd(rows, `/sorties-manga/${monthSlug(mk)}/`, `Sorties manga de ${label}`),
       description: `${plural(rows.length, 'tome', 'tomes')} manga au programme en ${label}${pubsLine(rows)} : dates de sortie, éditeurs et prix.`,
       body: `<h1>Sorties manga de ${esc(label)}</h1>
 <p class="lead">${esc(plural(rows.length, 'tome sort', 'tomes sortent'))} en France en ${esc(label)}${esc(pubsLine(rows))}. Les dates viennent des plannings officiels des éditeurs et peuvent bouger.</p>
+${(() => { const vus = new Set(); const une = rows.filter((r) => { const k = slugify(r.serie); if (vus.has(k)) return false; vus.add(k); return true; }).slice(0, 8); return une.length > 2 ? `<p>Au programme de ${esc(label)} : ${une.map((r) => `${esc(r.serie)}${r.tome ? ` tome ${esc(r.tome)}` : ''} (${esc(frShort(r.date))})`).join(', ')}${vus.size > une.length ? ' et bien d\'autres' : ''}.</p>` : ''; })()}
+<p class="muted verif">Liste mise à jour le <time datetime="${majIso}">${esc(majFr)}</time> d'après les plannings officiels.</p>
 <p class="legendrow">${legend}</p>
 <p class="chiprow" aria-label="Éditeurs">${[...new Set(rows.map((r) => r.editeur).filter((e) => e && slugify(e)))].sort((a, c) => a.localeCompare(c, 'fr')).map((e) => `<a class="chip" href="/editeur/${slugify(e)}/">${esc(e)}</a>`).join('')}</p>
 ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(ucfirst(frDayMonth(d)))}${d === today ? ' <span class="now">aujourd\'hui</span>' : ''}</h2><ul class="list panel">${rows.filter((r) => r.date === d).map((r) => releaseItem(r)).join('')}</ul></div>`).join('\n')}
@@ -866,7 +882,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
         { '@type': 'ListItem', position: 1, name: 'Accueil', item: `${base}/` },
         { '@type': 'ListItem', position: 2, name: 'Séries', item: `${base}/series/` },
         { '@type': 'ListItem', position: 3, name: S.name, item: `${base}/serie/${S.k}/` }] },
-      { '@context': 'https://schema.org', '@type': 'ComicSeries', name: S.name, inLanguage: 'fr', url: `${base}/serie/${S.k}/`,
+      { '@context': 'https://schema.org', '@type': 'ComicSeries', name: S.name, inLanguage: 'fr', url: `${base}/serie/${S.k}/`, dateModified: majIso,
         ...(S.editeur ? { publisher: { '@type': 'Organization', name: S.editeur } } : {}),
         ...((infoOf(S.name) || {}).au?.length ? { author: infoOf(S.name).au.map((x) => ({ '@type': 'Person', name: x })) } : {}),
         ...(() => {
@@ -883,6 +899,7 @@ ${days.map((d) => `<div class="daygroup"><h2 class="chip-day ${wdc(d)}">${esc(uc
 <h1>Prochain tome de ${esc(S.name)}</h1>
 ${(n || lastOut) && (n || lastOut).tome ? `<p class="tome-badge"><span>${n ? 'Prochain' : 'Dernier paru'}</span> Tome ${esc((n || lastOut).tome)}</p>` : ''}
 <p class="lead">${lead}</p>
+<p class="muted verif">Plannings des éditeurs vérifiés le <time datetime="${majIso}">${esc(majFr)}</time>.</p>
 ${infoBox(S.name)}
 ${buyRow ? buyBox(buyRow, 'lg') : ''}
 ${goodiesBox(S.name)}
@@ -895,6 +912,7 @@ ${upcoming.length ? `<h2>À venir</h2><ul class="vgrid">${upcoming.map((r) => vo
 ${past.length ? `<h2>Déjà parus</h2><ul class="vgrid">${past.map((r) => volTile(r, r === buyRow)).join('')}</ul>` : ''}
 ${catBox(S)}
 ${historyBox(S)}
+${(() => { const tot = Math.max((S.cat ? S.cat.v.length : 0) - upcoming.length, past.length); return `<section class="faq faq-serie"><h2>Questions fréquentes sur ${esc(S.name)}</h2><h3>Quand sort le prochain tome de ${esc(S.name)} ?</h3><p>${lead.replace(/<[^>]+>/g, '')}</p>${tot ? `<h3>Combien de tomes de ${esc(S.name)} sont parus en France ?</h3><p>${esc(plural(tot, 'tome est paru', 'tomes sont parus'))} en France${S.editeur ? ` chez ${esc(S.editeur)}` : ''}${lastOut ? `, le dernier étant ${lastOut.tome ? `le tome ${esc(lastOut.tome)}` : 'le dernier volume'} (${esc(frShort(lastOut.date))})` : ''}.</p>` : ''}</section>`; })()}
 ${relatedBox(S)}
 ${AFFILIATE_ON && (GOODIES_ON || S.rows.some((r) => isIsbn13(r.isbn))) ? `<p class="muted affil-note">Certains liens d'achat sont des liens d'affiliation : ils ne changent pas le prix pour toi, mais peuvent rapporter une petite commission au site. <a href="/mentions-legales/#affiliation">En savoir plus</a></p>` : ''}
 <p class="more">${S.editeur && slugify(S.editeur) ? `<a href="/editeur/${slugify(S.editeur)}/">Autres sorties ${esc(S.editeur)}</a> · ` : ''}<a href="/sorties-manga/${monthSlug((n || S.rows[S.rows.length - 1]).date.slice(0, 7))}/">Toutes les sorties du mois</a> · <a href="/series/">Toutes les séries</a>${reportLink() ? ` · ${reportLink('Une date est fausse ? Signale-le')}` : ''}</p>`,
@@ -1256,9 +1274,11 @@ page('/mes-animes/', {
   const content = days.map((d) => `<section class="daygroup"><h2>${esc(ucfirst(frDayMonth(d)))}</h2><ul class="list panel">${events.filter((e) => e.day === d).map(changeItem).join('')}</ul></section>`).join('\n');
   const since = changes.since ? `Suivi commencé le ${frDate(changes.since)}.` : '';
   page('/changements/', {
-    title: 'Changements de date des sorties manga',
-    description: 'Tomes reportés, avancés, nouvellement annoncés ou retirés des plannings des éditeurs, relevés chaque jour.',
-    body: `<h1>Changements de date</h1>
+    title: 'Tomes reportés : changements de date des sorties manga',
+    description: `${reports.length ? `${plural(reports.length, 'tome reporté', 'tomes reportés')} cette semaine. ` : ''}Tomes reportés, avancés, nouvellement annoncés ou retirés des plannings des éditeurs, relevés chaque jour.`,
+    body: `<h1>Tomes reportés et changements de date</h1>
+${recents.length ? `<p class="lead"><strong>Ces 7 derniers jours</strong> : ${[reports.length ? `${plural(reports.length, 'tome reporté', 'tomes reportés')}` : '', avances.length ? `${plural(avances.length, 'tome avancé', 'tomes avancés')}` : '', nvx.length ? `${plural(nvx.length, 'tome annoncé', 'tomes annoncés')}` : '', retires.length ? `${plural(retires.length, 'tome retiré du planning', 'tomes retirés du planning')}` : ''].filter(Boolean).map(esc).join(', ')}.${reports.length ? ` Reportés : ${reports.slice(0, 5).map((e) => `${esc(nomTome(e))} (au ${esc(frShort(e.to))})`).join(', ')}${reports.length > 5 ? ' et d\'autres' : ''}.` : ''}</p>` : ''}
+<p class="muted verif">Mis à jour le <time datetime="${majIso}">${esc(majFr)}</time>.</p>
 <p class="lead">Chaque nuit, le site compare les plannings de Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga avec ceux de la veille. Quand un tome est reporté, avancé, annoncé ou disparaît, c'est ici.</p>
 ${events.length ? content : `<p class="empty">Aucun changement détecté pour le moment. ${esc(since)} Cette page se remplit quand un éditeur modifie son planning.</p>`}
 <p class="more muted">${events.length ? esc(since) : ''}</p>`,
@@ -1690,6 +1710,8 @@ write('data/recent.json', JSON.stringify({
 for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'fiche-tome.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
 // Vérification de domaine Pinterest : fichier fourni par Pinterest, à la racine du site (en plus de la balise <meta name="p:domain_verify"> de chaque page)
 write('pinterest-f9e3e.html', readFileSync(path.join(SCRIPTS, 'assets', 'pinterest-f9e3e.html'), 'utf8'));
+// IndexNow : fichier-clé à la racine (la clé est publique par conception ; voir scripts/indexnow.mjs)
+{ const cle = readFileSync(path.join(SCRIPTS, 'assets', 'indexnow-key.txt'), 'utf8').trim(); if (/^[a-f0-9]{16,128}$/.test(cle)) write(`${cle}.txt`, `${cle}\n`); }
 write('logo.svg', readFileSync(path.join(SCRIPTS, 'assets', 'logo', 'logo-clair.svg'), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({

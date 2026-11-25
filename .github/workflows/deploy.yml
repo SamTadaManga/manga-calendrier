@@ -51,6 +51,9 @@ jobs:
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      - name: Prévenir Bing et les moteurs IndexNow
+        continue-on-error: true # un échec ici ne doit jamais faire échouer le déploiement
+        run: node scripts/indexnow.mjs
   alerte:
     needs: deploy
     if: failure()
