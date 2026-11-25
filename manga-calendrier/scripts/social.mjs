@@ -80,17 +80,18 @@ for (const kind of kinds) {
     } catch (e) { failures++; console.error(`  ${p} : ÉCHEC — ${e.message}`); }
   }
 }
-// E-mail du matin : images et textes pour les réseaux publiés à la main (par défaut X, Pinterest, TikTok).
-// Variables : SMTP_USER (adresse Gmail), SMTP_PASS (mot de passe d'application), MAIL_TO (défaut : SMTP_USER), MAIL_PLATFORMS (défaut : x,tiktok + réseaux sans API configurée)
+// E-mail du matin : images et textes à publier à la main. Par défaut X, Bluesky et Instagram (Threads et Pinterest reprennent les posts Instagram ; pas de TikTok).
+// Variables : SMTP_USER (adresse Gmail), SMTP_PASS (mot de passe d'application), MAIL_TO (défaut : SMTP_USER), MAIL_PLATFORMS (défaut : x,bluesky,instagram ; autres valeurs possibles : threads, pinterest, tiktok)
 if (!DRY && env.SMTP_USER && env.SMTP_PASS && packs.length) {
-  // Par défaut : X et TikTok (pas d'API) + tout réseau dont l'API n'est pas encore configurée. Pinterest reprend les posts Instagram (publication automatique côté Pinterest) : plus d'envoi dès que l'API Instagram marche.
-  const wanted = (env.MAIL_PLATFORMS || ['x', 'tiktok', ...(READY.instagram ? [] : ['instagram']), ...(READY.threads ? [] : ['threads']), ...(READY.pinterest || READY.instagram ? [] : ['pinterest'])].join(',')).split(',').map((x) => x.trim()).filter(Boolean);
+  const wanted = (env.MAIL_PLATFORMS || 'x,bluesky,instagram').split(',').map((x) => x.trim()).filter(Boolean);
   if (posted[`mail-${today}`] && !FORCE) console.log('  e-mail : déjà envoyé.');
   else {
     const sections = []; const att = new Map();
     for (const { data, files } of packs) {
       const t = data.text, add = (f) => { const x = files.find((y) => y.name === f); if (x) att.set(`${data.key}-${f}.jpg`, x.file); };
       sections.push(`=============== ${data.key} ===============`);
+      if (wanted.includes('bluesky') && !wanted.includes('x')) add('bluesky-x');
+      if (wanted.includes('bluesky')) sections.push(`--- Bluesky (image : ${data.key}-bluesky-x.jpg)\n\n${t.bluesky}`);
       if (wanted.includes('x')) { add('bluesky-x'); sections.push(`--- X (image : ${data.key}-bluesky-x.jpg)\n\n${t.x}`); }
       if (wanted.includes('pinterest')) { add('pinterest'); sections.push(`--- Pinterest (image : ${data.key}-pinterest.jpg)\n\nTitre : ${t.pinterest.title}\n\nDescription : ${t.pinterest.description}\n\nLien : ${t.pinterest.link}`); }
       if (wanted.includes('tiktok')) { files.filter((f) => f.name.startsWith('tiktok-')).forEach((f) => add(f.name)); sections.push(`--- TikTok (images : ${data.key}-tiktok-*.jpg, mode photos)\n\n${t.tiktok}`); }
