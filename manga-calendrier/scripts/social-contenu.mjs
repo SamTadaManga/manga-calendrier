@@ -92,6 +92,8 @@ export function compose({ kind, today, manga, anime, site, coverFor }) {
     bluesky: fit(300 - 4, head, `${animeLine ? `\n${animeLine}` : ''}\n\n${shown}`),
     // sur X une adresse compte pour 23 caractères quelle que soit sa longueur
     x: fit(280 - 24, head, `${animeLine ? `\n${animeLine}` : ''}\n\n`),
+    // Threads : 500 caractères ; le lien est cliquable, un seul hashtag (la plateforme n'en met qu'un en avant)
+    threads: fit(500 - 120, head, `${animeLine ? `\n${animeLine}` : ''}\n\n`) + link('threads') + `\n\n#manga`,
     instagram: `${head} 📚\n\n${lines.slice(0, 10).map((l) => `• ${l}`).join('\n')}${lines.length > 10 ? `\n+ ${lines.length - 10} autres` : ''}${animeLine ? `\n\n📺 ${animeLine}` : ''}\n\nToutes les dates, par éditeur, et le suivi de ta collection : ${base.replace(/^https?:\/\//, '')} (lien dans la bio)\n\n${hashtags.join(' ')} #mangaaddict #lecturemanga #bdfr`,
     tiktok: clip(`${head} 📚 Tout le calendrier : ${base.replace(/^https?:\/\//, '')} (lien en bio)`, 120) + ` ${hashtags.slice(0, 5).join(' ')} #fyp #mangatok #booktok`,
     pinterest: { title: clip(`${head} | ${d.when}`, 100), description: clip(`${lines.slice(0, 12).join(', ')}. Le calendrier des sorties manga en France, par éditeur, avec liens d’achat. ${hashtags.slice(0, 6).join(' ')}`, 500), link: link('pinterest') },

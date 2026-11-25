@@ -1,4 +1,4 @@
-// Publication sur Bluesky, X, Instagram et Pinterest. Chaque réseau est facultatif : il n'est utilisé que si ses identifiants sont présents.
+// Publication sur Bluesky, X, Instagram, Threads et Pinterest. Chaque réseau est facultatif : il n'est utilisé que si ses identifiants sont présents.
 // Les identifiants viennent uniquement des variables d'environnement (secrets GitHub), jamais des fichiers du dépôt.
 import { createHmac, randomBytes } from 'node:crypto';
 
@@ -87,6 +87,30 @@ export async function postInstagram(post, env, fetchFn = fetch, wait = sleep) {
   }
   await ready(creation);
   const pub = await call(`${env.IG_USER_ID}/media_publish`, { creation_id: creation }, 'Instagram publication');
+  return { id: pub.id };
+}
+
+/* ------------------------------------------------------------------ Threads (API Threads de Meta) */
+export const threadsReady = (env) => Boolean(env.THREADS_USER_ID && env.THREADS_ACCESS_TOKEN);
+/** post : { text (500 caractères au plus), urls: [adresses publiques d'images] } : texte seul, image seule ou carrousel de 2 à 20 images */
+export async function postThreads(post, env, fetchFn = fetch, wait = sleep) {
+  const api = env.THREADS_GRAPH || 'https://graph.threads.net/v1.0';
+  const token = env.THREADS_ACCESS_TOKEN, uid = env.THREADS_USER_ID;
+  const call = async (p, params, what) => json(await fetchFn(`${api}/${p}`, { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ ...params, access_token: token }) }), what);
+  const ready = async (id) => { for (let k = 0; k < 20; k++) { const j = await json(await fetchFn(`${api}/${id}?fields=status&access_token=${encodeURIComponent(token)}`), 'Threads état'); if (j.status === 'FINISHED' || !j.status) return; if (j.status === 'ERROR' || j.status === 'EXPIRED') throw new Error(`Threads : conteneur ${j.status}`); await wait(3000); } throw new Error('Threads : conteneur pas prêt à temps'); };
+  const text = String(post.text || '').slice(0, 500);
+  const urls = (post.urls || []).slice(0, 20);
+  let creation;
+  if (urls.length === 0) creation = (await call(`${uid}/threads`, { media_type: 'TEXT', text }, 'Threads texte')).id;
+  else if (urls.length === 1) creation = (await call(`${uid}/threads`, { media_type: 'IMAGE', image_url: urls[0], text }, 'Threads image')).id;
+  else {
+    const kids = [];
+    for (const u of urls) kids.push((await call(`${uid}/threads`, { media_type: 'IMAGE', image_url: u, is_carousel_item: 'true' }, 'Threads vignette')).id);
+    for (const k of kids) await ready(k);
+    creation = (await call(`${uid}/threads`, { media_type: 'CAROUSEL', children: kids.join(','), text }, 'Threads carrousel')).id;
+  }
+  await ready(creation); // Meta recommande d'attendre que le conteneur soit prêt (environ 30 s) avant de publier
+  const pub = await call(`${uid}/threads_publish`, { creation_id: creation }, 'Threads publication');
   return { id: pub.id };
 }
 

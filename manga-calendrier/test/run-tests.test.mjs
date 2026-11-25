@@ -1132,6 +1132,20 @@ test('réseaux sociaux : contenu du jour, repli sur la prochaine sortie, longueu
   await postInstagram({ caption: 'c', urls: ['https://i/1.jpg', 'https://i/2.jpg'] }, { IG_USER_ID: '9', IG_ACCESS_TOKEN: 't' }, f2, async () => {});
   assert.equal(c2.filter((u) => u.endsWith('/9/media')).length, 3, '2 vignettes + 1 carrousel');
   assert.ok(c2.at(-1).endsWith('/9/media_publish'));
+  // Threads : texte seul, puis carrousel (vignettes + conteneur + publication), texte tronqué à 500 caractères
+  const { postThreads, threadsReady } = await import('../scripts/social-publier.mjs');
+  assert.equal(threadsReady({ THREADS_USER_ID: '1' }), false);
+  assert.equal(threadsReady({ THREADS_USER_ID: '1', THREADS_ACCESS_TOKEN: 't' }), true);
+  const bodies = [];
+  const f3 = async (url, opt) => { c2.push(String(url)); if (opt?.body) bodies.push(String(opt.body)); return { ok: true, status: 200, text: async () => JSON.stringify({ id: '7', status: 'FINISHED' }) }; };
+  c2.length = 0;
+  await postThreads({ text: 'x'.repeat(900), urls: [] }, { THREADS_USER_ID: '5', THREADS_ACCESS_TOKEN: 't' }, f3, async () => {});
+  assert.ok(c2[0].endsWith('/5/threads') && c2.at(-1).endsWith('/5/threads_publish'));
+  assert.ok(new URLSearchParams(bodies[0]).get('text').length === 500 && new URLSearchParams(bodies[0]).get('media_type') === 'TEXT');
+  c2.length = 0;
+  await postThreads({ text: 'a', urls: ['https://i/1.jpg', 'https://i/2.jpg'] }, { THREADS_USER_ID: '5', THREADS_ACCESS_TOKEN: 't' }, f3, async () => {});
+  assert.equal(c2.filter((u) => u.endsWith('/5/threads')).length, 3, '2 vignettes + 1 carrousel');
+  assert.ok(c2.at(-1).endsWith('/5/threads_publish'));
 });
 
 test('réseaux sociaux : les sorties avec couverture passent en premier, couverture de secours acceptée', async () => {
