@@ -469,7 +469,7 @@ const dots = (rows) => [...new Set(rows.map((r) => pubKey(r.editeur)))]
   const FAQ_HTML = `<section class="faq" id="faq" aria-labelledby="t-faq"><h2 id="t-faq">Questions fréquentes</h2>${FAQ.map(([q, a]) => `<h3>${esc(q)}</h3><p>${esc(a)}</p>`).join('')}<p class="more"><a href="/a-propos/">Comment fonctionne le site, d'où viennent les données</a></p></section>`;
   const body = `
 <section class="week" aria-labelledby="t-week">
-<div class="week-head"><h1 id="t-week">Prochaine sortie manga et prochain tome, jour par jour</h1>
+<div class="week-head"><h1 id="t-week" class="logo"><span class="lg-a">Prochaine sortie manga</span> <span class="lg-b"><i>et</i> <b>prochain tome</b><u>,</u></span> <span class="lg-c">jour par jour</span></h1>
 <p class="lead">Mangas en France chez Glénat, Kana, Pika, Ki-oon, Akata, Delcourt, Soleil, Kazé, Kurokawa, Meian, Mangetsu et Panini Manga. Épisodes d'anime diffusés au Japon, à l'heure de Paris.</p>
 ${HOME_ANSWER}
 <p class="updated muted" id="updated" data-t="${esc(updatedIso)}">Mis à jour le ${esc(frDate(parisKey(new Date(updatedIso))))}</p></div>

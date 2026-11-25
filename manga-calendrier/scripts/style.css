@@ -76,6 +76,17 @@ ul.list,ul.strip,ul.articles,ul.shelf{list-style:none;margin:0;padding:0}
 
 /* Semaine (accueil) */
 .week-head{max-width:46rem}
+/* Titre d'accueil en forme de logo : même vocabulaire que le site (Dela Gothic, aplat jaune, ombre dure, trame de points) */
+h1.logo{display:flex;flex-direction:column;align-items:flex-start;gap:.14em;font-size:clamp(1.9rem,6.2vw,3rem);line-height:1;letter-spacing:-.025em;margin:0 0 22px}
+.logo span{display:block}
+.logo u{text-decoration:none;position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.logo .lg-a{text-shadow:.06em .06em 0 var(--brand)}
+.logo .lg-b{display:flex;flex-wrap:wrap;align-items:center;gap:.28em;font-size:.86em}
+.logo .lg-b i{font-style:normal;font-size:.5em;letter-spacing:.04em;text-transform:uppercase;border:.1em solid var(--ink);border-radius:50%;width:1.9em;height:1.9em;display:inline-flex;align-items:center;justify-content:center;transform:rotate(-8deg)}
+.logo .lg-b b{font-weight:400;background:var(--brand);color:#111;border:.07em solid var(--ink);padding:.06em .26em .1em;box-shadow:.08em .08em 0 var(--ink);transform:rotate(-1.4deg);background-image:radial-gradient(rgba(17,17,17,.22) 1px,transparent 1.5px);background-size:6px 6px;background-position:100% 0}
+.logo .lg-c{display:flex;align-items:center;gap:.6em;font-size:.44em;letter-spacing:.14em;text-transform:uppercase;margin-top:.2em}
+.logo .lg-c::before{content:"";width:3.2em;height:.2em;background:repeating-linear-gradient(90deg,var(--ink) 0 .9em,transparent .9em 1.15em)}
+
 .strip{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px;padding-right:5px;padding-bottom:5px}
 .day-panel{display:flex;flex-direction:column;gap:6px;padding:12px;background:var(--panel);border:2px solid var(--edge);border-radius:2px;min-height:140px}
 .d-head{display:flex;flex-direction:column;margin:-12px -12px 6px;padding:10px 12px 8px;border-bottom:2px solid var(--edge)}
