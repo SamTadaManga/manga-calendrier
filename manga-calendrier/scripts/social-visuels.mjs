@@ -28,7 +28,7 @@ body{position:relative;background:${T.bg};color:${T.ink};font-family:Zen,system-
 .rays{position:absolute;inset:-20%;background:repeating-conic-gradient(from 0deg at 50% 38%,${T.ray} 0 4deg,transparent 4deg 12deg)}
 .dots{position:absolute;inset:0;background:radial-gradient(${T.dot} ${p(2.2)},transparent ${p(3)}) 0 0/${p(14)} ${p(14)};-webkit-mask-image:linear-gradient(170deg,transparent 40%,#000);mask-image:linear-gradient(170deg,transparent 40%,#000)}
 .brand{display:flex;align-items:center;gap:${p(14)};font-family:Dela;font-size:${p(34)};letter-spacing:.01em;color:${T.ink}}
-.mark{width:${p(40)};height:${p(40)};border:${p(5)} solid #111;background:#fff radial-gradient(circle,#111 0 ${p(7)},transparent ${p(7.5)});transform:rotate(-6deg)}
+.ico{height:${p(78)};width:${p(78)};display:block;margin:${p(-10)} ${p(4)} ${p(-10)} 0}
 .title{font-family:Dela;white-space:nowrap;line-height:.98;text-transform:uppercase;color:${T.title};text-shadow:${p(6)} ${p(6)} 0 ${T.tshadow}}
 .sticker{display:inline-block;background:${T.sticker};color:${T.stickerInk};font-family:Dela;text-transform:uppercase;padding:${p(14)} ${p(26)};border:${p(5)} solid ${T.edge === '#111' ? '#111' : '#fff'};border-radius:${p(6)};box-shadow:${p(7)} ${p(7)} 0 ${T.shadow};transform:rotate(-5deg);white-space:nowrap}
 .pill{display:inline-block;background:${T.ink};color:${T.bg};padding:${p(8)} ${p(22)};border-radius:${p(40)};font-weight:900;font-size:${p(32)}}
@@ -54,7 +54,9 @@ const gridBlock = (list, W, H, top, rows, cols = 3) => {
 };
 const cell = (i, W, w) => `<div class="cv" style="--pc:${i.color};${w ? `width:${w}` : ''}">${i.nouveau ? '<span class="nw">NOUVEAU</span>' : ''}<div class="cover"><span class="ph">${esc(i.serie)}</span>${i.cover ? `<img src="${esc(i.cover)}" alt="" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}</div><div class="lb"><b>${esc(i.serie)}</b><i>${i.tome ? `Tome ${esc(i.tome)} · ` : ''}${esc(i.editeur)}</i></div></div>`;
 const bannerHtml = (site) => `<div class="banner"><span class="u">${esc(site.replace(/^https?:\/\//, ''))}</span><span class="t">Toutes les sorties manga<br>et anime, jour par jour</span></div>`;
-const brandHtml = () => '<div class="brand"><span class="mark"></span>PROCHAIN TOME</div>';
+// Pictogramme du logo (scripts/assets/logo) à gauche du nom ; variante claire sur fond jaune, variante sombre sur fond sombre.
+const ICONE = (v) => `data:image/svg+xml;base64,${readFileSync(path.join(ROOT, 'scripts/assets/logo', `icone-${v}.svg`)).toString('base64')}`;
+const brandHtml = (T) => `<div class="brand"><img class="ico" src="${ICONE(T && T.bg === '#121214' ? 'sombre' : 'clair')}" alt="">PROCHAIN TOME</div>`;
 const pickCovers = (items, n) => [...items.filter((i) => i.cover), ...items.filter((i) => !i.cover)].slice(0, n);
 
 /** HTML d'une image. layout : hook | grid | cta | single | wide */
@@ -67,32 +69,32 @@ export function slideHtml(layout, W, H, data, opt = {}) {
     const three = pickCovers(data.items, 3);
     const rot = [-8, 0, 8], dy = [50, 0, 50], tall = H / u > 1500;
     const kids = three.map((i, k) => { const o = three.length === 3 ? k : k + 1; return `<div style="transform:rotate(${rot[o]}deg) translateY(${p(dy[o])});width:${p(tall ? 350 : 320)};margin:0 ${p(-6)}">${cell(i, W).replace('class="lb"', 'class="lb" hidden')}</div>`; }).join('');
-    body = `<div style="position:absolute;left:${p(54)};top:${p(54)};right:${p(54)}">${brandHtml()}</div>
+    body = `<div style="position:absolute;left:${p(54)};top:${p(54)};right:${p(54)}">${brandHtml(T)}</div>
 <div style="position:absolute;left:${p(54)};right:${p(54)};top:${p(150)}"><div class="title" style="font-size:${p(ts)}">${t.map(esc).join('<br>')}</div>
 <div style="margin-top:${p(34)};display:flex;gap:${p(24)};align-items:center;flex-wrap:nowrap"><span class="sticker" style="font-size:${p(44)}">${esc(data.sticker)}</span><span class="pill">${esc(data.when)}</span></div></div>
 <div style="position:absolute;left:0;right:0;top:${tall ? p(780) : p(590)};display:flex;justify-content:center;align-items:flex-start">${kids}</div>
 <div style="position:absolute;left:${p(54)};right:${p(54)};bottom:${p(150)};font-family:Dela;font-size:${p(38)};text-align:center;color:${T.ink}">${opt.swipe ? 'Fais défiler pour tout voir →' : ''}</div>`;
   } else if (layout === 'grid') {
     const list = opt.items || [];
-    body = `<div style="position:absolute;left:${p(54)};top:${p(50)}">${brandHtml()}</div><span class="page">${esc(opt.page || '')}</span>
+    body = `<div style="position:absolute;left:${p(54)};top:${p(50)}">${brandHtml(T)}</div><span class="page">${esc(opt.page || '')}</span>
 <div class="title" style="position:absolute;left:${p(54)};top:${p(118)};font-size:${p(Math.min(72, 960 / (t.join(' ').length * 0.82)))}">${esc(t.join(' '))}</div>
 ${gridBlock(list, W, H, 230, opt.rows || 2)}`;
   } else if (layout === 'single') {
     const list = pickCovers(data.items, 6);
-    body = `<div style="position:absolute;left:${p(54)};top:${p(50)}">${brandHtml()}</div>
+    body = `<div style="position:absolute;left:${p(54)};top:${p(50)}">${brandHtml(T)}</div>
 <div style="position:absolute;left:${p(54)};right:${p(54)};top:${p(120)}"><div class="title" style="font-size:${p(Math.min(118, ts))}">${t.map(esc).join('<br>')}</div><div style="margin-top:${p(24)};display:flex;gap:${p(20)};align-items:center;flex-wrap:nowrap"><span class="sticker" style="font-size:${p(38)}">${esc(data.sticker)}</span><span class="pill" style="font-size:${p(28)}">${esc(data.when)}</span></div></div>
 ${gridBlock(list, W, H, 480, 2)}`;
   } else if (layout === 'cta') {
     const pts = ['Filtre par éditeur, par mois ou par série', 'Suis tes séries et ta collection', 'Dates mises à jour chaque jour', 'Liens d’achat et fiches complètes', 'Gratuit, sans compte'];
     const tall = H / u > 1500;
-    body = `<div style="position:absolute;left:${p(54)};top:${p(54)}">${brandHtml()}</div>
+    body = `<div style="position:absolute;left:${p(54)};top:${p(54)}">${brandHtml(T)}</div>
 <div class="title" style="position:absolute;left:${p(54)};right:${p(54)};top:${p(tall ? 230 : 170)};font-size:${p(73)}">TOUTES LES DATES<br>À PORTÉE DE CLIC</div>
 <div style="position:absolute;left:${p(54)};right:${p(54)};top:${p(tall ? 600 : 440)};display:flex;flex-direction:column;gap:${p(tall ? 64 : 24)}">${pts.map((x) => `<div style="display:flex;align-items:center;gap:${p(22)};background:${T.card};color:${T.ink};border:${p(5)} solid ${T.edge};box-shadow:${p(8)} ${p(8)} 0 ${T.shadow};padding:${p(tall ? 40 : 20)} ${p(26)};font-size:${p(36)};font-weight:900"><span style="font-family:Dela;font-size:${p(40)};color:#e4361b">✓</span>${esc(x)}</div>`).join('')}</div>`;
   } else if (layout === 'wide') {
     const list = pickCovers(data.items, 3);
     const rot = [-6, 0, 6], dy = [18, -8, 22];
     const fs = Math.min(96, 590 / (Math.max(...t.map((x) => x.length)) * 0.82));
-    body = `<div style="position:absolute;left:${p(48)};top:${p(34)}">${brandHtml()}</div>
+    body = `<div style="position:absolute;left:${p(48)};top:${p(34)}">${brandHtml(T)}</div>
 <div style="position:absolute;left:${p(48)};top:${p(112)};width:${p(600)}"><div class="title" style="font-size:${p(fs)}">${t.map(esc).join('<br>')}</div><div style="margin-top:${p(26)};display:flex;gap:${p(18)};align-items:center"><span class="sticker" style="font-size:${p(34)}">${esc(data.sticker)}</span><span class="pill" style="font-size:${p(24)};white-space:nowrap">${esc(data.when)}</span></div></div>
 <div style="position:absolute;left:${p(684)};top:${p(96)};display:flex;align-items:flex-start">${list.map((i, k) => { const o = list.length === 3 ? k : k + 1; return `<div style="width:${p(150)};margin-left:${k ? p(-34) : 0};transform:rotate(${rot[o]}deg) translateY(${p(dy[o])})">${cell(i, W).replace('class="lb"', 'class="lb" hidden')}</div>`; }).join('')}</div>`;
   }
@@ -115,7 +117,7 @@ export function jobs(data) {
   return out;
 }
 
-async function launch() {
+export async function launch() {
   const require = createRequire(import.meta.url);
   let pw;
   for (const name of ['playwright', 'playwright-core']) { try { pw = require(name); break; } catch { try { pw = (await import(name)).default; break; } catch { /* suivant */ } } }
