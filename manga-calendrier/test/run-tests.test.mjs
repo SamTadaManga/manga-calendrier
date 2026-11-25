@@ -2,7 +2,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, cpSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, existsSync, cpSync, readdirSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -1727,4 +1727,22 @@ test('Couverture de série absente de R2 : repli sur la couverture du premier to
   const html = readFileSync(path.join(ROOT, dist ? dist[1] : 'dist', 'serie', s.k, 'index.html'), 'utf8');
   assert.ok(/\/isbn\/\d{13}\.webp/.test(html), `${s.k} : couverture de tome utilisée`);
   assert.ok(!html.includes(`/series/${s.k}.webp`), `${s.k} : plus d'image de série inexistante`);
+});
+
+test('Pages par lettre : chaque série est rangée sous la première lettre de son nom affiché', () => {
+  const out = execFileSync('node', ['scripts/build.mjs'], { cwd: ROOT, env: { ...process.env, OUT_DIR: mkdtempSync(path.join(os.tmpdir(), 'let-')) }, encoding: 'utf8' });
+  const dist = path.join(ROOT, /dans (.+?) :/.exec(out)[1], 'series', 'lettre');
+  const dec = (t) => t.replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+  let n = 0;
+  for (const L of readdirSync(dist)) {
+    const pages = [path.join(dist, L, 'index.html'), ...readdirSync(path.join(dist, L)).filter((x) => /^\d+$/.test(x)).map((x) => path.join(dist, L, x, 'index.html'))];
+    for (const f of pages) for (const m of readFileSync(f, 'utf8').matchAll(/<li [^>]*class="scard[^>]*>.*?<\/li>/gs)) {
+      const nom = dec((m[0].match(/<strong[^>]*>(.*?)<\/strong>|<h3[^>]*>(.*?)<\/h3>|class="sname"[^>]*>(.*?)</s) || []).slice(1).find(Boolean) || '').replace(/<[^>]+>/g, '');
+      if (!nom) continue;
+      const c = nom.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/^[^\p{L}\p{N}]+/u, '')[0]?.toLowerCase() || '';
+      assert.equal(/[a-z]/.test(c) ? c : '0-9', L, `« ${nom} » est dans la lettre ${L}`);
+      n++;
+    }
+  }
+  assert.ok(n > 1000, `${n} séries vérifiées`);
 });
