@@ -1,7 +1,7 @@
 ---
-title: "Manga : 3 changements dans les plannings du mercredi 25 novembre 2026"
+title: "Manga : 4 changements dans les plannings du mercredi 25 novembre 2026"
 date: 2026-11-25
-description: "3 tomes reportés, avancés, annoncés ou retirés des plannings le mercredi 25 novembre 2026."
+description: "4 tomes reportés, avancés, annoncés ou retirés des plannings le mercredi 25 novembre 2026."
 auto: true
 draft: false
 ---
@@ -16,5 +16,6 @@ Voici ce qui a bougé dans les plannings manga des éditeurs le mercredi 25 nove
   → [Page de la série](/serie/pippira-note/) · [Calendrier manga](/manga/)
 - **The Strange House tome 6** (Kana) : n'apparaît plus au planning de l'éditeur (était prévu le ven. 22 janv.) ([fiche éditeur](https://www.kana.fr/produit/the-strange-house-t6/))
   → [Page de la série](/serie/the-strange-house/) · [Calendrier manga](/manga/)
+- **Craque pour moi, Medaka ! tome 17** (Pika) : n'apparaît plus au planning de l'éditeur (était prévu le mer. 20 janv.) ([fiche éditeur](https://www.pika.fr/livre/craque-pour-moi-medaka-t17-9791043313714/))
 
 Les éditeurs peuvent corriger leurs dates à tout moment : la fiche de chaque tome fait foi.
