@@ -267,7 +267,7 @@ Les flux écrivent chacun leurs fichiers ; la base ISBN lit toujours les sources
 - **TikTok** : l'API de publication exige une validation de l'application ; les diapositives et la légende sont donc prêtes dans l'artefact, à publier depuis l'application.
 - `data/social-posted.json` garde ce qui a été publié (pas de doublon si le workflow est relancé).
 
-**E-mail du matin** : pour les réseaux publiés à la main (X, Pinterest, TikTok par défaut), le workflow envoie un e-mail avec les images en pièces jointes et les textes prêts à copier. Secrets : `SMTP_USER` (adresse Gmail) et `SMTP_PASS` (mot de passe d'application Google, pas le mot de passe du compte). Variables facultatives : `MAIL_TO` (destinataire, par défaut `SMTP_USER`) et `MAIL_PLATFORMS` (par défaut `x,pinterest,tiktok`).
+**E-mail du matin** : pour les réseaux publiés à la main (X, Bluesky et Instagram par défaut ; Threads et Pinterest reprennent les posts Instagram), le workflow envoie un e-mail avec les images en pièces jointes et les textes prêts à copier. Secrets : `SMTP_USER` (adresse Gmail) et `SMTP_PASS` (mot de passe d'application Google, pas le mot de passe du compte). Variables facultatives : `MAIL_TO` (destinataire, par défaut `SMTP_USER`) et `MAIL_PLATFORMS` (par défaut `x,bluesky,instagram`).
 
 ## Liens directs Cultura (flux produits Awin)
 
