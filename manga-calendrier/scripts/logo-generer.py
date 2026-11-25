@@ -18,7 +18,7 @@ def texte(s, size, track=0):
     return ' '.join(d), x - track
 JAUNE, ENCRE, PAPIER = '#ffd21f', '#111111', '#fbfaf6'
 
-def logo(mode, nom, avec_texte=True, fond=None):
+def logo(mode, nom, avec_texte=True, fond=None, app=False):
     c = ENCRE if mode == 'clair' else '#f6f4ee'       # encre du site (clair) / crème (sombre)
     pap = PAPIER if mode == 'clair' else '#19191b'
     tp, tw = texte('Prochain', 84, -1)
@@ -36,7 +36,10 @@ def logo(mode, nom, avec_texte=True, fond=None):
 <rect x="102" y="100" width="26" height="22" fill="{JAUNE}" stroke="{c}" stroke-width="5"/>
 </g>'''
     defs = f'<defs><pattern id="trame" width="9" height="9" patternUnits="userSpaceOnUse"><circle cx="4.5" cy="4.5" r="1.6" fill="{ENCRE}" fill-opacity=".28"/></pattern></defs>'
-    if not avec_texte:
+    if app:  # icône d'application / favicon : calendrier sur aplat jaune, dans la zone sûre des icônes « maskable »
+        w = h = 512
+        body = f'<rect width="512" height="512" fill="{JAUNE}"/><rect width="512" height="512" fill="url(#trame)" opacity=".7"/><g transform="translate(121 118) scale(1.5)">{ic}</g>'
+    elif not avec_texte:
         w, h = 190, 190
         body = ic
     else:
@@ -56,3 +59,4 @@ def logo(mode, nom, avec_texte=True, fond=None):
 
 logo('clair', 'logo-clair.svg'); logo('sombre', 'logo-sombre.svg')
 logo('clair', 'icone-clair.svg', False); logo('sombre', 'icone-sombre.svg', False)
+logo('clair', 'icone-app.svg', False, app=True)
