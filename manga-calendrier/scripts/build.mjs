@@ -135,7 +135,7 @@ const ANALYTICS = /^[a-f0-9]{32}$/i.test(CF_TOKEN)
 const clampDesc = (t, max = 158) => { const x = String(t || '').replace(/\s+/g, ' ').trim(); if (x.length <= max) return x; const c = x.slice(0, max - 1); return `${c.slice(0, Math.max(c.lastIndexOf(' '), 60)).replace(/[\s,;:(–-]+$/, '')}…`; };
 function layout({ title, description, pathname, body, noindex = false, extraHead = '', image = '' }) {
   description = clampDesc(description);
-  const ogImage = /^https:\/\//.test(image) ? image : (siteUrlOk ? `${base}/og.png` : '/og.png');
+  const ogImage = /^https:\/\//.test(image) ? image : (siteUrlOk ? `${base}/og.png?v=2` : '/og.png?v=2');
   // Titre de la page d'accueil court (≈60 caractères max, sinon Google le coupe) ; le nom du site n'est ajouté aux autres pages que s'il tient
   const fullTitle = pathname === '/' ? (config.homeTitle || `${config.siteName} : prochaine sortie manga et anime à venir`) : (`${title} | ${config.siteName}`.length <= 62 ? `${title} | ${config.siteName}` : title);
   const canonical = siteUrlOk ? `${base}${pathname}` : '';
@@ -166,17 +166,17 @@ ${canonical ? `<meta property="og:url" content="${esc(canonical)}">` : ''}
 ${image ? '' : '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">'}
 ${image ? '' : `<meta property="og:image:alt" content="${esc(config.siteName)} : ${esc(config.tagline)}">`}
 <meta name="twitter:card" content="${image ? 'summary' : 'summary_large_image'}">
-<link rel="icon" href="/favicon.ico" sizes="48x48">
-<link rel="icon" type="image/png" href="/favicon-48.png" sizes="48x48">
-<link rel="icon" type="image/png" href="/favicon-96.png" sizes="96x96">
-<link rel="icon" type="image/svg+xml" href="/icon.svg" sizes="any">
+<link rel="icon" href="/favicon.ico?v=2" sizes="48x48">
+<link rel="icon" type="image/png" href="/favicon-48.png?v=2" sizes="48x48">
+<link rel="icon" type="image/png" href="/favicon-96.png?v=2" sizes="96x96">
+<link rel="icon" type="image/svg+xml" href="/icon.svg?v=2" sizes="any">
 <link rel="preload" href="/fonts/dela-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="/fonts/zen-400.woff" as="font" type="font/woff" crossorigin>
 <link rel="preload" href="/fonts/zen-900.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="${av('style.css')}">
 <link rel="manifest" href="/manifest.webmanifest">
 <meta name="theme-color" content="#ffd21f">
-<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png?v=2">
 ${siteUrlOk ? `<link rel="alternate" type="application/rss+xml" title="${esc(config.siteName)}" href="/feed.xml">` : ''}
 ${extraHead}
 ${ANALYTICS}
@@ -513,7 +513,7 @@ ${FAQ_HTML}
 ${articles.length ? `<ul class="articles">${articles.slice(0, 6).map(articleItem).join('')}</ul><p class="more"><a href="/articles/">Tous les articles</a></p>` : '<p class="empty">Les premiers articles arrivent bientôt.</p>'}
 </section>`;
   page('/', { title: config.siteName, description: config.homeDescription || "Prochaine sortie manga en France : tomes à paraître, dates de sortie confirmées ou estimées, et anime à venir de la semaine, jour par jour.", body,
-    extraHead: siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.siteName, alternateName: ['ProchainTome', 'prochaintome.fr'], url: `${base}/`, inLanguage: 'fr', publisher: { '@type': 'Organization', name: config.siteName, url: `${base}/`, logo: { '@type': 'ImageObject', url: `${base}/icon-512.png`, width: 512, height: 512 } }, potentialAction: { '@type': 'SearchAction', target: `${base}/recherche/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } }).replace(/</g, '\\u003c')}</script><script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }).replace(/</g, '\\u003c')}</script>` : '' });
+    extraHead: siteUrlOk ? `<script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebSite', name: config.siteName, alternateName: ['ProchainTome', 'prochaintome.fr'], url: `${base}/`, inLanguage: 'fr', publisher: { '@type': 'Organization', name: config.siteName, url: `${base}/`, logo: { '@type': 'ImageObject', url: `${base}/icon-512.png?v=2`, width: 512, height: 512 } }, potentialAction: { '@type': 'SearchAction', target: `${base}/recherche/?q={search_term_string}`, 'query-input': 'required name=search_term_string' } }).replace(/</g, '\\u003c')}</script><script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: FAQ.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) }).replace(/</g, '\\u003c')}</script>` : '' });
 }
 
 /* ------------------------------------------------------- filtres (partagés) */
@@ -1693,7 +1693,7 @@ for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favic
 write('manifest.webmanifest', JSON.stringify({
   name: config.siteName, short_name: config.siteName, description: config.description, lang: 'fr',
   start_url: '/', scope: '/', display: 'standalone', background_color: '#f4f1ff', theme_color: '#ffd21f',
-  icons: [{ src: '/icon-192.png', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }],
+  icons: [{ src: '/icon-192.png?v=2', sizes: '192x192', type: 'image/png' }, { src: '/icon-512.png?v=2', sizes: '512x512', type: 'image/png', purpose: 'any maskable' }],
 }));
 if (siteUrlOk) {
   const items = articles.slice(0, 20).map((a) => `<item><title>${esc(a.title)}</title><link>${esc(`${base}/articles/${a.slug}/`)}</link><guid isPermaLink="true">${esc(`${base}/articles/${a.slug}/`)}</guid><pubDate>${new Date(`${a.date}T07:00:00Z`).toUTCString()}</pubDate><description>${esc(a.description || a.title)}</description></item>`).join('\n');

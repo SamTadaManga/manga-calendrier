@@ -637,6 +637,8 @@ ul.hscroll .tile-body .follow,ul.hscroll .tile-body .afollow{margin-top:4px}
 
 /* Accueil : raccourcis et sélections */
 .chiprow{display:flex;flex-wrap:wrap;gap:8px}
+/* Écran large : logo à gauche, menu à sa droite, outils tout à droite sur une seule ligne */
+@media(min-width:1040px){.hbar{flex-wrap:nowrap;justify-content:flex-start}.hbar .brand{order:1}.hbar nav{order:2;flex:1 1 auto}.hbar .tools{order:3;margin-left:auto}}
 @media(max-width:900px){
   .hbar nav{flex:1 0 100%;order:3;display:flex;flex-wrap:nowrap;overflow-x:auto;white-space:nowrap;scrollbar-width:none;-webkit-overflow-scrolling:touch;margin:0 -4px;padding:0 4px 2px}
   .hbar nav::-webkit-scrollbar{display:none}

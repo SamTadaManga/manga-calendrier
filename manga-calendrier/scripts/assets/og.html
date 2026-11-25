@@ -1,15 +1,18 @@
 <!doctype html><meta charset="utf-8">
+<!-- Image de partage 1200×630 (og.png) : rendue avec Chrome depuis ce fichier ; le logo est celui de scripts/assets/logo -->
 <style>
-*{box-sizing:border-box}body{margin:0;width:1200px;height:630px;background:#ffd21f;font-family:"Inter","Helvetica Neue",Arial,sans-serif;color:#111;position:relative;overflow:hidden}
-.dots{position:absolute;inset:0;background:radial-gradient(rgba(21,17,43,.22) 3px,transparent 3.6px) 0 0/22px 22px;-webkit-mask-image:linear-gradient(110deg,transparent 40%,#000);mask-image:linear-gradient(110deg,transparent 40%,#000)}
-.mark{position:absolute;left:80px;top:80px;width:96px;height:96px;background:#fff;border:9px solid #111}
-.mark::after{content:"";position:absolute;inset:25px;border-radius:50%;background:#111}
-h1{position:absolute;left:80px;top:215px;margin:0;font-size:150px;line-height:1;font-weight:900;font-style:italic;letter-spacing:-5px}
-p{position:absolute;left:84px;top:380px;margin:0;font-size:42px;font-weight:700;max-width:1060px;line-height:1.2}
-.pubs{position:absolute;left:84px;bottom:70px;display:flex;gap:14px}
-.pubs span{padding:10px 22px;border:5px solid #111;background:#fff;font-size:30px;font-weight:800;box-shadow:7px 7px 0 #111}
-.pubs i{display:inline-block;width:20px;height:20px;border-radius:50%;margin-right:10px;vertical-align:-1px}
+@font-face{font-family:Dela;src:url(fonts/dela-400.woff) format("woff")}
+@font-face{font-family:Zen;font-weight:700;src:url(fonts/zen-700.woff) format("woff")}
+@font-face{font-family:Zen;font-weight:900;src:url(fonts/zen-900.woff) format("woff")}
+*{box-sizing:border-box;margin:0}body{width:1200px;height:630px;background:#ffd21f;font-family:Zen,sans-serif;font-weight:700;color:#111;position:relative;overflow:hidden}
+.rays{position:absolute;inset:-60%;background:repeating-conic-gradient(from 0deg at 70% 50%,rgba(255,255,255,.28) 0 3deg,transparent 3deg 9deg)}
+.dots{position:absolute;inset:0;background:radial-gradient(rgba(17,17,17,.18) 2.6px,transparent 3.4px) 0 0/20px 20px;-webkit-mask-image:linear-gradient(110deg,transparent 40%,#000);mask-image:linear-gradient(110deg,transparent 40%,#000)}
+.logo{position:absolute;left:70px;top:78px;height:200px}
+h1{position:absolute;left:76px;top:322px;font-family:Dela;font-size:48px;line-height:1.15;font-weight:400;text-transform:uppercase;text-shadow:5px 5px 0 #fff;max-width:1100px;white-space:nowrap}
+.pill{position:absolute;left:76px;top:470px;background:#111;color:#ffd21f;font-family:Dela;font-size:30px;padding:10px 26px;border-radius:40px}
+.u{position:absolute;right:70px;bottom:46px;font-family:Dela;font-size:38px}
 </style>
-<div class="dots"></div><div class="mark"></div>
-<h1>__NAME__</h1><p>__TAGLINE__</p>
-<div class="pubs"><span><i style="background:#0a4fd6"></i>Glénat</span><span><i style="background:#d93a0b"></i>Kana</span><span><i style="background:#08804a"></i>Pika</span><span><i style="background:#7a24c9"></i>Ki-oon</span></div>
+<div class="rays"></div><div class="dots"></div>
+<img class="logo" src="logo/logo-clair.svg" alt="">
+<h1>Les sorties manga et anime<br>en France, jour par jour</h1>
+<div class="pill">Calendrier gratuit</div><div class="u">prochaintome.fr</div>
