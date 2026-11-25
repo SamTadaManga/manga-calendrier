@@ -153,7 +153,7 @@ function layout({ title, description, pathname, body, noindex = false, extraHead
 ${THEME_BOOT}
 <title>${esc(fullTitle)}</title>
 <meta name="description" content="${esc(description)}">${PIN_VERIFY ? `
-<meta name="p:domain-verify" content="${esc(PIN_VERIFY)}">` : ''}
+<meta name="p:domain_verify" content="${esc(PIN_VERIFY)}">` : ''}
 ${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
 ${noindex || isPrivate ? `<meta name="robots" content="noindex${isPrivate ? ', nofollow' : ''}">` : ''}
 <meta property="og:title" content="${esc(fullTitle)}">
@@ -1688,6 +1688,8 @@ write('data/recent.json', JSON.stringify({
   }));
 }
 for (const f of ['jour.js', 'collection.js', 'mesure.js', 'visite.js', 'clic.js', 'fiche-tome.js', 'recherche.js', 'resultats.js', 'partager.js', 'theme.js', 'sw.js', 'icon.svg']) write(f, readFileSync(path.join(SCRIPTS, f === 'icon.svg' ? 'assets' : '.', f), 'utf8'));
+// Vérification de domaine Pinterest : fichier fourni par Pinterest, à la racine du site (en plus de la balise <meta name="p:domain_verify"> de chaque page)
+write('pinterest-f9e3e.html', readFileSync(path.join(SCRIPTS, 'assets', 'pinterest-f9e3e.html'), 'utf8'));
 write('logo.svg', readFileSync(path.join(SCRIPTS, 'assets', 'logo', 'logo-clair.svg'), 'utf8'));
 for (const f of ['icon-192.png', 'icon-512.png', 'og.png', 'favicon.ico', 'favicon-48.png', 'favicon-96.png']) write(f, readFileSync(path.join(SCRIPTS, 'assets', f)));
 write('manifest.webmanifest', JSON.stringify({

@@ -462,6 +462,8 @@ test('pages par mois, par série et index : générées, liées et dans le sitem
   // référencement : icône lisible par Google, données structurées des mois et des séries, en-têtes de cache
   assert.ok(existsSync(path.join(tmp, 'dist/favicon.ico')) && existsSync(path.join(tmp, 'dist/favicon-48.png')));
   assert.match(rd('index.html'), /rel="icon" href="\/favicon\.ico\?v=2"/);
+  assert.match(rd('index.html'), /<meta name="p:domain_verify" content="f9e3eebb5f9b396beea575d305660e16">/, 'balise Pinterest (tiret bas)');
+  assert.match(rd('pinterest-f9e3e.html'), /name="p:domain_verify"/, 'fichier de vérification Pinterest à la racine');
   assert.ok(!/rel="icon" href="data:/.test(rd('index.html')), 'pas d\'icône en data: (Google ne la lit pas)');
   const ldOf = (f) => [...rd(f).matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)].flatMap((m) => [].concat(JSON.parse(m[1])));
   const monthLd = ldOf(`sorties-manga/${monthLinks[0]}/index.html`).find((j) => j['@type'] === 'CollectionPage');
