@@ -1562,6 +1562,10 @@ test('résumés IA : contrôle du texte (noms propres, copie, bavardage), sélec
   assert.deepEqual(aTraiter({ bnf, resumes, ia, adapt: {} }).map((x) => x.k), ['b'], 'a est déjà fait, c n\'a pas de résumé');
   assert.deepEqual(aTraiter({ bnf, resumes, ia: {}, adapt: {} }, 1).map((x) => x.k), ['a'], 'les plus longues séries d\'abord, limite respectée');
   assert.deepEqual(aTraiter({ bnf, resumes: { a: { t: 'texte a modifié', n: 1 } }, ia, adapt: {} }).map((x) => x.k), ['a'], 'résumé de l\'éditeur changé : à refaire');
+  // garde-fou : déjà essayée 2 fois pour ce résumé -> plus proposée ; 1 essai -> retentée ; résumé de l'éditeur modifié -> compteur remis à zéro
+  const essais = { b: [empreinte('texte b'), 2, 'copie de la source'], a: [empreinte('texte a'), 1, 'absent'] };
+  assert.deepEqual(aTraiter({ bnf, resumes, ia: {}, adapt: {}, essais }).map((x) => x.k), ['a'], 'b abandonnée, a retentée une fois');
+  assert.deepEqual(aTraiter({ bnf, resumes: { ...resumes, b: { t: 'texte b modifié', n: 1 } }, ia: {}, adapt: {}, essais }).map((x) => x.k), ['a', 'b'], 'b modifiée : à refaire');
 });
 
 test('séries exclues à la main (data/series-exclues.json) : retirées comme le contenu adulte, « conserver » l\'emporte', async () => {

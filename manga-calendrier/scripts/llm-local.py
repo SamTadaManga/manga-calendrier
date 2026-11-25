@@ -20,6 +20,7 @@ for i, t in enumerate(taches):
         texte = r["choices"][0]["message"]["content"] or ""
     except Exception as e:  # une série qui échoue n'arrête pas les autres
         print(f"{t['k']} : {e}")
+        res.append({"k": t["k"], "h": t["h"], "x": t["x"], "sortie": ""})  # compté comme un essai (garde-fou : pas de nouvelle tentative sans fin)
         continue
     texte = re.sub(r"<think>.*?</think>", "", texte, flags=re.S).strip()
     res.append({"k": t["k"], "h": t["h"], "x": t["x"], "sortie": texte})
