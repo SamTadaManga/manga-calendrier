@@ -1,12 +1,12 @@
 ---
 title: "Éditions collector, coffrets et éditions spéciales manga de novembre 2026"
 date: 2026-11-01
-description: "5 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
+description: "4 éditions spéciales manga annoncées pour novembre 2026 en France, avec prix et dates."
 auto: true
 draft: false
 ---
 
-5 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
+4 éditions spéciales sont annoncées pour novembre 2026 : collectors, coffrets, intégrales, artbooks. Les tirages sont souvent limités : la précommande évite de passer à côté. Les dates viennent des plannings officiels des éditeurs et peuvent encore bouger : retrouve-les à jour dans le [calendrier manga](/sorties-manga/novembre-2026/). Pour comprendre les différences, lis notre [guide des éditions collector et coffret](/articles/guide-editions-collector-coffret-manga/).
 
 ## Collectors
 
@@ -15,7 +15,6 @@ draft: false
 ## Éditions deluxe et prestige
 
 - **Berserk Prestige tome 7** (Glénat) : mer. 18 nov. · [la série](/serie/berserk-prestige/)
-- **Alice in Borderland Perfect Edition tome 2** (Delcourt) : jeu. 19 nov. · [la série](/serie/alice-in-borderland-perfect-edition/)
 
 ## Éditions spéciales
 

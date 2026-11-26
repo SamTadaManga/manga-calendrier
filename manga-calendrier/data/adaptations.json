@@ -6471,7 +6471,7 @@
    }
   },
   "demon-slave": {
-   "c": "2026-11-19",
+   "c": "2026-11-26",
    "a": [
     {
      "id": 214650,
@@ -31747,7 +31747,56 @@
     "y": 2022,
     "v": 2
    }
+  },
+  "my-ray-of-hope": {
+   "c": "2026-11-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Ha-Wol Yun",
+     "TK"
+    ],
+    "sc": [
+     "TK"
+    ],
+    "ar": [
+     "TK"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2021,
+    "v": 2
+   }
+  },
+  "untouchable-lady": {
+   "c": "2026-11-26",
+   "a": [],
+   "i": {
+    "au": [
+     "Kin",
+     "Du-Sik Yong",
+     "Mingsung"
+    ],
+    "sc": [
+     "Du-Sik Yong"
+    ],
+    "ar": [
+     "Mingsung"
+    ],
+    "g": [
+     "Drama",
+     "Fantasy",
+     "Romance"
+    ],
+    "st": "FINISHED",
+    "y": 2021,
+    "v": 2
+   }
   }
  },
- "generatedAt": "2026-11-25T18:35:17.082Z"
+ "generatedAt": "2026-11-26T12:34:51.075Z"
 }

@@ -20,6 +20,10 @@ Glénat · drame, romance · Oreco Tachibana et Finn K · depuis 2023
 
 Akata · comédie, tranche de vie · Akiko Higashimura · depuis 2007
 
+## [Untouchable Lady](/serie/untouchable-lady/)
+
+Delcourt · drame, fantasy, romance · Kin et Du-Sik Yong · depuis 2021
+
 ## [Show-ha Shoten](/serie/show-ha-shoten/)
 
 Kana · comédie, drame, tranche de vie · Takeshi Obata et Akinari Asakura · depuis 2021
@@ -27,7 +31,3 @@ Kana · comédie, drame, tranche de vie · Takeshi Obata et Akinari Asakura · d
 ## [Qui a vu le paon danser ?](/serie/qui-a-vu-le-paon-danser/)
 
 Akata · mystère · Rito Asami et Tom Bertrand · depuis 2022
-
-## [2.5 Dimensional Seduction](/serie/2-5-dimensional-seduction/)
-
-Soleil · comédie, ecchi, romance · Yuu Hashimoto · depuis 2019

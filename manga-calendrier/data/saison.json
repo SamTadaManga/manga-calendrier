@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-25T18:35:22.526Z",
+ "generatedAt": "2026-11-26T12:34:56.861Z",
  "seasons": [
   {
    "season": "FALL",
@@ -616,6 +616,31 @@
      ]
     },
     {
+     "id": 213457,
+     "t": "Fool Night",
+     "f": "ONA",
+     "st": "FINISHED",
+     "n": 12,
+     "d": [
+      2026,
+      11,
+      26
+     ],
+     "u": "https://anilist.co/anime/213457",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81991076"
+      }
+     ]
+    },
+    {
      "id": 152677,
      "t": "The Detective Is Already Dead Season 2",
      "f": "TV",
@@ -637,31 +662,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/the-detective-is-already-dead"
-      }
-     ]
-    },
-    {
-     "id": 213457,
-     "t": "Fool Night",
-     "f": "ONA",
-     "st": "NOT_YET_RELEASED",
-     "n": 12,
-     "d": [
-      2026,
-      11,
-      26
-     ],
-     "u": "https://anilist.co/anime/213457",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
-     "g": [
-      "Drama",
-      "Psychological",
-      "Sci-Fi"
-     ],
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/81991076"
       }
      ]
     },
@@ -1512,24 +1512,6 @@
      "s": []
     },
     {
-     "id": 189121,
-     "t": "BanG Dream! MyGO!!!!! // Ave Mujica",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      8
-     ],
-     "u": "https://anilist.co/anime/189121",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189121-m3EHJ33Y8jgT.png",
-     "g": [
-      "Music"
-     ],
-     "s": []
-    },
-    {
      "id": 219548,
      "t": "Spirit Circle",
      "f": "TV",
@@ -1546,6 +1528,24 @@
       "Action",
       "Comedy",
       "Romance"
+     ],
+     "s": []
+    },
+    {
+     "id": 189121,
+     "t": "BanG Dream! MyGO!!!!! // Ave Mujica",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      8
+     ],
+     "u": "https://anilist.co/anime/189121",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx189121-m3EHJ33Y8jgT.png",
+     "g": [
+      "Music"
      ],
      "s": []
     },
