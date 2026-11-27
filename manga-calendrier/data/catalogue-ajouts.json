@@ -1943,4 +1943,5 @@
 {"k":"day-off","n":"Day Off","e":"Komogi","t":"3","isbn":"9782494300279","y":0,"src":"ludum","motif":"suite","statut":"ok"},
 {"k":"demoiselle-lapine-et-le-grand-mechant-leopard","n":"Demoiselle lapine et le grand méchant léopard","e":"Pika","t":"9","isbn":"9791043309540","y":0,"src":"ludum","motif":"suite","statut":"ok"},
 {"k":"sayonara-monsieur-desespoir","n":"Sayonara monsieur Désespoir","e":"Pika","t":"28","isbn":"9791043313431","y":0,"src":"ludum","motif":"suite","statut":"ok"},
-{"k":"sorciere-de-l-ouest-la","n":"La sorcière de l'Ouest","e":"Kami","t":"2","isbn":"9782351004234","y":0,"src":"cultura","motif":"trou","statut":"ok"}]}
+{"k":"sorciere-de-l-ouest-la","n":"La sorcière de l'Ouest","e":"Kami","t":"2","isbn":"9782351004234","y":0,"src":"cultura","motif":"trou","statut":"ok"},
+{"k":"paper-bag-is-in-love","n":"Paper-bag is in love","e":"Ototo","t":"2","isbn":"9782377178056","y":0,"src":"bdfugue","motif":"suite","statut":"ok"}]}
