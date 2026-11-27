@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-11-26T12:34:56.861Z",
+ "generatedAt": "2026-11-27T12:23:07.807Z",
  "seasons": [
   {
    "season": "FALL",
@@ -543,6 +543,31 @@
      ]
     },
     {
+     "id": 213457,
+     "t": "Fool Night",
+     "f": "ONA",
+     "st": "FINISHED",
+     "n": 12,
+     "d": [
+      2026,
+      11,
+      26
+     ],
+     "u": "https://anilist.co/anime/213457",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
+     "g": [
+      "Drama",
+      "Psychological",
+      "Sci-Fi"
+     ],
+     "s": [
+      {
+       "n": "Netflix",
+       "u": "https://www.netflix.com/title/81991076"
+      }
+     ]
+    },
+    {
      "id": 191788,
      "t": "Aoashi Season 2",
      "f": "TV",
@@ -612,31 +637,6 @@
       {
        "n": "Crunchyroll",
        "u": "https://www.crunchyroll.com/series/GT00384003/magical-explorer"
-      }
-     ]
-    },
-    {
-     "id": 213457,
-     "t": "Fool Night",
-     "f": "ONA",
-     "st": "FINISHED",
-     "n": 12,
-     "d": [
-      2026,
-      11,
-      26
-     ],
-     "u": "https://anilist.co/anime/213457",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx213457-gN5p1GZjK3zi.jpg",
-     "g": [
-      "Drama",
-      "Psychological",
-      "Sci-Fi"
-     ],
-     "s": [
-      {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/81991076"
       }
      ]
     },
@@ -946,27 +946,27 @@
      ]
     },
     {
-     "id": 209872,
-     "t": "Ranma1/2 (2024) Season 3",
+     "id": 195571,
+     "t": "The Vermilion Mask",
      "f": "TV",
      "st": "RELEASING",
      "n": 0,
      "d": [
       2026,
       10,
-      4
+      10
      ],
-     "u": "https://anilist.co/anime/209872",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx209872-RBeVPqwejHFp.jpg",
+     "u": "https://anilist.co/anime/195571",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx195571-fvj7u5GI7BRT.jpg",
      "g": [
       "Action",
-      "Comedy",
-      "Romance"
+      "Drama",
+      "Supernatural"
      ],
      "s": [
       {
-       "n": "Netflix",
-       "u": "https://www.netflix.com/title/81171925"
+       "n": "Crunchyroll",
+       "u": "https://www.crunchyroll.com/series/GT00384015"
       }
      ]
     }
@@ -1299,26 +1299,6 @@
      "s": []
     },
     {
-     "id": 196333,
-     "t": "Hirayasumi",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/196333",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196333-HRmwgn8j8tvi.jpg",
-     "g": [
-      "Comedy",
-      "Drama",
-      "Slice of Life"
-     ],
-     "s": []
-    },
-    {
      "id": 186741,
      "t": "Himekishi-sama no Himo",
      "f": "TV",
@@ -1335,6 +1315,26 @@
       "Action",
       "Adventure",
       "Comedy"
+     ],
+     "s": []
+    },
+    {
+     "id": 196333,
+     "t": "Hirayasumi",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      0
+     ],
+     "u": "https://anilist.co/anime/196333",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx196333-HRmwgn8j8tvi.jpg",
+     "g": [
+      "Comedy",
+      "Drama",
+      "Slice of Life"
      ],
      "s": []
     },
@@ -1649,6 +1649,25 @@
      "s": []
     },
     {
+     "id": 207782,
+     "t": "Odebu Akujo ni Tensei Shitara, Naze ka Last Boss Ouji-sama ni Shuuchaku Sareteimasu",
+     "f": "TV",
+     "st": "NOT_YET_RELEASED",
+     "n": 0,
+     "d": [
+      2027,
+      1,
+      1
+     ],
+     "u": "https://anilist.co/anime/207782",
+     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207782-jmxrbTF1tLob.jpg",
+     "g": [
+      "Fantasy",
+      "Romance"
+     ],
+     "s": []
+    },
+    {
      "id": 174427,
      "t": "Zombie no Afureta Sekai de Ore dake ga Osowarenai",
      "f": "TV",
@@ -1665,25 +1684,6 @@
       "Action",
       "Ecchi",
       "Supernatural"
-     ],
-     "s": []
-    },
-    {
-     "id": 207782,
-     "t": "Odebu Akujo ni Tensei Shitara, Naze ka Last Boss Ouji-sama ni Shuuchaku Sareteimasu",
-     "f": "TV",
-     "st": "NOT_YET_RELEASED",
-     "n": 0,
-     "d": [
-      2027,
-      1,
-      0
-     ],
-     "u": "https://anilist.co/anime/207782",
-     "c": "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx207782-wKac51K7adn3.jpg",
-     "g": [
-      "Fantasy",
-      "Romance"
      ],
      "s": []
     },

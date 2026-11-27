@@ -266,7 +266,7 @@
   }
  },
  "/manga/the-condemned-villainess-goes-back-in-time-4": {
-  "vu": "2026-10-27",
+  "vu": "2026-11-27",
   "row": {
    "date": "2026-12-30",
    "editeur": "Meian",
@@ -280,7 +280,7 @@
   }
  },
  "/manga/the-fed-up-office-lady-wants-to-serve-the-villainess-4": {
-  "vu": "2026-10-27",
+  "vu": "2026-11-27",
   "row": {
    "date": "2026-12-30",
    "editeur": "Meian",
@@ -294,7 +294,7 @@
   }
  },
  "/manga/silver-plan-ma-seconde-chance-vol-8": {
-  "vu": "2026-10-27",
+  "vu": "2026-11-27",
   "row": {
    "date": "2026-12-31",
    "editeur": "Meian",
@@ -308,7 +308,7 @@
   }
  },
  "/manga/tsukimichi-moonlit-fantasy-10": {
-  "vu": "2026-10-27",
+  "vu": "2026-11-27",
   "row": {
    "date": "2026-12-31",
    "editeur": "Meian",
@@ -322,7 +322,7 @@
   }
  },
  "/manga/baki-gaiden-scarface-7": {
-  "vu": "2026-10-27",
+  "vu": "2026-11-27",
   "row": {
    "date": "2027-02-24",
    "editeur": "Meian",
@@ -602,7 +602,7 @@
   }
  },
  "/manga/baki-gaiden-scarface-8": {
-  "vu": "2026-10-28",
+  "vu": "2026-11-27",
   "row": {
    "date": "2027-02-24",
    "editeur": "Meian",
@@ -882,7 +882,7 @@
   }
  },
  "/manga/le-secret-d-aiko-10": {
-  "vu": "2026-11-19",
+  "vu": "2026-11-27",
   "row": {
    "date": "2026-12-09",
    "editeur": "Panini Manga",
@@ -1256,6 +1256,62 @@
    "isbn": "",
    "prix": null,
    "source": "https://www.bdbase.fr/manga/me-et-roboco-4",
+   "cover": ""
+  }
+ },
+ "/manga/gannibal-deluxe-edition-3": {
+  "vu": "2026-11-27",
+  "row": {
+   "date": "2026-12-30",
+   "editeur": "Meian",
+   "serie": "Gannibal Deluxe Edition",
+   "tome": "3",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/gannibal-deluxe-edition-3",
+   "cover": ""
+  }
+ },
+ "/manga/gannibal-deluxe-edition-4": {
+  "vu": "2026-11-27",
+  "row": {
+   "date": "2026-12-30",
+   "editeur": "Meian",
+   "serie": "Gannibal Deluxe Edition",
+   "tome": "4",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/gannibal-deluxe-edition-4",
+   "cover": ""
+  }
+ },
+ "/manga/sono-mono-nochi-ni-3": {
+  "vu": "2026-11-27",
+  "row": {
+   "date": "2026-12-30",
+   "editeur": "Meian",
+   "serie": "Sono Mono. Nochi ni...",
+   "tome": "3",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/sono-mono-nochi-ni-3",
+   "cover": ""
+  }
+ },
+ "/manga/sono-mono-nochi-ni-4": {
+  "vu": "2026-11-27",
+  "row": {
+   "date": "2026-12-30",
+   "editeur": "Meian",
+   "serie": "Sono Mono. Nochi ni...",
+   "tome": "4",
+   "titre": "",
+   "isbn": "",
+   "prix": null,
+   "source": "https://www.bdbase.fr/manga/sono-mono-nochi-ni-4",
    "cover": ""
   }
  }
